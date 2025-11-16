@@ -1,0 +1,70 @@
+{
+  "name": "nova-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Nova Engine - A complete web-based game development platform",
+  "keywords": [
+    "game-engine",
+    "webgl",
+    "game-development",
+    "editor",
+    "3d"
+  ],
+  "author": "Nova Engine Team",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "clean": "rm -rf node_modules packages/*/node_modules packages/*/dist",
+    "install:all": "npm install",
+    "build": "npm run build --workspaces --if-present",
+    "build:engine": "npm run build -w @nova-engine/engine",
+    "build:editor": "npm run build -w @nova-engine/editor",
+    "build:server": "npm run build -w @nova-engine/server",
+    "build:shared": "npm run build -w @nova-engine/shared",
+    "dev": "npm run dev --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "npm run format --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "docs:build": "typedoc",
+    "docs:watch": "typedoc --watch",
+    "prepare": "husky"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MrNova420/Nova-Engine-editor.git"
+  },
+  "devDependencies": {
+    "@jest/globals": "^30.2.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.46.4",
+    "@typescript-eslint/parser": "^8.46.4",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "jest": "^30.2.0",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.5",
+    "tsx": "^4.20.6",
+    "typedoc": "^0.28.14",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.2"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
+  }
+}

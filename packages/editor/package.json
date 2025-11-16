@@ -1,0 +1,24 @@
+{
+  "name": "@nova-engine/editor",
+  "version": "0.1.0",
+  "description": "Nova Engine - Visual game editor",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "preview": "vite preview",
+    "test": "jest",
+    "lint": "eslint src --ext .ts,.tsx",
+    "format": "prettier --write src",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "game-editor",
+    "visual-editor",
+    "react"
+  ],
+  "author": "Nova Engine Team",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}

@@ -71,6 +71,7 @@ projects/
 *.min.css
 
 # Documentation builds
+docs/api/
 docs/.vuepress/dist/
 docs/.docusaurus/
 docs/build/

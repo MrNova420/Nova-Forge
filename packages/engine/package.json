@@ -1,0 +1,27 @@
+{
+  "name": "@nova-engine/engine",
+  "version": "0.1.0",
+  "description": "Nova Engine - Core game engine runtime",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "test": "jest",
+    "lint": "eslint src --ext .ts,.tsx",
+    "format": "prettier --write src",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "game-engine",
+    "webgl",
+    "ecs",
+    "3d"
+  ],
+  "author": "Nova Engine Team",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {}
+}

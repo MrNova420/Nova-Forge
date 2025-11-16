@@ -1,0 +1,24 @@
+{
+  "entryPoints": [
+    "packages/engine/src",
+    "packages/editor/src",
+    "packages/server/src",
+    "packages/shared/src"
+  ],
+  "entryPointStrategy": "expand",
+  "out": "docs/api",
+  "name": "Nova Engine API Documentation",
+  "includeVersion": true,
+  "excludePrivate": true,
+  "excludeProtected": false,
+  "excludeExternals": true,
+  "readme": "README.md",
+  "plugin": [],
+  "theme": "default",
+  "hideGenerator": false,
+  "gitRevision": "main",
+  "navigation": {
+    "includeCategories": true,
+    "includeGroups": true
+  }
+}
