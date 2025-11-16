@@ -122,7 +122,7 @@ export class ParticleSystem extends Component {
     // Update existing particles
     for (let i = 0; i < this.maxParticles; i++) {
       const particle = this.particles[i];
-      if (!particle.active) continue;
+      if (!particle || !particle.active) continue;
 
       // Update lifetime
       particle.life -= deltaTime;
@@ -185,7 +185,7 @@ export class ParticleSystem extends Component {
     // Find inactive particle
     for (let i = 0; i < this.maxParticles; i++) {
       const particle = this.particles[i];
-      if (particle.active) continue;
+      if (!particle || particle.active) continue;
 
       // Reset particle
       particle.active = true;

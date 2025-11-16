@@ -98,6 +98,15 @@ export class Vector3 {
   }
 
   /**
+   * Multiplies this vector by a scalar (alias for multiply)
+   * @param scalar - The scalar value
+   * @returns A new scaled vector
+   */
+  multiplyScalar(scalar: number): Vector3 {
+    return this.multiply(scalar);
+  }
+
+  /**
    * Divides this vector by a scalar
    * @param scalar - The scalar value
    * @returns A new divided vector

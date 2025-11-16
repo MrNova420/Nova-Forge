@@ -41,3 +41,6 @@ export * from './physics';
 
 // Export particle system
 export * from './particles';
+
+// Export animation system
+export * from './animation';
