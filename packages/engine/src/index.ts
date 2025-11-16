@@ -35,3 +35,6 @@ export * from './input';
 
 // Export audio system
 export * from './audio';
+
+// Export physics system
+export * from './physics';

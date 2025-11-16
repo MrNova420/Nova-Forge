@@ -21,7 +21,7 @@
   ],
   "author": "Nova Engine Team",
   "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {},
-  "peerDependencies": {}
+  "dependencies": {
+    "ammojs-typed": "^1.0.6"
+  }
 }
