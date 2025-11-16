@@ -38,7 +38,7 @@ export default [
         'warn',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
-      '@typescript-eslint/no-non-null-assertion': 'warn',
+      '@typescript-eslint/no-non-null-assertion': 'off', // Allow for typed arrays
       
       // General rules
       'no-console': ['warn', { allow: ['warn', 'error'] }],

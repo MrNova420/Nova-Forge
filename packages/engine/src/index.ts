@@ -11,3 +11,6 @@ export const ENGINE_VERSION = '0.1.0';
 export function initializeEngine(): void {
   // Engine initialization logic will be implemented here
 }
+
+// Export math library
+export * from './math';
