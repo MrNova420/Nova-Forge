@@ -12,7 +12,10 @@ export { Shader } from './Shader';
 export type { UniformValue } from './Shader';
 export { ShaderLibrary } from './ShaderLibrary';
 export type { ShaderSource } from './ShaderLibrary';
-export { Texture } from './Texture';
+export { Texture, TextureWrap, TextureFilter, TextureFormat } from './Texture';
+export { TextureLoader } from './TextureLoader';
+export type { TextureLoadOptions } from './TextureLoader';
+export { TextureCache } from './TextureCache';
 export {
   Material,
   createStandardMaterial,

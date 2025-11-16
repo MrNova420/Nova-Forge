@@ -149,13 +149,13 @@ Phase 1 foundation complete! Moved to Phase 2.
 
 ---
 
-### Phase 2: Core Engine Development (6%)
+### Phase 2: Core Engine Development (8%)
 
 **Timeline:** Months 4-8  
 **Status:** 🟢 In Progress  
 **Current Focus:** Section 2.1 - Graphics Engine Foundation
 
-#### Completed (3/50+)
+#### Completed (4/50+)
 
 - [x] **Task 2.1.1: Initialize Graphics Renderer**
   - [x] Created Renderer.ts interface (IRenderer)
@@ -181,10 +181,24 @@ Phase 1 foundation complete! Moved to Phase 2.
   - [x] Created helper functions (createStandardMaterial, createUnlitMaterial)
   - [x] Validated: Materials creation, property setting, multiple materials
   - [x] Build: Successful (97.43 kB)
+- [x] **Task 2.1.4: Implement Texture Management**
+  - [x] Expanded Texture.ts with full implementation
+  - [x] Added texture formats (RGB, RGBA, Luminance, etc.)
+  - [x] Implemented wrap modes (Repeat, ClampToEdge, MirroredRepeat)
+  - [x] Implemented filter modes (Nearest, Linear, Mipmap variants)
+  - [x] Added mipmap generation support
+  - [x] Created TextureLoader.ts for async loading
+  - [x] Implemented fromImage and fromData methods
+  - [x] Added helper methods (createSolidColor, createCheckerboard)
+  - [x] Created TextureCache.ts for texture caching
+  - [x] Implemented cache with loading promise deduplication
+  - [x] Added preload and statistics methods
+  - [x] Validated: Textures load, mipmaps generate, caching works, multiple textures
+  - [x] Build: Successful (110.44 kB)
 
 #### In Progress (0/50+)
 
-Ready for Task 2.1.4 - Implement Texture Management
+Ready for Task 2.1.5 - Implement Mesh Rendering
 
 #### Blocked (0/50+)
 
