@@ -397,9 +397,11 @@ export class PerformanceMonitor {
     percent: number;
     gpu?: number;
   } {
-    if (performance.memory) {
-      const used = performance.memory.usedJSHeapSize / (1024 * 1024);
-      const total = performance.memory.jsHeapSizeLimit / (1024 * 1024);
+    // Type cast for non-standard performance.memory API
+    const perf = performance as any;
+    if (perf.memory) {
+      const used = perf.memory.usedJSHeapSize / (1024 * 1024);
+      const total = perf.memory.jsHeapSizeLimit / (1024 * 1024);
       return {
         used: Math.round(used * 100) / 100,
         total: Math.round(total * 100) / 100,
