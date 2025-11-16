@@ -1,0 +1,2 @@
+# Temporarily disabled until Task 1.1.4 (ESLint & Prettier setup) is complete
+# npx lint-staged
