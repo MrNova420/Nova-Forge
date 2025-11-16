@@ -29,3 +29,7 @@ export type {
   GLTFScene,
   GLTFNode,
 } from './loaders';
+
+// Asset optimization
+export { AssetOptimizer, LoadPriority, LoadStrategy } from './AssetOptimizer';
+export type { AssetMetadata } from './AssetOptimizer';
