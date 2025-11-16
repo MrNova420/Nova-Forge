@@ -14,3 +14,6 @@ export function initializeEngine(): void {
 
 // Export math library
 export * from './math';
+
+// Export core systems
+export * from './core';

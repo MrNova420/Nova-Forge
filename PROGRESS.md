@@ -8,7 +8,7 @@
 ## Current Status
 
 **Current Phase:** Phase 1 - Foundation & Core Architecture  
-**Overall Progress:** 16% (Task 1.2.1 Complete - Math Library Implemented)  
+**Overall Progress:** 20% (Task 1.2.2 Complete - Engine Core Implemented)  
 **Last Updated:** 2025-11-16  
 **Active Developers:** Autonomous Development Agent
 
@@ -19,7 +19,7 @@
 | Metric          | Value      | Status     |
 | --------------- | ---------- | ---------- |
 | Total Tasks     | 500+       | 📋 Planned |
-| Completed Tasks | 7          | ✅         |
+| Completed Tasks | 8          | ✅         |
 | In Progress     | 1          | 🔄         |
 | Blocked         | 0          | 🚫         |
 | Code Coverage   | 0%         | 📊         |
@@ -29,13 +29,13 @@
 
 ## Phase Progress Overview
 
-### Phase 1: Foundation & Core Architecture (10%)
+### Phase 1: Foundation & Core Architecture (12%)
 
 **Timeline:** Months 1-3  
 **Status:** 🟢 In Progress  
-**Current Focus:** Task 1.2.2 - Implement Engine Core
+**Current Focus:** Task 1.2.3 - Implement Entity-Component-System (ECS)
 
-#### Completed (7/50)
+#### Completed (8/50)
 
 - [x] Initial repository setup
 - [x] Roadmap creation
@@ -88,10 +88,20 @@ All project infrastructure tasks completed.
   - [x] Full TSDoc documentation on all classes
   - [x] Exported from math/index.ts and engine index
   - [x] Validated: All tests passing, TypeScript compiles, build successful
+- [x] **Task 1.2.2: Implement Engine Core**
+  - [x] Created Time class with deltaTime, totalTime, frameCount, FPS, timeScale
+  - [x] Created Loop class with requestAnimationFrame, FPS limiting, fixed timestep
+  - [x] Created Application class with lifecycle management and state
+  - [x] Created Engine class integrating all core systems
+  - [x] Added WebGL context initialization
+  - [x] Implemented pause/resume functionality
+  - [x] Wrote unit tests for Time class (10 tests passing)
+  - [x] Full TSDoc documentation
+  - [x] Validated: Tests passing, TypeScript compiles, build successful (55.36 kB)
 
 #### In Progress (1/50)
 
-- [ ] Task 1.2.2: Implement Engine Core (Engine class, Time, Loop, Application)
+- [ ] Task 1.2.3: Implement Entity-Component-System (ECS)
 
 #### Blocked (0/50)
 
