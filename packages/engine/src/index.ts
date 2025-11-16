@@ -38,3 +38,6 @@ export * from './audio';
 
 // Export physics system
 export * from './physics';
+
+// Export particle system
+export * from './particles';
