@@ -310,12 +310,66 @@ export class PostProcessingStack {
   }
 
   /**
-   * Render a texture to the screen
+   * Render a texture to the screen using a simple blit shader
    */
-  private renderToScreen(_gl: WebGL2RenderingContext, _texture: Texture): void {
-    // This would use a simple pass-through shader to blit the texture
-    // Implementation depends on shader system
-    // For now, this is a placeholder
+  private renderToScreen(gl: WebGL2RenderingContext, texture: Texture): void {
+    // Create simple pass-through shader if needed
+    const vertexShader = `#version 300 es
+      layout(location = 0) in vec2 aPosition;
+      layout(location = 1) in vec2 aTexCoord;
+      out vec2 vTexCoord;
+      void main() {
+        vTexCoord = aTexCoord;
+        gl_Position = vec4(aPosition, 0.0, 1.0);
+      }
+    `;
+    
+    const fragmentShader = `#version 300 es
+      precision highp float;
+      in vec2 vTexCoord;
+      uniform sampler2D uTexture;
+      out vec4 fragColor;
+      void main() {
+        fragColor = texture(uTexture, vTexCoord);
+      }
+    `;
+    
+    // Compile shaders (simplified - in real implementation would cache this)
+    const vs = gl.createShader(gl.VERTEX_SHADER);
+    const fs = gl.createShader(gl.FRAGMENT_SHADER);
+    
+    if (!vs || !fs) return;
+    
+    gl.shaderSource(vs, vertexShader);
+    gl.shaderSource(fs, fragmentShader);
+    gl.compileShader(vs);
+    gl.compileShader(fs);
+    
+    const program = gl.createProgram();
+    if (!program) return;
+    
+    gl.attachShader(program, vs);
+    gl.attachShader(program, fs);
+    gl.linkProgram(program);
+    
+    // Use program and render
+    gl.useProgram(program);
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, this.width, this.height);
+    
+    // Bind texture
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texture.glTexture);
+    gl.uniform1i(gl.getUniformLocation(program, 'uTexture'), 0);
+    
+    // Draw quad
+    this.bindQuad(gl);
+    this.drawQuad(gl);
+    
+    // Cleanup
+    gl.deleteShader(vs);
+    gl.deleteShader(fs);
+    gl.deleteProgram(program);
   }
 
   /**

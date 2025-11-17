@@ -73,8 +73,25 @@ export class ScaleTool extends BaseTool {
   }
   
   private detectGizmoAxis(x: number, y: number): 'x' | 'y' | 'z' | 'uniform' | null {
-    // TODO: Implement gizmo hit detection
-    // Return which scale handle was clicked
+    // Gizmo handle positions (in screen space)
+    const gizmoHandles = {
+      x: { x: 100, y: 50, size: 10 },
+      y: { x: 50, y: 100, size: 10 },
+      z: { x: 50, y: 50, size: 10 },
+      uniform: { x: 50, y: 50, size: 8 }
+    };
+    
+    // Check which handle is closest to click position
+    for (const [axis, handle] of Object.entries(gizmoHandles)) {
+      const dx = x - handle.x;
+      const dy = y - handle.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      
+      if (distance < handle.size) {
+        return axis as 'x' | 'y' | 'z' | 'uniform';
+      }
+    }
+    
     return null;
   }
   
@@ -122,14 +139,64 @@ export class ScaleTool extends BaseTool {
   }
   
   update(deltaTime: number): void {
-    // Update tool state
+    // Update tool state if needed
   }
   
   render(context: any): void {
-    // TODO: Render scale gizmo
-    // - X axis line with cube handle (red)
-    // - Y axis line with cube handle (green)
-    // - Z axis line with cube handle (blue)
-    // - Center cube for uniform scaling (white)
+    if (!context || !context.ctx) return;
+    
+    const ctx = context.ctx;
+    const centerX = context.width / 2;
+    const centerY = context.height / 2;
+    const gizmoSize = 80;
+    
+    // Save context state
+    ctx.save();
+    
+    // Draw X axis (red) - horizontal line with cube
+    ctx.strokeStyle = this.dragAxis === 'x' ? '#ff6666' : '#ff0000';
+    ctx.lineWidth = this.dragAxis === 'x' ? 3 : 2;
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(centerX + gizmoSize, centerY);
+    ctx.stroke();
+    
+    // X axis cube handle
+    ctx.fillStyle = this.dragAxis === 'x' ? '#ff6666' : '#ff0000';
+    ctx.fillRect(centerX + gizmoSize - 5, centerY - 5, 10, 10);
+    
+    // Draw Y axis (green) - vertical line with cube
+    ctx.strokeStyle = this.dragAxis === 'y' ? '#66ff66' : '#00ff00';
+    ctx.lineWidth = this.dragAxis === 'y' ? 3 : 2;
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(centerX, centerY - gizmoSize);
+    ctx.stroke();
+    
+    // Y axis cube handle
+    ctx.fillStyle = this.dragAxis === 'y' ? '#66ff66' : '#00ff00';
+    ctx.fillRect(centerX - 5, centerY - gizmoSize - 5, 10, 10);
+    
+    // Draw Z axis (blue) - diagonal line with cube
+    ctx.strokeStyle = this.dragAxis === 'z' ? '#6666ff' : '#0000ff';
+    ctx.lineWidth = this.dragAxis === 'z' ? 3 : 2;
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(centerX + gizmoSize * 0.6, centerY + gizmoSize * 0.6);
+    ctx.stroke();
+    
+    // Z axis cube handle
+    ctx.fillStyle = this.dragAxis === 'z' ? '#6666ff' : '#0000ff';
+    ctx.fillRect(centerX + gizmoSize * 0.6 - 5, centerY + gizmoSize * 0.6 - 5, 10, 10);
+    
+    // Draw center cube for uniform scaling (white)
+    ctx.fillStyle = this.dragAxis === 'uniform' ? '#cccccc' : '#ffffff';
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 1;
+    ctx.fillRect(centerX - 6, centerY - 6, 12, 12);
+    ctx.strokeRect(centerX - 6, centerY - 6, 12, 12);
+    
+    // Restore context state
+    ctx.restore();
   }
 }
