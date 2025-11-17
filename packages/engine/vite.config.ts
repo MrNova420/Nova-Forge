@@ -3,6 +3,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
   build: {
+    emptyOutDir: false, // Preserve .d.ts files from tsc
     lib: {
       entry: resolve(__dirname, 'src/index.ts'),
       name: 'NovaEngine',

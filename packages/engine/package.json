@@ -6,7 +6,9 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc && npx vite build",
+    "build": "npm run build:tsc && npm run build:js",
+    "build:tsc": "tsc",
+    "build:js": "vite build",
     "dev": "npx vite",
     "test": "jest --config ../../jest.config.js --rootDir ../../ --testMatch='**/packages/engine/**/*.test.ts'",
     "lint": "eslint src --ext .ts,.tsx",
