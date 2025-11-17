@@ -12,10 +12,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@nova-engine/engine": "workspace:*",
-    "@nova-engine/editor": "workspace:*",
-    "@nova-engine/server": "workspace:*",
-    "@nova-engine/shared": "workspace:*",
+    "@nova-engine/engine": "*",
+    "@nova-engine/editor": "*",
+    "@nova-engine/server": "*",
+    "@nova-engine/shared": "*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.0",

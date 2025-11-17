@@ -24,20 +24,25 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({
           <div className="no-notifications">No notifications</div>
         ) : (
           notifications.map((notification, index) => (
-            <div key={index} className={`notification notification-${notification.type}`}>
+            <div
+              key={index}
+              className={`notification notification-${notification.type}`}
+            >
               <span className="notification-icon">
                 {notification.type === 'success' && '✓'}
                 {notification.type === 'error' && '✗'}
                 {notification.type === 'info' && 'ℹ'}
                 {notification.type === 'warning' && '⚠'}
               </span>
-              <span className="notification-message">{notification.message}</span>
+              <span className="notification-message">
+                {notification.message}
+              </span>
             </div>
           ))
         )}
       </div>
 
-      <style jsx>{`
+      <style>{`
         .notification-center {
           position: absolute;
           top: 60px;

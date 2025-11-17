@@ -8,7 +8,7 @@ const HomePage: React.FC = () => {
   const [featuredGames, setFeaturedGames] = useState<Game[]>([]);
   const [newGames, setNewGames] = useState<Game[]>([]);
   const [topRated, setTopRated] = useState<Game[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {

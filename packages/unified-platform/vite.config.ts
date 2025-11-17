@@ -18,14 +18,15 @@ export default defineConfig({
     open: true,
   },
   build: {
+    emptyOutDir: false, // Preserve .d.ts files from tsc
     outDir: 'dist',
     sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks: {
-          'vendor': ['react', 'react-dom', 'react-router-dom'],
-          'editor': ['@nova-engine/editor'],
-          'engine': ['@nova-engine/engine'],
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          editor: ['@nova-engine/editor'],
+          engine: ['@nova-engine/engine'],
         },
       },
     },

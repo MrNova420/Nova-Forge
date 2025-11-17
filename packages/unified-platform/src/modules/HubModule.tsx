@@ -1,6 +1,6 @@
 /**
  * Hub Module - Game Discovery & Browsing
- * 
+ *
  * Complete implementation of game discovery interface with:
  * - Featured games carousel
  * - Category filtering
@@ -12,6 +12,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { UnifiedPlatformCore } from '../core/UnifiedPlatformCore';
+import { getAllDemoGames, type DemoGame } from '../demo-games';
 
 interface Game {
   id: string;
@@ -25,6 +26,8 @@ interface Game {
   screenshots: string[];
   releaseDate: string;
   version: string;
+  // Add demo game data
+  demoGame?: DemoGame;
 }
 
 interface HubModuleProps {
@@ -39,8 +42,15 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    'all', 'action', 'adventure', 'rpg', 'strategy',
-    'puzzle', 'simulation', 'sports', 'racing'
+    'all',
+    'action',
+    'adventure',
+    'rpg',
+    'strategy',
+    'puzzle',
+    'simulation',
+    'sports',
+    'racing',
   ];
 
   useEffect(() => {
@@ -48,12 +58,50 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
     loadFeaturedGames();
   }, [category, searchQuery]);
 
-  const loadGames = async () => {
+  const loadGames = () => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/games?category=${category}&search=${searchQuery}`);
-      const data = await response.json();
-      setGames(data.games || []);
+      // Load REAL demo games built with Nova Engine
+      const demoGames = getAllDemoGames();
+      
+      const gameList: Game[] = demoGames.map(demo => ({
+        id: demo.id,
+        name: demo.title,
+        description: demo.description,
+        developer: 'Nova Engine Studios',
+        category: demo.category.toLowerCase(),
+        rating: demo.rating,
+        downloads: demo.downloads,
+        thumbnail: demo.coverImage,
+        screenshots: [demo.coverImage],
+        releaseDate: demo.lastUpdated,
+        version: demo.version,
+        demoGame: demo, // Store the actual game object
+      }));
+      
+      // Filter by category
+      let filtered = gameList;
+      if (category !== 'all') {
+        filtered = filtered.filter(g => 
+          g.category.toLowerCase() === category.toLowerCase()
+        );
+      }
+      
+      // Filter by search
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        filtered = filtered.filter(g =>
+          g.name.toLowerCase().includes(query) ||
+          g.description.toLowerCase().includes(query)
+        );
+      }
+      
+      setGames(filtered);
+      
+      platform.showNotification({
+        type: 'success',
+        message: `Loaded ${filtered.length} demo games built with Nova Engine`,
+      });
     } catch (error) {
       console.error('Failed to load games:', error);
       platform.showNotification({
@@ -65,11 +113,29 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
     }
   };
 
-  const loadFeaturedGames = async () => {
+  const loadFeaturedGames = () => {
     try {
-      const response = await fetch('/api/games/featured');
-      const data = await response.json();
-      setFeaturedGames(data.games || []);
+      // Featured = highest rated demo games
+      const demoGames = getAllDemoGames();
+      const featured: Game[] = demoGames
+        .sort((a, b) => b.rating - a.rating)
+        .slice(0, 3)
+        .map(demo => ({
+          id: demo.id,
+          name: demo.title,
+          description: demo.description,
+          developer: 'Nova Engine Studios',
+          category: demo.category.toLowerCase(),
+          rating: demo.rating,
+          downloads: demo.downloads,
+          thumbnail: demo.coverImage,
+          screenshots: [demo.coverImage],
+          releaseDate: demo.lastUpdated,
+          version: demo.version,
+          demoGame: demo,
+        }));
+      
+      setFeaturedGames(featured);
     } catch (error) {
       console.error('Failed to load featured games:', error);
     }
@@ -77,12 +143,30 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
 
   const handleGameClick = (game: Game) => {
     platform.emit('gameSelected', game);
-    // Navigate to game detail or launch game
+    platform.showNotification({
+      type: 'info',
+      message: `Selected: ${game.name}`,
+    });
   };
 
-  const handlePlayGame = async (gameId: string) => {
-    platform.switchMode('launcher');
-    platform.emit('playGame', { gameId });
+  const handlePlayGame = (game: Game) => {
+    if (game.demoGame) {
+      // Pass the REAL game object to launcher
+      platform.switchMode('launcher');
+      platform.emit('playGame', { 
+        gameId: game.id, 
+        game: game.demoGame // Pass actual DemoGame object
+      });
+      platform.showNotification({
+        type: 'success',
+        message: `Launching ${game.name} with Nova Engine...`,
+      });
+    } else {
+      platform.showNotification({
+        type: 'error',
+        message: 'Game not available',
+      });
+    }
   };
 
   return (
@@ -91,24 +175,30 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
       <section className="hub-hero">
         <h1>Discover Amazing Games</h1>
         <p>Browse thousands of games created with Nova Engine</p>
-        
+
         {/* Featured Games Carousel */}
         <div className="featured-carousel">
           {featuredGames.map((game) => (
-            <div key={game.id} className="featured-game" onClick={() => handleGameClick(game)}>
+            <div
+              key={game.id}
+              className="featured-game"
+              onClick={() => handleGameClick(game)}
+            >
               <img src={game.thumbnail} alt={game.name} />
               <div className="featured-info">
                 <h2>{game.name}</h2>
                 <p>{game.description}</p>
                 <div className="featured-meta">
                   <span className="rating">⭐ {game.rating.toFixed(1)}</span>
-                  <span className="downloads">📥 {game.downloads.toLocaleString()}</span>
+                  <span className="downloads">
+                    📥 {game.downloads.toLocaleString()}
+                  </span>
                 </div>
-                <button 
+                <button
                   className="play-btn"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handlePlayGame(game.id);
+                    handlePlayGame(game);
                   }}
                 >
                   Play Now
@@ -151,15 +241,19 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
         ) : (
           <div className="game-grid">
             {games.map((game) => (
-              <div key={game.id} className="game-card" onClick={() => handleGameClick(game)}>
+              <div
+                key={game.id}
+                className="game-card"
+                onClick={() => handleGameClick(game)}
+              >
                 <div className="game-thumbnail">
                   <img src={game.thumbnail} alt={game.name} />
                   <div className="game-overlay">
-                    <button 
+                    <button
                       className="quick-play"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handlePlayGame(game.id);
+                        handlePlayGame(game);
                       }}
                     >
                       ▶ Play
@@ -185,10 +279,18 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
         <h2>New Releases</h2>
         <div className="game-horizontal-scroll">
           {games
-            .sort((a, b) => new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime())
+            .sort(
+              (a, b) =>
+                new Date(b.releaseDate).getTime() -
+                new Date(a.releaseDate).getTime()
+            )
             .slice(0, 10)
             .map((game) => (
-              <div key={game.id} className="game-card-small" onClick={() => handleGameClick(game)}>
+              <div
+                key={game.id}
+                className="game-card-small"
+                onClick={() => handleGameClick(game)}
+              >
                 <img src={game.thumbnail} alt={game.name} />
                 <div className="game-info-small">
                   <h4>{game.name}</h4>
@@ -207,7 +309,11 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
             .sort((a, b) => b.rating - a.rating)
             .slice(0, 10)
             .map((game) => (
-              <div key={game.id} className="game-card-small" onClick={() => handleGameClick(game)}>
+              <div
+                key={game.id}
+                className="game-card-small"
+                onClick={() => handleGameClick(game)}
+              >
                 <img src={game.thumbnail} alt={game.name} />
                 <div className="game-info-small">
                   <h4>{game.name}</h4>
@@ -226,18 +332,24 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
             .sort((a, b) => b.downloads - a.downloads)
             .slice(0, 10)
             .map((game) => (
-              <div key={game.id} className="game-card-small" onClick={() => handleGameClick(game)}>
+              <div
+                key={game.id}
+                className="game-card-small"
+                onClick={() => handleGameClick(game)}
+              >
                 <img src={game.thumbnail} alt={game.name} />
                 <div className="game-info-small">
                   <h4>{game.name}</h4>
-                  <span className="downloads">📥 {game.downloads.toLocaleString()}</span>
+                  <span className="downloads">
+                    📥 {game.downloads.toLocaleString()}
+                  </span>
                 </div>
               </div>
             ))}
         </div>
       </section>
 
-      <style jsx>{`
+      <style>{`
         .hub-module {
           width: 100%;
           height: 100%;

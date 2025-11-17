@@ -4,6 +4,9 @@
  */
 
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState } from '../../store/store';
+import { selectEntity } from '../../store/slices/selectionSlice';
 import {
   ChevronRightIcon,
   ChevronDownIcon,
@@ -19,31 +22,6 @@ interface SceneNode {
   children?: SceneNode[];
   visible?: boolean;
 }
-
-const mockScene: SceneNode[] = [
-  {
-    id: '1',
-    name: 'Main Camera',
-    type: 'camera',
-    visible: true,
-  },
-  {
-    id: '2',
-    name: 'Directional Light',
-    type: 'light',
-    visible: true,
-  },
-  {
-    id: '3',
-    name: 'Scene',
-    type: 'group',
-    visible: true,
-    children: [
-      { id: '4', name: 'Player', type: 'object', visible: true },
-      { id: '5', name: 'Ground', type: 'object', visible: true },
-    ],
-  },
-];
 
 interface TreeNodeProps {
   node: SceneNode;
@@ -113,8 +91,43 @@ const TreeNode: React.FC<TreeNodeProps> = ({
 };
 
 export const Hierarchy: React.FC = () => {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const scene = useSelector((state: RootState) => state.scene);
+  const selectedEntityIds = useSelector(
+    (state: RootState) => state.selection.selectedEntityIds
+  );
+  const selectedEntityId = selectedEntityIds[0] || null;
   const [searchTerm, setSearchTerm] = useState('');
+
+  // Convert entities to tree structure
+  const buildSceneTree = (): SceneNode[] => {
+    return scene.rootEntities.map((entityId) => {
+      const entity = scene.entities[entityId];
+      return entityToNode(entity);
+    });
+  };
+
+  const entityToNode = (entity: any): SceneNode => {
+    return {
+      id: entity.id,
+      name: entity.name,
+      type: entity.components.camera
+        ? 'camera'
+        : entity.components.light
+          ? 'light'
+          : 'object',
+      visible: entity.enabled,
+      children: entity.children.map((childId: string) =>
+        entityToNode(scene.entities[childId])
+      ),
+    };
+  };
+
+  const handleSelect = (id: string) => {
+    dispatch(selectEntity(id));
+  };
+
+  const sceneTree = buildSceneTree();
 
   return (
     <div className="h-full flex flex-col bg-editor-surface">
@@ -132,15 +145,21 @@ export const Hierarchy: React.FC = () => {
 
       {/* Tree View */}
       <div className="flex-1 overflow-auto p-1">
-        {mockScene.map((node) => (
-          <TreeNode
-            key={node.id}
-            node={node}
-            level={0}
-            onSelect={setSelectedId}
-            selectedId={selectedId}
-          />
-        ))}
+        {sceneTree.length > 0 ? (
+          sceneTree.map((node) => (
+            <TreeNode
+              key={node.id}
+              node={node}
+              level={0}
+              onSelect={handleSelect}
+              selectedId={selectedEntityId}
+            />
+          ))
+        ) : (
+          <div className="p-4 text-center text-sm text-gray-500">
+            Scene is empty. Click Create to add entities.
+          </div>
+        )}
       </div>
 
       {/* Actions */}

@@ -1,18 +1,19 @@
 /**
  * Nova Engine Unified Application
- * 
+ *
  * Complete all-in-one platform combining:
  * - Hub (discover & browse games)
- * - Editor (create games)  
+ * - Editor (create games)
  * - Launcher (play games)
  * - Multiplayer (online features)
  * - Social (friends, achievements)
  * - Settings (account, preferences)
- * 
+ *
  * ONE application, seamless experience, fully integrated
  */
 
 import React, { useState, useEffect } from 'react';
+import type { PlatformMode } from './UnifiedPlatformCore';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { UnifiedPlatformCore } from './UnifiedPlatformCore';
 import { UnifiedNavigation } from '../ui/UnifiedNavigation';
@@ -58,7 +59,7 @@ export const UnifiedApp: React.FC = () => {
 
     // Listen to notifications
     platform.on('notification', (notification: any) => {
-      setNotifications(prev => [notification, ...prev]);
+      setNotifications((prev) => [notification, ...prev]);
     });
 
     // Check if already logged in
@@ -89,7 +90,7 @@ export const UnifiedApp: React.FC = () => {
             <UnifiedNavigation
               platform={platform}
               currentMode={currentMode}
-              onModeChange={(mode) => platform.switchMode(mode)}
+              onModeChange={(mode) => platform.switchMode(mode as PlatformMode)}
             />
           )}
 
@@ -97,31 +98,58 @@ export const UnifiedApp: React.FC = () => {
           <main className="unified-main-content">
             <Routes>
               {/* Public routes */}
-              <Route path="/login" element={<LoginPage platform={platform} />} />
-              <Route path="/register" element={<RegisterPage platform={platform} />} />
+              <Route
+                path="/login"
+                element={<LoginPage platform={platform} />}
+              />
+              <Route
+                path="/register"
+                element={<RegisterPage platform={platform} />}
+              />
 
               {/* Protected routes - require login */}
               {isLoggedIn ? (
                 <>
                   {/* Hub - Game Discovery */}
-                  <Route path="/hub/*" element={<HubModule platform={platform} />} />
-                  
+                  <Route
+                    path="/hub/*"
+                    element={<HubModule platform={platform} />}
+                  />
+
                   {/* Editor - Game Creation */}
-                  <Route path="/editor/*" element={<EditorModule platform={platform} />} />
-                  
+                  <Route
+                    path="/editor/*"
+                    element={<EditorModule platform={platform} />}
+                  />
+
                   {/* Launcher - Game Playing */}
-                  <Route path="/launcher/*" element={<LauncherModule platform={platform} />} />
-                  <Route path="/play/:gameId" element={<LauncherModule platform={platform} />} />
-                  
+                  <Route
+                    path="/launcher/*"
+                    element={<LauncherModule platform={platform} />}
+                  />
+                  <Route
+                    path="/play/:gameId"
+                    element={<LauncherModule platform={platform} />}
+                  />
+
                   {/* Multiplayer - Online Features */}
-                  <Route path="/multiplayer/*" element={<MultiplayerModule platform={platform} />} />
-                  
+                  <Route
+                    path="/multiplayer/*"
+                    element={<MultiplayerModule platform={platform} />}
+                  />
+
                   {/* Social - Friends & Achievements */}
-                  <Route path="/social/*" element={<SocialModule platform={platform} />} />
-                  
+                  <Route
+                    path="/social/*"
+                    element={<SocialModule platform={platform} />}
+                  />
+
                   {/* Settings */}
-                  <Route path="/settings/*" element={<SettingsModule platform={platform} />} />
-                  
+                  <Route
+                    path="/settings/*"
+                    element={<SettingsModule platform={platform} />}
+                  />
+
                   {/* Default redirect to hub */}
                   <Route path="/" element={<Navigate to="/hub" replace />} />
                 </>

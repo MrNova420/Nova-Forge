@@ -43,21 +43,27 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
           <input
             type="number"
             value={value.x}
-            onChange={(e) => onChange({ ...value, x: parseFloat(e.target.value) })}
+            onChange={(e) =>
+              onChange({ ...value, x: parseFloat(e.target.value) })
+            }
             className="px-2 py-1 text-xs bg-editor-bg border border-editor-border rounded"
             placeholder="X"
           />
           <input
             type="number"
             value={value.y}
-            onChange={(e) => onChange({ ...value, y: parseFloat(e.target.value) })}
+            onChange={(e) =>
+              onChange({ ...value, y: parseFloat(e.target.value) })
+            }
             className="px-2 py-1 text-xs bg-editor-bg border border-editor-border rounded"
             placeholder="Y"
           />
           <input
             type="number"
             value={value.z}
-            onChange={(e) => onChange({ ...value, z: parseFloat(e.target.value) })}
+            onChange={(e) =>
+              onChange({ ...value, z: parseFloat(e.target.value) })
+            }
             className="px-2 py-1 text-xs bg-editor-bg border border-editor-border rounded"
             placeholder="Z"
           />
@@ -72,7 +78,11 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
       <input
         type={type}
         value={value}
-        onChange={(e) => onChange(type === 'number' ? parseFloat(e.target.value) : e.target.value)}
+        onChange={(e) =>
+          onChange(
+            type === 'number' ? parseFloat(e.target.value) : e.target.value
+          )
+        }
         className="w-32 px-2 py-1 text-xs bg-editor-bg border border-editor-border rounded focus:outline-none focus:border-editor-primary"
       />
     </div>
@@ -80,9 +90,15 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
 };
 
 export const Inspector: React.FC = () => {
-  const selectedEntityId = useAppSelector((state) => state.editor.selectedEntityId);
+  const selectedEntityIds = useAppSelector(
+    (state) => state.selection.selectedEntityIds
+  );
+  const selectedEntityId = selectedEntityIds[0] || null;
+  const entity = useAppSelector((state) =>
+    selectedEntityId ? state.scene.entities[selectedEntityId] : null
+  );
 
-  if (!selectedEntityId) {
+  if (!selectedEntityId || !entity) {
     return (
       <div className="h-full flex items-center justify-center bg-editor-surface text-editor-text-muted">
         <p className="text-sm">No entity selected</p>
@@ -90,37 +106,80 @@ export const Inspector: React.FC = () => {
     );
   }
 
+  const transform = entity.components.transform || {
+    position: [0, 0, 0],
+    rotation: [0, 0, 0],
+    scale: [1, 1, 1],
+  };
+
   return (
-    <div className="h-full bg-editor-surface">
+    <div className="h-full bg-editor-surface overflow-auto">
       {/* Header */}
       <div className="p-3 border-b border-editor-border">
         <h3 className="text-sm font-semibold">Inspector</h3>
+        <p className="text-xs text-editor-text-muted mt-1">{entity.name}</p>
       </div>
 
       {/* Properties */}
       <div className="p-3 space-y-4">
-        {/* Transform Component */}
+        {/* Entity Info */}
         <div className="border border-editor-border rounded p-3">
-          <h4 className="text-sm font-semibold mb-3">Transform</h4>
+          <h4 className="text-sm font-semibold mb-3">Entity</h4>
+          <div className="py-1">
+            <label className="text-sm text-editor-text-muted block mb-1">
+              Name
+            </label>
+            <input
+              type="text"
+              value={entity.name}
+              className="w-full px-2 py-1 text-sm bg-editor-bg border border-editor-border rounded"
+              readOnly
+            />
+          </div>
           <PropertyField
-            label="Position"
-            value={{ x: 0, y: 0, z: 0 }}
+            label="Enabled"
+            value={entity.enabled}
             onChange={() => {}}
-            type="vector3"
-          />
-          <PropertyField
-            label="Rotation"
-            value={{ x: 0, y: 0, z: 0 }}
-            onChange={() => {}}
-            type="vector3"
-          />
-          <PropertyField
-            label="Scale"
-            value={{ x: 1, y: 1, z: 1 }}
-            onChange={() => {}}
-            type="vector3"
+            type="boolean"
           />
         </div>
+
+        {/* Transform Component */}
+        {transform && (
+          <div className="border border-editor-border rounded p-3">
+            <h4 className="text-sm font-semibold mb-3">Transform</h4>
+            <PropertyField
+              label="Position"
+              value={{
+                x: transform.position[0],
+                y: transform.position[1],
+                z: transform.position[2],
+              }}
+              onChange={() => {}}
+              type="vector3"
+            />
+            <PropertyField
+              label="Rotation"
+              value={{
+                x: transform.rotation[0],
+                y: transform.rotation[1],
+                z: transform.rotation[2],
+              }}
+              onChange={() => {}}
+              type="vector3"
+            />
+            <PropertyField
+              label="Scale"
+              value={{
+                x: transform.scale[0],
+                y: transform.scale[1],
+                z: transform.scale[2],
+              }}
+              onChange={() => {}}
+              type="vector3"
+            />
+          </div>
+        )}
 
         {/* Mesh Renderer Component */}
         <div className="border border-editor-border rounded p-3">

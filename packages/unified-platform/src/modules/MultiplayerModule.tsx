@@ -9,7 +9,9 @@ interface MultiplayerModuleProps {
   platform: UnifiedPlatformCore;
 }
 
-export const MultiplayerModule: React.FC<MultiplayerModuleProps> = ({ platform }) => {
+export const MultiplayerModule: React.FC<MultiplayerModuleProps> = ({
+  platform,
+}) => {
   const [lobbies, setLobbies] = useState<any[]>([]);
   const [currentLobby, setCurrentLobby] = useState<any>(null);
 
@@ -73,7 +75,7 @@ export const MultiplayerModule: React.FC<MultiplayerModuleProps> = ({ platform }
           ))}
         </div>
         <button>Ready</button>
-        <style jsx>{`
+        <style>{`
           .lobby-view {
             padding: 20px;
             background: #1a1a1a;
@@ -101,13 +103,19 @@ export const MultiplayerModule: React.FC<MultiplayerModuleProps> = ({ platform }
       </div>
       <div className="lobby-list">
         {lobbies.map((lobby) => (
-          <div key={lobby.id} className="lobby-card" onClick={() => joinLobby(lobby.id)}>
+          <div
+            key={lobby.id}
+            className="lobby-card"
+            onClick={() => joinLobby(lobby.id)}
+          >
             <h3>{lobby.name}</h3>
-            <p>{lobby.players?.length || 0}/{lobby.maxPlayers} players</p>
+            <p>
+              {lobby.players?.length || 0}/{lobby.maxPlayers} players
+            </p>
           </div>
         ))}
       </div>
-      <style jsx>{`
+      <style>{`
         .multiplayer-module {
           padding: 20px;
           background: #1a1a1a;

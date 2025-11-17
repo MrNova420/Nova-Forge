@@ -9,10 +9,14 @@ interface SocialModuleProps {
   platform: UnifiedPlatformCore;
 }
 
-export const SocialModule: React.FC<SocialModuleProps> = ({ platform }) => {
+export const SocialModule: React.FC<SocialModuleProps> = ({
+  platform: _platform,
+}) => {
   const [friends, setFriends] = useState<any[]>([]);
   const [achievements, setAchievements] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<'friends' | 'achievements'>('friends');
+  const [activeTab, setActiveTab] = useState<'friends' | 'achievements'>(
+    'friends'
+  );
 
   useEffect(() => {
     loadFriends();
@@ -42,13 +46,13 @@ export const SocialModule: React.FC<SocialModuleProps> = ({ platform }) => {
   return (
     <div className="social-module">
       <div className="tabs">
-        <button 
+        <button
           className={activeTab === 'friends' ? 'active' : ''}
           onClick={() => setActiveTab('friends')}
         >
           Friends
         </button>
-        <button 
+        <button
           className={activeTab === 'achievements' ? 'active' : ''}
           onClick={() => setActiveTab('achievements')}
         >
@@ -81,7 +85,7 @@ export const SocialModule: React.FC<SocialModuleProps> = ({ platform }) => {
                 <h3>{achievement.name}</h3>
                 <p>{achievement.description}</p>
                 <div className="progress">
-                  <div 
+                  <div
                     className="bar"
                     style={{ width: `${achievement.progress}%` }}
                   />
@@ -92,7 +96,7 @@ export const SocialModule: React.FC<SocialModuleProps> = ({ platform }) => {
         </div>
       )}
 
-      <style jsx>{`
+      <style>{`
         .social-module {
           padding: 20px;
           background: #1a1a1a;

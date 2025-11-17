@@ -1,4 +1,13 @@
 import axios, { AxiosInstance } from 'axios';
+import {
+  getMockGames,
+  getMockFeaturedGames,
+  getMockNewGames,
+  getMockTopRatedGames,
+  getMockGameById,
+} from './mockData';
+
+const USE_MOCK_DATA = import.meta.env.MODE === 'development' || true; // Always use mock data for now
 
 class APIService {
   private api: AxiosInstance;
@@ -29,26 +38,49 @@ class APIService {
     limit?: number;
     offset?: number;
   }) {
+    if (USE_MOCK_DATA) {
+      // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      return getMockGames(params?.category, params?.search);
+    }
     const response = await this.api.get('/games', { params });
     return response.data;
   }
 
   async getFeaturedGames() {
+    if (USE_MOCK_DATA) {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      return getMockFeaturedGames();
+    }
     const response = await this.api.get('/games/featured');
     return response.data;
   }
 
   async getNewGames() {
+    if (USE_MOCK_DATA) {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      return getMockNewGames();
+    }
     const response = await this.api.get('/games/new');
     return response.data;
   }
 
   async getTopRatedGames() {
+    if (USE_MOCK_DATA) {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      return getMockTopRatedGames();
+    }
     const response = await this.api.get('/games/top-rated');
     return response.data;
   }
 
   async getGameById(id: string) {
+    if (USE_MOCK_DATA) {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      const game = getMockGameById(id);
+      if (!game) throw new Error('Game not found');
+      return game;
+    }
     const response = await this.api.get(`/games/${id}`);
     return response.data;
   }

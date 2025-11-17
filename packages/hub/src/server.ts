@@ -48,6 +48,17 @@ export async function createServer() {
     timeWindow: '15 minutes',
   });
 
+  // Add authenticate decorator for JWT authentication
+  server.decorate('authenticate', async function (request: any, reply: any) {
+    try {
+      await request.jwtVerify();
+    } catch (err) {
+      reply
+        .status(401)
+        .send({ error: 'Unauthorized', message: 'Invalid or missing token' });
+    }
+  });
+
   // Health check endpoint
   server.get('/health', async () => {
     return {

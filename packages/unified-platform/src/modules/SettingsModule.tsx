@@ -9,25 +9,27 @@ interface SettingsModuleProps {
   platform: UnifiedPlatformCore;
 }
 
-export const SettingsModule: React.FC<SettingsModuleProps> = ({ platform }) => {
+export const SettingsModule: React.FC<SettingsModuleProps> = ({
+  platform: _platform,
+}) => {
   const [activeSection, setActiveSection] = useState('account');
 
   return (
     <div className="settings-module">
       <div className="settings-sidebar">
-        <button 
+        <button
           className={activeSection === 'account' ? 'active' : ''}
           onClick={() => setActiveSection('account')}
         >
           Account
         </button>
-        <button 
+        <button
           className={activeSection === 'preferences' ? 'active' : ''}
           onClick={() => setActiveSection('preferences')}
         >
           Preferences
         </button>
-        <button 
+        <button
           className={activeSection === 'privacy' ? 'active' : ''}
           onClick={() => setActiveSection('privacy')}
         >
@@ -90,7 +92,7 @@ export const SettingsModule: React.FC<SettingsModuleProps> = ({ platform }) => {
         )}
       </div>
 
-      <style jsx>{`
+      <style>{`
         .settings-module {
           display: flex;
           height: 100%;

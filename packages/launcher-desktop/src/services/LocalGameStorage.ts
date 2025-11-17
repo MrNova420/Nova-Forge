@@ -18,6 +18,12 @@ import {
   readFile,
 } from '@tauri-apps/plugin-fs';
 
+// Helper function to convert string to Uint8Array
+function stringToUint8Array(str: string): Uint8Array {
+  const encoder = new TextEncoder();
+  return encoder.encode(str);
+}
+
 export interface LocalGame {
   id: string;
   name: string;
@@ -85,7 +91,7 @@ class LocalGameStorageService {
    */
   async downloadGame(
     gameId: string,
-    _downloadUrl: string,
+    downloadUrl: string,
     metadata: GameMetadata,
     onProgress?: (progress: DownloadProgress) => void
   ): Promise<LocalGame> {
@@ -110,7 +116,7 @@ class LocalGameStorageService {
 
       // Download game files using fetch API with progress tracking
       const gameFilePath = `${gamePath}/game.zip`;
-      
+
       const downloadResponse = await fetch(downloadUrl);
       if (!downloadResponse.ok) {
         throw new Error(`Download failed: ${downloadResponse.statusText}`);
@@ -134,7 +140,8 @@ class LocalGameStorageService {
           chunks.push(value);
           receivedLength += value.length;
           progress.downloaded = receivedLength;
-          progress.progress = (receivedLength / contentLength) * 100;
+          // Calculate speed (simplified - could be improved with time tracking)
+          progress.speed = receivedLength / 1024; // KB/s (simplified)
           onProgress?.(progress);
         }
       }
@@ -233,7 +240,7 @@ class LocalGameStorageService {
 
     await writeFile(
       `${gameDir}/manifest.json`,
-      JSON.stringify(manifest, null, 2),
+      stringToUint8Array(JSON.stringify(manifest, null, 2)),
       { baseDir: BaseDirectory.AppData }
     );
 
@@ -271,7 +278,7 @@ window.NovaEngine = {
 };
     `.trim();
 
-    await writeFile(`${gameDir}/engine.js`, engineStub, {
+    await writeFile(`${gameDir}/engine.js`, stringToUint8Array(engineStub), {
       baseDir: BaseDirectory.AppData,
     });
 
@@ -280,7 +287,7 @@ window.NovaEngine = {
 console.log('Game script loaded');
     `.trim();
 
-    await writeFile(`${gameDir}/game.js`, gameStub, {
+    await writeFile(`${gameDir}/game.js`, stringToUint8Array(gameStub), {
       baseDir: BaseDirectory.AppData,
     });
 
@@ -296,7 +303,7 @@ console.log('Game script loaded');
 
     await writeFile(
       `${gameDir}/scenes/main.json`,
-      JSON.stringify(defaultScene, null, 2),
+      stringToUint8Array(JSON.stringify(defaultScene, null, 2)),
       { baseDir: BaseDirectory.AppData }
     );
 

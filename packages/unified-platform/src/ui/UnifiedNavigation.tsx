@@ -12,7 +12,7 @@ interface UnifiedNavigationProps {
 }
 
 export const UnifiedNavigation: React.FC<UnifiedNavigationProps> = ({
-  platform,
+  platform: _platform,
   currentMode,
   onModeChange,
 }) => {
@@ -39,7 +39,7 @@ export const UnifiedNavigation: React.FC<UnifiedNavigationProps> = ({
         </button>
       ))}
 
-      <style jsx>{`
+      <style>{`
         .unified-navigation {
           width: 200px;
           background: #2a2a2a;

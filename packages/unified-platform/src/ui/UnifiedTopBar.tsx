@@ -28,7 +28,9 @@ export const UnifiedTopBar: React.FC<UnifiedTopBarProps> = ({
     <div className="unified-topbar">
       <div className="topbar-left">
         <h1 className="logo">Nova Engine</h1>
-        <span className="mode-indicator">{currentMode.charAt(0).toUpperCase() + currentMode.slice(1)}</span>
+        <span className="mode-indicator">
+          {currentMode.charAt(0).toUpperCase() + currentMode.slice(1)}
+        </span>
       </div>
 
       <div className="topbar-center">
@@ -41,7 +43,7 @@ export const UnifiedTopBar: React.FC<UnifiedTopBarProps> = ({
       <div className="topbar-right">
         {isLoggedIn ? (
           <>
-            <button 
+            <button
               className="notification-btn"
               onClick={() => setShowNotifications(!showNotifications)}
             >
@@ -57,7 +59,7 @@ export const UnifiedTopBar: React.FC<UnifiedTopBarProps> = ({
         )}
       </div>
 
-      <style jsx>{`
+      <style>{`
         .unified-topbar {
           height: 60px;
           background: #2a2a2a;

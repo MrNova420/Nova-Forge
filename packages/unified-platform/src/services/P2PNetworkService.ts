@@ -1,10 +1,10 @@
 /**
  * P2P Network Service
- * 
+ *
  * Enables Nova Engine to work fully peer-to-peer when downloaded locally.
  * Users can discover each other, share games, and play multiplayer without
  * any central server.
- * 
+ *
  * Features:
  * - Automatic peer discovery (LAN + Internet)
  * - Direct game sharing between users
@@ -40,7 +40,13 @@ export interface GameInfo {
 }
 
 export interface P2PMessage {
-  type: 'discover' | 'games_catalog' | 'game_request' | 'game_data' | 'lobby_invite' | 'chat';
+  type:
+    | 'discover'
+    | 'games_catalog'
+    | 'game_request'
+    | 'game_data'
+    | 'lobby_invite'
+    | 'chat';
   from: string;
   data: any;
   timestamp: Date;
@@ -139,11 +145,17 @@ export class P2PNetworkService extends EventEmitter {
 
     // Method 2: Relay server discovery
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify({
-        type: 'discover',
-        peerId: this.myPeerId,
-        games: this.myGames.map(g => ({ id: g.id, name: g.name, size: g.size })),
-      }));
+      this.ws.send(
+        JSON.stringify({
+          type: 'discover',
+          peerId: this.myPeerId,
+          games: this.myGames.map((g) => ({
+            id: g.id,
+            name: g.name,
+            size: g.size,
+          })),
+        })
+      );
     }
 
     // Method 3: Browser broadcast channel (same origin)
@@ -165,17 +177,20 @@ export class P2PNetworkService extends EventEmitter {
   private broadcastDiscovery(): void {
     try {
       const channel = new BroadcastChannel('nova-engine-discovery');
-      
+
       channel.postMessage({
         type: 'discover',
         peerId: this.myPeerId,
         username: this.getUsername(),
-        games: this.myGames.map(g => ({ id: g.id, name: g.name })),
+        games: this.myGames.map((g) => ({ id: g.id, name: g.name })),
       });
 
       // Listen for responses
       channel.onmessage = (event) => {
-        if (event.data.type === 'discover' && event.data.peerId !== this.myPeerId) {
+        if (
+          event.data.type === 'discover' &&
+          event.data.peerId !== this.myPeerId
+        ) {
           this.handlePeerDiscovered(event.data);
         }
       };
@@ -189,20 +204,26 @@ export class P2PNetworkService extends EventEmitter {
    */
   private connectToRelay(): void {
     const relayUrl = 'wss://relay.novaengine.com'; // Will fall back if unavailable
-    
+
     try {
       this.ws = new WebSocket(relayUrl);
 
       this.ws.onopen = () => {
         console.log('✅ Connected to relay server');
-        
+
         // Register with relay
-        this.ws!.send(JSON.stringify({
-          type: 'register',
-          peerId: this.myPeerId,
-          username: this.getUsername(),
-          games: this.myGames.map(g => ({ id: g.id, name: g.name, size: g.size })),
-        }));
+        this.ws!.send(
+          JSON.stringify({
+            type: 'register',
+            peerId: this.myPeerId,
+            username: this.getUsername(),
+            games: this.myGames.map((g) => ({
+              id: g.id,
+              name: g.name,
+              size: g.size,
+            })),
+          })
+        );
       };
 
       this.ws.onmessage = (event) => {
@@ -291,13 +312,15 @@ export class P2PNetworkService extends EventEmitter {
 
       dataChannel.onopen = () => {
         console.log(`✅ Connected to ${username}`);
-        
+
         // Send our games catalog
-        dataChannel.send(JSON.stringify({
-          type: 'games_catalog',
-          from: this.myPeerId,
-          games: this.myGames,
-        }));
+        dataChannel.send(
+          JSON.stringify({
+            type: 'games_catalog',
+            from: this.myPeerId,
+            games: this.myGames,
+          })
+        );
       };
 
       dataChannel.onmessage = (event) => {
@@ -311,12 +334,14 @@ export class P2PNetworkService extends EventEmitter {
       // Handle ICE candidates
       pc.onicecandidate = (event) => {
         if (event.candidate && this.ws) {
-          this.ws.send(JSON.stringify({
-            type: 'signal',
-            to: peerId,
-            from: this.myPeerId,
-            signal: { candidate: event.candidate },
-          }));
+          this.ws.send(
+            JSON.stringify({
+              type: 'signal',
+              to: peerId,
+              from: this.myPeerId,
+              signal: { candidate: event.candidate },
+            })
+          );
         }
       };
 
@@ -325,12 +350,14 @@ export class P2PNetworkService extends EventEmitter {
       await pc.setLocalDescription(offer);
 
       if (this.ws) {
-        this.ws.send(JSON.stringify({
-          type: 'signal',
-          to: peerId,
-          from: this.myPeerId,
-          signal: { offer },
-        }));
+        this.ws.send(
+          JSON.stringify({
+            type: 'signal',
+            to: peerId,
+            from: this.myPeerId,
+            signal: { offer },
+          })
+        );
       }
 
       // Store peer
@@ -340,7 +367,7 @@ export class P2PNetworkService extends EventEmitter {
         address: '', // Will be set from ICE
         isOnline: true,
         lastSeen: new Date(),
-        games: games.map(g => ({
+        games: games.map((g) => ({
           ...g,
           peerId,
         })),
@@ -369,12 +396,14 @@ export class P2PNetworkService extends EventEmitter {
         await peer.connection.setLocalDescription(answer);
 
         if (this.ws) {
-          this.ws.send(JSON.stringify({
-            type: 'signal',
-            to: fromPeerId,
-            from: this.myPeerId,
-            signal: { answer },
-          }));
+          this.ws.send(
+            JSON.stringify({
+              type: 'signal',
+              to: fromPeerId,
+              from: this.myPeerId,
+              signal: { answer },
+            })
+          );
         }
       } else if (signal.answer) {
         await peer.connection.setRemoteDescription(signal.answer);
@@ -436,14 +465,17 @@ export class P2PNetworkService extends EventEmitter {
   /**
    * Handle game request from peer
    */
-  private async handleGameRequest(peerId: string, gameId: string): Promise<void> {
+  private async handleGameRequest(
+    peerId: string,
+    gameId: string
+  ): Promise<void> {
     console.log(`Peer ${peerId} requested game: ${gameId}`);
 
     const peer = this.peers.get(peerId);
     if (!peer || !peer.dataChannel) return;
 
     // Find game in local storage
-    const game = this.myGames.find(g => g.id === gameId);
+    const game = this.myGames.find((g) => g.id === gameId);
     if (!game) {
       console.error(`Game ${gameId} not found`);
       return;
@@ -462,19 +494,21 @@ export class P2PNetworkService extends EventEmitter {
         const end = Math.min(start + chunkSize, gameData.length);
         const chunk = gameData.slice(start, end);
 
-        peer.dataChannel.send(JSON.stringify({
-          type: 'game_data',
-          from: this.myPeerId,
-          data: {
-            gameId,
-            chunk: i,
-            totalChunks: chunks,
-            data: Array.from(chunk),
-          },
-        }));
+        peer.dataChannel.send(
+          JSON.stringify({
+            type: 'game_data',
+            from: this.myPeerId,
+            data: {
+              gameId,
+              chunk: i,
+              totalChunks: chunks,
+              data: Array.from(chunk),
+            },
+          })
+        );
 
         // Small delay to avoid overwhelming connection
-        await new Promise(resolve => setTimeout(resolve, 10));
+        await new Promise((resolve) => setTimeout(resolve, 10));
       }
 
       console.log(`✅ Sent game ${gameId} to peer`);
@@ -495,7 +529,7 @@ export class P2PNetworkService extends EventEmitter {
   /**
    * Load game data from local storage
    */
-  private async loadGameData(gameId: string): Promise<Uint8Array> {
+  private async loadGameData(_gameId: string): Promise<Uint8Array> {
     // Load from IndexedDB
     return new Uint8Array(); // Placeholder
   }
@@ -511,27 +545,31 @@ export class P2PNetworkService extends EventEmitter {
     localStorage.setItem('my_games', JSON.stringify(this.myGames));
 
     // Broadcast to all connected peers
-    this.peers.forEach(peer => {
+    this.peers.forEach((peer) => {
       if (peer.dataChannel && peer.dataChannel.readyState === 'open') {
-        peer.dataChannel.send(JSON.stringify({
-          type: 'games_catalog',
-          from: this.myPeerId,
-          games: this.myGames,
-        }));
+        peer.dataChannel.send(
+          JSON.stringify({
+            type: 'games_catalog',
+            from: this.myPeerId,
+            games: this.myGames,
+          })
+        );
       }
     });
 
     // Update relay server
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify({
-        type: 'game_published',
-        peerId: this.myPeerId,
-        game: {
-          id: game.id,
-          name: game.name,
-          size: game.size,
-        },
-      }));
+      this.ws.send(
+        JSON.stringify({
+          type: 'game_published',
+          peerId: this.myPeerId,
+          game: {
+            id: game.id,
+            name: game.name,
+            size: game.size,
+          },
+        })
+      );
     }
 
     console.log('✅ Game published to network');
@@ -548,11 +586,13 @@ export class P2PNetworkService extends EventEmitter {
 
     console.log(`📥 Requesting game ${gameId} from ${peer.username}`);
 
-    peer.dataChannel.send(JSON.stringify({
-      type: 'game_request',
-      from: this.myPeerId,
-      data: { gameId },
-    }));
+    peer.dataChannel.send(
+      JSON.stringify({
+        type: 'game_request',
+        from: this.myPeerId,
+        data: { gameId },
+      })
+    );
   }
 
   /**
@@ -561,7 +601,7 @@ export class P2PNetworkService extends EventEmitter {
   getAllGames(): GameInfo[] {
     const allGames: GameInfo[] = [...this.myGames];
 
-    this.peers.forEach(peer => {
+    this.peers.forEach((peer) => {
       allGames.push(...peer.games);
     });
 
@@ -614,7 +654,7 @@ export class P2PNetworkService extends EventEmitter {
     console.log('Shutting down P2P network...');
 
     // Close all peer connections
-    this.peers.forEach(peer => {
+    this.peers.forEach((peer) => {
       peer.connection?.close();
       peer.dataChannel?.close();
     });
