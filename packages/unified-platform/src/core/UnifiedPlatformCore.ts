@@ -1,9 +1,9 @@
 /**
  * Nova Engine Unified Platform Core
- * 
+ *
  * Central system that integrates ALL modules:
  * - Hub, Editor, Launcher, Multiplayer, Social, Settings
- * 
+ *
  * Provides unified authentication, state management, and communication
  * Single source of truth for the entire platform
  */
@@ -15,7 +15,13 @@ import { friendsService } from '../../launcher-web/src/services/FriendsService';
 import { achievementsService } from '../../launcher-web/src/services/AchievementsService';
 import { multiplayerLobbyService } from '../../launcher-web/src/services/MultiplayerLobbyService';
 
-export type PlatformMode = 'hub' | 'editor' | 'launcher' | 'multiplayer' | 'social' | 'settings';
+export type PlatformMode =
+  | 'hub'
+  | 'editor'
+  | 'launcher'
+  | 'multiplayer'
+  | 'social'
+  | 'settings';
 
 export interface UnifiedUser {
   id: string;
@@ -33,7 +39,15 @@ export interface UnifiedUser {
 
 export interface UnifiedNotification {
   id: string;
-  type: 'info' | 'success' | 'warning' | 'error' | 'achievement' | 'friend' | 'invite' | 'update';
+  type:
+    | 'info'
+    | 'success'
+    | 'warning'
+    | 'error'
+    | 'achievement'
+    | 'friend'
+    | 'invite'
+    | 'update';
   title: string;
   message: string;
   icon?: string;
@@ -50,7 +64,7 @@ export interface PlatformState {
   user: UnifiedUser | null;
   isOnline: boolean;
   notifications: UnifiedNotification[];
-  
+
   // Current activity
   currentGame: {
     id: string;
@@ -58,13 +72,13 @@ export interface PlatformState {
     mode: 'playing' | 'editing' | 'spectating';
     startedAt: Date;
   } | null;
-  
+
   currentProject: {
     id: string;
     name: string;
     lastSaved: Date;
   } | null;
-  
+
   currentLobby: {
     id: string;
     gameId: string;
@@ -88,7 +102,7 @@ export class UnifiedPlatformCore extends EventEmitter {
 
   constructor() {
     super();
-    
+
     this.state = {
       mode: 'hub',
       isLoggedIn: false,
@@ -143,7 +157,7 @@ export class UnifiedPlatformCore extends EventEmitter {
       if (!response.ok) throw new Error('Login failed');
 
       const data = await response.json();
-      
+
       // Store auth data
       localStorage.setItem('auth_token', data.token);
       localStorage.setItem('user_id', data.user.id);
@@ -170,7 +184,11 @@ export class UnifiedPlatformCore extends EventEmitter {
   /**
    * Register new account
    */
-  async register(username: string, email: string, password: string): Promise<boolean> {
+  async register(
+    username: string,
+    email: string,
+    password: string
+  ): Promise<boolean> {
     try {
       const response = await fetch('/api/auth/register', {
         method: 'POST',
@@ -181,7 +199,7 @@ export class UnifiedPlatformCore extends EventEmitter {
       if (!response.ok) throw new Error('Registration failed');
 
       const data = await response.json();
-      
+
       // Store auth data
       localStorage.setItem('auth_token', data.token);
       localStorage.setItem('user_id', data.user.id);
@@ -209,7 +227,7 @@ export class UnifiedPlatformCore extends EventEmitter {
    */
   async logout(): Promise<void> {
     // Close all WebSocket connections
-    this.wsConnections.forEach(ws => ws.close());
+    this.wsConnections.forEach((ws) => ws.close());
     this.wsConnections.clear();
 
     // Stop sync
@@ -254,7 +272,7 @@ export class UnifiedPlatformCore extends EventEmitter {
       if (!response.ok) throw new Error('Session invalid');
 
       const user = await response.json();
-      
+
       this.state.isLoggedIn = true;
       this.state.user = user;
 
@@ -262,7 +280,7 @@ export class UnifiedPlatformCore extends EventEmitter {
 
       this.emit('sessionRestored', user);
       console.log(`✅ Session restored for ${user.username}`);
-      
+
       return true;
     } catch (error) {
       console.error('❌ Session restore failed:', error);
@@ -282,7 +300,7 @@ export class UnifiedPlatformCore extends EventEmitter {
 
     // Initialize integrated services
     friendsService.initializeRealtimeUpdates();
-    
+
     // Connect to platform WebSocket
     this.connectPlatformWebSocket();
 
@@ -320,7 +338,9 @@ export class UnifiedPlatformCore extends EventEmitter {
    */
   private connectPlatformWebSocket(): void {
     const token = this.getToken();
-    const ws = new WebSocket(`ws://localhost:3000/api/platform/ws?token=${token}`);
+    const ws = new WebSocket(
+      `ws://localhost:3000/api/platform/ws?token=${token}`
+    );
 
     ws.onopen = () => {
       console.log('✅ Connected to platform');
@@ -407,7 +427,9 @@ export class UnifiedPlatformCore extends EventEmitter {
   /**
    * Add notification
    */
-  private addNotification(notification: Omit<UnifiedNotification, 'id' | 'timestamp' | 'read'>): void {
+  private addNotification(
+    notification: Omit<UnifiedNotification, 'id' | 'timestamp' | 'read'>
+  ): void {
     const fullNotification: UnifiedNotification = {
       ...notification,
       id: `notif_${Date.now()}_${Math.random().toString(36)}`,
@@ -419,10 +441,10 @@ export class UnifiedPlatformCore extends EventEmitter {
     this.state.notifications.unshift(fullNotification);
 
     // Limit non-persistent notifications
-    const nonPersistent = this.state.notifications.filter(n => !n.persistent);
+    const nonPersistent = this.state.notifications.filter((n) => !n.persistent);
     if (nonPersistent.length > 50) {
       this.state.notifications = [
-        ...this.state.notifications.filter(n => n.persistent),
+        ...this.state.notifications.filter((n) => n.persistent),
         ...nonPersistent.slice(0, 50),
       ];
     }
@@ -431,13 +453,25 @@ export class UnifiedPlatformCore extends EventEmitter {
   }
 
   /**
+   * Show notification (public wrapper for addNotification)
+   */
+  public showNotification(
+    notification: Omit<UnifiedNotification, 'id' | 'timestamp' | 'read'>
+  ): void {
+    this.addNotification(notification);
+  }
+
+  /**
    * Start background sync
    */
   private startBackgroundSync(): void {
     // Sync every 5 minutes
-    this.syncInterval = window.setInterval(() => {
-      this.syncCloudData();
-    }, 5 * 60 * 1000);
+    this.syncInterval = window.setInterval(
+      () => {
+        this.syncCloudData();
+      },
+      5 * 60 * 1000
+    );
 
     // Initial sync
     this.syncCloudData();
@@ -514,7 +548,7 @@ export class UnifiedPlatformCore extends EventEmitter {
       this.state.isOnline = true;
       this.emit('online');
       console.log('✅ Connection restored');
-      
+
       if (this.state.isLoggedIn) {
         this.connectPlatformWebSocket();
         this.syncCloudData();
@@ -536,7 +570,8 @@ export class UnifiedPlatformCore extends EventEmitter {
     window.addEventListener('beforeunload', (e) => {
       if (this.state.currentProject) {
         e.preventDefault();
-        e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+        e.returnValue =
+          'You have unsaved changes. Are you sure you want to leave?';
       }
     });
 
