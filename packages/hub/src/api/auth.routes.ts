@@ -21,9 +21,24 @@ const loginSchema = z.object({
 export async function authRoutes(server: FastifyInstance) {
   const authService = new AuthService();
 
+  // Rate limiting configuration for auth endpoints
+  const authRateLimit = {
+    max: 5, // Maximum 5 requests
+    timeWindow: '15 minutes', // Per 15 minutes
+    errorResponseBuilder: () => ({
+      error: true,
+      message: 'Too many requests, please try again later.',
+    }),
+  };
+
   // Register new user
   server.post(
     '/register',
+    {
+      config: {
+        rateLimit: authRateLimit,
+      },
+    },
     async (request: FastifyRequest, reply: FastifyReply) => {
       try {
         const data = registerSchema.parse(request.body);
@@ -54,6 +69,11 @@ export async function authRoutes(server: FastifyInstance) {
   // Login
   server.post(
     '/login',
+    {
+      config: {
+        rateLimit: authRateLimit,
+      },
+    },
     async (request: FastifyRequest, reply: FastifyReply) => {
       const data = loginSchema.parse(request.body);
       const result = await authService.login(
