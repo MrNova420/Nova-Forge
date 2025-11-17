@@ -12,6 +12,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { UnifiedPlatformCore } from '../core/UnifiedPlatformCore';
+import { getAllDemoGames, type DemoGame } from '../demo-games';
 
 interface Game {
   id: string;
@@ -25,6 +26,8 @@ interface Game {
   screenshots: string[];
   releaseDate: string;
   version: string;
+  // Add demo game data
+  demoGame?: DemoGame;
 }
 
 interface HubModuleProps {
@@ -55,14 +58,50 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
     loadFeaturedGames();
   }, [category, searchQuery]);
 
-  const loadGames = async () => {
+  const loadGames = () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `/api/games?category=${category}&search=${searchQuery}`
-      );
-      const data = await response.json();
-      setGames(data.games || []);
+      // Load REAL demo games built with Nova Engine
+      const demoGames = getAllDemoGames();
+      
+      const gameList: Game[] = demoGames.map(demo => ({
+        id: demo.id,
+        name: demo.title,
+        description: demo.description,
+        developer: 'Nova Engine Studios',
+        category: demo.category.toLowerCase(),
+        rating: demo.rating,
+        downloads: demo.downloads,
+        thumbnail: demo.coverImage,
+        screenshots: [demo.coverImage],
+        releaseDate: demo.lastUpdated,
+        version: demo.version,
+        demoGame: demo, // Store the actual game object
+      }));
+      
+      // Filter by category
+      let filtered = gameList;
+      if (category !== 'all') {
+        filtered = filtered.filter(g => 
+          g.category.toLowerCase() === category.toLowerCase()
+        );
+      }
+      
+      // Filter by search
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        filtered = filtered.filter(g =>
+          g.name.toLowerCase().includes(query) ||
+          g.description.toLowerCase().includes(query)
+        );
+      }
+      
+      setGames(filtered);
+      
+      platform.showNotification({
+        type: 'success',
+        message: `Loaded ${filtered.length} demo games built with Nova Engine`,
+      });
     } catch (error) {
       console.error('Failed to load games:', error);
       platform.showNotification({
@@ -74,11 +113,29 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
     }
   };
 
-  const loadFeaturedGames = async () => {
+  const loadFeaturedGames = () => {
     try {
-      const response = await fetch('/api/games/featured');
-      const data = await response.json();
-      setFeaturedGames(data.games || []);
+      // Featured = highest rated demo games
+      const demoGames = getAllDemoGames();
+      const featured: Game[] = demoGames
+        .sort((a, b) => b.rating - a.rating)
+        .slice(0, 3)
+        .map(demo => ({
+          id: demo.id,
+          name: demo.title,
+          description: demo.description,
+          developer: 'Nova Engine Studios',
+          category: demo.category.toLowerCase(),
+          rating: demo.rating,
+          downloads: demo.downloads,
+          thumbnail: demo.coverImage,
+          screenshots: [demo.coverImage],
+          releaseDate: demo.lastUpdated,
+          version: demo.version,
+          demoGame: demo,
+        }));
+      
+      setFeaturedGames(featured);
     } catch (error) {
       console.error('Failed to load featured games:', error);
     }
@@ -86,12 +143,30 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
 
   const handleGameClick = (game: Game) => {
     platform.emit('gameSelected', game);
-    // Navigate to game detail or launch game
+    platform.showNotification({
+      type: 'info',
+      message: `Selected: ${game.name}`,
+    });
   };
 
-  const handlePlayGame = async (gameId: string) => {
-    platform.switchMode('launcher');
-    platform.emit('playGame', { gameId });
+  const handlePlayGame = (game: Game) => {
+    if (game.demoGame) {
+      // Pass the REAL game object to launcher
+      platform.switchMode('launcher');
+      platform.emit('playGame', { 
+        gameId: game.id, 
+        game: game.demoGame // Pass actual DemoGame object
+      });
+      platform.showNotification({
+        type: 'success',
+        message: `Launching ${game.name} with Nova Engine...`,
+      });
+    } else {
+      platform.showNotification({
+        type: 'error',
+        message: 'Game not available',
+      });
+    }
   };
 
   return (
@@ -123,7 +198,7 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
                   className="play-btn"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handlePlayGame(game.id);
+                    handlePlayGame(game);
                   }}
                 >
                   Play Now
@@ -178,7 +253,7 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
                       className="quick-play"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handlePlayGame(game.id);
+                        handlePlayGame(game);
                       }}
                     >
                       ▶ Play

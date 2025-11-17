@@ -39,16 +39,21 @@ export interface GameConfig {
 // Demo Games - Each is a fully functional Nova Engine game
 export { SpaceExplorerGame } from './SpaceExplorerGame';
 export { PuzzleMasterGame } from './PuzzleMasterGame';
-export { MedievalQuestGame } from './MedievalQuestGame';
-export { RacingLegendsGame } from './RacingLegendsGame';
-export { MultiplayerArenaGame } from './MultiplayerArenaGame';
-export { OpenWorldGame } from './OpenWorldGame';
+export { NovaWorldGame } from './NovaWorldGame';
 
 /**
  * Get all demo games
+ * These are REAL games built with Nova Engine
  */
 export function getAllDemoGames(): DemoGame[] {
-  // Import and return all demo games
-  // Each one is built with Nova Engine
-  return [];
+  // Import actual games
+  const { SpaceExplorerGame } = require('./SpaceExplorerGame');
+  const { PuzzleMasterGame } = require('./PuzzleMasterGame');
+  const { NovaWorldGame } = require('./NovaWorldGame');
+  
+  return [
+    NovaWorldGame,     // Flagship AAA open world
+    SpaceExplorerGame, // 3D space adventure
+    PuzzleMasterGame,  // Advanced puzzle game
+  ];
 }
