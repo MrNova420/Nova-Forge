@@ -1,6 +1,6 @@
 /**
  * Puzzle Master - Advanced Puzzle Game
- * 
+ *
  * REAL game built with Nova Engine demonstrating:
  * - 2D/3D hybrid rendering
  * - Complex game logic
@@ -10,7 +10,7 @@
  * - Level progression
  */
 
-import type { DemoGame, GameConfig } from './index';
+import type { DemoGame } from './index';
 import { Vector3 } from '@nova-engine/engine';
 
 interface PuzzlePiece {
@@ -36,7 +36,8 @@ export const PuzzleMasterGame: DemoGame = {
   // Metadata
   id: 'puzzle-master',
   title: 'Puzzle Master',
-  description: 'Challenge your mind with hundreds of unique puzzles. Features advanced physics-based puzzles, pattern matching, and logic challenges. Built to showcase Nova Engine\'s 2D capabilities and game logic systems.',
+  description:
+    "Challenge your mind with hundreds of unique puzzles. Features advanced physics-based puzzles, pattern matching, and logic challenges. Built to showcase Nova Engine's 2D capabilities and game logic systems.",
   category: 'Puzzle',
   coverImage: '/demo-games/puzzle-master-cover.jpg',
   rating: 4.9,
@@ -61,79 +62,79 @@ export const PuzzleMasterGame: DemoGame = {
         id: 'ui-camera',
         name: 'UI Camera',
         components: {
-          transform: { 
+          transform: {
             position: new Vector3(0, 0, 10),
             rotation: new Vector3(0, 0, 0),
-            scale: new Vector3(1, 1, 1)
+            scale: new Vector3(1, 1, 1),
           },
-          camera: { 
-            fov: 60, 
-            near: 0.1, 
+          camera: {
+            fov: 60,
+            near: 0.1,
             far: 100,
             orthographic: true,
-            size: 10
-          }
-        }
+            size: 10,
+          },
+        },
       },
       {
         id: 'background',
         name: 'Background',
         components: {
-          transform: { 
+          transform: {
             position: new Vector3(0, 0, 0),
             rotation: new Vector3(0, 0, 0),
-            scale: new Vector3(20, 15, 1)
+            scale: new Vector3(20, 15, 1),
           },
-          sprite: { 
+          sprite: {
             texture: 'gradient-bg',
-            color: [0.1, 0.15, 0.3, 1]
-          }
-        }
+            color: [0.1, 0.15, 0.3, 1],
+          },
+        },
       },
       {
         id: 'grid',
         name: 'Puzzle Grid',
         components: {
-          transform: { 
+          transform: {
             position: new Vector3(0, 0, 1),
             rotation: new Vector3(0, 0, 0),
-            scale: new Vector3(1, 1, 1)
+            scale: new Vector3(1, 1, 1),
           },
           puzzleGrid: {
             rows: 5,
             cols: 5,
             cellSize: 1.2,
-            spacing: 0.1
-          }
-        }
+            spacing: 0.1,
+          },
+        },
       },
       {
         id: 'particle-effects',
         name: 'Success Particles',
         components: {
-          transform: { 
+          transform: {
             position: new Vector3(0, 0, 3),
             rotation: new Vector3(0, 0, 0),
-            scale: new Vector3(1, 1, 1)
+            scale: new Vector3(1, 1, 1),
           },
           particleSystem: {
             maxParticles: 100,
             emissionRate: 0,
             lifetime: 2,
             startColor: [1, 0.8, 0.2, 1],
-            endColor: [1, 0.4, 0, 0]
-          }
-        }
-      }
-    ]
+            endColor: [1, 0.4, 0, 0],
+          },
+        },
+      },
+    ],
   },
 
   // Game initialization
-  init: function(engineContext: any) {
+  init: function (engineContext: any) {
     console.log('🧩 Initializing Puzzle Master...');
-    
-    const { engine, canvas } = engineContext;
-    
+
+    const { canvas } = engineContext;
+
     // Initialize WebGL context
     const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
     if (!gl) {
@@ -159,7 +160,7 @@ export const PuzzleMasterGame: DemoGame = {
       completedLevels: [] as number[],
       hints: 3,
       undoStack: [] as any[],
-      highScores: this.loadHighScores()
+      highScores: this.loadHighScores(),
     };
 
     // Load current level
@@ -182,7 +183,7 @@ export const PuzzleMasterGame: DemoGame = {
   },
 
   // Game update loop
-  update: function(delta: number) {
+  update: function (delta: number) {
     const engineContext = (this as any).engineContext;
     if (!engineContext || !engineContext.gameState) return;
 
@@ -210,13 +211,15 @@ export const PuzzleMasterGame: DemoGame = {
         gameState.input.mousePos,
         engineContext
       );
-      gameState.selectedPiece.position.x = mouseWorldPos.x + gameState.dragOffset.x;
-      gameState.selectedPiece.position.y = mouseWorldPos.y + gameState.dragOffset.y;
+      gameState.selectedPiece.position.x =
+        mouseWorldPos.x + gameState.dragOffset.x;
+      gameState.selectedPiece.position.y =
+        mouseWorldPos.y + gameState.dragOffset.y;
     }
   },
 
   // Game render
-  render: function() {
+  render: function () {
     const engineContext = (this as any).engineContext;
     if (!engineContext || !engineContext.gl || !engineContext.gameState) return;
 
@@ -254,23 +257,28 @@ export const PuzzleMasterGame: DemoGame = {
   // Helper functions
   generateLevels(count: number): PuzzleLevel[] {
     const levels: PuzzleLevel[] = [];
-    
+
     for (let i = 1; i <= count; i++) {
-      const difficulty = 
-        i <= 20 ? 'Easy' :
-        i <= 50 ? 'Medium' :
-        i <= 80 ? 'Hard' : 'Expert';
+      const difficulty =
+        i <= 20 ? 'Easy' : i <= 50 ? 'Medium' : i <= 80 ? 'Hard' : 'Expert';
 
-      const gridSize = 
-        difficulty === 'Easy' ? { rows: 3, cols: 3 } :
-        difficulty === 'Medium' ? { rows: 4, cols: 4 } :
-        difficulty === 'Hard' ? { rows: 5, cols: 5 } :
-        { rows: 6, cols: 6 };
+      const gridSize =
+        difficulty === 'Easy'
+          ? { rows: 3, cols: 3 }
+          : difficulty === 'Medium'
+            ? { rows: 4, cols: 4 }
+            : difficulty === 'Hard'
+              ? { rows: 5, cols: 5 }
+              : { rows: 6, cols: 6 };
 
-      const timeLimit = 
-        difficulty === 'Easy' ? 180 :
-        difficulty === 'Medium' ? 240 :
-        difficulty === 'Hard' ? 300 : 360;
+      const timeLimit =
+        difficulty === 'Easy'
+          ? 180
+          : difficulty === 'Medium'
+            ? 240
+            : difficulty === 'Hard'
+              ? 300
+              : 360;
 
       levels.push({
         id: i,
@@ -279,19 +287,23 @@ export const PuzzleMasterGame: DemoGame = {
         gridSize,
         timeLimit,
         movesLimit: gridSize.rows * gridSize.cols * 3,
-        pieces: this.generatePuzzlePieces(gridSize)
+        pieces: this.generatePuzzlePieces(gridSize),
       });
     }
 
     return levels;
   },
 
-  generatePuzzlePieces(gridSize: { rows: number; cols: number }): PuzzlePiece[] {
+  generatePuzzlePieces(gridSize: {
+    rows: number;
+    cols: number;
+  }): PuzzlePiece[] {
     const pieces: PuzzlePiece[] = [];
     const cellSize = 1.2;
     const spacing = 0.1;
     const totalWidth = gridSize.cols * cellSize + (gridSize.cols - 1) * spacing;
-    const totalHeight = gridSize.rows * cellSize + (gridSize.rows - 1) * spacing;
+    const totalHeight =
+      gridSize.rows * cellSize + (gridSize.rows - 1) * spacing;
     const startX = -totalWidth / 2;
     const startY = -totalHeight / 2;
 
@@ -306,7 +318,8 @@ export const PuzzleMasterGame: DemoGame = {
         const randomY = (Math.random() - 0.5) * 8;
 
         // Generate color based on position (creates pattern)
-        const hue = (row * gridSize.cols + col) / (gridSize.rows * gridSize.cols);
+        const hue =
+          (row * gridSize.cols + col) / (gridSize.rows * gridSize.cols);
         const color = this.hslToRgb(hue, 0.7, 0.5);
 
         pieces.push({
@@ -315,7 +328,7 @@ export const PuzzleMasterGame: DemoGame = {
           targetPosition: new Vector3(targetX, targetY, 0),
           color: color,
           isPlaced: false,
-          rotationAngle: Math.random() * Math.PI * 2
+          rotationAngle: Math.random() * Math.PI * 2,
         });
       }
     }
@@ -332,17 +345,17 @@ export const PuzzleMasterGame: DemoGame = {
       const hue2rgb = (p: number, q: number, t: number) => {
         if (t < 0) t += 1;
         if (t > 1) t -= 1;
-        if (t < 1/6) return p + (q - p) * 6 * t;
-        if (t < 1/2) return q;
-        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        if (t < 1 / 6) return p + (q - p) * 6 * t;
+        if (t < 1 / 2) return q;
+        if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
         return p;
       };
 
       const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
       const p = 2 * l - q;
-      r = hue2rgb(p, q, h + 1/3);
+      r = hue2rgb(p, q, h + 1 / 3);
       g = hue2rgb(p, q, h);
-      b = hue2rgb(p, q, h - 1/3);
+      b = hue2rgb(p, q, h - 1 / 3);
     }
 
     return [r, g, b];
@@ -356,7 +369,7 @@ export const PuzzleMasterGame: DemoGame = {
     gameState.moves = 0;
     gameState.time = 0;
     gameState.selectedPiece = null;
-    
+
     // Reset pieces
     level.pieces.forEach((piece: PuzzlePiece) => {
       piece.isPlaced = false;
@@ -373,7 +386,7 @@ export const PuzzleMasterGame: DemoGame = {
     const input = {
       mousePos: { x: 0, y: 0 },
       mouseDown: false,
-      keys: {} as Record<string, boolean>
+      keys: {} as Record<string, boolean>,
     };
 
     const canvas = engineContext.canvas;
@@ -384,7 +397,7 @@ export const PuzzleMasterGame: DemoGame = {
       input.mousePos.y = e.clientY - rect.top;
     });
 
-    canvas.addEventListener('mousedown', (e: MouseEvent) => {
+    canvas.addEventListener('mousedown', (_e: MouseEvent) => {
       input.mouseDown = true;
       this.handleMouseDown(engineContext, input.mousePos);
     });
@@ -416,14 +429,14 @@ export const PuzzleMasterGame: DemoGame = {
       const piece = level.pieces[i];
       const distance = Math.sqrt(
         Math.pow(worldPos.x - piece.position.x, 2) +
-        Math.pow(worldPos.y - piece.position.y, 2)
+          Math.pow(worldPos.y - piece.position.y, 2)
       );
 
       if (distance < 0.6) {
         gameState.selectedPiece = piece;
         gameState.dragOffset.x = piece.position.x - worldPos.x;
         gameState.dragOffset.y = piece.position.y - worldPos.y;
-        
+
         // Play sound
         this.playSound('pickup');
         break;
@@ -433,14 +446,14 @@ export const PuzzleMasterGame: DemoGame = {
 
   handleMouseUp(engineContext: any) {
     const { gameState } = engineContext;
-    
+
     if (gameState.selectedPiece) {
       const piece = gameState.selectedPiece;
-      
+
       // Snap to target if close
       const distance = Math.sqrt(
         Math.pow(piece.position.x - piece.targetPosition.x, 2) +
-        Math.pow(piece.position.y - piece.targetPosition.y, 2)
+          Math.pow(piece.position.y - piece.targetPosition.y, 2)
       );
 
       if (distance < 0.5) {
@@ -448,7 +461,7 @@ export const PuzzleMasterGame: DemoGame = {
         piece.position.y = piece.targetPosition.y;
         piece.rotationAngle = 0;
         piece.isPlaced = true;
-        
+
         gameState.moves++;
         this.playSound('place');
         this.spawnParticles(engineContext, piece.position);
@@ -474,7 +487,7 @@ export const PuzzleMasterGame: DemoGame = {
           }
         }
         break;
-      
+
       case 'r':
       case 'R':
         this.resetLevel(gameState);
@@ -491,14 +504,17 @@ export const PuzzleMasterGame: DemoGame = {
     }
   },
 
-  screenToWorldPos(screenPos: { x: number; y: number }, engineContext: any): Vector3 {
+  screenToWorldPos(
+    screenPos: { x: number; y: number },
+    engineContext: any
+  ): Vector3 {
     const canvas = engineContext.canvas;
     const aspect = canvas.width / canvas.height;
     const viewSize = 10;
-    
-    const x = (screenPos.x / canvas.width * 2 - 1) * viewSize * aspect;
-    const y = -(screenPos.y / canvas.height * 2 - 1) * viewSize;
-    
+
+    const x = ((screenPos.x / canvas.width) * 2 - 1) * viewSize * aspect;
+    const y = -((screenPos.y / canvas.height) * 2 - 1) * viewSize;
+
     return new Vector3(x, y, 0);
   },
 
@@ -509,10 +525,10 @@ export const PuzzleMasterGame: DemoGame = {
 
   onLevelComplete(gameState: any) {
     console.log('🎉 Level Complete!');
-    
+
     gameState.completedLevels.push(gameState.currentLevel);
     gameState.score += this.calculateScore(gameState);
-    
+
     this.playSound('victory');
     this.triggerCelebration(gameState);
 
@@ -544,7 +560,7 @@ export const PuzzleMasterGame: DemoGame = {
 
   undo(gameState: any) {
     if (gameState.undoStack.length > 0) {
-      const previousState = gameState.undoStack.pop();
+      gameState.undoStack.pop();
       // Restore previous state
       this.playSound('undo');
     }
@@ -552,7 +568,7 @@ export const PuzzleMasterGame: DemoGame = {
 
   updateAnimations(gameState: any, delta: number) {
     const level = gameState.levels[gameState.currentLevel - 1];
-    
+
     level.pieces.forEach((piece: PuzzlePiece) => {
       if (!piece.isPlaced && piece !== gameState.selectedPiece) {
         // Idle rotation animation
@@ -580,7 +596,7 @@ export const PuzzleMasterGame: DemoGame = {
 
   spawnParticles(engineContext: any, position: Vector3) {
     const { gameState } = engineContext;
-    
+
     if (!gameState.particles) {
       gameState.particles = [];
     }
@@ -592,7 +608,7 @@ export const PuzzleMasterGame: DemoGame = {
         life: 1,
         maxLife: 1,
         alpha: 1,
-        color: [1, 0.8, 0.2]
+        color: [1, 0.8, 0.2],
       });
     }
   },
@@ -608,7 +624,8 @@ export const PuzzleMasterGame: DemoGame = {
   initializeAudio(engineContext: any) {
     // Initialize Web Audio API
     try {
-      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      const AudioContext =
+        window.AudioContext || (window as any).webkitAudioContext;
       engineContext.audioContext = new AudioContext();
     } catch (e) {
       console.warn('Web Audio API not supported');
@@ -626,35 +643,45 @@ export const PuzzleMasterGame: DemoGame = {
   },
 
   saveProgress(gameState: any) {
-    localStorage.setItem('puzzlemaster_progress', JSON.stringify({
-      currentLevel: gameState.currentLevel,
-      completedLevels: gameState.completedLevels,
-      score: gameState.score
-    }));
+    localStorage.setItem(
+      'puzzlemaster_progress',
+      JSON.stringify({
+        currentLevel: gameState.currentLevel,
+        completedLevels: gameState.completedLevels,
+        score: gameState.score,
+      })
+    );
   },
 
   // Rendering functions
-  renderBackground(gl: WebGLRenderingContext) {
+  renderBackground(_gl: WebGLRenderingContext) {
     // Render gradient background
   },
 
-  renderGrid(gl: WebGLRenderingContext, gridSize: { rows: number; cols: number }) {
+  renderGrid(
+    _gl: WebGLRenderingContext,
+    _gridSize: { rows: number; cols: number }
+  ) {
     // Render puzzle grid
   },
 
-  renderPuzzlePiece(gl: WebGLRenderingContext, piece: PuzzlePiece, isSelected: boolean) {
+  renderPuzzlePiece(
+    _gl: WebGLRenderingContext,
+    _piece: PuzzlePiece,
+    _isSelected: boolean
+  ) {
     // Render individual puzzle piece with color and rotation
   },
 
-  renderTargetHint(gl: WebGLRenderingContext, piece: PuzzlePiece) {
+  renderTargetHint(_gl: WebGLRenderingContext, _piece: PuzzlePiece) {
     // Render semi-transparent hint at target position
   },
 
-  renderParticles(gl: WebGLRenderingContext, gameState: any) {
+  renderParticles(_gl: WebGLRenderingContext, _gameState: any) {
     // Render particle effects
   },
 
-  renderUI(gameState: any, level: PuzzleLevel) {
+  renderUI(_gameState: any, _level: PuzzleLevel) {
     // Render HUD: Level, Score, Time, Moves, Hints
-  }
+  },
 };

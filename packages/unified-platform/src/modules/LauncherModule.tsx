@@ -32,7 +32,7 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
         launchGame(gameId);
       }
     });
-    
+
     return () => {
       // Cleanup
       if (animationFrameRef.current) {
@@ -48,7 +48,7 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
     try {
       // Load from demo games
       const demoGames = getAllDemoGames();
-      const libraryGames = demoGames.map(game => ({
+      const libraryGames = demoGames.map((game) => ({
         id: game.id,
         name: game.title,
         thumbnail: game.coverImage,
@@ -69,7 +69,7 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
       } else {
         // Default to first 3 games
         const demoGames = getAllDemoGames();
-        const recentGames = demoGames.slice(0, 3).map(game => ({
+        const recentGames = demoGames.slice(0, 3).map((game) => ({
           id: game.id,
           name: game.title,
           thumbnail: game.coverImage,
@@ -84,7 +84,7 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
 
   const launchGame = (gameId: string) => {
     const demoGames = getAllDemoGames();
-    const game = demoGames.find(g => g.id === gameId);
+    const game = demoGames.find((g) => g.id === gameId);
     if (game) {
       launchGameDirect(game);
     }
@@ -93,19 +93,19 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
   const launchGameDirect = (game: DemoGame) => {
     try {
       setCurrentGame(game);
-      
+
       // Wait for canvas to be available
       setTimeout(() => {
         if (canvasRef.current) {
           initializeGameEngine(game);
         }
       }, 100);
-      
+
       platform.showNotification({
         type: 'success',
         message: `Launching ${game.title} with Nova Engine...`,
       });
-      
+
       // Add to recent games
       addToRecent(game);
     } catch (error) {
@@ -124,8 +124,6 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
       // Initialize Nova Engine for this game
       engineRef.current = new Engine({
         canvas: canvasRef.current,
-        antialias: true,
-        alpha: false,
       });
 
       // Initialize the game with engine context
@@ -152,7 +150,7 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
 
   const startGameLoop = (game: DemoGame) => {
     let lastTime = performance.now();
-    
+
     const loop = () => {
       const currentTime = performance.now();
       const delta = (currentTime - lastTime) / 1000;
@@ -180,8 +178,11 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
       thumbnail: game.coverImage,
       demoGame: game,
     };
-    
-    const recent = [recentGame, ...recentGames.filter(g => g.id !== game.id)].slice(0, 10);
+
+    const recent = [
+      recentGame,
+      ...recentGames.filter((g) => g.id !== game.id),
+    ].slice(0, 10);
     setRecentGames(recent);
     localStorage.setItem('nova_recent_games', JSON.stringify(recent));
   };

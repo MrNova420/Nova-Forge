@@ -11,6 +11,7 @@
  */
 
 import type { DemoGame } from './index';
+import { Vector3 } from '@nova-engine/engine';
 
 interface SpaceShip {
   position: Vector3;
@@ -18,6 +19,95 @@ interface SpaceShip {
   rotation: Vector3;
   health: number;
   fuel: number;
+}
+
+// Helper functions
+function generateAsteroids(count: number): any[] {
+  const asteroids = [];
+  for (let i = 0; i < count; i++) {
+    asteroids.push({
+      position: new Vector3(
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 100,
+        (Math.random() - 0.5) * 100
+      ),
+      rotation: new Vector3(0, 0, 0),
+      scale: 0.5 + Math.random() * 1.5,
+      rotationSpeed: 0.1 + Math.random() * 0.5,
+    });
+  }
+  return asteroids;
+}
+
+function generateStarfield(count: number): any[] {
+  const stars = [];
+  for (let i = 0; i < count; i++) {
+    stars.push({
+      position: new Vector3(
+        (Math.random() - 0.5) * 200,
+        (Math.random() - 0.5) * 200,
+        (Math.random() - 0.5) * 200
+      ),
+      brightness: Math.random(),
+    });
+  }
+  return stars;
+}
+
+function setupInputHandlers(engineContext: any) {
+  const input = {
+    keys: {} as Record<string, boolean>,
+  };
+
+  window.addEventListener('keydown', (e) => {
+    input.keys[e.key] = true;
+  });
+
+  window.addEventListener('keyup', (e) => {
+    input.keys[e.key] = false;
+  });
+
+  engineContext.input = input;
+}
+
+function checkCollisions(gameState: any) {
+  const { ship, asteroids } = gameState;
+
+  asteroids.forEach((asteroid: any) => {
+    const distance = Math.sqrt(
+      Math.pow(ship.position.x - asteroid.position.x, 2) +
+        Math.pow(ship.position.y - asteroid.position.y, 2) +
+        Math.pow(ship.position.z - asteroid.position.z, 2)
+    );
+    if (distance < asteroid.scale + 0.5) {
+      // Collision!
+      ship.health -= 10;
+      console.log('💥 Collision! Health:', ship.health);
+    }
+  });
+}
+
+function renderStarfield(_gl: WebGLRenderingContext, _stars: any[]) {
+  // Simplified starfield rendering
+  // In production, this would use proper shaders and buffers
+}
+
+function renderSun(_gl: WebGLRenderingContext) {
+  // Simplified sun rendering with glow effect
+}
+
+function renderShip(_gl: WebGLRenderingContext, _ship: SpaceShip) {
+  // Simplified ship rendering
+  // In production, this would render the actual 3D model
+}
+
+function renderAsteroid(_gl: WebGLRenderingContext, _asteroid: any) {
+  // Simplified asteroid rendering
+}
+
+function renderHUD(_gameState: any) {
+  // Render UI overlay with stats
+  // Health, Fuel, Score, etc.
 }
 
 export const SpaceExplorerGame: DemoGame = {
@@ -121,7 +211,7 @@ export const SpaceExplorerGame: DemoGame = {
   init: function (engineContext: any) {
     console.log('🚀 Initializing Space Explorer...');
 
-    const { engine, canvas } = engineContext;
+    const { canvas } = engineContext;
 
     // Initialize WebGL context
     const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
@@ -144,8 +234,8 @@ export const SpaceExplorerGame: DemoGame = {
         health: 100,
         fuel: 100,
       } as SpaceShip,
-      asteroids: this.generateAsteroids(50),
-      stars: this.generateStarfield(200),
+      asteroids: generateAsteroids(50),
+      stars: generateStarfield(200),
       score: 0,
       time: 0,
     };
@@ -155,7 +245,7 @@ export const SpaceExplorerGame: DemoGame = {
     engineContext.gl = gl;
 
     // Set up input handling
-    this.setupInputHandlers(engineContext);
+    setupInputHandlers(engineContext);
 
     // Set clear color (space black)
     gl.clearColor(0.01, 0.01, 0.05, 1.0);
@@ -217,7 +307,7 @@ export const SpaceExplorerGame: DemoGame = {
     });
 
     // Collision detection
-    this.checkCollisions(gameState);
+    checkCollisions(gameState);
 
     // Update score
     gameState.score += Math.floor(delta * 10);
@@ -235,105 +325,20 @@ export const SpaceExplorerGame: DemoGame = {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     // Render starfield
-    this.renderStarfield(gl, stars);
+    renderStarfield(gl, stars);
 
     // Render sun (glow effect)
-    this.renderSun(gl);
+    renderSun(gl);
 
     // Render player ship
-    this.renderShip(gl, ship);
+    renderShip(gl, ship);
 
     // Render asteroids
     asteroids.forEach((asteroid: any) => {
-      this.renderAsteroid(gl, asteroid);
+      renderAsteroid(gl, asteroid);
     });
 
     // Render HUD
-    this.renderHUD(gameState);
-  },
-
-  // Helper functions
-  generateAsteroids(count: number): any[] {
-    const asteroids = [];
-    for (let i = 0; i < count; i++) {
-      asteroids.push({
-        position: new Vector3(
-          (Math.random() - 0.5) * 100,
-          (Math.random() - 0.5) * 100,
-          (Math.random() - 0.5) * 100
-        ),
-        rotation: new Vector3(0, 0, 0),
-        scale: 0.5 + Math.random() * 1.5,
-        rotationSpeed: 0.1 + Math.random() * 0.5,
-      });
-    }
-    return asteroids;
-  },
-
-  generateStarfield(count: number): any[] {
-    const stars = [];
-    for (let i = 0; i < count; i++) {
-      stars.push({
-        position: new Vector3(
-          (Math.random() - 0.5) * 200,
-          (Math.random() - 0.5) * 200,
-          (Math.random() - 0.5) * 200
-        ),
-        brightness: Math.random(),
-      });
-    }
-    return stars;
-  },
-
-  setupInputHandlers(engineContext: any) {
-    const input = {
-      keys: {} as Record<string, boolean>,
-    };
-
-    window.addEventListener('keydown', (e) => {
-      input.keys[e.key] = true;
-    });
-
-    window.addEventListener('keyup', (e) => {
-      input.keys[e.key] = false;
-    });
-
-    engineContext.input = input;
-  },
-
-  checkCollisions(gameState: any) {
-    const { ship, asteroids } = gameState;
-
-    asteroids.forEach((asteroid: any) => {
-      const distance = ship.position.distanceTo(asteroid.position);
-      if (distance < asteroid.scale + 0.5) {
-        // Collision!
-        ship.health -= 10;
-        console.log('💥 Collision! Health:', ship.health);
-      }
-    });
-  },
-
-  renderStarfield(gl: WebGLRenderingContext, stars: any[]) {
-    // Simplified starfield rendering
-    // In production, this would use proper shaders and buffers
-  },
-
-  renderSun(gl: WebGLRenderingContext) {
-    // Simplified sun rendering with glow effect
-  },
-
-  renderShip(gl: WebGLRenderingContext, ship: SpaceShip) {
-    // Simplified ship rendering
-    // In production, this would render the actual 3D model
-  },
-
-  renderAsteroid(gl: WebGLRenderingContext, asteroid: any) {
-    // Simplified asteroid rendering
-  },
-
-  renderHUD(gameState: any) {
-    // Render UI overlay with stats
-    // Health, Fuel, Score, etc.
+    renderHUD(gameState);
   },
 };

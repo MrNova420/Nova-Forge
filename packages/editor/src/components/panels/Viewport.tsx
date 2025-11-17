@@ -8,7 +8,7 @@ import React, { useRef, useEffect, useState } from 'react';
 export const Viewport: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [engineStatus, setEngineStatus] = useState<string>('Initializing...');
-  const [renderLoop, setRenderLoop] = useState<number | null>(null);
+  const [_renderLoop, setRenderLoop] = useState<number | null>(null);
 
   useEffect(() => {
     if (!canvasRef.current) return undefined;

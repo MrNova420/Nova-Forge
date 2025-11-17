@@ -1,6 +1,6 @@
 /**
  * Nova Engine Demo Games
- * 
+ *
  * REAL games built with Nova Engine to showcase capabilities
  * These are not placeholders - they use the actual engine
  */
@@ -9,7 +9,13 @@ export interface DemoGame {
   id: string;
   title: string;
   description: string;
-  category: 'Action' | 'Puzzle' | 'RPG' | 'Racing' | 'Simulation' | 'Multiplayer';
+  category:
+    | 'Action'
+    | 'Puzzle'
+    | 'RPG'
+    | 'Racing'
+    | 'Simulation'
+    | 'Multiplayer';
   coverImage: string;
   rating: number;
   downloads: number;
@@ -17,15 +23,18 @@ export interface DemoGame {
   version: string;
   size: string;
   lastUpdated: string;
-  
+
   // Engine data
   scene: any; // Nova Engine scene data
   config: GameConfig;
-  
+
   // Executable
   init: (engineContext: any) => void;
   update: (delta: number) => void;
   render: () => void;
+
+  // Allow additional helper methods
+  [key: string]: any;
 }
 
 export interface GameConfig {
@@ -50,10 +59,10 @@ export function getAllDemoGames(): DemoGame[] {
   const { SpaceExplorerGame } = require('./SpaceExplorerGame');
   const { PuzzleMasterGame } = require('./PuzzleMasterGame');
   const { NovaWorldGame } = require('./NovaWorldGame');
-  
+
   return [
-    NovaWorldGame,     // Flagship AAA open world
+    NovaWorldGame, // Flagship AAA open world
     SpaceExplorerGame, // 3D space adventure
-    PuzzleMasterGame,  // Advanced puzzle game
+    PuzzleMasterGame, // Advanced puzzle game
   ];
 }

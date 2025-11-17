@@ -113,13 +113,11 @@ export const EditorModule: React.FC<EditorModuleProps> = ({ platform }) => {
       // Initialize Nova Engine
       engineRef.current = new Engine({
         canvas: canvasRef.current,
-        antialias: true,
-        alpha: false,
       });
 
       // Create default scene
-      const scene = engineRef.current.createScene();
-      
+      engineRef.current.createScene();
+
       // Add camera
       const camera = engineRef.current.createEntity('MainCamera');
       camera.addComponent('Camera', {
@@ -502,10 +500,7 @@ export const EditorModule: React.FC<EditorModuleProps> = ({ platform }) => {
       <div className="editor-toolbar">
         <button onClick={() => setShowProjectBrowser(true)}>📁 Projects</button>
         <button onClick={handleSaveProject}>💾 Save</button>
-        <button
-          onClick={handlePlayMode}
-          className={isPlaying ? 'playing' : ''}
-        >
+        <button onClick={handlePlayMode} className={isPlaying ? 'playing' : ''}>
           {isPlaying ? '⏸️ Stop' : '▶️ Play'}
         </button>
         <button onClick={() => setShowAssetBrowser(!showAssetBrowser)}>
@@ -812,7 +807,15 @@ export const EditorModule: React.FC<EditorModuleProps> = ({ platform }) => {
                   e.dataTransfer.setData('asset', JSON.stringify(asset));
                 }}
               >
-                <div className="asset-icon">{asset.type === 'mesh' ? '📦' : asset.type === 'material' ? '🎨' : asset.type === 'texture' ? '🖼️' : '📄'}</div>
+                <div className="asset-icon">
+                  {asset.type === 'mesh'
+                    ? '📦'
+                    : asset.type === 'material'
+                      ? '🎨'
+                      : asset.type === 'texture'
+                        ? '🖼️'
+                        : '📄'}
+                </div>
                 <span>{asset.name}</span>
               </div>
             ))}

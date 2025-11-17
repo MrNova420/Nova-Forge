@@ -1,8 +1,8 @@
 /**
  * NOVA WORLD - Flagship Open World 3D Game
- * 
+ *
  * Premier showcase of Nova Engine capabilities - Unreal/Unity quality
- * 
+ *
  * Features:
  * - Massive open world with procedural terrain (2048x2048 units)
  * - Advanced graphics (PBR materials, dynamic lighting, shadows)
@@ -18,7 +18,7 @@
  * - Animation state machines
  * - LOD system for performance
  * - Post-processing effects
- * 
+ *
  * This is a REAL, production-quality game demonstrating that Nova Engine
  * can create Unreal/Unity-level experiences.
  */
@@ -28,7 +28,8 @@ import type { DemoGame } from './index';
 export const NovaWorldGame: DemoGame = {
   id: 'nova-world',
   title: 'Nova World: The Awakening',
-  description: 'A massive open world 3D RPG adventure. Explore vast landscapes, complete epic quests, battle enemies, craft items, and uncover mysteries. Unreal/Unity-quality showcase.',
+  description:
+    'A massive open world 3D RPG adventure. Explore vast landscapes, complete epic quests, battle enemies, craft items, and uncover mysteries. Unreal/Unity-quality showcase.',
   category: 'RPG',
   coverImage: '/demo-games/nova-world-cover.jpg',
   rating: 4.95,
@@ -37,7 +38,7 @@ export const NovaWorldGame: DemoGame = {
   version: '1.0.0',
   size: '850 MB',
   lastUpdated: '2025-11-17',
-  
+
   config: {
     targetFPS: 60,
     enablePhysics: true,
@@ -45,14 +46,14 @@ export const NovaWorldGame: DemoGame = {
     playerMode: 'single',
     maxPlayers: 8,
   },
-  
+
   scene: { entities: [] },
-  
-  init: function(engineContext: any) {
+
+  init: function (engineContext: any) {
     console.log('🌍 NOVA WORLD - AAA Open World Game Initialized');
-    
+
     const { engine } = engineContext;
-    
+
     // Create main camera with cinematic settings
     const camera = engine.createEntity('MainCamera');
     camera.addComponent('Camera', {
@@ -68,7 +69,7 @@ export const NovaWorldGame: DemoGame = {
       mouseSensitivity: 0.002,
     });
     camera.getComponent('Transform').setPosition(0, 2, 0);
-    
+
     // Create massive terrain with LOD
     const terrain = engine.createEntity('MainTerrain');
     terrain.addComponent('TerrainRenderer', {
@@ -89,7 +90,7 @@ export const NovaWorldGame: DemoGame = {
     terrain.addComponent('TerrainCollider', {
       heightMap: 'procedural',
     });
-    
+
     // Directional sun light with dynamic shadows
     const sun = engine.createEntity('Sun');
     sun.addComponent('DirectionalLight', {
@@ -105,21 +106,21 @@ export const NovaWorldGame: DemoGame = {
       dayDuration: 600, // 10 minutes real-time
       currentTime: 0.35, // Start at morning
     });
-    
+
     // Ambient light for atmosphere
     const ambient = engine.createEntity('AmbientLight');
     ambient.addComponent('AmbientLight', {
       color: [0.4, 0.5, 0.6],
       intensity: 0.3,
     });
-    
+
     // Create procedural forest with LOD
     for (let i = 0; i < 500; i++) {
       const tree = engine.createEntity(`Tree_${i}`);
       const x = (Math.random() - 0.5) * 2000;
       const z = (Math.random() - 0.5) * 2000;
       const y = 0; // Will snap to terrain height
-      
+
       tree.addComponent('Renderer', {
         mesh: 'tree_oak',
         material: {
@@ -133,26 +134,28 @@ export const NovaWorldGame: DemoGame = {
         lodDistances: [50, 100, 200],
       });
       tree.getComponent('Transform').setPosition(x, y, z);
-      tree.getComponent('Transform').setScale(
-        1 + Math.random() * 0.5,
-        1 + Math.random() * 0.3,
-        1 + Math.random() * 0.5
-      );
+      tree
+        .getComponent('Transform')
+        .setScale(
+          1 + Math.random() * 0.5,
+          1 + Math.random() * 0.3,
+          1 + Math.random() * 0.5
+        );
       tree.getComponent('Transform').setRotation(0, Math.random() * 360, 0);
-      
+
       // Collision for trees
       tree.addComponent('CylinderCollider', {
         radius: 0.5,
         height: 8,
       });
     }
-    
+
     // Create rocks and environmental detail
     for (let i = 0; i < 200; i++) {
       const rock = engine.createEntity(`Rock_${i}`);
       const x = (Math.random() - 0.5) * 2000;
       const z = (Math.random() - 0.5) * 2000;
-      
+
       rock.addComponent('Renderer', {
         mesh: 'rock_boulder',
         material: {
@@ -164,16 +167,18 @@ export const NovaWorldGame: DemoGame = {
         castShadows: true,
       });
       rock.getComponent('Transform').setPosition(x, 0, z);
-      rock.getComponent('Transform').setScale(
-        0.5 + Math.random() * 1.5,
-        0.5 + Math.random() * 1.5,
-        0.5 + Math.random() * 1.5
-      );
+      rock
+        .getComponent('Transform')
+        .setScale(
+          0.5 + Math.random() * 1.5,
+          0.5 + Math.random() * 1.5,
+          0.5 + Math.random() * 1.5
+        );
       rock.addComponent('MeshCollider', {
         convex: true,
       });
     }
-    
+
     // Water plane with reflections
     const water = engine.createEntity('Lake');
     water.addComponent('WaterRenderer', {
@@ -186,7 +191,7 @@ export const NovaWorldGame: DemoGame = {
       foamEnabled: true,
     });
     water.getComponent('Transform').setPosition(400, 0, 400);
-    
+
     // Create village with buildings
     const buildings = [
       { name: 'Inn', pos: [50, 0, 50], size: [8, 6, 10] },
@@ -194,8 +199,8 @@ export const NovaWorldGame: DemoGame = {
       { name: 'Market', pos: [55, 0, 70], size: [12, 4, 8] },
       { name: 'Temple', pos: [40, 0, 80], size: [15, 12, 15] },
     ];
-    
-    buildings.forEach(bld => {
+
+    buildings.forEach((bld) => {
       const building = engine.createEntity(bld.name);
       building.addComponent('Renderer', {
         mesh: 'building_medieval',
@@ -212,7 +217,7 @@ export const NovaWorldGame: DemoGame = {
       building.addComponent('BoxCollider', {
         size: bld.size,
       });
-      
+
       // Add interior trigger
       building.addComponent('InteractionZone', {
         radius: 5,
@@ -220,7 +225,7 @@ export const NovaWorldGame: DemoGame = {
         prompt: `Enter ${bld.name}`,
       });
     });
-    
+
     // Create NPCs with AI
     const npcs = [
       { name: 'Blacksmith', pos: [70, 0, 45], dialog: 'blacksmith_greet' },
@@ -228,8 +233,8 @@ export const NovaWorldGame: DemoGame = {
       { name: 'Priest', pos: [40, 0, 80], dialog: 'priest_greet' },
       { name: 'Innkeeper', pos: [50, 0, 50], dialog: 'innkeeper_greet' },
     ];
-    
-    npcs.forEach(npc => {
+
+    npcs.forEach((npc) => {
       const character = engine.createEntity(npc.name);
       character.addComponent('CharacterRenderer', {
         model: 'human_male',
@@ -237,7 +242,7 @@ export const NovaWorldGame: DemoGame = {
         animations: ['idle', 'walk', 'talk', 'work'],
       });
       character.getComponent('Transform').setPosition(...npc.pos);
-      
+
       character.addComponent('NPCAIController', {
         behavior: 'civilian',
         scheduleType: 'daily',
@@ -245,25 +250,25 @@ export const NovaWorldGame: DemoGame = {
         canTrade: true,
         canQuest: true,
       });
-      
+
       character.addComponent('CapsuleCollider', {
         radius: 0.5,
         height: 1.8,
       });
     });
-    
+
     // Create wildlife (deer, rabbits, birds)
     for (let i = 0; i < 50; i++) {
       const deer = engine.createEntity(`Deer_${i}`);
       const x = (Math.random() - 0.5) * 1500;
       const z = (Math.random() - 0.5) * 1500;
-      
+
       deer.addComponent('CharacterRenderer', {
         model: 'deer',
         animations: ['idle', 'walk', 'run', 'eat'],
       });
       deer.getComponent('Transform').setPosition(x, 0, z);
-      
+
       deer.addComponent('WildlifeAI', {
         species: 'deer',
         behavior: 'herbivore',
@@ -271,7 +276,7 @@ export const NovaWorldGame: DemoGame = {
         wanderRadius: 50,
       });
     }
-    
+
     // Particle systems for atmosphere
     const campfire = engine.createEntity('Campfire');
     campfire.addComponent('ParticleSystem', {
@@ -286,7 +291,7 @@ export const NovaWorldGame: DemoGame = {
       spread: 0.5,
     });
     campfire.getComponent('Transform').setPosition(55, 0, 60);
-    
+
     // Add point light for fire
     const fireLight = engine.createEntity('FireLight');
     fireLight.addComponent('PointLight', {
@@ -296,7 +301,7 @@ export const NovaWorldGame: DemoGame = {
       castShadows: true,
     });
     fireLight.getComponent('Transform').setPosition(55, 1, 60);
-    
+
     // Weather system
     const weather = engine.createEntity('WeatherSystem');
     weather.addComponent('WeatherController', {
@@ -305,7 +310,7 @@ export const NovaWorldGame: DemoGame = {
       enabledWeathers: ['clear', 'cloudy', 'rain', 'storm', 'fog'],
       dynamicSky: true,
     });
-    
+
     // Sky/atmosphere
     const sky = engine.createEntity('Sky');
     sky.addComponent('SkyRenderer', {
@@ -316,7 +321,7 @@ export const NovaWorldGame: DemoGame = {
       cloudCoverage: 0.3,
       cloudSpeed: 0.1,
     });
-    
+
     // Audio system
     const audioManager = engine.createEntity('AudioManager');
     audioManager.addComponent('AudioSource', {
@@ -328,7 +333,7 @@ export const NovaWorldGame: DemoGame = {
       },
       currentMusic: 'music_exploration',
     });
-    
+
     // Post-processing effects
     const postProcess = engine.createEntity('PostProcessing');
     postProcess.addComponent('PostProcessEffects', {
@@ -339,7 +344,7 @@ export const NovaWorldGame: DemoGame = {
       vignette: { enabled: true, intensity: 0.3 },
       chromaticAberration: { enabled: false },
     });
-    
+
     console.log('✅ Nova World: Complete open world initialized');
     console.log('  - Terrain: 2048x2048 units with procedural generation');
     console.log('  - Trees: 500 with LOD');
@@ -353,14 +358,14 @@ export const NovaWorldGame: DemoGame = {
     console.log('  - Post-processing: Bloom, SSAO, tone mapping');
     console.log('🎮 This is Unreal/Unity-level quality!');
   },
-  
-  update: function(delta: number) {
+
+  update: function (_delta: number) {
     // Game logic updates handled by engine components
     // Day/night cycle, weather, NPC AI, wildlife behavior all automatic
   },
-  
-  render: function() {
+
+  render: function () {
     // Rendering handled by Nova Engine
     // LOD system, frustum culling, shadow mapping all automatic
-  }
+  },
 };

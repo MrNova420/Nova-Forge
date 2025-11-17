@@ -262,7 +262,7 @@ const sceneSlice = createSlice({
       }
     },
 
-    loadScene: (state, action: PayloadAction<SceneState>) => {
+    loadScene: (_state, action: PayloadAction<SceneState>) => {
       return { ...action.payload, isDirty: false, lastSaved: Date.now() };
     },
 
