@@ -27,11 +27,11 @@ import { UnifiedNavigation } from '../ui/UnifiedNavigation';
 import { UnifiedTopBar } from '../ui/UnifiedTopBar';
 import { NotificationCenter } from '../ui/NotificationCenter';
 
-// Import all integrated modules
-import { HubModule } from '../modules/HubModule';
-import { EditorModule } from '../modules/EditorModule';
-import { LauncherModule } from '../modules/LauncherModule';
-import { MultiplayerModule } from '../modules/MultiplayerModule';
+// Import all integrated modules - USING V2 REDESIGNED VERSIONS
+import { HubModuleV2 as HubModule } from '../modules/HubModuleV2';
+import { EditorModuleV2 as EditorModule } from '../modules/EditorModuleV2';
+import { LauncherModuleV2 as LauncherModule } from '../modules/LauncherModuleV2';
+import { MultiplayerModuleV2 as MultiplayerModule } from '../modules/MultiplayerModuleV2';
 import { SocialModule } from '../modules/SocialModule';
 import { SettingsModule } from '../modules/SettingsModule';
 import { LoginPage } from '../pages/LoginPage';
@@ -226,33 +226,18 @@ const UnifiedAppContent: React.FC<{ platform: UnifiedPlatformCore }> = ({
             {/* Protected routes - require login */}
             {isLoggedIn ? (
               <>
-                {/* Hub - Game Discovery */}
-                <Route
-                  path="/hub/*"
-                  element={<HubModule platform={platform} />}
-                />
+                {/* Hub - Game Discovery - V2 REDESIGNED */}
+                <Route path="/hub/*" element={<HubModule />} />
 
-                {/* Editor - Game Creation */}
-                <Route
-                  path="/editor/*"
-                  element={<EditorModule platform={platform} />}
-                />
+                {/* Editor - Game Creation - V2 REDESIGNED */}
+                <Route path="/editor/*" element={<EditorModule />} />
 
-                {/* Launcher - Game Playing */}
-                <Route
-                  path="/launcher/*"
-                  element={<LauncherModule platform={platform} />}
-                />
-                <Route
-                  path="/play/:gameId"
-                  element={<LauncherModule platform={platform} />}
-                />
+                {/* Launcher - Game Playing - V2 REDESIGNED */}
+                <Route path="/launcher/*" element={<LauncherModule />} />
+                <Route path="/play/:gameId" element={<LauncherModule />} />
 
-                {/* Multiplayer - Online Features */}
-                <Route
-                  path="/multiplayer/*"
-                  element={<MultiplayerModule platform={platform} />}
-                />
+                {/* Multiplayer - Online Features - V2 REDESIGNED */}
+                <Route path="/multiplayer/*" element={<MultiplayerModule />} />
 
                 {/* Social - Friends & Achievements */}
                 <Route

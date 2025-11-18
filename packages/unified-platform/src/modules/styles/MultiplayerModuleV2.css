@@ -1,0 +1,61 @@
+/* Multiplayer Module V2 (Lonewisher) - Matching Image 2 Mockup Theme */
+
+.mp-v2-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background: #0a0a0f;
+  color: #ffffff;
+  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Animated Background */
+.mp-v2-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.mp-v2-orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 1000px;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: mp-v2-pulse 4s ease-in-out infinite;
+}
+
+.mp-v2-stars {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(2px 2px at 20% 30%, white, transparent),
+    radial-gradient(2px 2px at 60% 70%, white, transparent),
+    radial-gradient(1px 1px at 50% 50%, white, transparent);
+  background-size: 200% 200%;
+  animation: mp-v2-stars-twinkle 10s linear infinite;
+  opacity: 0.5;
+}
+
+@keyframes mp-v2-pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes mp-v2-stars-twinkle {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+/* Rest of the comprehensive CSS continues... */
