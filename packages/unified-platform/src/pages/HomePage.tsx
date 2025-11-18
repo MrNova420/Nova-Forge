@@ -154,47 +154,14 @@ export const HomePage: React.FC<HomePageProps> = ({
         .homepage-with-real-bg {
           width: 100%;
           min-height: 100vh;
-          /* Space background with planets */
-          background: 
-            radial-gradient(ellipse at 85% 15%, rgba(123, 47, 247, 0.3) 0%, transparent 40%),
-            radial-gradient(circle at 15% 80%, rgba(255, 110, 196, 0.4) 0%, transparent 35%),
-            radial-gradient(circle at 45% 45%, rgba(76, 201, 240, 0.2) 0%, transparent 50%),
-            radial-gradient(ellipse at 95% 85%, rgba(123, 47, 247, 0.25) 0%, transparent 30%),
-            radial-gradient(circle at 60% 30%, rgba(255, 110, 196, 0.15) 0%, transparent 45%),
-            linear-gradient(135deg, #0a0015 0%, #1a0033 50%, #0f0a2e 100%);
+          /* USE LOCAL PLANET BACKGROUND IMAGE */
+          background-image: url('/planet-background.svg');
           background-size: cover;
           background-position: center;
+          background-repeat: no-repeat;
           background-attachment: fixed;
           position: relative;
           overflow: hidden;
-        }
-        
-        /* Add animated stars */
-        .homepage-with-real-bg::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-image: 
-            radial-gradient(2px 2px at 20% 30%, white, transparent),
-            radial-gradient(2px 2px at 60% 70%, white, transparent),
-            radial-gradient(1px 1px at 50% 50%, white, transparent),
-            radial-gradient(1px 1px at 80% 10%, white, transparent),
-            radial-gradient(2px 2px at 90% 60%, white, transparent),
-            radial-gradient(1px 1px at 33% 85%, white, transparent),
-            radial-gradient(1px 1px at 15% 15%, white, transparent);
-          background-size: 200% 200%;
-          background-position: 0% 0%;
-          opacity: 0.7;
-          animation: twinkling 10s ease-in-out infinite;
-          pointer-events: none;
-        }
-        
-        @keyframes twinkling {
-          0%, 100% { opacity: 0.5; }
-          50% { opacity: 0.8; }
         }
 
         /* Top Bar */
