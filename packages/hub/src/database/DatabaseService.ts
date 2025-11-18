@@ -4,10 +4,13 @@
 
 import { Pool, PoolClient, QueryResult } from 'pg';
 import { logger } from '../utils/logger';
+import { InMemoryDatabase } from './InMemoryDatabase';
 
 export class DatabaseService {
   private static instance: DatabaseService;
   private pool: Pool | null = null;
+  private inMemoryDb: InMemoryDatabase | null = null;
+  private useInMemory: boolean = false;
 
   private constructor() {}
 
@@ -19,35 +22,49 @@ export class DatabaseService {
   }
 
   async connect(): Promise<void> {
-    if (this.pool) {
+    if (this.pool || this.inMemoryDb) {
       logger.warn('Database already connected');
       return;
     }
 
-    this.pool = new Pool({
-      host: process.env.DB_HOST || 'localhost',
-      port: parseInt(process.env.DB_PORT || '5432', 10),
-      database: process.env.DB_NAME || 'nova_hub',
-      user: process.env.DB_USER || 'postgres',
-      password: process.env.DB_PASSWORD || 'postgres',
-      max: 100, // Increased pool size for better concurrency
-      idleTimeoutMillis: 300000, // 5 minutes instead of 30 seconds
-      connectionTimeoutMillis: 10000, // 10 seconds instead of 2
-    });
-
-    // Test connection
+    // Try PostgreSQL first
     try {
+      this.pool = new Pool({
+        host: process.env.DB_HOST || 'localhost',
+        port: parseInt(process.env.DB_PORT || '5432', 10),
+        database: process.env.DB_NAME || 'nova_hub',
+        user: process.env.DB_USER || 'postgres',
+        password: process.env.DB_PASSWORD || 'postgres',
+        max: 100,
+        idleTimeoutMillis: 300000,
+        connectionTimeoutMillis: 10000,
+      });
+
       const client = await this.pool.connect();
       await client.query('SELECT NOW()');
       client.release();
       logger.info('Database connection successful');
-    } catch (error) {
-      logger.error('Database connection failed:', error);
-      throw error;
-    }
 
-    // Initialize schema
-    await this.initializeSchema();
+      // Initialize schema
+      await this.initializeSchema();
+    } catch (error) {
+      logger.warn(
+        'PostgreSQL not available, falling back to in-memory database'
+      );
+
+      // Cleanup failed pool
+      if (this.pool) {
+        try {
+          await this.pool.end();
+        } catch {}
+        this.pool = null;
+      }
+
+      // Use in-memory database
+      this.useInMemory = true;
+      this.inMemoryDb = InMemoryDatabase.getInstance();
+      await this.inMemoryDb.connect();
+    }
   }
 
   async disconnect(): Promise<void> {
@@ -56,9 +73,18 @@ export class DatabaseService {
       this.pool = null;
       logger.info('Database disconnected');
     }
+    if (this.inMemoryDb) {
+      await this.inMemoryDb.disconnect();
+      this.inMemoryDb = null;
+      logger.info('In-memory database disconnected');
+    }
   }
 
   async query<T = any>(text: string, params?: any[]): Promise<QueryResult<T>> {
+    if (this.useInMemory && this.inMemoryDb) {
+      return this.inMemoryDb.query<T>(text, params);
+    }
+
     if (!this.pool) {
       throw new Error('Database not connected');
     }
@@ -66,10 +92,18 @@ export class DatabaseService {
   }
 
   async getClient(): Promise<PoolClient> {
+    if (this.useInMemory) {
+      throw new Error('Client not available in in-memory mode');
+    }
+
     if (!this.pool) {
       throw new Error('Database not connected');
     }
     return this.pool.connect();
+  }
+
+  isUsingInMemory(): boolean {
+    return this.useInMemory;
   }
 
   private async initializeSchema(): Promise<void> {

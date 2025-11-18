@@ -7,6 +7,7 @@ import {
 } from './Application';
 import { World } from '../ecs/World';
 import { Entity } from '../ecs/Entity';
+import { GameEntity } from './GameEntity';
 
 /**
  * Configuration options for the engine
@@ -208,10 +209,11 @@ export class Engine {
   /**
    * Creates a new entity in the world
    * @param name - Optional name for the entity
-   * @returns The created entity
+   * @returns The created game entity with convenient methods
    */
-  createEntity(name?: string): Entity {
-    return this._world.createEntity(name);
+  createEntity(name?: string): GameEntity {
+    const entity = this._world.createEntity(name);
+    return new GameEntity(entity, this._world);
   }
 
   /**
