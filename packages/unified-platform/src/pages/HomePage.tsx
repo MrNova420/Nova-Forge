@@ -1,592 +1,427 @@
 /**
- * Nova Engine - Space-Themed Homepage
- *
- * Interactive planet-based navigation system
- * - Central large planet (reserved for future feature)
- * - Smaller orbiting planets as navigation buttons
- * - Top-right planet with ring → Editor
- * - Bottom-left large planet with ring → Hub/Game Library
- * - Other planets for additional features
+ * NOVA ENGINE - Homepage
+ * Uses the ACTUAL planet background image provided by user
+ * Invisible clickable hotspots positioned over the real planets
  */
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { UnifiedPlatformCore } from '../core/UnifiedPlatformCore';
 
 interface HomePageProps {
-  platform?: UnifiedPlatformCore;
+  platform: UnifiedPlatformCore;
   isLoggedIn: boolean;
   onNavigate: (path: string) => void;
 }
 
-interface PlanetButton {
-  id: string;
-  label: string;
-  path: string;
-  position: { x: string; y: string };
-  size: string;
-  hasRing?: boolean;
-  ringRotation?: string;
-  description: string;
-}
-
 export const HomePage: React.FC<HomePageProps> = ({
+  platform: _platform,
   isLoggedIn,
   onNavigate,
 }) => {
-  const navigate = useNavigate();
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
-  const [showLoginPrompt, setShowLoginPrompt] = useState(false);
 
-  // Define planet button positions matching the background image
-  const planets: PlanetButton[] = [
+  // Clickable hotspot areas positioned over the actual planets in the background image
+  // These are invisible overlays that become visible on hover
+  const planetHotspots = [
     {
       id: 'editor',
-      label: 'Editor',
-      path: '/editor',
-      position: { x: '75%', y: '15%' },
-      size: '140px',
-      hasRing: true,
-      ringRotation: '25deg',
+      name: 'Editor',
       description: 'Create and design your games',
+      path: '/editor',
+      // Top-right planet with ring (as you specified)
+      position: { top: '8%', right: '8%', width: '180px', height: '180px' },
     },
     {
       id: 'hub',
-      label: 'Game Hub',
-      path: '/hub',
-      position: { x: '18%', y: '70%' },
-      size: '160px',
-      hasRing: true,
-      ringRotation: '-15deg',
+      name: 'Game Hub',
       description: 'Browse and discover games',
+      path: '/hub',
+      // Bottom-left large planet with ring (as you specified)
+      position: { bottom: '15%', left: '8%', width: '200px', height: '200px' },
     },
     {
       id: 'multiplayer',
-      label: 'Multiplayer',
-      path: '/multiplayer',
-      position: { x: '15%', y: '12%' },
-      size: '90px',
+      name: 'Multiplayer',
       description: 'Play online with friends',
+      path: '/multiplayer',
+      // Top-left smaller planet
+      position: { top: '18%', left: '12%', width: '120px', height: '120px' },
     },
     {
       id: 'social',
-      label: 'Social',
-      path: '/social',
-      position: { x: '85%', y: '55%' },
-      size: '100px',
+      name: 'Social',
       description: 'Connect with the community',
+      path: '/social',
+      // Right side planet
+      position: { top: '38%', right: '12%', width: '130px', height: '130px' },
     },
     {
       id: 'settings',
-      label: 'Settings',
-      path: '/settings',
-      position: { x: '82%', y: '82%' },
-      size: '95px',
+      name: 'Settings',
       description: 'Configure your experience',
+      path: '/settings',
+      // Bottom right planet
+      position: {
+        bottom: '28%',
+        right: '15%',
+        width: '110px',
+        height: '110px',
+      },
     },
     {
       id: 'launcher',
-      label: 'My Games',
-      path: '/launcher',
-      position: { x: '45%', y: '85%' },
-      size: '85px',
+      name: 'My Games',
       description: 'Your game library',
+      path: '/launcher',
+      // Bottom center-right planet
+      position: {
+        bottom: '20%',
+        right: '35%',
+        width: '100px',
+        height: '100px',
+      },
     },
   ];
 
-  const handlePlanetClick = (planet: PlanetButton) => {
+  const handlePlanetClick = (path: string) => {
     if (!isLoggedIn) {
-      setShowLoginPrompt(true);
-      setTimeout(() => setShowLoginPrompt(false), 3000);
+      alert('Please Login or Sign Up to access features');
       return;
     }
-
-    navigate(planet.path);
-    onNavigate(planet.path);
-  };
-
-  const handleAuthClick = (type: 'login' | 'register') => {
-    navigate(`/${type}`);
+    onNavigate(path);
   };
 
   return (
-    <div className="homepage-container">
-      {/* Header with Auth Buttons */}
-      <header className="homepage-header">
-        <div className="logo-section">
-          <h1 className="nova-logo">NOVA</h1>
-          <span className="tagline">ENGINE</span>
+    <div className="homepage-with-real-bg">
+      {/* Top Bar */}
+      <div className="home-topbar">
+        <div className="home-logo">
+          <span className="logo-nova">NOVA</span>
+          <span className="logo-engine">ENGINE</span>
         </div>
-
         {!isLoggedIn && (
-          <div className="auth-buttons">
+          <div className="home-auth-btns">
             <button
-              className="btn-login"
-              onClick={() => handleAuthClick('login')}
+              className="home-login-btn"
+              onClick={() => onNavigate('/login')}
             >
               Login
             </button>
             <button
-              className="btn-signup"
-              onClick={() => handleAuthClick('register')}
+              className="home-signup-btn"
+              onClick={() => onNavigate('/register')}
             >
               Sign Up
             </button>
           </div>
         )}
-      </header>
+      </div>
 
-      {/* Space Background */}
-      <div className="space-background">
-        {/* Animated stars */}
-        <div className="stars"></div>
-        <div className="stars2"></div>
-        <div className="stars3"></div>
-
-        {/* Central large planet (reserved for future feature) */}
-        <div className="central-planet">
-          <div className="planet-glow"></div>
-          <div className="planet-surface"></div>
-          <div className="planet-rings"></div>
-          <div className="planet-label">Coming Soon</div>
-        </div>
-
-        {/* Interactive planet buttons */}
-        {planets.map((planet) => (
+      {/* Invisible clickable planet hotspots over the real background image */}
+      <div className="planet-hotspots-container">
+        {planetHotspots.map((planet) => (
           <div
             key={planet.id}
-            className={`planet-button ${hoveredPlanet === planet.id ? 'hovered' : ''}`}
-            style={{
-              left: planet.position.x,
-              top: planet.position.y,
-              width: planet.size,
-              height: planet.size,
-            }}
+            className={`planet-hotspot ${hoveredPlanet === planet.id ? 'hovered' : ''} ${!isLoggedIn ? 'locked' : ''}`}
+            style={planet.position}
+            onClick={() => handlePlanetClick(planet.path)}
             onMouseEnter={() => setHoveredPlanet(planet.id)}
             onMouseLeave={() => setHoveredPlanet(null)}
-            onClick={() => handlePlanetClick(planet)}
           >
-            <div className="planet-orb">
-              {planet.hasRing && (
-                <div
-                  className="planet-ring"
-                  style={{
-                    transform: `rotateX(75deg) rotateZ(${planet.ringRotation})`,
-                  }}
-                ></div>
+            {/* Tooltip that appears on hover */}
+            <div className="planet-tooltip">
+              <h3>{planet.name}</h3>
+              <p>{planet.description}</p>
+              {!isLoggedIn && (
+                <span className="lock-badge">🔒 Login Required</span>
               )}
             </div>
-            <div className="planet-info">
-              <div className="planet-name">{planet.label}</div>
-              <div className="planet-description">{planet.description}</div>
-            </div>
-            {!isLoggedIn && <div className="lock-indicator">🔒</div>}
+
+            {/* Visual indicator circle (subtle, only visible on hover) */}
+            <div className="hotspot-circle"></div>
           </div>
         ))}
 
-        {/* Login prompt overlay */}
-        {showLoginPrompt && (
-          <div className="login-prompt">
-            <div className="prompt-content">
-              <h3>🔒 Authentication Required</h3>
-              <p>Please log in or sign up to access this feature</p>
-              <div className="prompt-buttons">
-                <button onClick={() => handleAuthClick('login')}>Login</button>
-                <button onClick={() => handleAuthClick('register')}>
-                  Sign Up
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Central planet indicator */}
+        <div className="central-planet-indicator">
+          <span className="future-label">Coming Soon</span>
+        </div>
       </div>
 
+      {/* Login prompt for unauthenticated users */}
+      {!isLoggedIn && (
+        <div className="login-reminder">
+          <p>👆 Login or Sign Up to explore all features</p>
+        </div>
+      )}
+
       <style>{`
-        .homepage-container {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
+        .homepage-with-real-bg {
+          width: 100%;
+          min-height: 100vh;
+          /* USE THE ACTUAL USER-PROVIDED BACKGROUND IMAGE */
+          background-image: url('https://github.com/user-attachments/assets/3c8547af-d2a1-4e29-ad37-0aeaed749ed1');
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          position: relative;
           overflow: hidden;
-          background: #000;
         }
 
-        .homepage-header {
+        /* Top Bar */
+        .home-topbar {
           position: absolute;
           top: 0;
           left: 0;
           right: 0;
+          height: 80px;
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 30px 50px;
+          padding: 0 40px;
+          background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, transparent 100%);
           z-index: 100;
-          background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
         }
 
-        .logo-section {
+        .home-logo {
           display: flex;
           align-items: baseline;
           gap: 10px;
         }
 
-        .nova-logo {
-          font-size: 48px;
+        .logo-nova {
+          font-size: 36px;
           font-weight: 900;
-          letter-spacing: 8px;
+          letter-spacing: 6px;
           background: linear-gradient(135deg, #ff6ec4 0%, #7b2ff7 50%, #4cc9f0 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          background-clip: text;
-          margin: 0;
-          text-shadow: 0 0 30px rgba(123, 47, 247, 0.5);
+          text-shadow: 0 0 20px rgba(123, 47, 247, 0.5);
         }
 
-        .tagline {
-          font-size: 20px;
+        .logo-engine {
+          font-size: 14px;
           font-weight: 300;
-          letter-spacing: 4px;
+          letter-spacing: 3px;
           color: #a0a0ff;
         }
 
-        .auth-buttons {
+        .home-auth-btns {
           display: flex;
           gap: 15px;
         }
 
-        .btn-login,
-        .btn-signup {
+        .home-login-btn,
+        .home-signup-btn {
           padding: 12px 30px;
-          font-size: 16px;
-          font-weight: 600;
-          border: none;
           border-radius: 25px;
+          font-weight: 700;
+          font-size: 15px;
           cursor: pointer;
           transition: all 0.3s ease;
-          text-transform: uppercase;
-          letter-spacing: 1px;
+          border: none;
         }
 
-        .btn-login {
-          background: transparent;
+        .home-login-btn {
+          background: rgba(123, 47, 247, 0.3);
+          border: 2px solid rgba(123, 47, 247, 0.6);
           color: white;
-          border: 2px solid rgba(123, 47, 247, 0.8);
         }
 
-        .btn-login:hover {
-          background: rgba(123, 47, 247, 0.2);
-          box-shadow: 0 0 20px rgba(123, 47, 247, 0.5);
+        .home-login-btn:hover {
+          background: rgba(123, 47, 247, 0.5);
+          transform: translateY(-2px);
         }
 
-        .btn-signup {
+        .home-signup-btn {
           background: linear-gradient(135deg, #7b2ff7 0%, #ff6ec4 100%);
           color: white;
-          box-shadow: 0 4px 15px rgba(123, 47, 247, 0.4);
         }
 
-        .btn-signup:hover {
+        .home-signup-btn:hover {
           transform: translateY(-2px);
-          box-shadow: 0 6px 25px rgba(123, 47, 247, 0.6);
+          box-shadow: 0 8px 25px rgba(123, 47, 247, 0.4);
         }
 
-        /* Space Background */
-        .space-background {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          background: radial-gradient(ellipse at center, #1a0033 0%, #000000 70%);
-        }
-
-        /* Animated stars */
-        .stars,
-        .stars2,
-        .stars3 {
+        /* Planet Hotspots Container */
+        .planet-hotspots-container {
           position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background: transparent;
-        }
-
-        .stars {
-          background-image: 
-            radial-gradient(2px 2px at 20px 30px, white, transparent),
-            radial-gradient(2px 2px at 60px 70px, white, transparent),
-            radial-gradient(1px 1px at 50px 50px, white, transparent),
-            radial-gradient(1px 1px at 130px 80px, white, transparent),
-            radial-gradient(2px 2px at 90px 10px, white, transparent);
-          background-size: 200px 200px;
-          animation: twinkle 3s infinite;
-        }
-
-        .stars2 {
-          background-image: 
-            radial-gradient(1px 1px at 100px 120px, rgba(255,255,255,0.5), transparent),
-            radial-gradient(1px 1px at 150px 90px, rgba(255,255,255,0.5), transparent);
-          background-size: 250px 250px;
-          animation: twinkle 4s infinite;
-        }
-
-        .stars3 {
-          background-image: 
-            radial-gradient(1px 1px at 75px 200px, rgba(255,255,255,0.3), transparent),
-            radial-gradient(1px 1px at 180px 150px, rgba(255,255,255,0.3), transparent);
-          background-size: 300px 300px;
-          animation: twinkle 5s infinite;
-        }
-
-        @keyframes twinkle {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
-        }
-
-        /* Central Planet */
-        .central-planet {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          transform: translate(-50%, -50%);
-          width: 350px;
-          height: 350px;
-          z-index: 1;
-        }
-
-        .planet-glow {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(123,47,247,0.3) 0%, transparent 70%);
-          animation: pulse 4s ease-in-out infinite;
-        }
-
-        .planet-surface {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-          background: 
-            radial-gradient(circle at 30% 30%, #ff6ec4 0%, #7b2ff7 40%, #4a148c 100%);
-          box-shadow: 
-            inset -30px -30px 60px rgba(0,0,0,0.5),
-            0 0 80px rgba(123,47,247,0.6);
-          animation: rotate 60s linear infinite;
-        }
-
-        .planet-rings {
-          position: absolute;
-          width: 500px;
-          height: 500px;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%) rotateX(75deg);
-          border: 3px solid rgba(76, 201, 240, 0.3);
-          border-radius: 50%;
-          box-shadow: 
-            0 0 20px rgba(76, 201, 240, 0.3),
-            inset 0 0 20px rgba(76, 201, 240, 0.2);
-        }
-
-        .planet-label {
-          position: absolute;
-          bottom: -50px;
-          left: 50%;
-          transform: translateX(-50%);
-          color: rgba(255, 255, 255, 0.7);
-          font-size: 18px;
-          font-weight: 600;
-          letter-spacing: 2px;
-          text-align: center;
-        }
-
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); opacity: 0.3; }
-          50% { transform: scale(1.1); opacity: 0.5; }
-        }
-
-        @keyframes rotate {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-
-        /* Planet Buttons */
-        .planet-button {
-          position: absolute;
-          transform: translate(-50%, -50%);
-          cursor: pointer;
-          transition: all 0.4s ease;
-          z-index: 10;
-        }
-
-        .planet-button:hover {
-          transform: translate(-50%, -50%) scale(1.15);
-          z-index: 20;
-        }
-
-        .planet-orb {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          border-radius: 50%;
-          background: radial-gradient(circle at 35% 35%, #d946ef 0%, #7b2ff7 50%, #3730a3 100%);
-          box-shadow: 
-            inset -10px -10px 30px rgba(0,0,0,0.4),
-            0 0 40px rgba(123,47,247,0.4);
-          animation: float 6s ease-in-out infinite;
-        }
-
-        .planet-button:nth-child(1) .planet-orb { animation-delay: 0s; }
-        .planet-button:nth-child(2) .planet-orb { animation-delay: 1s; }
-        .planet-button:nth-child(3) .planet-orb { animation-delay: 2s; }
-        .planet-button:nth-child(4) .planet-orb { animation-delay: 3s; }
-        .planet-button:nth-child(5) .planet-orb { animation-delay: 4s; }
-        .planet-button:nth-child(6) .planet-orb { animation-delay: 5s; }
-
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-
-        .planet-ring {
-          position: absolute;
-          width: 150%;
-          height: 150%;
-          top: 50%;
-          left: 50%;
-          transform-origin: center;
-          border: 2px solid rgba(76, 201, 240, 0.4);
-          border-radius: 50%;
-          box-shadow: 
-            0 0 15px rgba(76, 201, 240, 0.3),
-            inset 0 0 15px rgba(76, 201, 240, 0.2);
-        }
-
-        .planet-info {
-          position: absolute;
-          bottom: -80px;
-          left: 50%;
-          transform: translateX(-50%);
-          text-align: center;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          pointer-events: none;
-          width: 200px;
-        }
-
-        .planet-button.hovered .planet-info {
-          opacity: 1;
-        }
-
-        .planet-name {
-          font-size: 22px;
-          font-weight: 700;
-          color: #fff;
-          margin-bottom: 8px;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          text-shadow: 0 0 10px rgba(123,47,247,0.8);
-        }
-
-        .planet-description {
-          font-size: 14px;
-          color: rgba(255, 255, 255, 0.7);
-          line-height: 1.4;
-        }
-
-        .lock-indicator {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          font-size: 40px;
-          pointer-events: none;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .planet-button:hover .lock-indicator {
-          opacity: 0.9;
-        }
-
-        /* Login Prompt */
-        .login-prompt {
-          position: fixed;
           top: 0;
           left: 0;
           right: 0;
           bottom: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: rgba(0, 0, 0, 0.85);
-          z-index: 1000;
-          animation: fadeIn 0.3s ease;
         }
 
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
+        /* Individual Planet Hotspot (invisible clickable area) */
+        .planet-hotspot {
+          position: absolute;
+          cursor: pointer;
+          border-radius: 50%;
+          transition: all 0.3s ease;
+          z-index: 10;
         }
 
-        .prompt-content {
-          background: linear-gradient(135deg, rgba(26,0,51,0.95) 0%, rgba(58,12,88,0.95) 100%);
-          padding: 50px;
-          border-radius: 20px;
+        .planet-hotspot.locked {
+          cursor: not-allowed;
+        }
+
+        /* Subtle circle indicator (only visible on hover) */
+        .hotspot-circle {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          border: 3px solid transparent;
+          transition: all 0.3s ease;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+
+        .planet-hotspot:hover .hotspot-circle {
+          border-color: rgba(123, 47, 247, 0.6);
+          box-shadow: 0 0 30px rgba(123, 47, 247, 0.8), inset 0 0 20px rgba(123, 47, 247, 0.3);
+          animation: pulse-ring 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-ring {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: scale(1.05);
+            opacity: 0.8;
+          }
+        }
+
+        /* Tooltip that appears on hover */
+        .planet-tooltip {
+          position: absolute;
+          bottom: calc(100% + 15px);
+          left: 50%;
+          transform: translateX(-50%) translateY(10px);
+          background: linear-gradient(135deg, rgba(26,0,51,0.98) 0%, rgba(58,12,88,0.98) 100%);
+          border: 2px solid rgba(123, 47, 247, 0.6);
+          border-radius: 16px;
+          padding: 20px 25px;
+          min-width: 250px;
           text-align: center;
-          border: 2px solid rgba(123,47,247,0.5);
-          box-shadow: 0 0 50px rgba(123,47,247,0.5);
-          max-width: 500px;
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(10px);
+          box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+          pointer-events: none;
+          z-index: 100;
         }
 
-        .prompt-content h3 {
-          font-size: 32px;
-          margin: 0 0 20px 0;
-          background: linear-gradient(135deg, #ff6ec4 0%, #7b2ff7 100%);
+        .planet-hotspot:hover .planet-tooltip {
+          opacity: 1;
+          visibility: visible;
+          transform: translateX(-50%) translateY(0);
+        }
+
+        .planet-tooltip h3 {
+          margin: 0 0 8px 0;
+          font-size: 20px;
+          font-weight: 700;
+          color: white;
+          background: linear-gradient(135deg, #ff6ec4 0%, #4cc9f0 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          background-clip: text;
         }
 
-        .prompt-content p {
-          font-size: 18px;
+        .planet-tooltip p {
+          margin: 0 0 10px 0;
+          font-size: 14px;
           color: rgba(255, 255, 255, 0.8);
-          margin: 0 0 30px 0;
         }
 
-        .prompt-buttons {
-          display: flex;
-          gap: 20px;
-          justify-content: center;
+        .lock-badge {
+          display: inline-block;
+          padding: 6px 14px;
+          background: rgba(239, 68, 68, 0.3);
+          border: 1px solid rgba(239, 68, 68, 0.6);
+          border-radius: 20px;
+          font-size: 13px;
+          color: #ef4444;
+          font-weight: 600;
         }
 
-        .prompt-buttons button {
-          padding: 15px 40px;
+        /* Central Planet Indicator */
+        .central-planet-indicator {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          text-align: center;
+          pointer-events: none;
+        }
+
+        .future-label {
+          display: inline-block;
+          padding: 12px 30px;
+          background: linear-gradient(135deg, rgba(26,0,51,0.9) 0%, rgba(58,12,88,0.9) 100%);
+          border: 2px solid rgba(123, 47, 247, 0.5);
+          border-radius: 25px;
+          color: rgba(255, 255, 255, 0.7);
           font-size: 16px;
           font-weight: 600;
-          border: none;
-          border-radius: 25px;
-          cursor: pointer;
-          background: linear-gradient(135deg, #7b2ff7 0%, #ff6ec4 100%);
+          letter-spacing: 2px;
+          backdrop-filter: blur(10px);
+          box-shadow: 0 8px 32px rgba(123, 47, 247, 0.3);
+        }
+
+        /* Login Reminder */
+        .login-reminder {
+          position: absolute;
+          bottom: 40px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: linear-gradient(135deg, rgba(123, 47, 247, 0.95) 0%, rgba(255, 110, 196, 0.95) 100%);
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-radius: 30px;
+          padding: 15px 40px;
+          backdrop-filter: blur(10px);
+          box-shadow: 0 10px 40px rgba(123, 47, 247, 0.5);
+          animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+          0%, 100% { transform: translateX(-50%) translateY(0); }
+          50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .login-reminder p {
+          margin: 0;
           color: white;
-          transition: all 0.3s ease;
-          text-transform: uppercase;
-          letter-spacing: 1px;
+          font-size: 16px;
+          font-weight: 600;
+          text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
-        .prompt-buttons button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 25px rgba(123, 47, 247, 0.6);
-        }
-
-        /* Responsive Design */
         @media (max-width: 768px) {
-          .nova-logo { font-size: 36px; }
-          .tagline { font-size: 16px; }
-          .homepage-header { padding: 20px 30px; }
-          .central-planet { width: 250px; height: 250px; }
-          .planet-button { font-size: 12px; }
+          .home-topbar {
+            padding: 0 20px;
+          }
+
+          .logo-nova {
+            font-size: 28px;
+          }
+
+          .planet-tooltip {
+            min-width: 200px;
+            padding: 15px 20px;
+          }
+
+          .planet-tooltip h3 {
+            font-size: 18px;
+          }
+
+          .planet-tooltip p {
+            font-size: 13px;
+          }
         }
       `}</style>
     </div>
