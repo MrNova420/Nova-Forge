@@ -123,13 +123,13 @@ router.get(
         [id]
       );
 
-      res.json({
+      return res.json({
         ...lobby.rows[0],
         players: players.rows,
       });
     } catch (error) {
       console.error('Error fetching lobby details:', error);
-      res.status(500).json({ error: 'Failed to fetch lobby details' });
+      return res.status(500).json({ error: 'Failed to fetch lobby details' });
     }
   }
 );
@@ -176,10 +176,10 @@ router.post(
         [id, user_id]
       );
 
-      res.json({ message: 'Joined lobby successfully' });
+      return res.json({ message: 'Joined lobby successfully' });
     } catch (error) {
       console.error('Error joining lobby:', error);
-      res.status(500).json({ error: 'Failed to join lobby' });
+      return res.status(500).json({ error: 'Failed to join lobby' });
     }
   }
 );
@@ -237,10 +237,10 @@ router.delete(
           .json({ error: 'Not authorized to delete this lobby' });
       }
 
-      res.json({ message: 'Lobby deleted successfully' });
+      return res.json({ message: 'Lobby deleted successfully' });
     } catch (error) {
       console.error('Error deleting lobby:', error);
-      res.status(500).json({ error: 'Failed to delete lobby' });
+      return res.status(500).json({ error: 'Failed to delete lobby' });
     }
   }
 );

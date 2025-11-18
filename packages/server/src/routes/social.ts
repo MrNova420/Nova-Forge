@@ -35,10 +35,10 @@ router.get('/profile/:id', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.json(result.rows[0]);
+    return res.json(result.rows[0]);
   } catch (error) {
     console.error('Error fetching profile:', error);
-    res.status(500).json({ error: 'Failed to fetch profile' });
+    return res.status(500).json({ error: 'Failed to fetch profile' });
   }
 });
 
@@ -113,10 +113,10 @@ router.post('/friends/:id', authMiddleware, async (req: any, res: Response) => {
       [user_id, friend_id]
     );
 
-    res.json({ message: 'Friend request sent' });
+    return res.json({ message: 'Friend request sent' });
   } catch (error) {
     console.error('Error sending friend request:', error);
-    res.status(500).json({ error: 'Failed to send friend request' });
+    return res.status(500).json({ error: 'Failed to send friend request' });
   }
 });
 
@@ -195,10 +195,10 @@ router.post(
         [user_id]
       );
 
-      res.json({ message: 'Achievement unlocked!' });
+      return res.json({ message: 'Achievement unlocked!' });
     } catch (error) {
       console.error('Error unlocking achievement:', error);
-      res.status(500).json({ error: 'Failed to unlock achievement' });
+      return res.status(500).json({ error: 'Failed to unlock achievement' });
     }
   }
 );

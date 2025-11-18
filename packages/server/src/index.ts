@@ -46,8 +46,12 @@ app.use('/api/social', socialRoutes);
 app.use('/api/multiplayer', multiplayerRoutes);
 
 // Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString(), websocket: 'enabled' });
+app.get('/health', (_req, res) => {
+  res.json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    websocket: 'enabled',
+  });
 });
 
 // WebSocket connection handling

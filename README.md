@@ -314,6 +314,41 @@ npm run type-check       # TypeScript check
 
 ---
 
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**Issue: npm install fails with bcrypt/native module errors**
+
+This typically happens on non-standard environments (Android/Termux, ARM systems, etc.).
+
+**Solution**: The project uses `bcryptjs` (pure JavaScript) to avoid native dependencies. Make sure you have the latest code:
+
+```bash
+git pull
+npm run clean:all
+npm install
+```
+
+**Issue: "command not found" errors (concurrently, vite, etc.)**
+
+**Solution**: Make sure all dependencies are installed:
+
+```bash
+rm -rf node_modules package-lock.json
+npm install
+```
+
+**Issue: Build fails on desktop launcher package**
+
+The desktop launcher requires system libraries (GTK, GLib) that may not be available on all systems.
+
+**Solution**: The build will continue even if the desktop launcher fails. For systems without these libraries, the other packages will still build successfully.
+
+**Running on Android/Termux**: See our dedicated [Android/Termux Setup Guide](docs/ANDROID_TERMUX_SETUP.md) for detailed instructions.
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

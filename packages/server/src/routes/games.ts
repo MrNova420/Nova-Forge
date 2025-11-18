@@ -80,10 +80,10 @@ router.get('/:id', async (req: Request, res: Response) => {
       return res.status(404).json({ error: 'Game not found' });
     }
 
-    res.json(result.rows[0]);
+    return res.json(result.rows[0]);
   } catch (error) {
     console.error('Error fetching game:', error);
-    res.status(500).json({ error: 'Failed to fetch game' });
+    return res.status(500).json({ error: 'Failed to fetch game' });
   }
 });
 
@@ -134,10 +134,10 @@ router.put('/:id', authMiddleware, async (req: any, res: Response) => {
       [title, description, category, thumbnail, published, id, creator_id]
     );
 
-    res.json(result.rows[0]);
+    return res.json(result.rows[0]);
   } catch (error) {
     console.error('Error updating game:', error);
-    res.status(500).json({ error: 'Failed to update game' });
+    return res.status(500).json({ error: 'Failed to update game' });
   }
 });
 
@@ -158,10 +158,10 @@ router.delete('/:id', authMiddleware, async (req: any, res: Response) => {
         .json({ error: 'Not authorized to delete this game' });
     }
 
-    res.json({ message: 'Game deleted successfully' });
+    return res.json({ message: 'Game deleted successfully' });
   } catch (error) {
     console.error('Error deleting game:', error);
-    res.status(500).json({ error: 'Failed to delete game' });
+    return res.status(500).json({ error: 'Failed to delete game' });
   }
 });
 
@@ -202,10 +202,10 @@ router.post('/:id/rate', authMiddleware, async (req: any, res: Response) => {
       [id, user_id, rating]
     );
 
-    res.json({ message: 'Game rated successfully' });
+    return res.json({ message: 'Game rated successfully' });
   } catch (error) {
     console.error('Error rating game:', error);
-    res.status(500).json({ error: 'Failed to rate game' });
+    return res.status(500).json({ error: 'Failed to rate game' });
   }
 });
 
