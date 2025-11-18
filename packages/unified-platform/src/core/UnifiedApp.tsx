@@ -36,6 +36,7 @@ import { SocialModule } from '../modules/SocialModule';
 import { SettingsModule } from '../modules/SettingsModule';
 import { LoginPage } from '../pages/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage';
+import { HomePage } from '../pages/HomePage';
 
 // Inner component that has access to router hooks
 const UnifiedAppContent: React.FC<{ platform: UnifiedPlatformCore }> = ({
@@ -206,6 +207,16 @@ const UnifiedAppContent: React.FC<{ platform: UnifiedPlatformCore }> = ({
         <main className="unified-main-content">
           <Routes>
             {/* Public routes */}
+            <Route
+              path="/"
+              element={
+                <HomePage
+                  platform={platform}
+                  isLoggedIn={isLoggedIn}
+                  onNavigate={(path) => navigate(path)}
+                />
+              }
+            />
             <Route path="/login" element={<LoginPage platform={platform} />} />
             <Route
               path="/register"
@@ -254,12 +265,9 @@ const UnifiedAppContent: React.FC<{ platform: UnifiedPlatformCore }> = ({
                   path="/settings/*"
                   element={<SettingsModule platform={platform} />}
                 />
-
-                {/* Default redirect to hub */}
-                <Route path="/" element={<Navigate to="/hub" replace />} />
               </>
             ) : (
-              <Route path="*" element={<Navigate to="/login" replace />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             )}
           </Routes>
         </main>

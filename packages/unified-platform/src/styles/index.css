@@ -1,5 +1,6 @@
 /* Nova Engine Unified Platform Styles */
 /* Universal, Mobile-First, Responsive Design */
+/* Space Theme with Nova Engine Branding */
 
 * {
   margin: 0;
@@ -24,7 +25,9 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #1a1a1a;
+  
+  /* Space Theme Background */
+  background: radial-gradient(ellipse at center, #1a0033 0%, #000000 70%);
   color: #ffffff;
   
   /* Mobile optimizations */
@@ -37,6 +40,28 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+/* Nova Engine Brand Colors */
+:root {
+  --nova-primary: #7b2ff7;
+  --nova-secondary: #ff6ec4;
+  --nova-accent: #4cc9f0;
+  --nova-dark: #1a0033;
+  --nova-darker: #0a0015;
+  --nova-glow: rgba(123, 47, 247, 0.5);
+  --nova-pink-glow: rgba(255, 110, 196, 0.5);
+  --nova-blue-glow: rgba(76, 201, 240, 0.5);
+  
+  /* UI Colors */
+  --bg-primary: rgba(26, 0, 51, 0.95);
+  --bg-secondary: rgba(58, 12, 88, 0.95);
+  --bg-card: rgba(26, 0, 51, 0.8);
+  --border-color: rgba(123, 47, 247, 0.3);
+  --border-hover: rgba(123, 47, 247, 0.6);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
 }
 
 #root {
