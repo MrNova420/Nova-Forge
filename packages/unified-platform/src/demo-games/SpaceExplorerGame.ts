@@ -117,7 +117,7 @@ export const SpaceExplorerGame: DemoGame = {
   description:
     'Explore the vast universe in this epic 3D space adventure. Built with Nova Engine showcasing full 3D rendering, physics, and controls.',
   category: 'Action',
-  coverImage: '/demo-games/space-explorer-cover.jpg',
+  coverImage: '/demo-games/space-explorer-cover.svg',
   isDemo: true,
   rating: 0, // Real rating - starts at 0, updated from actual user reviews
   downloads: 0, // Real downloads - starts at 0, increments on each play

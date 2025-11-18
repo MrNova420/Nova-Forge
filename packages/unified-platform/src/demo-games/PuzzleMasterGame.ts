@@ -39,7 +39,7 @@ export const PuzzleMasterGame: DemoGame = {
   description:
     "Challenge your mind with hundreds of unique puzzles. Features advanced physics-based puzzles, pattern matching, and logic challenges. Built to showcase Nova Engine's 2D capabilities and game logic systems.",
   category: 'Puzzle',
-  coverImage: '/demo-games/puzzle-master-cover.jpg',
+  coverImage: '/demo-games/puzzle-master-cover.svg',
   isDemo: true,
   rating: 0, // Real rating - starts at 0, updated from actual user reviews
   downloads: 0, // Real downloads - starts at 0, increments on each play
