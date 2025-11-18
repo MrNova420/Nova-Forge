@@ -3,6 +3,7 @@
  */
 
 import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { UnifiedPlatformCore } from '../core/UnifiedPlatformCore';
 
 interface UnifiedNavigationProps {
@@ -13,25 +14,45 @@ interface UnifiedNavigationProps {
 
 export const UnifiedNavigation: React.FC<UnifiedNavigationProps> = ({
   platform: _platform,
-  currentMode,
+  currentMode: _currentMode,
   onModeChange,
 }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const navItems = [
-    { id: 'hub', label: 'Hub', icon: '🏠' },
-    { id: 'editor', label: 'Editor', icon: '🛠️' },
-    { id: 'launcher', label: 'Launcher', icon: '🎮' },
-    { id: 'multiplayer', label: 'Multiplayer', icon: '🌐' },
-    { id: 'social', label: 'Social', icon: '👥' },
-    { id: 'settings', label: 'Settings', icon: '⚙️' },
+    { id: 'hub', label: 'Hub', icon: '🏠', path: '/hub' },
+    { id: 'editor', label: 'Editor', icon: '🛠️', path: '/editor' },
+    { id: 'launcher', label: 'Launcher', icon: '🎮', path: '/launcher' },
+    {
+      id: 'multiplayer',
+      label: 'Multiplayer',
+      icon: '🌐',
+      path: '/multiplayer',
+    },
+    { id: 'social', label: 'Social', icon: '👥', path: '/social' },
+    { id: 'settings', label: 'Settings', icon: '⚙️', path: '/settings' },
   ];
+
+  const handleNavigation = (item: (typeof navItems)[0]) => {
+    // Navigate using React Router
+    navigate(item.path);
+    // Also update platform state
+    onModeChange(item.id);
+  };
+
+  // Determine active item from current route
+  const activeItem =
+    navItems.find((item) => location.pathname.startsWith(item.path))?.id ||
+    'hub';
 
   return (
     <nav className="unified-navigation">
       {navItems.map((item) => (
         <button
           key={item.id}
-          className={`nav-item ${currentMode === item.id ? 'active' : ''}`}
-          onClick={() => onModeChange(item.id)}
+          className={`nav-item ${activeItem === item.id ? 'active' : ''}`}
+          onClick={() => handleNavigation(item)}
           title={item.label}
         >
           <span className="icon">{item.icon}</span>
