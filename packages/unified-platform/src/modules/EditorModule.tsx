@@ -95,9 +95,398 @@ export const EditorModule: React.FC<EditorModuleProps> = ({ platform }) => {
   };
 
   const loadAssets = () => {
-    // Load available assets
+    // Load comprehensive built-in asset library
     setAssets([
-      { id: 'mat_default', name: 'Default Material', type: 'material' },
+      // Materials
+      {
+        id: 'mat_default',
+        name: 'Default Material',
+        type: 'material',
+        icon: '🎨',
+      },
+      { id: 'mat_metal', name: 'Brushed Metal', type: 'material', icon: '🎨' },
+      {
+        id: 'mat_glass',
+        name: 'Glass (Transparent)',
+        type: 'material',
+        icon: '🎨',
+      },
+      { id: 'mat_wood', name: 'Oak Wood', type: 'material', icon: '🎨' },
+      { id: 'mat_stone', name: 'Stone Texture', type: 'material', icon: '🎨' },
+      { id: 'mat_grass', name: 'Grass Ground', type: 'material', icon: '🎨' },
+      { id: 'mat_water', name: 'Water Surface', type: 'material', icon: '🎨' },
+      { id: 'mat_lava', name: 'Lava Flow', type: 'material', icon: '🎨' },
+      { id: 'mat_glow', name: 'Neon Glow', type: 'material', icon: '🎨' },
+      { id: 'mat_hologram', name: 'Holographic', type: 'material', icon: '🎨' },
+
+      // 3D Models - Characters
+      {
+        id: 'model_player',
+        name: 'Player Character',
+        type: 'model',
+        icon: '🧍',
+        category: 'Characters',
+      },
+      {
+        id: 'model_npc_male',
+        name: 'Male NPC',
+        type: 'model',
+        icon: '🧍',
+        category: 'Characters',
+      },
+      {
+        id: 'model_npc_female',
+        name: 'Female NPC',
+        type: 'model',
+        icon: '🧍',
+        category: 'Characters',
+      },
+      {
+        id: 'model_enemy_soldier',
+        name: 'Enemy Soldier',
+        type: 'model',
+        icon: '🧍',
+        category: 'Characters',
+      },
+      {
+        id: 'model_robot',
+        name: 'Robot',
+        type: 'model',
+        icon: '🤖',
+        category: 'Characters',
+      },
+      {
+        id: 'model_alien',
+        name: 'Alien Creature',
+        type: 'model',
+        icon: '👾',
+        category: 'Characters',
+      },
+
+      // 3D Models - Vehicles
+      {
+        id: 'model_car',
+        name: 'Sports Car',
+        type: 'model',
+        icon: '🚗',
+        category: 'Vehicles',
+      },
+      {
+        id: 'model_truck',
+        name: 'Pickup Truck',
+        type: 'model',
+        icon: '🚚',
+        category: 'Vehicles',
+      },
+      {
+        id: 'model_spaceship',
+        name: 'Spaceship',
+        type: 'model',
+        icon: '🚀',
+        category: 'Vehicles',
+      },
+      {
+        id: 'model_helicopter',
+        name: 'Helicopter',
+        type: 'model',
+        icon: '🚁',
+        category: 'Vehicles',
+      },
+      {
+        id: 'model_tank',
+        name: 'Battle Tank',
+        type: 'model',
+        icon: '🎮',
+        category: 'Vehicles',
+      },
+
+      // 3D Models - Buildings
+      {
+        id: 'model_house',
+        name: 'Residential House',
+        type: 'model',
+        icon: '🏠',
+        category: 'Buildings',
+      },
+      {
+        id: 'model_skyscraper',
+        name: 'Skyscraper',
+        type: 'model',
+        icon: '🏢',
+        category: 'Buildings',
+      },
+      {
+        id: 'model_castle',
+        name: 'Medieval Castle',
+        type: 'model',
+        icon: '🏰',
+        category: 'Buildings',
+      },
+      {
+        id: 'model_shop',
+        name: 'Shop Building',
+        type: 'model',
+        icon: '🏪',
+        category: 'Buildings',
+      },
+      {
+        id: 'model_factory',
+        name: 'Factory',
+        type: 'model',
+        icon: '🏭',
+        category: 'Buildings',
+      },
+
+      // 3D Models - Nature
+      {
+        id: 'model_tree_oak',
+        name: 'Oak Tree',
+        type: 'model',
+        icon: '🌳',
+        category: 'Nature',
+      },
+      {
+        id: 'model_tree_pine',
+        name: 'Pine Tree',
+        type: 'model',
+        icon: '🌲',
+        category: 'Nature',
+      },
+      {
+        id: 'model_rock',
+        name: 'Rock Formation',
+        type: 'model',
+        icon: '🪨',
+        category: 'Nature',
+      },
+      {
+        id: 'model_bush',
+        name: 'Bush',
+        type: 'model',
+        icon: '🌿',
+        category: 'Nature',
+      },
+      {
+        id: 'model_flower',
+        name: 'Flowers',
+        type: 'model',
+        icon: '🌸',
+        category: 'Nature',
+      },
+
+      // 3D Models - Props
+      {
+        id: 'model_crate',
+        name: 'Wooden Crate',
+        type: 'model',
+        icon: '📦',
+        category: 'Props',
+      },
+      {
+        id: 'model_barrel',
+        name: 'Barrel',
+        type: 'model',
+        icon: '🛢️',
+        category: 'Props',
+      },
+      {
+        id: 'model_chair',
+        name: 'Chair',
+        type: 'model',
+        icon: '🪑',
+        category: 'Props',
+      },
+      {
+        id: 'model_table',
+        name: 'Table',
+        type: 'model',
+        icon: '🪑',
+        category: 'Props',
+      },
+      {
+        id: 'model_lamp',
+        name: 'Street Lamp',
+        type: 'model',
+        icon: '💡',
+        category: 'Props',
+      },
+      {
+        id: 'model_sign',
+        name: 'Road Sign',
+        type: 'model',
+        icon: '🚧',
+        category: 'Props',
+      },
+
+      // Prefabs - Gameplay
+      {
+        id: 'prefab_player_spawn',
+        name: 'Player Spawn Point',
+        type: 'prefab',
+        icon: '📍',
+        category: 'Gameplay',
+      },
+      {
+        id: 'prefab_checkpoint',
+        name: 'Checkpoint',
+        type: 'prefab',
+        icon: '🚩',
+        category: 'Gameplay',
+      },
+      {
+        id: 'prefab_health_pack',
+        name: 'Health Pack',
+        type: 'prefab',
+        icon: '❤️',
+        category: 'Gameplay',
+      },
+      {
+        id: 'prefab_ammo',
+        name: 'Ammo Box',
+        type: 'prefab',
+        icon: '💣',
+        category: 'Gameplay',
+      },
+      {
+        id: 'prefab_coin',
+        name: 'Collectible Coin',
+        type: 'prefab',
+        icon: '🪙',
+        category: 'Gameplay',
+      },
+
+      // Lights
+      {
+        id: 'light_directional',
+        name: 'Directional Light (Sun)',
+        type: 'light',
+        icon: '☀️',
+      },
+      { id: 'light_point', name: 'Point Light', type: 'light', icon: '💡' },
+      { id: 'light_spot', name: 'Spotlight', type: 'light', icon: '🔦' },
+      { id: 'light_area', name: 'Area Light', type: 'light', icon: '📺' },
+
+      // Audio
+      {
+        id: 'audio_music_ambient',
+        name: 'Ambient Music',
+        type: 'audio',
+        icon: '🎵',
+        category: 'Music',
+      },
+      {
+        id: 'audio_music_action',
+        name: 'Action Music',
+        type: 'audio',
+        icon: '🎵',
+        category: 'Music',
+      },
+      {
+        id: 'audio_footsteps',
+        name: 'Footsteps',
+        type: 'audio',
+        icon: '🔊',
+        category: 'SFX',
+      },
+      {
+        id: 'audio_explosion',
+        name: 'Explosion',
+        type: 'audio',
+        icon: '🔊',
+        category: 'SFX',
+      },
+      {
+        id: 'audio_gunshot',
+        name: 'Gunshot',
+        type: 'audio',
+        icon: '🔊',
+        category: 'SFX',
+      },
+      {
+        id: 'audio_jump',
+        name: 'Jump Sound',
+        type: 'audio',
+        icon: '🔊',
+        category: 'SFX',
+      },
+      {
+        id: 'audio_collect',
+        name: 'Collect Item',
+        type: 'audio',
+        icon: '🔊',
+        category: 'SFX',
+      },
+
+      // Particles
+      {
+        id: 'particle_fire',
+        name: 'Fire Effect',
+        type: 'particle',
+        icon: '🔥',
+      },
+      {
+        id: 'particle_smoke',
+        name: 'Smoke Effect',
+        type: 'particle',
+        icon: '💨',
+      },
+      {
+        id: 'particle_rain',
+        name: 'Rain Effect',
+        type: 'particle',
+        icon: '🌧️',
+      },
+      {
+        id: 'particle_snow',
+        name: 'Snow Effect',
+        type: 'particle',
+        icon: '❄️',
+      },
+      {
+        id: 'particle_explosion',
+        name: 'Explosion Effect',
+        type: 'particle',
+        icon: '💥',
+      },
+      {
+        id: 'particle_sparkle',
+        name: 'Sparkle Effect',
+        type: 'particle',
+        icon: '✨',
+      },
+      {
+        id: 'particle_magic',
+        name: 'Magic Effect',
+        type: 'particle',
+        icon: '🌟',
+      },
+
+      // Terrain
+      {
+        id: 'terrain_mountains',
+        name: 'Mountain Terrain',
+        type: 'terrain',
+        icon: '⛰️',
+      },
+      {
+        id: 'terrain_plains',
+        name: 'Plains Terrain',
+        type: 'terrain',
+        icon: '🌾',
+      },
+      {
+        id: 'terrain_desert',
+        name: 'Desert Terrain',
+        type: 'terrain',
+        icon: '🏜️',
+      },
+      { id: 'terrain_ocean', name: 'Ocean Water', type: 'terrain', icon: '🌊' },
+
+      // Skyboxes
+      { id: 'sky_day', name: 'Clear Day Sky', type: 'skybox', icon: '🌤️' },
+      { id: 'sky_sunset', name: 'Sunset Sky', type: 'skybox', icon: '🌅' },
+      { id: 'sky_night', name: 'Night Sky', type: 'skybox', icon: '🌙' },
+      { id: 'sky_space', name: 'Space Skybox', type: 'skybox', icon: '🌌' },
       { id: 'mesh_cube', name: 'Cube', type: 'mesh' },
       { id: 'mesh_sphere', name: 'Sphere', type: 'mesh' },
       { id: 'mesh_plane', name: 'Plane', type: 'mesh' },

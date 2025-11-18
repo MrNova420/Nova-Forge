@@ -65,24 +65,30 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
       // Load REAL demo games built with Nova Engine
       const demoGames = getAllDemoGames();
 
-      // Fetch real stats from backend
-      const statsResponse = await fetch('/api/games-stats/all');
-      const statsData = await statsResponse.json();
-      const statsMap = new Map(statsData.map((s: any) => [s.gameId, s]));
+      // Fetch real stats from backend (optional, fallback to defaults)
+      let statsMap = new Map();
+      try {
+        const statsResponse = await fetch('/api/games-stats/all');
+        if (statsResponse.ok) {
+          const statsData = await statsResponse.json();
+          statsMap = new Map(statsData.map((s: any) => [s.gameId, s]));
+        }
+      } catch (error) {
+        console.warn('Could not load game stats:', error);
+      }
 
       const gameList: Game[] = demoGames.map((demo) => {
-        const stats = statsMap.get(demo.id) || {
-          downloads: 0,
-          averageRating: 0,
-        };
+        const stats = statsMap.get(demo.id) as
+          | { downloads?: number; averageRating?: number }
+          | undefined;
         return {
           id: demo.id,
           name: demo.title,
           description: demo.description,
           developer: 'Nova Engine Studios',
           category: demo.category.toLowerCase(),
-          rating: stats.averageRating || 0, // Real rating from backend
-          downloads: stats.downloads || 0, // Real download count from backend
+          rating: stats?.averageRating || 0, // Real rating from backend
+          downloads: stats?.downloads || 0, // Real download count from backend
           isDemo: demo.isDemo,
           thumbnail: demo.coverImage,
           screenshots: [demo.coverImage],
@@ -132,25 +138,31 @@ export const HubModule: React.FC<HubModuleProps> = ({ platform }) => {
       // Featured = demo games with real stats
       const demoGames = getAllDemoGames();
 
-      // Fetch real stats from backend
-      const statsResponse = await fetch('/api/games-stats/all');
-      const statsData = await statsResponse.json();
-      const statsMap = new Map(statsData.map((s: any) => [s.gameId, s]));
+      // Fetch real stats from backend (optional, fallback to defaults)
+      let statsMap = new Map();
+      try {
+        const statsResponse = await fetch('/api/games-stats/all');
+        if (statsResponse.ok) {
+          const statsData = await statsResponse.json();
+          statsMap = new Map(statsData.map((s: any) => [s.gameId, s]));
+        }
+      } catch (error) {
+        console.warn('Could not load game stats:', error);
+      }
 
       const featured: Game[] = demoGames
         .map((demo) => {
-          const stats = statsMap.get(demo.id) || {
-            downloads: 0,
-            averageRating: 0,
-          };
+          const stats = statsMap.get(demo.id) as
+            | { downloads?: number; averageRating?: number }
+            | undefined;
           return {
             id: demo.id,
             name: demo.title,
             description: demo.description,
             developer: 'Nova Engine Studios',
             category: demo.category.toLowerCase(),
-            rating: stats.averageRating || 0, // Real rating from backend
-            downloads: stats.downloads || 0, // Real downloads from backend
+            rating: stats?.averageRating || 0, // Real rating from backend
+            downloads: stats?.downloads || 0, // Real downloads from backend
             thumbnail: demo.coverImage,
             screenshots: [demo.coverImage],
             releaseDate: demo.lastUpdated,

@@ -45,9 +45,17 @@ export class RedisService {
 
   async disconnect(): Promise<void> {
     if (this.client) {
-      await this.client.quit();
-      this.client = null;
-      logger.info('Redis disconnected');
+      try {
+        // Check if client is still connected before trying to quit
+        if (this.client.isOpen) {
+          await this.client.quit();
+        }
+      } catch (error) {
+        logger.warn('Redis disconnect error (ignored):', error);
+      } finally {
+        this.client = null;
+        logger.info('Redis disconnected');
+      }
     }
   }
 

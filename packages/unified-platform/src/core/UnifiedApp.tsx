@@ -14,7 +14,14 @@
 
 import React, { useState, useEffect } from 'react';
 import type { PlatformMode } from './UnifiedPlatformCore';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { UnifiedPlatformCore } from './UnifiedPlatformCore';
 import { UnifiedNavigation } from '../ui/UnifiedNavigation';
 import { UnifiedTopBar } from '../ui/UnifiedTopBar';
@@ -30,44 +37,99 @@ import { SettingsModule } from '../modules/SettingsModule';
 import { LoginPage } from '../pages/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage';
 
-export const UnifiedApp: React.FC = () => {
-  const [platform] = useState(() => new UnifiedPlatformCore());
+// Inner component that has access to router hooks
+const UnifiedAppContent: React.FC<{ platform: UnifiedPlatformCore }> = ({
+  platform,
+}) => {
   const [currentMode, setCurrentMode] = useState<string>('hub');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState<any>(null);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  // Sync current mode with route
+  useEffect(() => {
+    const path = location.pathname;
+    if (path.startsWith('/hub')) setCurrentMode('hub');
+    else if (path.startsWith('/editor')) setCurrentMode('editor');
+    else if (path.startsWith('/launcher')) setCurrentMode('launcher');
+    else if (path.startsWith('/play')) setCurrentMode('launcher');
+    else if (path.startsWith('/multiplayer')) setCurrentMode('multiplayer');
+    else if (path.startsWith('/social')) setCurrentMode('social');
+    else if (path.startsWith('/settings')) setCurrentMode('settings');
+  }, [location.pathname]);
 
   useEffect(() => {
-    // Initialize platform
+    let mounted = true;
+
+    // Initialize platform once
     platform.initialize();
 
-    // Listen to mode changes
-    platform.on('modeChanged', ({ to }: any) => {
+    // Mode change handler
+    const handleModeChange = ({ to }: any) => {
+      if (!mounted) return;
       setCurrentMode(to);
-    });
+      // Navigate to the corresponding route
+      const modeToPath: Record<string, string> = {
+        hub: '/hub',
+        editor: '/editor',
+        launcher: '/launcher',
+        multiplayer: '/multiplayer',
+        social: '/social',
+        settings: '/settings',
+      };
+      if (modeToPath[to]) {
+        navigate(modeToPath[to]);
+      }
+    };
 
-    // Listen to auth changes
-    platform.on('login', (user: any) => {
+    // Login handler
+    const handleLogin = (user: any) => {
+      if (!mounted) return;
       setIsLoggedIn(true);
       setCurrentUser(user);
-    });
+      // Only navigate to hub after login if on auth pages
+      const currentPath = window.location.pathname;
+      if (
+        currentPath === '/login' ||
+        currentPath === '/register' ||
+        currentPath === '/'
+      ) {
+        navigate('/hub');
+      }
+    };
 
-    platform.on('sessionRestored', (user: any) => {
+    // Session restore handler
+    const handleSessionRestored = (user: any) => {
+      if (!mounted) return;
       setIsLoggedIn(true);
       setCurrentUser(user);
       setIsCheckingAuth(false);
-    });
+      // Don't navigate on session restore - stay on current page
+    };
 
-    platform.on('logout', () => {
+    // Logout handler
+    const handleLogout = () => {
+      if (!mounted) return;
       setIsLoggedIn(false);
       setCurrentUser(null);
-    });
+      navigate('/login');
+    };
 
-    // Listen to notifications
-    platform.on('notification', (notification: any) => {
+    // Notification handler
+    const handleNotification = (notification: any) => {
+      if (!mounted) return;
       setNotifications((prev) => [notification, ...prev]);
-    });
+    };
+
+    // Register event handlers
+    platform.on('modeChanged', handleModeChange);
+    platform.on('login', handleLogin);
+    platform.on('sessionRestored', handleSessionRestored);
+    platform.on('logout', handleLogout);
+    platform.on('notification', handleNotification);
 
     // Check if already logged in
     const token = localStorage.getItem('auth_token');
@@ -76,22 +138,30 @@ export const UnifiedApp: React.FC = () => {
       platform
         .restoreSession()
         .then((success) => {
-          if (!success) {
+          if (!success && mounted) {
             setIsCheckingAuth(false);
           }
         })
         .catch((err) => {
           console.error('Failed to restore session:', err);
-          setIsCheckingAuth(false);
+          if (mounted) {
+            setIsCheckingAuth(false);
+          }
         });
     } else {
       setIsCheckingAuth(false);
     }
 
     return () => {
-      platform.removeAllListeners();
+      mounted = false;
+      // Remove specific handlers
+      platform.off('modeChanged', handleModeChange);
+      platform.off('login', handleLogin);
+      platform.off('sessionRestored', handleSessionRestored);
+      platform.off('logout', handleLogout);
+      platform.off('notification', handleNotification);
     };
-  }, [platform]);
+  }, [platform, navigate]);
 
   // Show loading screen while checking authentication
   if (isCheckingAuth) {
@@ -113,100 +183,111 @@ export const UnifiedApp: React.FC = () => {
   }
 
   return (
-    <BrowserRouter>
-      <div className="unified-app">
-        {/* Top Bar - Always visible */}
-        <UnifiedTopBar
-          platform={platform}
-          isLoggedIn={isLoggedIn}
-          currentUser={currentUser}
-          currentMode={currentMode}
-        />
+    <div className="unified-app">
+      {/* Top Bar - Always visible */}
+      <UnifiedTopBar
+        platform={platform}
+        isLoggedIn={isLoggedIn}
+        currentUser={currentUser}
+        currentMode={currentMode}
+      />
 
-        <div className="unified-app-content">
-          {/* Side Navigation - Always visible when logged in */}
-          {isLoggedIn && (
-            <UnifiedNavigation
-              platform={platform}
-              currentMode={currentMode}
-              onModeChange={(mode) => platform.switchMode(mode as PlatformMode)}
-            />
-          )}
-
-          {/* Main Content Area - Switches based on mode */}
-          <main className="unified-main-content">
-            <Routes>
-              {/* Public routes */}
-              <Route
-                path="/login"
-                element={<LoginPage platform={platform} />}
-              />
-              <Route
-                path="/register"
-                element={<RegisterPage platform={platform} />}
-              />
-
-              {/* Protected routes - require login */}
-              {isLoggedIn ? (
-                <>
-                  {/* Hub - Game Discovery */}
-                  <Route
-                    path="/hub/*"
-                    element={<HubModule platform={platform} />}
-                  />
-
-                  {/* Editor - Game Creation */}
-                  <Route
-                    path="/editor/*"
-                    element={<EditorModule platform={platform} />}
-                  />
-
-                  {/* Launcher - Game Playing */}
-                  <Route
-                    path="/launcher/*"
-                    element={<LauncherModule platform={platform} />}
-                  />
-                  <Route
-                    path="/play/:gameId"
-                    element={<LauncherModule platform={platform} />}
-                  />
-
-                  {/* Multiplayer - Online Features */}
-                  <Route
-                    path="/multiplayer/*"
-                    element={<MultiplayerModule platform={platform} />}
-                  />
-
-                  {/* Social - Friends & Achievements */}
-                  <Route
-                    path="/social/*"
-                    element={<SocialModule platform={platform} />}
-                  />
-
-                  {/* Settings */}
-                  <Route
-                    path="/settings/*"
-                    element={<SettingsModule platform={platform} />}
-                  />
-
-                  {/* Default redirect to hub */}
-                  <Route path="/" element={<Navigate to="/hub" replace />} />
-                </>
-              ) : (
-                <Route path="*" element={<Navigate to="/login" replace />} />
-              )}
-            </Routes>
-          </main>
-        </div>
-
-        {/* Notification Center - Always available */}
-        {notifications.length > 0 && (
-          <NotificationCenter
-            notifications={notifications}
-            onClear={() => setNotifications([])}
+      <div className="unified-app-content">
+        {/* Side Navigation - Always visible when logged in */}
+        {isLoggedIn && (
+          <UnifiedNavigation
+            platform={platform}
+            currentMode={currentMode}
+            onModeChange={(mode) => platform.switchMode(mode as PlatformMode)}
           />
         )}
+
+        {/* Main Content Area - Switches based on mode */}
+        <main className="unified-main-content">
+          <Routes>
+            {/* Public routes */}
+            <Route path="/login" element={<LoginPage platform={platform} />} />
+            <Route
+              path="/register"
+              element={<RegisterPage platform={platform} />}
+            />
+
+            {/* Protected routes - require login */}
+            {isLoggedIn ? (
+              <>
+                {/* Hub - Game Discovery */}
+                <Route
+                  path="/hub/*"
+                  element={<HubModule platform={platform} />}
+                />
+
+                {/* Editor - Game Creation */}
+                <Route
+                  path="/editor/*"
+                  element={<EditorModule platform={platform} />}
+                />
+
+                {/* Launcher - Game Playing */}
+                <Route
+                  path="/launcher/*"
+                  element={<LauncherModule platform={platform} />}
+                />
+                <Route
+                  path="/play/:gameId"
+                  element={<LauncherModule platform={platform} />}
+                />
+
+                {/* Multiplayer - Online Features */}
+                <Route
+                  path="/multiplayer/*"
+                  element={<MultiplayerModule platform={platform} />}
+                />
+
+                {/* Social - Friends & Achievements */}
+                <Route
+                  path="/social/*"
+                  element={<SocialModule platform={platform} />}
+                />
+
+                {/* Settings */}
+                <Route
+                  path="/settings/*"
+                  element={<SettingsModule platform={platform} />}
+                />
+
+                {/* Default redirect to hub */}
+                <Route path="/" element={<Navigate to="/hub" replace />} />
+              </>
+            ) : (
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            )}
+          </Routes>
+        </main>
       </div>
+
+      {/* Notification Center - Always available */}
+      {notifications.length > 0 && (
+        <NotificationCenter
+          notifications={notifications}
+          onClear={() => setNotifications([])}
+        />
+      )}
+    </div>
+  );
+};
+
+// Main export wrapper with BrowserRouter
+export const UnifiedApp: React.FC = () => {
+  const [platform] = useState(() => new UnifiedPlatformCore());
+
+  return (
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
+      <UnifiedAppContent platform={platform} />
     </BrowserRouter>
   );
 };

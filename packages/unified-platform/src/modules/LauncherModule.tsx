@@ -62,13 +62,28 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
 
   const loadRecentGames = () => {
     try {
+      const demoGames = getAllDemoGames();
+
       // Load recent from localStorage
       const recent = localStorage.getItem('nova_recent_games');
       if (recent) {
-        setRecentGames(JSON.parse(recent));
+        const recentIds = JSON.parse(recent);
+        // Re-hydrate with actual demo game objects
+        const recentGames = recentIds
+          .map((savedGame: any) => {
+            const demoGame = demoGames.find((g) => g.id === savedGame.id);
+            if (!demoGame) return null;
+            return {
+              id: demoGame.id,
+              name: demoGame.title,
+              thumbnail: demoGame.coverImage,
+              demoGame: demoGame,
+            };
+          })
+          .filter((g: any) => g !== null);
+        setRecentGames(recentGames);
       } else {
         // Default to first 3 games
-        const demoGames = getAllDemoGames();
         const recentGames = demoGames.slice(0, 3).map((game) => ({
           id: game.id,
           name: game.title,
@@ -148,18 +163,28 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
     }
   };
 
+  const [isPaused, setIsPaused] = useState(false);
+  const [pauseAvailable, setPauseAvailable] = useState(false);
+
   const startGameLoop = (game: DemoGame) => {
     let lastTime = performance.now();
+
+    // Check if game is single-player (can be paused)
+    const isSinglePlayer = game.config.playerMode === 'single';
+    setPauseAvailable(isSinglePlayer);
 
     const loop = () => {
       const currentTime = performance.now();
       const delta = (currentTime - lastTime) / 1000;
       lastTime = currentTime;
 
-      // Update game logic
-      game.update(delta);
+      // Only update if not paused or if multiplayer
+      if (!isPaused || !isSinglePlayer) {
+        // Update game logic
+        game.update(delta);
+      }
 
-      // Render
+      // Always render (so we can see paused state)
       if (engineRef.current) {
         engineRef.current.render();
       }
@@ -170,6 +195,28 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
 
     loop();
   };
+
+  const togglePause = () => {
+    if (pauseAvailable) {
+      setIsPaused(!isPaused);
+      platform.showNotification({
+        type: 'info',
+        message: isPaused ? 'Game Resumed' : 'Game Paused',
+      });
+    }
+  };
+
+  // ESC key handler for pause
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && currentGame && pauseAvailable) {
+        togglePause();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [currentGame, pauseAvailable, isPaused]);
 
   const addToRecent = (game: DemoGame) => {
     const recentGame = {
@@ -184,7 +231,14 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
       ...recentGames.filter((g) => g.id !== game.id),
     ].slice(0, 10);
     setRecentGames(recent);
-    localStorage.setItem('nova_recent_games', JSON.stringify(recent));
+
+    // Save only IDs and metadata to localStorage (not functions)
+    const recentForStorage = recent.map((g) => ({
+      id: g.id,
+      name: g.name,
+      thumbnail: g.thumbnail,
+    }));
+    localStorage.setItem('nova_recent_games', JSON.stringify(recentForStorage));
   };
 
   if (currentGame) {
@@ -200,31 +254,216 @@ export const LauncherModule: React.FC<LauncherModuleProps> = ({ platform }) => {
                 engineRef.current.destroy();
               }
               setCurrentGame(null);
+              setIsPaused(false);
+            }}
+            style={{
+              padding: '8px 16px',
+              background: '#3a3a3a',
+              border: 'none',
+              borderRadius: '4px',
+              color: 'white',
+              cursor: 'pointer',
+              fontSize: '14px',
             }}
           >
             ← Back to Library
           </button>
-          <h2>{currentGame.title}</h2>
-          <div className="game-info-header">
-            <span>FPS: 60</span>
-            <span>Version: {currentGame.version}</span>
+          <h2 style={{ margin: '0 20px', flex: 1 }}>{currentGame.title}</h2>
+          <div
+            className="game-info-header"
+            style={{ display: 'flex', gap: '15px', alignItems: 'center' }}
+          >
+            <span
+              style={{
+                padding: '6px 12px',
+                background: '#1a1a1a',
+                borderRadius: '4px',
+                color: '#00ff00',
+                fontFamily: 'monospace',
+                fontWeight: 'bold',
+              }}
+            >
+              FPS: 60
+            </span>
+            <span
+              style={{
+                padding: '6px 12px',
+                background: '#1a1a1a',
+                borderRadius: '4px',
+                color: '#00ddff',
+              }}
+            >
+              Version: {currentGame.version}
+            </span>
+            {currentGame.config.playerMode === 'multiplayer' && (
+              <span
+                style={{
+                  padding: '6px 12px',
+                  background: '#7b2ff7',
+                  borderRadius: '4px',
+                  color: 'white',
+                  fontWeight: 'bold',
+                }}
+              >
+                🌐 MULTIPLAYER
+              </span>
+            )}
+            {isPaused && (
+              <span
+                style={{
+                  padding: '6px 12px',
+                  background: '#ff9800',
+                  borderRadius: '4px',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  animation: 'pulse 1.5s infinite',
+                }}
+              >
+                ⏸ PAUSED
+              </span>
+            )}
           </div>
+          {pauseAvailable && (
+            <button
+              onClick={togglePause}
+              style={{
+                padding: '8px 16px',
+                background: isPaused ? '#4caf50' : '#ff9800',
+                border: 'none',
+                borderRadius: '4px',
+                color: 'white',
+                cursor: 'pointer',
+                fontSize: '14px',
+                marginLeft: '10px',
+                fontWeight: 'bold',
+              }}
+            >
+              {isPaused ? '▶ Resume' : '⏸ Pause'}
+            </button>
+          )}
           <button
             onClick={() => {
               if (canvasRef.current) {
                 canvasRef.current.requestFullscreen();
               }
             }}
+            style={{
+              padding: '8px 16px',
+              background: '#7b2ff7',
+              border: 'none',
+              borderRadius: '4px',
+              color: 'white',
+              cursor: 'pointer',
+              fontSize: '14px',
+              marginLeft: '10px',
+            }}
           >
             ⛶ Fullscreen
           </button>
         </div>
-        <div className="game-container">
-          <canvas ref={canvasRef} />
-          <div className="game-overlay">
-            <div className="game-controls">
-              <p>🎮 Playing: {currentGame.title}</p>
-              <p>WASD - Move | Mouse - Look | ESC - Menu</p>
+        <div
+          className="game-container"
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: 'calc(100vh - 80px)',
+          }}
+        >
+          <canvas
+            ref={canvasRef}
+            style={{
+              width: '100%',
+              height: '100%',
+              display: 'block',
+              background: '#000',
+            }}
+          />
+          {isPaused && (
+            <div
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(0, 0, 0, 0.8)',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                zIndex: 1000,
+              }}
+            >
+              <h1
+                style={{
+                  fontSize: '72px',
+                  margin: '0 0 20px 0',
+                  textShadow: '0 0 20px #7b2ff7',
+                }}
+              >
+                ⏸ PAUSED
+              </h1>
+              <p
+                style={{ fontSize: '24px', marginBottom: '30px', opacity: 0.8 }}
+              >
+                {currentGame.title}
+              </p>
+              <button
+                onClick={togglePause}
+                style={{
+                  padding: '15px 40px',
+                  background: '#4caf50',
+                  border: 'none',
+                  borderRadius: '8px',
+                  color: 'white',
+                  cursor: 'pointer',
+                  fontSize: '20px',
+                  fontWeight: 'bold',
+                  boxShadow: '0 4px 20px rgba(76, 175, 80, 0.5)',
+                }}
+              >
+                ▶ Resume Game
+              </button>
+              <p style={{ marginTop: '30px', opacity: 0.6 }}>
+                Press ESC to resume
+              </p>
+            </div>
+          )}
+          <div
+            className="game-overlay"
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              padding: '20px',
+              background: 'linear-gradient(transparent, rgba(0,0,0,0.8))',
+              pointerEvents: 'none',
+            }}
+          >
+            <div
+              className="game-controls"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '5px',
+                color: 'white',
+                textShadow: '0 2px 4px rgba(0,0,0,0.8)',
+              }}
+            >
+              <p style={{ margin: 0, fontSize: '16px', fontWeight: 'bold' }}>
+                🎮 Playing: {currentGame.title}
+              </p>
+              <p style={{ margin: 0, fontSize: '14px', opacity: 0.9 }}>
+                WASD - Move | Mouse - Look |{' '}
+                {pauseAvailable ? 'ESC - Pause' : 'Online Multiplayer'}
+              </p>
+              {currentGame.config.playerMode === 'multiplayer' && (
+                <p style={{ margin: 0, fontSize: '12px', color: '#00ddff' }}>
+                  🌐 Connected to multiplayer server
+                </p>
+              )}
             </div>
           </div>
         </div>
