@@ -36,12 +36,6 @@ export const UnifiedNavigation: React.FC<UnifiedNavigationProps> = ({
 
   const handleNavigation = useCallback(
     (item: (typeof navItems)[0]) => {
-      console.log(
-        '[Navigation] Button clicked:',
-        item.label,
-        '-> navigating to:',
-        item.path
-      );
       // Navigate using React Router
       navigate(item.path);
       // Also update platform state

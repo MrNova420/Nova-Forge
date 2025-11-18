@@ -281,7 +281,12 @@ export const UnifiedApp: React.FC = () => {
   const [platform] = useState(() => new UnifiedPlatformCore());
 
   return (
-    <BrowserRouter>
+    <BrowserRouter
+      future={{
+        v7_startTransition: true,
+        v7_relativeSplatPath: true,
+      }}
+    >
       <UnifiedAppContent platform={platform} />
     </BrowserRouter>
   );

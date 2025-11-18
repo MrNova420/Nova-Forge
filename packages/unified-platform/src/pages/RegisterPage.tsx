@@ -120,6 +120,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ platform }) => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
               required
               style={{
                 width: '100%',
@@ -142,6 +143,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ platform }) => {
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
+              autoComplete="new-password"
               required
               style={{
                 width: '100%',

@@ -237,91 +237,164 @@ export class Engine {
   }
 
   /**
-   * Render the current frame
+   * Render the current frame with enhanced visual effects
    */
   render(): void {
     const ctx = this._canvas.getContext('2d');
     if (!ctx) return;
 
-    // Clear the canvas with a gradient background
-    const gradient = ctx.createLinearGradient(0, 0, 0, this._canvas.height);
-    gradient.addColorStop(0, '#0a0a1e'); // Deep blue-black at top
-    gradient.addColorStop(1, '#1a1a2e'); // Slightly lighter at bottom
+    // Clear the canvas with an animated gradient background
+    const time = performance.now() / 1000;
+    const gradient = ctx.createLinearGradient(
+      0,
+      0,
+      this._canvas.width,
+      this._canvas.height
+    );
+    const hue1 = (Math.sin(time * 0.5) * 30 + 230) % 360;
+    const hue2 = (hue1 + 30) % 360;
+    gradient.addColorStop(0, `hsl(${hue1}, 80%, 10%)`);
+    gradient.addColorStop(1, `hsl(${hue2}, 70%, 15%)`);
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, this._canvas.width, this._canvas.height);
 
-    // Render a grid to show the world space
-    ctx.strokeStyle = 'rgba(100, 100, 255, 0.1)';
+    // Render an animated grid
+    ctx.strokeStyle = `rgba(100, 100, 255, ${0.05 + Math.sin(time) * 0.03})`;
     ctx.lineWidth = 1;
     const gridSize = 50;
-    for (let x = 0; x < this._canvas.width; x += gridSize) {
+    const offsetX = (time * 20) % gridSize;
+    const offsetY = (time * 15) % gridSize;
+
+    for (let x = -offsetX; x < this._canvas.width; x += gridSize) {
       ctx.beginPath();
       ctx.moveTo(x, 0);
       ctx.lineTo(x, this._canvas.height);
       ctx.stroke();
     }
-    for (let y = 0; y < this._canvas.height; y += gridSize) {
+    for (let y = -offsetY; y < this._canvas.height; y += gridSize) {
       ctx.beginPath();
       ctx.moveTo(0, y);
       ctx.lineTo(this._canvas.width, y);
       ctx.stroke();
     }
 
-    // Render all game entities
-    this._gameEntities.forEach((gameEntity) => {
-      // Get transform component if it exists
+    // Render all game entities with enhanced visuals
+    this._gameEntities.forEach((gameEntity, index) => {
       const transform = gameEntity.getComponent('Transform');
       if (transform) {
         const data = transform.getData();
         const pos = data.position || { x: 0, y: 0, z: 0 };
         const scale = data.scale || { x: 1, y: 1, z: 1 };
 
-        // Convert 3D position to 2D screen position (simple orthographic)
-        const screenX = this._canvas.width / 2 + pos.x * 10;
+        // Convert 3D position to 2D screen position (isometric-style)
+        const screenX = this._canvas.width / 2 + pos.x * 10 - pos.z * 3;
         const screenY = this._canvas.height / 2 - pos.y * 10 - pos.z * 5;
 
-        // Draw entity as a circle
-        ctx.fillStyle = '#7b2ff7'; // Nova Engine purple
+        // Draw entity with glow effect
+        const radius = 8 * scale.x;
+        const hue = (index * 137.5 + time * 50) % 360;
+
+        // Outer glow
+        const glow = ctx.createRadialGradient(
+          screenX,
+          screenY,
+          0,
+          screenX,
+          screenY,
+          radius * 2
+        );
+        glow.addColorStop(0, `hsla(${hue}, 100%, 60%, 0.8)`);
+        glow.addColorStop(1, `hsla(${hue}, 100%, 60%, 0)`);
+        ctx.fillStyle = glow;
+        ctx.fillRect(
+          screenX - radius * 2,
+          screenY - radius * 2,
+          radius * 4,
+          radius * 4
+        );
+
+        // Main entity circle
+        ctx.fillStyle = `hsl(${hue}, 90%, 60%)`;
         ctx.beginPath();
-        ctx.arc(screenX, screenY, 5 * scale.x, 0, Math.PI * 2);
+        ctx.arc(screenX, screenY, radius, 0, Math.PI * 2);
         ctx.fill();
 
-        // Draw entity name if available
+        // Inner highlight
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.beginPath();
+        ctx.arc(
+          screenX - radius * 0.3,
+          screenY - radius * 0.3,
+          radius * 0.4,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
+
+        // Draw entity name with shadow
         if (gameEntity.name) {
+          ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+          ctx.shadowBlur = 4;
+          ctx.shadowOffsetX = 2;
+          ctx.shadowOffsetY = 2;
           ctx.fillStyle = '#ffffff';
-          ctx.font = '12px Arial';
-          ctx.fillText(gameEntity.name, screenX + 10, screenY);
+          ctx.font = 'bold 13px Arial';
+          ctx.fillText(gameEntity.name, screenX + 12, screenY + 5);
+          ctx.shadowBlur = 0;
         }
       }
     });
 
-    // Render game title in the center
+    // Render loading state or game info
     if (this._gameEntities.size === 0) {
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-      ctx.font = '24px Arial';
+      // Animated loading text
+      ctx.shadowColor = 'rgba(123, 47, 247, 0.8)';
+      ctx.shadowBlur = 20;
+      ctx.fillStyle = `rgba(255, 255, 255, ${0.7 + Math.sin(time * 3) * 0.3})`;
+      ctx.font = 'bold 32px Arial';
       ctx.textAlign = 'center';
       ctx.fillText(
-        'Nova Engine - Universal Game Platform',
+        'Nova Engine',
         this._canvas.width / 2,
-        this._canvas.height / 2
+        this._canvas.height / 2 - 20
       );
-      ctx.font = '16px Arial';
+      ctx.font = '18px Arial';
+      ctx.fillStyle = `rgba(200, 200, 255, ${0.5 + Math.sin(time * 4) * 0.3})`;
       ctx.fillText(
-        'Game Loading...',
+        'Initializing Game...',
         this._canvas.width / 2,
-        this._canvas.height / 2 + 30
+        this._canvas.height / 2 + 20
       );
+      ctx.shadowBlur = 0;
     }
 
-    // Render FPS counter
+    // Render HUD with enhanced styling
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#00ff00';
-    ctx.font = 'bold 16px monospace';
-    const fps = this._time.fps.toFixed(1);
-    ctx.fillText(`FPS: ${fps}`, 10, 30);
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+    ctx.shadowBlur = 4;
 
-    // Render entity count
-    ctx.fillText(`Entities: ${this._gameEntities.size}`, 10, 50);
+    // FPS counter with color coding
+    const fps = this._time.fps;
+    ctx.fillStyle = fps >= 50 ? '#00ff00' : fps >= 30 ? '#ffff00' : '#ff0000';
+    ctx.font = 'bold 18px monospace';
+    ctx.fillText(`FPS: ${fps.toFixed(1)}`, 12, 32);
+
+    // Entity count
+    ctx.fillStyle = '#00ddff';
+    ctx.fillText(`Entities: ${this._gameEntities.size}`, 12, 56);
+
+    // Engine watermark
+    ctx.fillStyle = 'rgba(123, 47, 247, 0.6)';
+    ctx.font = 'bold 14px Arial';
+    ctx.textAlign = 'right';
+    ctx.fillText(
+      'Nova Engine',
+      this._canvas.width - 12,
+      this._canvas.height - 12
+    );
+
+    ctx.shadowBlur = 0;
+    ctx.textAlign = 'left';
   }
 
   /**

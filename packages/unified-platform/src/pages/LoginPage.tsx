@@ -68,6 +68,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ platform }) => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              autoComplete="email"
               required
               style={{
                 width: '100%',
@@ -90,6 +91,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ platform }) => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
               required
               style={{
                 width: '100%',
