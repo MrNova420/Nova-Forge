@@ -13,10 +13,15 @@ const registerSchema = z.object({
   displayName: z.string().optional(),
 });
 
-const loginSchema = z.object({
-  emailOrUsername: z.string(),
-  password: z.string(),
-});
+const loginSchema = z
+  .object({
+    email: z.string().optional(),
+    emailOrUsername: z.string().optional(),
+    password: z.string(),
+  })
+  .refine((data) => data.email || data.emailOrUsername, {
+    message: 'Either email or emailOrUsername is required',
+  });
 
 export async function authRoutes(server: FastifyInstance) {
   const authService = new AuthService();
@@ -54,6 +59,7 @@ export async function authRoutes(server: FastifyInstance) {
           success: true,
           user: result.user,
           token,
+          refreshToken: result.tokens.refreshToken,
         });
       } catch (error: any) {
         if (error.code === '23505') {
@@ -77,10 +83,8 @@ export async function authRoutes(server: FastifyInstance) {
     },
     async (request: FastifyRequest, reply: FastifyReply) => {
       const data = loginSchema.parse(request.body);
-      const result = await authService.login(
-        data.emailOrUsername,
-        data.password
-      );
+      const emailOrUsername = data.email || data.emailOrUsername || '';
+      const result = await authService.login(emailOrUsername, data.password);
 
       if (!result) {
         return reply.code(401).send({
@@ -95,6 +99,7 @@ export async function authRoutes(server: FastifyInstance) {
         success: true,
         user: result.user,
         token,
+        refreshToken: result.tokens.refreshToken,
       };
     }
   );

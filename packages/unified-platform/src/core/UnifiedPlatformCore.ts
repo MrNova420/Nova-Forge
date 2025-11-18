@@ -201,38 +201,38 @@ export class UnifiedPlatformCore extends EventEmitter {
    * Login to the platform
    */
   async login(email: string, password: string): Promise<boolean> {
-    try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+    const response = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-      if (!response.ok) throw new Error('Login failed');
-
-      const data = await response.json();
-
-      // Store auth data
-      localStorage.setItem('auth_token', data.token);
-      localStorage.setItem('user_id', data.user.id);
-      localStorage.setItem('refresh_token', data.refreshToken);
-
-      // Update state
-      this.state.isLoggedIn = true;
-      this.state.user = data.user;
-
-      // Initialize user features
-      await this.initializeUserFeatures();
-
-      // Emit login event
-      this.emit('login', data.user);
-
-      console.log(`✅ Welcome back, ${data.user.username}!`);
-      return true;
-    } catch (error) {
-      console.error('❌ Login failed:', error);
-      return false;
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || 'Login failed');
     }
+
+    const data = await response.json();
+
+    // Store auth data
+    localStorage.setItem('auth_token', data.token);
+    localStorage.setItem('user_id', data.user.id);
+    if (data.refreshToken) {
+      localStorage.setItem('refresh_token', data.refreshToken);
+    }
+
+    // Update state
+    this.state.isLoggedIn = true;
+    this.state.user = data.user;
+
+    // Initialize user features
+    await this.initializeUserFeatures();
+
+    // Emit login event
+    this.emit('login', data.user);
+
+    console.log(`✅ Welcome back, ${data.user.username}!`);
+    return true;
   }
 
   /**
@@ -243,37 +243,39 @@ export class UnifiedPlatformCore extends EventEmitter {
     email: string,
     password: string
   ): Promise<boolean> {
-    try {
-      const response = await fetch('/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password }),
-      });
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, email, password }),
+    });
 
-      if (!response.ok) throw new Error('Registration failed');
-
-      const data = await response.json();
-
-      // Store auth data
-      localStorage.setItem('auth_token', data.token);
-      localStorage.setItem('user_id', data.user.id);
-
-      // Update state
-      this.state.isLoggedIn = true;
-      this.state.user = data.user;
-
-      // Initialize user features
-      await this.initializeUserFeatures();
-
-      // Emit event
-      this.emit('register', data.user);
-
-      console.log(`✅ Account created! Welcome, ${data.user.username}!`);
-      return true;
-    } catch (error) {
-      console.error('❌ Registration failed:', error);
-      return false;
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || 'Registration failed');
     }
+
+    const data = await response.json();
+
+    // Store auth data
+    localStorage.setItem('auth_token', data.token);
+    localStorage.setItem('user_id', data.user.id);
+    if (data.refreshToken) {
+      localStorage.setItem('refresh_token', data.refreshToken);
+    }
+
+    // Update state
+    this.state.isLoggedIn = true;
+    this.state.user = data.user;
+
+    // Initialize user features
+    await this.initializeUserFeatures();
+
+    // Emit event
+    this.emit('register', data.user);
+    this.emit('login', data.user); // Also emit login to trigger navigation
+
+    console.log(`✅ Account created! Welcome, ${data.user.username}!`);
+    return true;
   }
 
   /**
@@ -349,23 +351,47 @@ export class UnifiedPlatformCore extends EventEmitter {
   private async initializeUserFeatures(): Promise<void> {
     console.log('Initializing user features...');
 
-    // Load user stats
-    await this.loadUserStats();
+    // Load user stats (optional)
+    try {
+      await this.loadUserStats();
+    } catch (error) {
+      console.warn('Could not load user stats:', error);
+    }
 
-    // Initialize integrated services
-    friendsService.initializeRealtimeUpdates();
+    // Initialize integrated services (optional)
+    try {
+      friendsService.initializeRealtimeUpdates();
+    } catch (error) {
+      console.warn('Could not initialize friends service:', error);
+    }
 
-    // Connect to platform WebSocket
-    this.connectPlatformWebSocket();
+    // Connect to platform WebSocket (optional)
+    try {
+      this.connectPlatformWebSocket();
+    } catch (error) {
+      console.warn('Could not connect to platform WebSocket:', error);
+    }
 
-    // Load notifications
-    await this.loadNotifications();
+    // Load notifications (optional)
+    try {
+      await this.loadNotifications();
+    } catch (error) {
+      console.warn('Could not load notifications:', error);
+    }
 
-    // Start background sync
-    this.startBackgroundSync();
+    // Start background sync (optional)
+    try {
+      this.startBackgroundSync();
+    } catch (error) {
+      console.warn('Could not start background sync:', error);
+    }
 
-    // Load friends list
-    await friendsService.getFriends();
+    // Load friends list (optional)
+    try {
+      await friendsService.getFriends();
+    } catch (error) {
+      console.warn('Could not load friends:', error);
+    }
 
     console.log('✅ User features initialized');
   }

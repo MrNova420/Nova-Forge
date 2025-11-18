@@ -15,15 +15,23 @@ async function startServer() {
   try {
     logger.info('🚀 Starting Nova Hub Server...');
 
-    // Initialize database
-    const db = DatabaseService.getInstance();
-    await db.connect();
-    logger.info('✅ Database connected');
+    // Initialize database (optional - will use in-memory if not available)
+    try {
+      const db = DatabaseService.getInstance();
+      await db.connect();
+      logger.info('✅ Database connected');
+    } catch (error) {
+      logger.warn('⚠️  Database not available, using in-memory storage');
+    }
 
-    // Initialize Redis
-    const redis = RedisService.getInstance();
-    await redis.connect();
-    logger.info('✅ Redis connected');
+    // Initialize Redis (optional - will use in-memory if not available)
+    try {
+      const redis = RedisService.getInstance();
+      await redis.connect();
+      logger.info('✅ Redis connected');
+    } catch (error) {
+      logger.warn('⚠️  Redis not available, using in-memory cache');
+    }
 
     // Create and start Fastify server
     const server = await createServer();

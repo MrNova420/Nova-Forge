@@ -47,11 +47,13 @@ export class AuthService {
   }
 
   async login(
-    email: string,
+    emailOrUsername: string,
     password: string
-  ): Promise<{ user: User; tokens: AuthToken }> {
-    const user = Array.from(this.users.values()).find((u) => u.email === email);
-    if (!user) throw new Error('Invalid credentials');
+  ): Promise<{ user: User; tokens: AuthToken } | null> {
+    const user = Array.from(this.users.values()).find(
+      (u) => u.email === emailOrUsername || u.username === emailOrUsername
+    );
+    if (!user) return null;
 
     const accessToken = `access_${Date.now()}_${Math.random().toString(36).substr(2, 16)}`;
     const refreshToken = `refresh_${Date.now()}_${Math.random().toString(36).substr(2, 16)}`;

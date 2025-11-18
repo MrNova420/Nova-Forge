@@ -16,7 +16,9 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "npm run dev -w @nova-engine/unified-platform",
+    "start": "concurrently \"npm run dev -w @nova-engine/hub\" \"npm run dev -w @nova-engine/unified-platform\"",
+    "start:frontend": "npm run dev -w @nova-engine/unified-platform",
+    "start:backend": "npm run dev -w @nova-engine/hub",
     "clean": "rm -rf node_modules packages/*/node_modules packages/*/dist",
     "install:all": "npm install",
     "build": "npm run build --workspaces --if-present",
@@ -54,6 +56,7 @@
     "@typescript-eslint/eslint-plugin": "^8.46.4",
     "@typescript-eslint/parser": "^8.46.4",
     "benchmark": "^2.1.4",
+    "concurrently": "^9.2.1",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
