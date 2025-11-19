@@ -2,7 +2,7 @@
 
 This directory contains all legal documents for Nova Engine and its platform services.
 
-**Owner:** WeNova Interactive (Kayden Shawn Massengill)
+**Legal Owner:** Kayden Shawn Massengill, acting for WeNova Interactive
 
 ---
 
@@ -73,7 +73,7 @@ For detailed explanations, examples, and FAQ:
 
 - **Nova Engine is proprietary closed-source software**
 - **You own the games you create**
-- **WeNova Interactive owns Nova Engine**
+- **Kayden Shawn Massengill owns Nova Engine**
 - **Governed by US law (State of Indiana)**
 - **Your data is not sold**
 
@@ -104,7 +104,7 @@ For questions about these legal documents:
 - Check [Human Summary PDF](NovaEngine_HumanSummary.pdf) for quick overview
 - Use [COMPLIANCE_CHECKLIST.md](COMPLIANCE_CHECKLIST.md) to ensure you're covered
 - Open an issue on [GitHub](https://github.com/MrNova420/Nova-Engine/issues)
-- Contact WeNova Interactive for licensing inquiries
+- Contact Kayden Shawn Massengill (WeNova Interactive) for licensing inquiries
 
 ---
 

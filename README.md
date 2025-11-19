@@ -354,7 +354,8 @@ The desktop launcher requires system libraries (GTK, GLib) that may not be avail
 
 **Nova Engine is proprietary software.** This project is NOT open source.
 
-All rights reserved. Copyright (c) 2025 Nova Engine Team.
+All rights reserved. Copyright (c) 2025 Kayden Shawn Massengill.  
+Operating as: WeNova Interactive
 
 Usage of this software is governed by comprehensive legal agreements - see the [LICENSE](LICENSE) file and complete legal documentation below.
 

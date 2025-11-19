@@ -21,7 +21,7 @@
     "ecs",
     "3d"
   ],
-  "author": "Nova Engine Team",
+  "author": "Kayden Shawn Massengill (WeNova Interactive)",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "ammojs-typed": "^1.0.6"

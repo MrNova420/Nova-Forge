@@ -2,7 +2,8 @@
 
 This checklist helps you understand which legal documents you need to review based on your use case.
 
-**Owner:** WeNova Interactive (Kayden Shawn Massengill)  
+**Legal Owner:** Kayden Shawn Massengill  
+**Operating As:** WeNova Interactive  
 **Governing Law:** United States of America, State of Indiana
 
 ---
@@ -131,7 +132,7 @@ This checklist helps you understand which legal documents you need to review bas
   - Royalty calculation
   - Payment information
 
-- [ ] Submit report to WeNova Interactive
+- [ ] Submit report to Kayden Shawn Massengill (WeNova Interactive)
 - [ ] Pay royalties owed (within 60 days of year end)
 
 #### Example Calculation
@@ -184,7 +185,7 @@ Any disputes will be resolved exclusively in Indiana courts.
 
 ## 🔍 Audit Rights
 
-WeNova Interactive reserves the right to:
+Kayden Shawn Massengill (operating as WeNova Interactive) reserves the right to:
 
 - Conduct annual audits (maximum once per year)
 - Review revenue records with reasonable notice
@@ -223,11 +224,11 @@ You must NOT:
 1. **Start Here:** [LEGAL.md](../LEGAL.md) - Comprehensive guide
 2. **Quick Reference:** [Human Summary](NovaEngine_HumanSummary.pdf)
 3. **Full Details:** Review specific PDF documents
-4. **Still Have Questions?** Contact WeNova Interactive
+4. **Still Have Questions?** Contact Kayden Shawn Massengill (WeNova Interactive)
 
 ### For Licensing Inquiries
 
-Contact WeNova Interactive through official channels (to be published on website and documentation).
+Contact Kayden Shawn Massengill (WeNova Interactive) through official channels (to be published on website and documentation).
 
 ### For Legal Advice
 
@@ -263,7 +264,8 @@ Before releasing any commercial project with Nova Engine:
 ---
 
 <p align="center">
-  <strong>Nova Engine by WeNova Interactive</strong><br>
+  <strong>Nova Engine</strong><br>
+  <em>Owned by Kayden Shawn Massengill, operating as WeNova Interactive</em><br>
   Building the future of web-based game development
 </p>
 

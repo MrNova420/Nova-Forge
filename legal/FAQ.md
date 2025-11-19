@@ -69,7 +69,7 @@ Example: For 2025 revenue, report and pay by March 1, 2026.
 
 ### Q: Is Nova Engine open source?
 
-**A:** No. Nova Engine is **proprietary closed-source software** owned by WeNova Interactive (Kayden Shawn Massengill).
+**A:** No. Nova Engine is **proprietary closed-source software** owned by Kayden Shawn Massengill (operating as WeNova Interactive).
 
 ### Q: Can I see the source code?
 
@@ -93,7 +93,7 @@ Example: For 2025 revenue, report and pay by March 1, 2026.
 
 ### Q: Who owns Nova Engine?
 
-**A:** WeNova Interactive (Kayden Shawn Massengill) owns all rights to Nova Engine, including source code, design, architecture, and intellectual property.
+**A:** Kayden Shawn Massengill owns all rights to Nova Engine, including source code, design, architecture, and intellectual property. Business operations are conducted as WeNova Interactive.
 
 ### Q: Can I sell my game?
 
@@ -246,15 +246,15 @@ Example: For 2025 revenue, report and pay by March 1, 2026.
 
 ### Q: Can I get custom licensing terms?
 
-**A:** Possibly. Contact WeNova Interactive for enterprise or custom licensing inquiries.
+**A:** Possibly. Contact Kayden Shawn Massengill (WeNova Interactive) for enterprise or custom licensing inquiries.
 
 ### Q: What about white-label solutions?
 
-**A:** Custom arrangements may be possible. Contact WeNova Interactive directly.
+**A:** Custom arrangements may be possible. Contact Kayden Shawn Massengill (WeNova Interactive) directly.
 
 ### Q: Can universities get special terms?
 
-**A:** Contact WeNova Interactive to discuss educational institution licensing.
+**A:** Contact Kayden Shawn Massengill (WeNova Interactive) to discuss educational institution licensing.
 
 ---
 
@@ -270,7 +270,7 @@ Example: For 2025 revenue, report and pay by March 1, 2026.
 
 ### Q: Will I be audited?
 
-**A:** WeNova Interactive reserves the right to audit (maximum once per year) with reasonable notice. Keep accurate records.
+**A:** Kayden Shawn Massengill (operating as WeNova Interactive) reserves the right to audit (maximum once per year) with reasonable notice. Keep accurate records.
 
 ### Q: What if I underreport by accident?
 
@@ -298,7 +298,7 @@ Example: For 2025 revenue, report and pay by March 1, 2026.
 
 ### Q: Where can I get legal help?
 
-**A:** For specific legal advice about your situation, consult with a qualified attorney. For Nova Engine licensing questions, contact WeNova Interactive.
+**A:** For specific legal advice about your situation, consult with a qualified attorney. For Nova Engine licensing questions, contact Kayden Shawn Massengill (WeNova Interactive).
 
 ### Q: Is there a plain-language summary?
 
@@ -352,13 +352,14 @@ Example: For 2025 revenue, report and pay by March 1, 2026.
 1. **Read the documents:** [legal/](.) directory
 2. **Check the guide:** [LEGAL.md](../LEGAL.md)
 3. **Review compliance:** [COMPLIANCE_CHECKLIST.md](COMPLIANCE_CHECKLIST.md)
-4. **Contact WeNova Interactive:** For licensing inquiries
+4. **Contact Kayden Shawn Massengill (WeNova Interactive):** For licensing inquiries
 5. **Consult an attorney:** For legal advice
 
 ---
 
 <p align="center">
-  <strong>Nova Engine by WeNova Interactive</strong><br>
+  <strong>Nova Engine</strong><br>
+  <em>Owned by Kayden Shawn Massengill, operating as WeNova Interactive</em><br>
   Building the future of web-based game development
 </p>
 

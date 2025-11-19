@@ -2,7 +2,8 @@
 
 Welcome to the Nova Engine legal documentation. This document provides an overview of all legal terms, licenses, and policies that govern the use of Nova Engine and its associated platform services.
 
-**Owner:** WeNova Interactive (Kayden Shawn Massengill)
+**Legal Owner:** Kayden Shawn Massengill, acting for WeNova Interactive  
+**Business Name:** WeNova Interactive
 
 ---
 
@@ -25,7 +26,7 @@ Nova Engine is a **closed-source professional game engine** with a developer-fri
 ### Key Points:
 - ✅ **Free to use** for commercial projects up to $250,000 USD revenue per year
 - ✅ **2% royalty** only on revenue above $250,000 per year (resets annually)
-- ✅ **You own your games** - WeNova Interactive owns Nova Engine
+- ✅ **You own your games** - Kayden Shawn Massengill owns Nova Engine
 - ✅ Comprehensive legal protection and clear terms
 - ✅ Multiple licensing documents covering all use cases
 
@@ -82,7 +83,7 @@ All legal documents are available in the [`legal/`](legal/) directory. Below is 
 - **No Standalone Distribution:** Cannot distribute the runtime separately
 - **No Modifications:** Cannot modify or reverse engineer the runtime
 - **End User Focus:** Runtime is for players, not for other developers
-- **Ownership:** WeNova Interactive retains all rights to the runtime
+- **Ownership:** Kayden Shawn Massengill retains all rights to the runtime
 
 ### 3. End User License Agreement (EULA)
 
@@ -110,7 +111,7 @@ All legal documents are available in the [`legal/`](legal/) directory. Below is 
 
 **Applies to:** All users of Nova Engine services (developers and players)
 
-**Purpose:** Explains how WeNova Interactive handles your data.
+**Purpose:** Explains how Kayden Shawn Massengill (operating as WeNova Interactive) handles your data.
 
 **Data Collection:**
 - Account information (username, email)
@@ -190,10 +191,10 @@ All legal documents are available in the [`legal/`](legal/) directory. Below is 
 **Purpose:** Plain-language summary of all Nova Engine legal terms.
 
 **Quick Summary:**
-- Nova Engine is closed-source, owned by WeNova Interactive
+- Nova Engine is closed-source, owned by Kayden Shawn Massengill
 - **Free to use commercially** until $250,000 USD/year revenue
 - **2% royalty** on revenue above $250,000 (resets annually)
-- **You own your games**, WeNova Interactive owns Nova Engine
+- **You own your games**, Kayden Shawn Massengill owns Nova Engine
 - Can ship runtime with games, but can't redistribute engine itself
 - Asset Store requires clean licenses (CC0, CC-BY, MIT, Apache 2.0)
 - Global Game Library for publishing games
@@ -352,7 +353,8 @@ The $250,000 threshold applies to **all your Nova Engine-based projects combined
 ---
 
 <p align="center">
-  <strong>Nova Engine by WeNova Interactive</strong>
+  <strong>Nova Engine</strong><br>
+  <em>Owned by Kayden Shawn Massengill, operating as WeNova Interactive</em>
 </p>
 
 <p align="center">
