@@ -57,7 +57,7 @@ export async function buildRoutes(server: FastifyInstance) {
   // Get project builds
   server.get(
     '/project/:projectId',
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const { projectId } = request.params as { projectId: string };
 
       const builds = await buildService.getProjectBuilds(projectId);
@@ -108,7 +108,7 @@ export async function buildRoutes(server: FastifyInstance) {
   // Get build stats
   server.get(
     '/stats/:projectId',
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const { projectId } = request.params as { projectId: string };
 
       const stats = await buildService.getBuildStats(projectId);
@@ -120,7 +120,7 @@ export async function buildRoutes(server: FastifyInstance) {
   // Get queued builds (admin only in production)
   server.get(
     '/queue/list',
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (_request: FastifyRequest, _reply: FastifyReply) => {
       const builds = await buildService.getQueuedBuilds();
 
       return { success: true, builds };

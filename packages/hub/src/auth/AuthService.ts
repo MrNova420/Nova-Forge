@@ -21,7 +21,7 @@ export class AuthService {
   async register(
     email: string,
     username: string,
-    password: string
+    _password: string
   ): Promise<{ user: User; tokens: AuthToken; id: string }> {
     const userId = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     const user: User = {
@@ -48,7 +48,7 @@ export class AuthService {
 
   async login(
     emailOrUsername: string,
-    password: string
+    _password: string
   ): Promise<{ user: User; tokens: AuthToken } | null> {
     const user = Array.from(this.users.values()).find(
       (u) => u.email === emailOrUsername || u.username === emailOrUsername

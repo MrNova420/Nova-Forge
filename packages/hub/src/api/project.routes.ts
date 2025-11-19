@@ -29,7 +29,7 @@ export async function projectRoutes(server: FastifyInstance) {
   server.get(
     '/',
     { onRequest: [server.authenticate] },
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const { userId } = request.user as any;
       const projects = await projectService.getUserProjects(userId);
       return { success: true, projects };
@@ -39,7 +39,7 @@ export async function projectRoutes(server: FastifyInstance) {
   // Get public projects
   server.get(
     '/public',
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (_request: FastifyRequest, _reply: FastifyReply) => {
       const projects = await projectService.getPublicProjects();
       return { success: true, projects };
     }
@@ -157,7 +157,7 @@ export async function projectRoutes(server: FastifyInstance) {
   // Get project versions
   server.get(
     '/:id/versions',
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const { id } = request.params as { id: string };
       const versions = await versionService.getProjectVersions(id);
       return { success: true, versions };
@@ -168,7 +168,7 @@ export async function projectRoutes(server: FastifyInstance) {
   server.get(
     '/:id/sync',
     { onRequest: [server.authenticate] },
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const { id } = request.params as { id: string };
       const syncState = await syncService.getSyncState(id);
       return { success: true, syncState };
@@ -179,7 +179,7 @@ export async function projectRoutes(server: FastifyInstance) {
   server.post(
     '/:id/sync',
     { onRequest: [server.authenticate] },
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const { id } = request.params as { id: string };
       const { userId } = request.user as any;
 

@@ -405,8 +405,8 @@ export class ProjectImportService {
    * Convert assets to Nova Engine format
    */
   private async convertAssets(
-    analysis: any,
-    sourceType: string
+    _analysis: any,
+    _sourceType: string
   ): Promise<void> {
     // Convert materials, shaders, etc. based on source engine
     // Unity materials -> PBR materials
@@ -437,7 +437,7 @@ export class ProjectImportService {
       try {
         const metadataContent = await fs.readFile(metadataPath, 'utf-8');
         metadata = JSON.parse(metadataContent);
-      } catch (error) {
+      } catch (_error) {
         warnings.push('No project.json found, creating new project metadata');
       }
 
@@ -537,7 +537,7 @@ export class ProjectImportService {
   /**
    * Get import progress
    */
-  async getImportProgress(importId: string): Promise<ImportProgress | null> {
+  async getImportProgress(_importId: string): Promise<ImportProgress | null> {
     // In production, this would track active import operations
     return null;
   }

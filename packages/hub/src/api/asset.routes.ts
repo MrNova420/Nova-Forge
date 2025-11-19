@@ -61,7 +61,7 @@ export async function assetRoutes(server: FastifyInstance) {
   // Get project assets
   server.get(
     '/:projectId',
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const { projectId } = request.params as { projectId: string };
       const assets = await assetService.getProjectAssets(projectId);
       return { success: true, assets };
@@ -127,7 +127,7 @@ export async function assetRoutes(server: FastifyInstance) {
   // Get storage stats
   server.get(
     '/:projectId/stats',
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const { projectId } = request.params as { projectId: string };
       const stats = await assetService.getProjectStorageStats(projectId);
       return { success: true, stats };

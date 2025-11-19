@@ -145,7 +145,7 @@ export class ScaleTool extends BaseTool {
     );
   }
 
-  update(deltaTime: number): void {
+  update(_deltaTime: number): void {
     // Update tool state if needed
   }
 

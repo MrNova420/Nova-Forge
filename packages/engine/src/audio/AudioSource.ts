@@ -124,7 +124,7 @@ export class AudioSource {
     if (this._sourceNode) {
       try {
         this._sourceNode.stop();
-      } catch (e) {
+      } catch (_e) {
         // Source may have already stopped
       }
       this._sourceNode = null;

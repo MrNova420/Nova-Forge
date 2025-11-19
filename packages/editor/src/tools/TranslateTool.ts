@@ -260,7 +260,7 @@ export class TranslateTool extends BaseTool {
     return new Vector3(deltaX, -deltaY, deltaY);
   }
 
-  update(deltaTime: number): void {
+  update(_deltaTime: number): void {
     // Update gizmo scale based on distance to camera
     if (this.selectedEntity && this.camera) {
       const entityPos = this.selectedEntity.transform?.position || {

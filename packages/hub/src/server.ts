@@ -57,7 +57,7 @@ export async function createServer() {
   server.decorate('authenticate', async function (request: any, reply: any) {
     try {
       await request.jwtVerify();
-    } catch (err) {
+    } catch (_err) {
       reply
         .status(401)
         .send({ error: 'Unauthorized', message: 'Invalid or missing token' });
@@ -99,7 +99,9 @@ export async function createServer() {
   const { gamesRoutes } = await import('./api/games.routes');
   const { importRoutes } = await import('./api/import.routes');
   const { multiplayerRoutes } = await import('./api/multiplayer.routes');
-  const { userRoutes, notificationRoutes, socialRoutes } = await import('./api/user.routes');
+  const { userRoutes, notificationRoutes, socialRoutes } = await import(
+    './api/user.routes'
+  );
   const { syncRoutes } = await import('./api/sync.routes');
   const { gameStatsRoutes } = await import('./api/games-stats.routes');
 

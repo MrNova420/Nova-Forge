@@ -111,7 +111,7 @@ export class SelectTool extends BaseTool {
     console.log('Selection cleared');
   }
 
-  update(deltaTime: number): void {
+  update(_deltaTime: number): void {
     // Update selection state
   }
 

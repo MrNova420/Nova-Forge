@@ -270,7 +270,7 @@ export class InMemoryDatabase {
     } as QueryResult<T>;
   }
 
-  private handleUpdate<T>(sql: string, params?: any[]): QueryResult<T> {
+  private handleUpdate<T>(_sql: string, params?: any[]): QueryResult<T> {
     // Simplified update handling
     return {
       rows: [],
@@ -281,7 +281,7 @@ export class InMemoryDatabase {
     } as QueryResult<T>;
   }
 
-  private handleDelete<T>(sql: string, params?: any[]): QueryResult<T> {
+  private handleDelete<T>(_sql: string, params?: any[]): QueryResult<T> {
     // Simplified delete handling
     return {
       rows: [],

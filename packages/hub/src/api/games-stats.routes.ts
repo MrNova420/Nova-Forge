@@ -32,7 +32,7 @@ export async function gameStatsRoutes(server: FastifyInstance) {
     '/:gameId/stats',
     async (
       request: FastifyRequest<{ Params: { gameId: string } }>,
-      reply: FastifyReply
+      _reply: FastifyReply
     ) => {
       const { gameId } = request.params;
 
@@ -57,7 +57,7 @@ export async function gameStatsRoutes(server: FastifyInstance) {
   );
 
   // Get stats for all games
-  server.get('/all', async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/all', async (_request: FastifyRequest, _reply: FastifyReply) => {
     const allStats = Array.from(gameStatsStore.values()).map((stats) => ({
       gameId: stats.gameId,
       downloads: stats.downloads,
@@ -69,36 +69,39 @@ export async function gameStatsRoutes(server: FastifyInstance) {
   });
 
   // Record a game play (increments download count)
-  server.post('/play', async (request: FastifyRequest, reply: FastifyReply) => {
-    const data = recordPlaySchema.parse(request.body);
+  server.post(
+    '/play',
+    async (request: FastifyRequest, _reply: FastifyReply) => {
+      const data = recordPlaySchema.parse(request.body);
 
-    let stats = gameStatsStore.get(data.gameId);
+      let stats = gameStatsStore.get(data.gameId);
 
-    if (!stats) {
-      stats = {
+      if (!stats) {
+        stats = {
+          gameId: data.gameId,
+          downloads: 0,
+          totalRating: 0,
+          ratingCount: 0,
+          averageRating: 0,
+        };
+        gameStatsStore.set(data.gameId, stats);
+      }
+
+      stats.downloads++;
+
+      return {
+        success: true,
         gameId: data.gameId,
-        downloads: 0,
-        totalRating: 0,
-        ratingCount: 0,
-        averageRating: 0,
+        downloads: stats.downloads,
       };
-      gameStatsStore.set(data.gameId, stats);
     }
-
-    stats.downloads++;
-
-    return {
-      success: true,
-      gameId: data.gameId,
-      downloads: stats.downloads,
-    };
-  });
+  );
 
   // Rate a game
   server.post(
     '/rate',
     { onRequest: [server.authenticate] },
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const data = rateGameSchema.parse(request.body);
 
       let stats = gameStatsStore.get(data.gameId);

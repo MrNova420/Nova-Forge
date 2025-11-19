@@ -159,7 +159,7 @@ export class RotateTool extends BaseTool {
     );
   }
 
-  update(deltaTime: number): void {
+  update(_deltaTime: number): void {
     // Update tool state
   }
 

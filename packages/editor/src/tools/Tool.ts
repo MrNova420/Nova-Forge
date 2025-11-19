@@ -7,47 +7,47 @@ export interface Tool {
   name: string;
   icon: string;
   hotkey: string;
-  
+
   /**
    * Called when tool is activated
    */
   onActivate(): void;
-  
+
   /**
    * Called when tool is deactivated
    */
   onDeactivate(): void;
-  
+
   /**
    * Handle mouse down event
    */
   onMouseDown(x: number, y: number, button: number): void;
-  
+
   /**
    * Handle mouse move event
    */
   onMouseMove(x: number, y: number): void;
-  
+
   /**
    * Handle mouse up event
    */
   onMouseUp(x: number, y: number, button: number): void;
-  
+
   /**
    * Handle key down event
    */
   onKeyDown(key: string): void;
-  
+
   /**
    * Handle key up event
    */
   onKeyUp(key: string): void;
-  
+
   /**
    * Update tool state
    */
   update(deltaTime: number): void;
-  
+
   /**
    * Render tool gizmos
    */
@@ -58,48 +58,49 @@ export abstract class BaseTool implements Tool {
   abstract name: string;
   abstract icon: string;
   abstract hotkey: string;
-  
+
   protected isActive: boolean = false;
   protected isDragging: boolean = false;
-  
+
   onActivate(): void {
     this.isActive = true;
   }
-  
+
   onDeactivate(): void {
     this.isActive = false;
     this.isDragging = false;
   }
-  
+
   onMouseDown(x: number, y: number, button: number): void {
-    if (button === 0) { // Left mouse button
+    if (button === 0) {
+      // Left mouse button
       this.isDragging = true;
     }
   }
-  
-  onMouseMove(x: number, y: number): void {
+
+  onMouseMove(_x: number, _y: number): void {
     // Override in subclasses
   }
-  
+
   onMouseUp(x: number, y: number, button: number): void {
     if (button === 0) {
       this.isDragging = false;
     }
   }
-  
-  onKeyDown(key: string): void {
+
+  onKeyDown(_key: string): void {
     // Override in subclasses
   }
-  
-  onKeyUp(key: string): void {
+
+  onKeyUp(_key: string): void {
     // Override in subclasses
   }
-  
-  update(deltaTime: number): void {
+
+  update(_deltaTime: number): void {
     // Override in subclasses
   }
-  
-  render(context: any): void {
+
+  render(_context: any): void {
     // Override in subclasses
   }
 }

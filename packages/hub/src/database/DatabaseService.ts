@@ -47,7 +47,7 @@ export class DatabaseService {
 
       // Initialize schema
       await this.initializeSchema();
-    } catch (error) {
+    } catch (_error) {
       logger.warn(
         'PostgreSQL not available, falling back to in-memory database'
       );

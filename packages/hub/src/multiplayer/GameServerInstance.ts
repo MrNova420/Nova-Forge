@@ -98,7 +98,7 @@ export class GameServerInstance extends EventEmitter {
     }
 
     // Disconnect all players
-    for (const [userId, ws] of this.connections) {
+    for (const [_userId, ws] of this.connections) {
       ws.close(1000, 'Server shutting down');
     }
 
@@ -155,7 +155,7 @@ export class GameServerInstance extends EventEmitter {
    * Apply player input to state
    */
   private applyInput(player: PlayerState, input: any): void {
-    const { action, data, sequenceNumber, timestamp } = input;
+    const { action, data, _sequenceNumber, timestamp } = input;
 
     // Calculate delta time from input timestamp
     const now = Date.now();
@@ -238,7 +238,7 @@ export class GameServerInstance extends EventEmitter {
   /**
    * Check player collisions
    */
-  private checkCollisions(player: PlayerState): void {
+  private checkCollisions(_player: PlayerState): void {
     // Check against world geometry
     // Check against other players
     // Check against entities
@@ -334,7 +334,7 @@ export class GameServerInstance extends EventEmitter {
   /**
    * Handle interaction
    */
-  private handleInteraction(player: PlayerState, data: any): void {
+  private handleInteraction(_player: PlayerState, _data: any): void {
     // Handle object interaction, pickup, etc.
   }
 
@@ -456,7 +456,7 @@ export class GameServerInstance extends EventEmitter {
     const data = JSON.stringify(snapshot);
 
     // Send to all connected players
-    for (const [userId, ws] of this.connections) {
+    for (const [_userId, ws] of this.connections) {
       if (ws.readyState === WebSocket.OPEN) {
         ws.send(data);
       }

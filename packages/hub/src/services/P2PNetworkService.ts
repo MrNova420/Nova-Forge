@@ -197,7 +197,7 @@ export class P2PNetworkService {
     }
 
     // Create mesh within each region
-    for (const [region, regionPeers] of regionGroups) {
+    for (const [_region, regionPeers] of regionGroups) {
       if (regionPeers.length <= 8) {
         // Small group - full mesh
         for (const peer of regionPeers) {

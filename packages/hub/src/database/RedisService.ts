@@ -31,7 +31,7 @@ export class RedisService {
       },
     });
 
-    this.client.on('error', (err) => {
+    this.client.on('error', (_err) => {
       // Only log once, don't spam
       if (!this.client?.isOpen) {
         logger.warn('Redis unavailable - running without cache');

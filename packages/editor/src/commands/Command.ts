@@ -8,28 +8,28 @@ export interface Command {
    * Name of the command for display in history
    */
   readonly name: string;
-  
+
   /**
    * Execute the command
    */
   execute(): void;
-  
+
   /**
    * Undo the command
    */
   undo(): void;
-  
+
   /**
    * Redo the command (optional, defaults to execute())
    */
   redo?(): void;
-  
+
   /**
    * Check if command can be merged with another command
    * Useful for continuous operations like dragging
    */
   canMergeWith?(other: Command): boolean;
-  
+
   /**
    * Merge this command with another command
    */
@@ -38,19 +38,19 @@ export interface Command {
 
 export abstract class BaseCommand implements Command {
   abstract readonly name: string;
-  
+
   abstract execute(): void;
   abstract undo(): void;
-  
+
   redo(): void {
     this.execute();
   }
-  
-  canMergeWith(other: Command): boolean {
+
+  canMergeWith(_other: Command): boolean {
     return false;
   }
-  
-  mergeWith(other: Command): void {
+
+  mergeWith(_other: Command): void {
     // Override in subclasses that support merging
   }
 }

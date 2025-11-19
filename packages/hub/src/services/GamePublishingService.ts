@@ -382,7 +382,7 @@ export class GamePublishingService {
    */
   private async createPlayUrl(
     projectId: string,
-    buildId: string
+    _buildId: string
   ): Promise<string> {
     const baseUrl = process.env.PLAY_BASE_URL || 'https://play.novaengine.io';
     return `${baseUrl}/game/${projectId}`;

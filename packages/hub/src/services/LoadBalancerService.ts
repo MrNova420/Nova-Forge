@@ -273,7 +273,7 @@ export class LoadBalancerService {
   private selectHybrid(
     servers: GameServer[],
     loads: ServerLoad[],
-    playerConnection: PlayerConnection
+    _playerConnection: PlayerConnection
   ): GameServer {
     // Find servers that meet minimum criteria
     const viableServers = loads

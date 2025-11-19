@@ -28,7 +28,7 @@ export async function gamesRoutes(server: FastifyInstance) {
   const projectService = new ProjectStorageService();
 
   // Browse all published games
-  server.get('/', async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/', async (request: FastifyRequest, _reply: FastifyReply) => {
     try {
       const { category, tags, search, sortBy, limit, offset } =
         request.query as any;
@@ -43,7 +43,7 @@ export async function gamesRoutes(server: FastifyInstance) {
       });
 
       return { success: true, games };
-    } catch (error) {
+    } catch (_error) {
       // Return empty array on error (in-memory mode)
       return { success: true, games: [] };
     }
@@ -52,28 +52,28 @@ export async function gamesRoutes(server: FastifyInstance) {
   // Get featured/trending games
   server.get(
     '/featured',
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (_request: FastifyRequest, _reply: FastifyReply) => {
       try {
         const games = await gameService.getPublishedGames({
           sortBy: 'popular',
           limit: 1000,
         });
         return { success: true, games };
-      } catch (error) {
+      } catch (_error) {
         return { success: true, games: [] };
       }
     }
   );
 
   // Get new releases
-  server.get('/new', async (request: FastifyRequest, reply: FastifyReply) => {
+  server.get('/new', async (_request: FastifyRequest, _reply: FastifyReply) => {
     try {
       const games = await gameService.getPublishedGames({
         sortBy: 'newest',
         limit: 1000,
       });
       return { success: true, games };
-    } catch (error) {
+    } catch (_error) {
       return { success: true, games: [] };
     }
   });
@@ -81,14 +81,14 @@ export async function gamesRoutes(server: FastifyInstance) {
   // Get top rated games
   server.get(
     '/top-rated',
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (_request: FastifyRequest, _reply: FastifyReply) => {
       try {
         const games = await gameService.getPublishedGames({
           sortBy: 'rating',
           limit: 1000,
         });
         return { success: true, games };
-      } catch (error) {
+      } catch (_error) {
         return { success: true, games: [] };
       }
     }
@@ -97,7 +97,7 @@ export async function gamesRoutes(server: FastifyInstance) {
   // Get games by category
   server.get(
     '/category/:category',
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const { category } = request.params as { category: string };
       const { limit, offset } = request.query as any;
 
@@ -206,7 +206,7 @@ export async function gamesRoutes(server: FastifyInstance) {
   server.post(
     '/:id/rate',
     { onRequest: [server.authenticate] },
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const { id } = request.params as { id: string };
       const { userId } = request.user as any;
       const { rating } = rateGameSchema.parse(request.body);
@@ -256,7 +256,7 @@ export async function gamesRoutes(server: FastifyInstance) {
   server.get(
     '/my/published',
     { onRequest: [server.authenticate] },
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const { userId } = request.user as any;
 
       // Get user's projects

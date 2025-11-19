@@ -61,7 +61,7 @@ export async function importRoutes(server: FastifyInstance) {
   // Get supported import formats
   server.get(
     '/formats',
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (_request: FastifyRequest, _reply: FastifyReply) => {
       const formats = importService.getSupportedFormats();
       return { success: true, formats };
     }
@@ -71,7 +71,7 @@ export async function importRoutes(server: FastifyInstance) {
   server.post(
     '/validate',
     { onRequest: [server.authenticate] },
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (request: FastifyRequest, _reply: FastifyReply) => {
       const data = validateSourceSchema.parse(request.body);
 
       const validation = await importService.validateImportSource(data as any);
@@ -187,7 +187,7 @@ export async function importRoutes(server: FastifyInstance) {
       // Clean up temp file
       try {
         await fs.unlink(tempPath);
-      } catch (error) {
+      } catch (_error) {
         // Ignore cleanup errors
       }
 

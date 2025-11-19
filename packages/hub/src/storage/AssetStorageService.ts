@@ -297,7 +297,7 @@ export class AssetStorageService {
   private async deleteFromStorage(storageUrl: string): Promise<void> {
     try {
       await fs.unlink(storageUrl);
-    } catch (error) {
+    } catch (_error) {
       // Ignore if file doesn't exist
     }
   }

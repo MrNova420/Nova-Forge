@@ -10,7 +10,7 @@ export async function syncRoutes(server: FastifyInstance) {
   server.post(
     '/saves',
     { onRequest: [server.authenticate] },
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (_request: FastifyRequest, _reply: FastifyReply) => {
       return { success: true, message: 'Saves synced' };
     }
   );
@@ -19,7 +19,7 @@ export async function syncRoutes(server: FastifyInstance) {
   server.post(
     '/projects',
     { onRequest: [server.authenticate] },
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (_request: FastifyRequest, _reply: FastifyReply) => {
       return { success: true, message: 'Projects synced' };
     }
   );
@@ -28,7 +28,7 @@ export async function syncRoutes(server: FastifyInstance) {
   server.post(
     '/settings',
     { onRequest: [server.authenticate] },
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (_request: FastifyRequest, _reply: FastifyReply) => {
       return { success: true, message: 'Settings synced' };
     }
   );
@@ -37,7 +37,7 @@ export async function syncRoutes(server: FastifyInstance) {
   server.post(
     '/achievements',
     { onRequest: [server.authenticate] },
-    async (request: FastifyRequest, reply: FastifyReply) => {
+    async (_request: FastifyRequest, _reply: FastifyReply) => {
       return { success: true, message: 'Achievements synced' };
     }
   );

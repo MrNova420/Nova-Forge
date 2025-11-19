@@ -139,7 +139,7 @@ export class ProjectSyncService {
   /**
    * Check for conflicts
    */
-  async checkForConflicts(projectId: string): Promise<string[]> {
+  async checkForConflicts(_projectId: string): Promise<string[]> {
     // In a real implementation, this would compare local and remote states
     return [];
   }
