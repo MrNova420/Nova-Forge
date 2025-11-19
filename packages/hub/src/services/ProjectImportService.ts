@@ -11,6 +11,17 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 // import * as crypto from 'crypto';  // Unused import
 
+/**
+ * Helper to extract error message from unknown error type
+ */
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) return error.message;
+  if (error && typeof error === 'object' && 'message' in error) {
+    return String(error.message);
+  }
+  return String(error);
+}
+
 export interface ImportSource {
   type:
     | 'zip'
@@ -112,7 +123,7 @@ export class ProjectImportService {
           assetsImported++;
         } catch (error: unknown) {
           errors.push(
-            `Failed to import asset ${file.relativePath}: ${error.message}`
+            `Failed to import asset ${file.relativePath}: ${getErrorMessage(error)}`
           );
         }
       }
@@ -130,7 +141,7 @@ export class ProjectImportService {
           filesImported++;
         } catch (error: unknown) {
           errors.push(
-            `Failed to import scene ${file.relativePath}: ${error.message}`
+            `Failed to import scene ${file.relativePath}: ${getErrorMessage(error)}`
           );
         }
       }
@@ -148,7 +159,7 @@ export class ProjectImportService {
           filesImported++;
         } catch (error: unknown) {
           errors.push(
-            `Failed to import script ${file.relativePath}: ${error.message}`
+            `Failed to import script ${file.relativePath}: ${getErrorMessage(error)}`
           );
         }
       }
@@ -179,7 +190,7 @@ export class ProjectImportService {
         duration,
       };
     } catch (error: unknown) {
-      errors.push(`Import failed: ${error.message}`);
+      errors.push(`Import failed: ${getErrorMessage(error)}`);
       return {
         success: false,
         assetsImported,
@@ -466,7 +477,7 @@ export class ProjectImportService {
           assetsImported++;
         } catch (error: unknown) {
           errors.push(
-            `Failed to import ${asset.relativePath}: ${error.message}`
+            `Failed to import ${asset.relativePath}: ${getErrorMessage(error)}`
           );
         }
       }
@@ -483,7 +494,7 @@ export class ProjectImportService {
           });
         } catch (error: unknown) {
           errors.push(
-            `Failed to import scene ${scene.relativePath}: ${error.message}`
+            `Failed to import scene ${scene.relativePath}: ${getErrorMessage(error)}`
           );
         }
       }
@@ -500,7 +511,7 @@ export class ProjectImportService {
           });
         } catch (error: unknown) {
           errors.push(
-            `Failed to import script ${script.relativePath}: ${error.message}`
+            `Failed to import script ${script.relativePath}: ${getErrorMessage(error)}`
           );
         }
       }
@@ -523,7 +534,7 @@ export class ProjectImportService {
         duration: Date.now() - startTime,
       };
     } catch (error: unknown) {
-      errors.push(`Import failed: ${error.message}`);
+      errors.push(`Import failed: ${getErrorMessage(error)}`);
       return {
         success: false,
         assetsImported: 0,

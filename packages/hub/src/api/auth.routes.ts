@@ -62,7 +62,12 @@ export async function authRoutes(server: FastifyInstance) {
           refreshToken: result.tokens.refreshToken,
         });
       } catch (error: unknown) {
-        if (error.code === '23505') {
+        if (
+          error &&
+          typeof error === 'object' &&
+          'code' in error &&
+          error.code === '23505'
+        ) {
           return reply.code(409).send({
             error: true,
             message: 'Email or username already exists',

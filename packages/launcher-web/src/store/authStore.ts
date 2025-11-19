@@ -57,8 +57,20 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.setItem('auth_token', token);
       set({ user, token, isAuthenticated: true, isLoading: false });
     } catch (error: unknown) {
+      const errorMessage =
+        error &&
+        typeof error === 'object' &&
+        'response' in error &&
+        error.response &&
+        typeof error.response === 'object' &&
+        'data' in error.response &&
+        error.response.data &&
+        typeof error.response.data === 'object' &&
+        'message' in error.response.data
+          ? String(error.response.data.message)
+          : 'Login failed';
       set({
-        error: error.response?.data?.message || 'Login failed',
+        error: errorMessage,
         isLoading: false,
       });
       throw error;
@@ -77,8 +89,20 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.setItem('auth_token', token);
       set({ user, token, isAuthenticated: true, isLoading: false });
     } catch (error: unknown) {
+      const errorMessage =
+        error &&
+        typeof error === 'object' &&
+        'response' in error &&
+        error.response &&
+        typeof error.response === 'object' &&
+        'data' in error.response &&
+        error.response.data &&
+        typeof error.response.data === 'object' &&
+        'message' in error.response.data
+          ? String(error.response.data.message)
+          : 'Registration failed';
       set({
-        error: error.response?.data?.message || 'Registration failed',
+        error: errorMessage,
         isLoading: false,
       });
       throw error;

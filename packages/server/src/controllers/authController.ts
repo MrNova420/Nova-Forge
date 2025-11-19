@@ -28,7 +28,9 @@ export async function register(req: Request, res: Response): Promise<void> {
 
     res.status(201).json({ user, token });
   } catch (error: unknown) {
-    res.status(400).json({ message: error.message });
+    const message =
+      error instanceof Error ? error.message : 'Registration failed';
+    res.status(400).json({ message });
   }
 }
 
@@ -72,6 +74,7 @@ export async function login(req: Request, res: Response): Promise<void> {
       token,
     });
   } catch (error: unknown) {
-    res.status(500).json({ message: error.message });
+    const message = error instanceof Error ? error.message : 'Login failed';
+    res.status(500).json({ message });
   }
 }
