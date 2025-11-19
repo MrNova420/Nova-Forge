@@ -1,13 +1,13 @@
 /**
  * NOVA ENGINE - Proprietary Software
- * 
+ *
  * Copyright (c) 2025 Kayden Shawn Massengill. All Rights Reserved.
  * Operating as: WeNova Interactive
- * 
+ *
  * This software is proprietary and confidential. Unauthorized copying,
  * modification, distribution, or use of this software, via any medium,
  * is strictly prohibited without prior written permission.
- * 
+ *
  * See LICENSE file in the root directory for full license terms.
  */
 
@@ -54,7 +54,8 @@ export function createRateLimiter(config: RateLimitConfig) {
   setInterval(() => {
     const now = Date.now();
     Object.keys(store).forEach((key) => {
-      if (store[key].resetTime < now) {
+      const entry = store[key];
+      if (entry && entry.resetTime < now) {
         delete store[key];
       }
     });
@@ -86,7 +87,10 @@ export function createRateLimiter(config: RateLimitConfig) {
 
     // Check if limit exceeded
     if (store[clientId].count > maxRequests) {
-      res.setHeader('Retry-After', Math.ceil((store[clientId].resetTime - now) / 1000).toString());
+      res.setHeader(
+        'Retry-After',
+        Math.ceil((store[clientId].resetTime - now) / 1000).toString()
+      );
       res.status(429).json({
         error: 'Too Many Requests',
         message,
@@ -100,13 +104,19 @@ export function createRateLimiter(config: RateLimitConfig) {
       const originalSend = res.send;
       res.send = function (body): Response {
         const statusCode = res.statusCode;
-        
-        if (skipSuccessfulRequests && statusCode >= 200 && statusCode < 300) {
-          store[clientId].count--;
-        } else if (skipFailedRequests && (statusCode < 200 || statusCode >= 400)) {
-          store[clientId].count--;
+        const entry = store[clientId];
+
+        if (entry) {
+          if (skipSuccessfulRequests && statusCode >= 200 && statusCode < 300) {
+            entry.count--;
+          } else if (
+            skipFailedRequests &&
+            (statusCode < 200 || statusCode >= 400)
+          ) {
+            entry.count--;
+          }
         }
-        
+
         return originalSend.call(this, body);
       };
     }
@@ -122,10 +132,11 @@ export function createRateLimiter(config: RateLimitConfig) {
 function getClientIdentifier(req: Request): string {
   // Try to get user ID from auth middleware
   const userId = (req as any).userId;
-  
+
   // Get IP address (consider X-Forwarded-For for proxies)
-  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
-  
+  const ip =
+    req.headers['x-forwarded-for'] || req.socket.remoteAddress || 'unknown';
+
   return userId ? `user:${userId}` : `ip:${ip}`;
 }
 

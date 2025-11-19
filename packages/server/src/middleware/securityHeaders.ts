@@ -1,13 +1,13 @@
 /**
  * NOVA ENGINE - Proprietary Software
- * 
+ *
  * Copyright (c) 2025 Kayden Shawn Massengill. All Rights Reserved.
  * Operating as: WeNova Interactive
- * 
+ *
  * This software is proprietary and confidential. Unauthorized copying,
  * modification, distribution, or use of this software, via any medium,
  * is strictly prohibited without prior written permission.
- * 
+ *
  * See LICENSE file in the root directory for full license terms.
  */
 
@@ -44,7 +44,7 @@ export function securityHeaders(config: SecurityHeadersConfig = {}) {
     permissionsPolicy = true,
   } = config;
 
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (_req: Request, res: Response, next: NextFunction): void => {
     // Remove potentially dangerous headers
     res.removeHeader('X-Powered-By');
 
@@ -61,9 +61,9 @@ export function securityHeaders(config: SecurityHeadersConfig = {}) {
         "script-src 'self' 'unsafe-inline' 'unsafe-eval'", // Note: 'unsafe-inline' and 'unsafe-eval' should be removed in production
         "script-src-attr 'none'",
         "style-src 'self' https: 'unsafe-inline'",
-        "upgrade-insecure-requests",
+        'upgrade-insecure-requests',
       ].join('; ');
-      
+
       res.setHeader('Content-Security-Policy', cspDirectives);
     }
 
@@ -102,7 +102,7 @@ export function securityHeaders(config: SecurityHeadersConfig = {}) {
         'gyroscope=()',
         'accelerometer=()',
       ].join(', ');
-      
+
       res.setHeader('Permissions-Policy', permissionsPolicyDirectives);
     }
 
@@ -154,8 +154,15 @@ export function secureCors(allowedOrigins: string[]) {
 /**
  * Prevent caching of sensitive data
  */
-export function noCache(req: Request, res: Response, next: NextFunction): void {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+export function noCache(
+  _req: Request,
+  res: Response,
+  next: NextFunction
+): void {
+  res.setHeader(
+    'Cache-Control',
+    'no-store, no-cache, must-revalidate, proxy-revalidate'
+  );
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
   res.setHeader('Surrogate-Control', 'no-store');
@@ -166,7 +173,7 @@ export function noCache(req: Request, res: Response, next: NextFunction): void {
  * Set caching headers for static assets
  */
 export function cacheStatic(maxAge: number = 31536000) {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (_req: Request, res: Response, next: NextFunction): void => {
     res.setHeader('Cache-Control', `public, max-age=${maxAge}, immutable`);
     next();
   };

@@ -1,13 +1,13 @@
 /**
  * NOVA ENGINE - Proprietary Software
- * 
+ *
  * Copyright (c) 2025 Kayden Shawn Massengill. All Rights Reserved.
  * Operating as: WeNova Interactive
- * 
+ *
  * This software is proprietary and confidential. Unauthorized copying,
  * modification, distribution, or use of this software, via any medium,
  * is strictly prohibited without prior written permission.
- * 
+ *
  * See LICENSE file in the root directory for full license terms.
  */
 
@@ -115,10 +115,12 @@ export const Hierarchy: React.FC = () => {
 
   // Convert entities to tree structure
   const buildSceneTree = (): SceneNode[] => {
-    return scene.rootEntities.map((entityId) => {
-      const entity = scene.entities[entityId];
-      return entityToNode(entity);
-    });
+    return scene.rootEntities
+      .map((entityId) => {
+        const entity = scene.entities[entityId];
+        return entity ? entityToNode(entity) : null;
+      })
+      .filter((node): node is SceneNode => node !== null);
   };
 
   const entityToNode = (entity: Entity): SceneNode => {
@@ -131,9 +133,12 @@ export const Hierarchy: React.FC = () => {
           ? 'light'
           : 'object',
       visible: entity.enabled,
-      children: entity.children.map((childId: string) =>
-        entityToNode(scene.entities[childId])
-      ),
+      children: entity.children
+        .map((childId: string) => {
+          const child = scene.entities[childId];
+          return child ? entityToNode(child) : null;
+        })
+        .filter((node): node is SceneNode => node !== null),
     };
   };
 

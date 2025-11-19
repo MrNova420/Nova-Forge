@@ -109,6 +109,8 @@ function validateData(data: any, schema: ValidationSchema): ValidationError[] {
   // Check for required fields
   Object.keys(schema).forEach((field) => {
     const rule = schema[field];
+    if (!rule) return;
+
     const value = data[field];
 
     // Required check
