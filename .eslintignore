@@ -1,0 +1,20 @@
+# Build outputs
+dist/
+build/
+*.d.ts
+
+# Dependencies
+node_modules/
+
+# Generated files
+coverage/
+.next/
+out/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

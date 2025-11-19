@@ -1,6 +1,7 @@
 {
   "name": "nova-engine",
   "version": "0.1.0",
+  "type": "module",
   "private": true,
   "description": "Nova Engine - A complete web-based game development platform",
   "keywords": [

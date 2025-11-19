@@ -155,15 +155,17 @@ export class WebBuilder {
     // Find entry point
     const entryPoint = this.findEntryPoint(projectPath);
     if (!entryPoint) {
-      throw new Error('No entry point found (index.ts/js, main.ts/js, or src/index.ts/js)');
+      throw new Error(
+        'No entry point found (index.ts/js, main.ts/js, or src/index.ts/js)'
+      );
     }
 
     // Read and bundle entry point
     const content = fs.readFileSync(entryPoint, 'utf-8');
-    
+
     // Simple bundling: wrap in IIFE with imports resolved
     const bundledContent = this.createBundle(content, projectPath, entryPoint);
-    
+
     // Main bundle
     const mainBundle: BuildArtifact = {
       type: 'js',
@@ -212,9 +214,13 @@ export class WebBuilder {
   /**
    * Create bundled JavaScript
    */
-  private createBundle(content: string, _projectPath: string, _entryPath: string): string {
+  private createBundle(
+    content: string,
+    _projectPath: string,
+    _entryPath: string
+  ): string {
     // Strip TypeScript types (basic approach)
-    let processed = content
+    const processed = content
       .replace(/: \w+(\[\])?/g, '') // Remove type annotations
       .replace(/interface \w+ \{[^}]+\}/g, '') // Remove interfaces
       .replace(/type \w+ = [^;]+;/g, ''); // Remove type aliases
@@ -291,17 +297,17 @@ export class WebBuilder {
 
     // Process each asset type
     const files = this.getAllFiles(assetsDir);
-    
+
     for (const file of files) {
       const relativePath = path.relative(assetsDir, file);
       const outPath = path.join(outAssetsDir, relativePath);
-      
+
       // Ensure output directory exists
       this.ensureDirectory(path.dirname(outPath));
-      
+
       // Copy file (in real implementation, would optimize based on type)
       fs.copyFileSync(file, outPath);
-      
+
       artifacts.push({
         type: 'asset',
         path: outPath,
@@ -317,19 +323,19 @@ export class WebBuilder {
    */
   private getAllFiles(dir: string): string[] {
     const files: string[] = [];
-    
+
     const items = fs.readdirSync(dir);
     for (const item of items) {
       const fullPath = path.join(dir, item);
       const stat = fs.statSync(fullPath);
-      
+
       if (stat.isDirectory()) {
         files.push(...this.getAllFiles(fullPath));
       } else {
         files.push(fullPath);
       }
     }
-    
+
     return files;
   }
 
