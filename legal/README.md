@@ -83,6 +83,7 @@ For detailed explanations, examples, and FAQ:
 
 ### Helpful Guides
 
+- **[OWNERSHIP_STRUCTURE.md](OWNERSHIP_STRUCTURE.md)** - ⭐ Ownership clarification and legal structure
 - **[FAQ.md](FAQ.md)** - Frequently Asked Questions about licensing
 - **[COMPLIANCE_CHECKLIST.md](COMPLIANCE_CHECKLIST.md)** - Step-by-step compliance guide
 - **[LEGAL.md](../LEGAL.md)** - Comprehensive legal documentation overview
@@ -91,10 +92,11 @@ For detailed explanations, examples, and FAQ:
 ### Recommended Reading Order
 
 1. **Start Here:** [Human Summary PDF](NovaEngine_HumanSummary.pdf) - 2-minute read
-2. **Common Questions:** [FAQ.md](FAQ.md) - Answers to frequent questions
-3. **Complete Guide:** [LEGAL.md](../LEGAL.md) - Detailed explanations
-4. **Before Release:** [COMPLIANCE_CHECKLIST.md](COMPLIANCE_CHECKLIST.md) - What you need
-5. **Full Terms:** Individual PDF documents - Legal binding terms
+2. **Understand Ownership:** [OWNERSHIP_STRUCTURE.md](OWNERSHIP_STRUCTURE.md) - Who owns what
+3. **Common Questions:** [FAQ.md](FAQ.md) - Answers to frequent questions
+4. **Complete Guide:** [LEGAL.md](../LEGAL.md) - Detailed explanations
+5. **Before Release:** [COMPLIANCE_CHECKLIST.md](COMPLIANCE_CHECKLIST.md) - What you need
+6. **Full Terms:** Individual PDF documents - Legal binding terms
 
 ## 📞 Questions?
 

@@ -11,11 +11,12 @@ Welcome to the Nova Engine legal documentation. This document provides an overvi
 
 **New to Nova Engine legal terms?** Start here:
 
-1. **[FAQ](legal/FAQ.md)** - ⭐ Frequently asked questions (quick answers)
-2. **[Human Summary PDF](legal/NovaEngine_HumanSummary.pdf)** - Plain-language overview (2-minute read)
-3. **[This Document]** - Complete legal guide with examples
-4. **[Compliance Checklist](legal/COMPLIANCE_CHECKLIST.md)** - Step-by-step requirements
-5. **[Legal PDFs](legal/)** - Official legal documents (binding terms)
+1. **[Ownership Structure](legal/OWNERSHIP_STRUCTURE.md)** - ⭐ Who owns what and why it matters
+2. **[FAQ](legal/FAQ.md)** - Frequently asked questions (quick answers)
+3. **[Human Summary PDF](legal/NovaEngine_HumanSummary.pdf)** - Plain-language overview (2-minute read)
+4. **[This Document]** - Complete legal guide with examples
+5. **[Compliance Checklist](legal/COMPLIANCE_CHECKLIST.md)** - Step-by-step requirements
+6. **[Legal PDFs](legal/)** - Official legal documents (binding terms)
 
 ---
 
