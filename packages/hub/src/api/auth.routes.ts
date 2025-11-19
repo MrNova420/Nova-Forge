@@ -1,4 +1,17 @@
 /**
+ * NOVA ENGINE - Proprietary Software
+ * 
+ * Copyright (c) 2025 Kayden Shawn Massengill. All Rights Reserved.
+ * Operating as: WeNova Interactive
+ * 
+ * This software is proprietary and confidential. Unauthorized copying,
+ * modification, distribution, or use of this software, via any medium,
+ * is strictly prohibited without prior written permission.
+ * 
+ * See LICENSE file in the root directory for full license terms.
+ */
+
+/**
  * Authentication API Routes
  */
 
@@ -62,7 +75,12 @@ export async function authRoutes(server: FastifyInstance) {
           refreshToken: result.tokens.refreshToken,
         });
       } catch (error: unknown) {
-        if (error.code === '23505') {
+        if (
+          error &&
+          typeof error === 'object' &&
+          'code' in error &&
+          error.code === '23505'
+        ) {
           return reply.code(409).send({
             error: true,
             message: 'Email or username already exists',

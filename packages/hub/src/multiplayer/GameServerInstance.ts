@@ -1,4 +1,17 @@
 /**
+ * NOVA ENGINE - Proprietary Software
+ * 
+ * Copyright (c) 2025 Kayden Shawn Massengill. All Rights Reserved.
+ * Operating as: WeNova Interactive
+ * 
+ * This software is proprietary and confidential. Unauthorized copying,
+ * modification, distribution, or use of this software, via any medium,
+ * is strictly prohibited without prior written permission.
+ * 
+ * See LICENSE file in the root directory for full license terms.
+ */
+
+/**
  * GameServerInstance - Individual game server instance with full netcode
  *
  * Features:
@@ -189,7 +202,10 @@ export class GameServerInstance extends EventEmitter {
     switch (action) {
       case 'move': {
         // Apply movement with velocity
-        const moveData = data as { direction: { x: number; y: number; z: number }; speed: number };
+        const moveData = data as {
+          direction: { x: number; y: number; z: number };
+          speed: number;
+        };
         player.velocity.x = moveData.direction.x * moveData.speed;
         player.velocity.y = moveData.direction.y * moveData.speed;
         player.velocity.z = moveData.direction.z * moveData.speed;
@@ -198,21 +214,26 @@ export class GameServerInstance extends EventEmitter {
         player.position.y += player.velocity.y * delta;
         player.position.z += player.velocity.z * delta;
         break;
+      }
 
-      case 'rotate':
-        player.rotation.x = data.rotation.x;
-        player.rotation.y = data.rotation.y;
-        player.rotation.z = data.rotation.z;
+      case 'rotate': {
+        const rotateData = data as {
+          rotation: { x: number; y: number; z: number };
+        };
+        player.rotation.x = rotateData.rotation.x;
+        player.rotation.y = rotateData.rotation.y;
+        player.rotation.z = rotateData.rotation.z;
         break;
+      }
 
       case 'fire':
         // Create projectile entity
-        this.createProjectile(player, data);
+        this.createProjectile(player, data as Record<string, unknown>);
         break;
 
       case 'interact':
         // Handle interaction
-        this.handleInteraction(player, data);
+        this.handleInteraction(player, data as Record<string, unknown>);
         break;
     }
 
@@ -304,14 +325,22 @@ export class GameServerInstance extends EventEmitter {
   /**
    * Create projectile entity
    */
-  private createProjectile(player: PlayerState, data: Record<string, unknown>): void {
-    const projectile = {
+  private createProjectile(
+    player: PlayerState,
+    data: Record<string, unknown>
+  ): void {
+    const velocity = data.velocity as
+      | { x: number; y: number; z: number }
+      | undefined;
+    const damage = (data.damage as number) || 10;
+
+    const projectile: GameEntity = {
       id: `projectile_${this.currentTick}_${player.userId}`,
       type: 'projectile',
       ownerId: player.userId,
       position: { ...player.position },
-      velocity: data.velocity,
-      damage: data.damage || 10,
+      velocity: velocity || { x: 0, y: 0, z: 1 },
+      damage: damage,
       lifetime: 5.0, // 5 seconds
     };
 
@@ -334,7 +363,8 @@ export class GameServerInstance extends EventEmitter {
       if (distSq < 1.0) {
         // Hit radius
         // Apply damage
-        player.health -= projectile.damage;
+        const damage = (projectile.damage as number) || 10;
+        player.health -= damage;
 
         // Remove projectile
         this.entities.delete(projectile.id);
@@ -349,7 +379,10 @@ export class GameServerInstance extends EventEmitter {
 
         // Check death
         if (player.health <= 0) {
-          this.handlePlayerDeath(player, projectile.ownerId);
+          this.handlePlayerDeath(
+            player,
+            (projectile.ownerId as string) || 'unknown'
+          );
         }
 
         break;
@@ -360,7 +393,10 @@ export class GameServerInstance extends EventEmitter {
   /**
    * Handle interaction
    */
-  private handleInteraction(_player: PlayerState, _data: Record<string, unknown>): void {
+  private handleInteraction(
+    _player: PlayerState,
+    _data: Record<string, unknown>
+  ): void {
     // Handle object interaction, pickup, etc.
   }
 
@@ -529,7 +565,12 @@ export class GameServerInstance extends EventEmitter {
 
     // Setup WebSocket handlers
     ws.on('message', (data) => {
-      this.handlePlayerMessage(userId, data);
+      try {
+        const message = JSON.parse(data.toString()) as PlayerInput;
+        this.handlePlayerMessage(userId, message);
+      } catch (error) {
+        console.error('Failed to parse player message:', error);
+      }
     });
 
     ws.on('close', () => {

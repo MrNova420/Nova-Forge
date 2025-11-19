@@ -1,4 +1,17 @@
 /**
+ * NOVA ENGINE - Proprietary Software
+ * 
+ * Copyright (c) 2025 Kayden Shawn Massengill. All Rights Reserved.
+ * Operating as: WeNova Interactive
+ * 
+ * This software is proprietary and confidential. Unauthorized copying,
+ * modification, distribution, or use of this software, via any medium,
+ * is strictly prohibited without prior written permission.
+ * 
+ * See LICENSE file in the root directory for full license terms.
+ */
+
+/**
  * NOVA ENGINE - EDITOR V2
  * Complete redesign matching Image 2 mockup
  * Production-grade Unity/Unreal-inspired editor with Image 2 theme

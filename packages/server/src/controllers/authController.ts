@@ -1,4 +1,17 @@
 /**
+ * NOVA ENGINE - Proprietary Software
+ * 
+ * Copyright (c) 2025 Kayden Shawn Massengill. All Rights Reserved.
+ * Operating as: WeNova Interactive
+ * 
+ * This software is proprietary and confidential. Unauthorized copying,
+ * modification, distribution, or use of this software, via any medium,
+ * is strictly prohibited without prior written permission.
+ * 
+ * See LICENSE file in the root directory for full license terms.
+ */
+
+/**
  * NOVA ENGINE - Authentication Controller
  */
 
@@ -6,9 +19,10 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { pool } from '../config/database';
+import { env } from '../config/env-validation';
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || 'nova-engine-secret-key-change-in-production';
+// Use validated environment config - no insecure fallback
+const JWT_SECRET = env.JWT_SECRET;
 
 export async function register(req: Request, res: Response): Promise<void> {
   try {
@@ -28,7 +42,9 @@ export async function register(req: Request, res: Response): Promise<void> {
 
     res.status(201).json({ user, token });
   } catch (error: unknown) {
-    res.status(400).json({ message: error.message });
+    const message =
+      error instanceof Error ? error.message : 'Registration failed';
+    res.status(400).json({ message });
   }
 }
 
@@ -72,6 +88,7 @@ export async function login(req: Request, res: Response): Promise<void> {
       token,
     });
   } catch (error: unknown) {
-    res.status(500).json({ message: error.message });
+    const message = error instanceof Error ? error.message : 'Login failed';
+    res.status(500).json({ message });
   }
 }

@@ -1,4 +1,17 @@
 /**
+ * NOVA ENGINE - Proprietary Software
+ *
+ * Copyright (c) 2025 Kayden Shawn Massengill. All Rights Reserved.
+ * Operating as: WeNova Interactive
+ *
+ * This software is proprietary and confidential. Unauthorized copying,
+ * modification, distribution, or use of this software, via any medium,
+ * is strictly prohibited without prior written permission.
+ *
+ * See LICENSE file in the root directory for full license terms.
+ */
+
+/**
  * Inspector Panel
  * Property inspector for selected entities
  */
@@ -6,10 +19,13 @@
 import React from 'react';
 import { useAppSelector } from '../../hooks';
 
+type Vector3 = { x: number; y: number; z: number };
+type PropertyValue = string | number | boolean | Vector3 | null;
+
 interface PropertyFieldProps {
   label: string;
-  value: any;
-  onChange: (value: any) => void;
+  value: PropertyValue;
+  onChange: (value: PropertyValue) => void;
   type?: 'number' | 'text' | 'boolean' | 'vector3' | 'color';
 }
 
@@ -25,7 +41,7 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
         <label className="text-sm text-editor-text-muted">{label}</label>
         <input
           type="checkbox"
-          checked={value}
+          checked={Boolean(value)}
           onChange={(e) => onChange(e.target.checked)}
           className="w-4 h-4"
         />
@@ -34,6 +50,11 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
   }
 
   if (type === 'vector3') {
+    const vec =
+      value && typeof value === 'object' && 'x' in value
+        ? (value as Vector3)
+        : { x: 0, y: 0, z: 0 };
+
     return (
       <div className="py-1">
         <label className="text-sm text-editor-text-muted block mb-1">
@@ -42,27 +63,27 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
         <div className="grid grid-cols-3 gap-1">
           <input
             type="number"
-            value={value.x}
+            value={vec.x}
             onChange={(e) =>
-              onChange({ ...value, x: parseFloat(e.target.value) })
+              onChange({ ...vec, x: parseFloat(e.target.value) || 0 })
             }
             className="px-2 py-1 text-xs bg-editor-bg border border-editor-border rounded"
             placeholder="X"
           />
           <input
             type="number"
-            value={value.y}
+            value={vec.y}
             onChange={(e) =>
-              onChange({ ...value, y: parseFloat(e.target.value) })
+              onChange({ ...vec, y: parseFloat(e.target.value) || 0 })
             }
             className="px-2 py-1 text-xs bg-editor-bg border border-editor-border rounded"
             placeholder="Y"
           />
           <input
             type="number"
-            value={value.z}
+            value={vec.z}
             onChange={(e) =>
-              onChange({ ...value, z: parseFloat(e.target.value) })
+              onChange({ ...vec, z: parseFloat(e.target.value) || 0 })
             }
             className="px-2 py-1 text-xs bg-editor-bg border border-editor-border rounded"
             placeholder="Z"
@@ -77,7 +98,7 @@ const PropertyField: React.FC<PropertyFieldProps> = ({
       <label className="text-sm text-editor-text-muted">{label}</label>
       <input
         type={type}
-        value={value}
+        value={String(value ?? '')}
         onChange={(e) =>
           onChange(
             type === 'number' ? parseFloat(e.target.value) : e.target.value

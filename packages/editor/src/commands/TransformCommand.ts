@@ -1,4 +1,17 @@
 /**
+ * NOVA ENGINE - Proprietary Software
+ * 
+ * Copyright (c) 2025 Kayden Shawn Massengill. All Rights Reserved.
+ * Operating as: WeNova Interactive
+ * 
+ * This software is proprietary and confidential. Unauthorized copying,
+ * modification, distribution, or use of this software, via any medium,
+ * is strictly prohibited without prior written permission.
+ * 
+ * See LICENSE file in the root directory for full license terms.
+ */
+
+/**
  * TransformCommand
  * Command for transforming entity position, rotation, or scale
  */
@@ -8,6 +21,12 @@ import type { Store } from '@reduxjs/toolkit';
 import { updateComponent } from '../store/slices/sceneSlice';
 
 export interface TransformData {
+  position?: { x: number; y: number; z: number };
+  rotation?: { x: number; y: number; z: number };
+  scale?: { x: number; y: number; z: number };
+}
+
+interface TransformComponentData {
   position?: { x: number; y: number; z: number };
   rotation?: { x: number; y: number; z: number };
   scale?: { x: number; y: number; z: number };
@@ -51,7 +70,7 @@ export class TransformCommand extends BaseCommand {
     }
 
     // Update the Transform component on the entity
-    const transformComponentData: any = {};
+    const transformComponentData: TransformComponentData = {};
 
     if (transform.position) {
       transformComponentData.position = transform.position;

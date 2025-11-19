@@ -1,12 +1,26 @@
 /**
+ * NOVA ENGINE - Proprietary Software
+ * 
+ * Copyright (c) 2025 Kayden Shawn Massengill. All Rights Reserved.
+ * Operating as: WeNova Interactive
+ * 
+ * This software is proprietary and confidential. Unauthorized copying,
+ * modification, distribution, or use of this software, via any medium,
+ * is strictly prohibited without prior written permission.
+ * 
+ * See LICENSE file in the root directory for full license terms.
+ */
+
+/**
  * NOVA ENGINE - Authentication Middleware
  */
 
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { env } from '../config/env-validation';
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || 'nova-engine-secret-key-change-in-production';
+// Use validated environment config - no insecure fallback
+const JWT_SECRET = env.JWT_SECRET;
 
 export interface AuthRequest extends Request {
   userId?: string;
