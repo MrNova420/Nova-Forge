@@ -29,7 +29,8 @@
 19. [Phase 14: Security & Licensing](#phase-14-security--licensing)
 20. [Phase 15: Production Release](#phase-15-production-release)
 21. [Progress Tracking System](#progress-tracking-system)
-22. [Success Metrics](#success-metrics)
+22. [Success Metrics](#success-metrics) .  22.1 .[Quality of life features] (#QUALITY_OF_LIFE_FEATURES.md)
+even more in depth development and imroovments once done with auotmis development guide2.md is doen then you use the quality of life features .md to add even more 
 
 ---
 
