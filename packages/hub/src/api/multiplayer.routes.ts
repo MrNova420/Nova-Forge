@@ -72,6 +72,23 @@ export async function multiplayerRoutes(server: FastifyInstance) {
     }
   );
 
+  // List all available lobbies (for multiplayer module)
+  server.get(
+    '/lobbies',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const { gameId } = request.query as { gameId?: string };
+      
+      // If gameId provided, filter by game
+      if (gameId) {
+        const rooms = await serverManager.listGameRooms(gameId);
+        return rooms;
+      }
+      
+      // Return empty list for now - would need to aggregate all rooms across games
+      return [];
+    }
+  );
+
   // List available rooms for a game
   server.get(
     '/rooms/:gameId',

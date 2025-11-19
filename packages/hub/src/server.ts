@@ -99,7 +99,7 @@ export async function createServer() {
   const { gamesRoutes } = await import('./api/games.routes');
   const { importRoutes } = await import('./api/import.routes');
   const { multiplayerRoutes } = await import('./api/multiplayer.routes');
-  const { userRoutes, notificationRoutes } = await import('./api/user.routes');
+  const { userRoutes, notificationRoutes, socialRoutes } = await import('./api/user.routes');
   const { syncRoutes } = await import('./api/sync.routes');
   const { gameStatsRoutes } = await import('./api/games-stats.routes');
 
@@ -108,6 +108,7 @@ export async function createServer() {
   await server.register(importRoutes, { prefix: '/api/import' });
   await server.register(multiplayerRoutes, { prefix: '/api/multiplayer' });
   await server.register(userRoutes, { prefix: '/api/users' });
+  await server.register(socialRoutes, { prefix: '/api/social' });
   await server.register(notificationRoutes, { prefix: '/api/notifications' });
   await server.register(syncRoutes, { prefix: '/api/sync' });
 
