@@ -16,7 +16,14 @@
     "packages/*"
   ],
   "scripts": {
-    "start": "concurrently \"npm run dev -w @nova-engine/hub\" \"npm run dev -w @nova-engine/unified-platform\"",
+    "start": "node -e \"process.platform === 'win32' ? require('child_process').execSync('scripts\\\\start-platform.bat', {stdio: 'inherit'}) : require('child_process').execSync('bash scripts/start-platform.sh start', {stdio: 'inherit'})\"",
+    "start:windows": "scripts\\start-platform.bat",
+    "start:unix": "bash scripts/start-platform.sh start",
+    "stop": "bash scripts/start-platform.sh stop",
+    "restart": "bash scripts/start-platform.sh restart",
+    "status": "bash scripts/start-platform.sh status",
+    "logs": "bash scripts/start-platform.sh logs",
+    "start:dev": "concurrently \"npm run dev -w @nova-engine/hub\" \"npm run dev -w @nova-engine/unified-platform\"",
     "start:frontend": "npm run dev -w @nova-engine/unified-platform",
     "start:backend": "npm run dev -w @nova-engine/hub",
     "setup": "bash scripts/utils/setup.sh",

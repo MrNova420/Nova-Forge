@@ -11,7 +11,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { UnifiedPlatformCore } from '../core/UnifiedPlatformCore';
-import { getAllDemoGames, type DemoGame } from '../demo-games';
+import { type DemoGame } from '../demo-games';
+import { apiClient } from '../services/ApiClient';
 import './styles/HubModuleV2.css';
 
 interface Game {
@@ -59,45 +60,45 @@ export const HubModuleV2: React.FC<HubModuleV2Props> = ({ platform }) => {
   const loadGames = async () => {
     setLoading(true);
     try {
-      const demoGames = getAllDemoGames();
+      // Fetch from backend API - no fallbacks, production ready
+      const apiGames = await apiClient.getGames({
+        category: category !== 'all' ? category : undefined,
+        search: searchQuery || undefined,
+        limit: 100,
+      });
 
-      // Map demo games to Hub format
-      const gameList: Game[] = demoGames.map((demo) => ({
-        id: demo.id,
-        name: demo.title,
-        description: demo.description,
-        developer: demo.developer || 'Nova Studios',
-        category: demo.genre || 'action',
-        rating: 4.5 + Math.random() * 0.5,
-        downloads: Math.floor(Math.random() * 10000) + 1000,
-        thumbnail: demo.thumbnail || 'https://via.placeholder.com/300x200',
-        screenshots: demo.screenshots || [],
-        releaseDate: new Date().toISOString(),
-        version: '1.0.0',
-        isDemo: true,
-        demoGame: demo,
-      }));
+      // Map API response to Game format
+      const gameList: Game[] = Array.isArray(apiGames)
+        ? apiGames.map((apiGame: any) => ({
+            id: apiGame.id,
+            name: apiGame.title || apiGame.name,
+            description: apiGame.description,
+            developer:
+              apiGame.creator?.username || apiGame.developer || 'Nova Studios',
+            category: apiGame.genre || apiGame.category || 'action',
+            rating: apiGame.rating || 0,
+            downloads: apiGame.downloads || apiGame.play_count || 0,
+            thumbnail:
+              apiGame.thumbnail ||
+              apiGame.thumbnail_url ||
+              'https://via.placeholder.com/300x200',
+            screenshots: apiGame.screenshots || [],
+            releaseDate:
+              apiGame.created_at ||
+              apiGame.releaseDate ||
+              new Date().toISOString(),
+            version: apiGame.version || '1.0.0',
+            isDemo: false,
+          }))
+        : [];
 
-      // Filter by category
-      let filtered = gameList;
-      if (category !== 'all') {
-        filtered = gameList.filter(
-          (g) => g.category.toLowerCase() === category.toLowerCase()
-        );
-      }
-
-      // Filter by search query
-      if (searchQuery) {
-        filtered = filtered.filter(
-          (g) =>
-            g.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            g.description.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-      }
-
-      setGames(filtered);
+      setGames(gameList);
     } catch (error) {
-      console.error('Failed to load games:', error);
+      console.error('Failed to load games from backend API:', error);
+      // Show error to user instead of hiding it with demo data
+      throw new Error(
+        'Unable to connect to backend server. Please ensure the backend is running.'
+      );
     } finally {
       setLoading(false);
     }

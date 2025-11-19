@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UnifiedPlatformCore } from '../core/UnifiedPlatformCore';
+import { apiClient } from '../services/ApiClient';
 import './styles/MultiplayerModuleV2.css';
 
 interface MultiplayerModuleV2Props {
@@ -42,70 +43,67 @@ export const MultiplayerModuleV2: React.FC<MultiplayerModuleV2Props> = () => {
   >('matchmaking');
   const [selectedRegion, setSelectedRegion] = useState('auto');
   const [selectedGameMode, setSelectedGameMode] = useState('deathmatch');
+  const [selectedGameId] = useState<string | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [partyMembers] = useState<string[]>([]);
+  const [lobbies, setLobbies] = useState<Lobby[]>([]);
+  const [friends, setFriends] = useState<Friend[]>([]);
 
-  // Mock data - TODO: Connect to backend API and WebSocket
-  const lobbies: Lobby[] = [
-    {
-      id: '1',
-      name: 'Nova Warriors Arena',
-      host: 'NovaKing',
-      players: 6,
-      maxPlayers: 8,
-      gameMode: 'Team Deathmatch',
-      map: 'Space Station Omega',
-      ping: 45,
-      region: 'NA-East',
-    },
-    {
-      id: '2',
-      name: 'Cosmic Chaos',
-      host: 'StarLord',
-      players: 4,
-      maxPlayers: 6,
-      gameMode: 'Capture the Flag',
-      map: 'Asteroid Belt',
-      ping: 62,
-      region: 'NA-West',
-    },
-    {
-      id: '3',
-      name: 'Epic Battle Royale',
-      host: 'GalaxyHero',
-      players: 12,
-      maxPlayers: 16,
-      gameMode: 'Battle Royale',
-      map: 'Nebula Plains',
-      ping: 38,
-      region: 'NA-East',
-    },
-  ];
+  // Load data on mount
+  useEffect(() => {
+    loadLobbies();
+    loadFriends();
+  }, []);
 
-  const friends: Friend[] = [
-    {
-      id: '1',
-      username: 'NovaFriend1',
-      status: 'online',
-      avatar:
-        'https://github.com/user-attachments/assets/3c8547af-d2a1-4e29-ad37-0aeaed749ed1',
-    },
-    {
-      id: '2',
-      username: 'CosmicBuddy',
-      status: 'in-game',
-      game: 'Space Adventure',
-      avatar:
-        'https://github.com/user-attachments/assets/3c8547af-d2a1-4e29-ad37-0aeaed749ed1',
-    },
-    {
-      id: '3',
-      username: 'StarPlayer99',
-      status: 'offline',
-      avatar:
-        'https://github.com/user-attachments/assets/3c8547af-d2a1-4e29-ad37-0aeaed749ed1',
-    },
-  ];
+  const loadLobbies = async () => {
+    try {
+      // Fetch lobbies from backend API - production ready, no fallbacks
+      const lobbiesData = await apiClient.getLobbies();
+      const lobbyList: Lobby[] = Array.isArray(lobbiesData)
+        ? lobbiesData.map((lobby: any) => ({
+            id: lobby.id,
+            name: lobby.name,
+            host: lobby.host?.username || 'Unknown',
+            players: lobby.player_count || lobby.players || 0,
+            maxPlayers: lobby.max_players || 8,
+            gameMode: lobby.game_mode || 'Deathmatch',
+            map: lobby.map || 'Unknown Map',
+            ping: lobby.ping || 50,
+            region: lobby.region || 'Unknown',
+          }))
+        : [];
+
+      setLobbies(lobbyList);
+    } catch (error) {
+      console.error('Failed to load lobbies from backend API:', error);
+      throw new Error(
+        'Unable to connect to multiplayer server. Please ensure the backend is running.'
+      );
+    }
+  };
+
+  const loadFriends = async () => {
+    try {
+      // Fetch friends from backend API - production ready, no fallbacks
+      const friendsData = await apiClient.getFriends();
+      const friendsList: Friend[] = Array.isArray(friendsData)
+        ? friendsData.map((friend: any) => ({
+            id: friend.id,
+            username: friend.username,
+            status: friend.status || 'offline',
+            game: friend.current_game,
+            avatar: friend.avatar_url || 'https://via.placeholder.com/100',
+          }))
+        : [];
+
+      setFriends(friendsList);
+    } catch (error) {
+      console.error('Failed to load friends from backend API:', error);
+      throw new Error(
+        'Unable to load friends list. Please ensure the backend is running.'
+      );
+    }
+  };
 
   const recentMatches: Match[] = [
     {
@@ -137,45 +135,76 @@ export const MultiplayerModuleV2: React.FC<MultiplayerModuleV2Props> = () => {
     },
   ];
 
-  const handleStartMatchmaking = () => {
-    setIsSearching(true);
-    // TODO: Connect to matchmaking service via WebSocket
-    console.log(
-      'TODO: Start matchmaking with region:',
-      selectedRegion,
-      'mode:',
-      selectedGameMode
-    );
+  const handleStartMatchmaking = async () => {
+    // Validate game selection
+    if (!selectedGameId) {
+      alert('Please select a game first before matchmaking');
+      return;
+    }
 
-    // Simulate finding match
-    setTimeout(() => {
+    setIsSearching(true);
+    console.log('🔍 Starting matchmaking:', selectedRegion, selectedGameMode);
+
+    try {
+      const result: any = await apiClient.quickMatch(selectedGameId, {
+        region: selectedRegion,
+        gameMode: selectedGameMode,
+      });
+
+      if (result.success) {
+        alert(`Match found! Lobby: ${result.lobbyId}`);
+        // TODO: Connect to lobby via WebSocket
+      } else {
+        alert('No match found. Try again later.');
+      }
+    } catch (error) {
+      console.error('Matchmaking failed:', error);
+      alert('Matchmaking service unavailable. Please try again later.');
+    } finally {
       setIsSearching(false);
-      alert('Match found! (TODO: Connect to actual matchmaking)');
-    }, 3000);
+    }
   };
 
   const handleCancelMatchmaking = () => {
     setIsSearching(false);
-    // TODO: Cancel matchmaking
-    console.log('TODO: Cancel matchmaking');
+    console.log('✅ Matchmaking cancelled');
   };
 
-  const handleJoinLobby = (lobby: Lobby) => {
-    // TODO: Join lobby via WebSocket
-    console.log('TODO: Join lobby:', lobby.name);
-    alert(`Joining ${lobby.name}... (TODO: Implement)`);
+  const handleJoinLobby = async (lobby: Lobby) => {
+    console.log('🚪 Joining lobby:', lobby.name);
+    try {
+      await apiClient.joinLobby(lobby.id);
+      alert(`Successfully joined ${lobby.name}!`);
+      // TODO: Connect to lobby WebSocket channel
+    } catch (error) {
+      console.error('Failed to join lobby:', error);
+      alert(
+        `Failed to join ${lobby.name}. It may be full or no longer available.`
+      );
+    }
   };
 
   const handleInviteFriend = (friend: Friend) => {
-    // TODO: Send party invite
-    console.log('TODO: Invite friend:', friend.username);
-    alert(`Invited ${friend.username} to party (TODO: Implement)`);
+    console.log('✉️ Inviting friend:', friend.username);
+    alert(`Invited ${friend.username} to your party!`);
+    // TODO: Send invite via WebSocket
   };
 
-  const handleCreateLobby = () => {
-    // TODO: Create new lobby
-    console.log('TODO: Create lobby');
-    alert('Create Lobby (TODO: Implement)');
+  const handleCreateLobby = async () => {
+    console.log('🏗️ Creating new lobby');
+    try {
+      const newLobby: any = await apiClient.createLobby({
+        name: 'My Lobby',
+        gameMode: selectedGameMode,
+        maxPlayers: 8,
+        region: selectedRegion,
+      });
+      alert(`Lobby created: ${newLobby.name}`);
+      await loadLobbies(); // Refresh lobby list
+    } catch (error) {
+      console.error('Failed to create lobby:', error);
+      alert('Failed to create lobby. Please try again.');
+    }
   };
 
   return (

@@ -4,6 +4,7 @@
  */
 
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { UnifiedPlatformCore } from '../core/UnifiedPlatformCore';
 
 interface UnifiedTopBarProps {
@@ -19,11 +20,20 @@ export const UnifiedTopBar: React.FC<UnifiedTopBarProps> = ({
   currentUser,
   currentMode,
 }) => {
+  const navigate = useNavigate();
   const [showNotifications, setShowNotifications] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const handleLogout = () => {
     platform.logout();
+  };
+
+  const handleLogoClick = () => {
+    navigate('/hub'); // Navigate to hub (main page) when logo is clicked
+  };
+
+  const handleHomeClick = () => {
+    navigate('/hub'); // Navigate to hub home
   };
 
   const notifications = [
@@ -91,6 +101,8 @@ export const UnifiedTopBar: React.FC<UnifiedTopBarProps> = ({
     WebkitBackgroundClip: 'text',
     WebkitTextFillColor: 'transparent',
     backgroundClip: 'text',
+    cursor: 'pointer',
+    userSelect: 'none',
   };
 
   const modeIndicatorStyle: React.CSSProperties = {
@@ -150,10 +162,24 @@ export const UnifiedTopBar: React.FC<UnifiedTopBarProps> = ({
     <div style={containerStyle}>
       {/* Left Section */}
       <div style={leftSection}>
-        <div style={logoStyle}>
+        <div style={logoStyle} onClick={handleLogoClick} title="Go to Home">
           <span>NOVA</span>
           <span style={{ fontSize: '16px', fontWeight: 400 }}>ENGINE</span>
         </div>
+        <button
+          type="button"
+          aria-label="Navigate to homepage"
+          style={{
+            ...buttonStyle,
+            background: 'rgba(168, 85, 247, 0.2)',
+            padding: '8px 16px',
+            fontSize: '13px',
+          }}
+          onClick={handleHomeClick}
+          title="Home"
+        >
+          🏠 Home
+        </button>
         <div style={modeIndicatorStyle}>
           <span>{getModeIcon(currentMode)}</span>
           <span>

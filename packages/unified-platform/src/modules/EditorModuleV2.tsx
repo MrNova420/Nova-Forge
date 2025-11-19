@@ -14,7 +14,11 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { UnifiedPlatformCore } from '../core/UnifiedPlatformCore';
+import { apiClient } from '../services/ApiClient';
 import './styles/EditorModuleV2.css';
+
+// Import the actual Nova Engine
+import { Engine, WebGLRenderer, Scene } from '@nova-engine/engine';
 
 interface EditorModuleV2Props {
   platform: UnifiedPlatformCore;
@@ -103,62 +107,80 @@ export const EditorModuleV2: React.FC<EditorModuleV2Props> = () => {
   const [showProfilerPanel, setShowProfilerPanel] = useState(false);
   const [showBuildSettings, setShowBuildSettings] = useState(false);
 
-  // Canvas ref
+  // Canvas ref and engine instance
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const engineRef = useRef<Engine | null>(null);
+  const rendererRef = useRef<WebGLRenderer | null>(null);
+  const sceneRef = useRef<Scene | null>(null);
 
   useEffect(() => {
-    loadDemoAssets();
-    initializeCanvas();
+    loadProjectAssets();
+    initializeEngine();
+
+    return () => {
+      // Cleanup engine on unmount
+      if (engineRef.current) {
+        engineRef.current.stop();
+      }
+    };
   }, []);
 
-  const loadDemoAssets = () => {
-    const demoAssets: Asset[] = [
-      {
-        id: 'a1',
-        name: 'Player Character',
-        type: 'model',
-        path: '/assets/models/player.fbx',
-      },
-      {
-        id: 'a2',
-        name: 'Ground Texture',
-        type: 'texture',
-        path: '/assets/textures/ground.png',
-      },
-      {
-        id: 'a3',
-        name: 'Metal Material',
-        type: 'material',
-        path: '/assets/materials/metal.mat',
-      },
-      {
-        id: 'a4',
-        name: 'Player Controller',
-        type: 'script',
-        path: '/assets/scripts/PlayerController.ts',
-      },
-      {
-        id: 'a5',
-        name: 'Background Music',
-        type: 'audio',
-        path: '/assets/audio/bgm.mp3',
-      },
-      {
-        id: 'a6',
-        name: 'Enemy Prefab',
-        type: 'prefab',
-        path: '/assets/prefabs/enemy.prefab',
-      },
-    ];
-    setAssets(demoAssets);
+  const loadProjectAssets = async () => {
+    try {
+      // Load assets from backend API - production ready, no fallbacks
+      const projectId = 'current'; // TODO: Get from actual project context
+      const assetsFromAPI = await apiClient.getAssets(projectId);
+
+      const assetsList: Asset[] = Array.isArray(assetsFromAPI)
+        ? assetsFromAPI
+        : [];
+
+      setAssets(assetsList);
+      addLog('info', `Loaded ${assetsList.length} assets from project`);
+    } catch (error) {
+      console.error('Failed to load assets from backend API:', error);
+      addLog(
+        'error',
+        'Unable to load project assets. Backend connection failed.'
+      );
+      throw new Error(
+        'Unable to load project assets. Please ensure the backend is running.'
+      );
+    }
   };
 
-  const initializeCanvas = () => {
-    // TODO: Initialize WebGL/Three.js rendering context
-    addLog(
-      'info',
-      'Canvas initialized - TODO: Connect to Nova Engine renderer'
-    );
+  const initializeEngine = async () => {
+    if (!canvasRef.current) {
+      addLog('error', 'Canvas not available');
+      return;
+    }
+
+    try {
+      // Initialize WebGL Renderer
+      const renderer = new WebGLRenderer();
+      await renderer.initialize(canvasRef.current);
+      rendererRef.current = renderer;
+
+      // Create scene
+      const scene = new Scene();
+      sceneRef.current = scene;
+
+      // Initialize engine
+      const engine = new Engine({
+        canvas: canvasRef.current,
+      });
+
+      addLog('info', '✅ Nova Engine initialized successfully');
+
+      engineRef.current = engine;
+      await engine.initialize();
+
+      addLog('info', '✅ WebGL Renderer connected to editor');
+      addLog('info', 'Ready to create and edit scenes');
+    } catch (error) {
+      console.error('Failed to initialize engine:', error);
+      addLog('error', `Engine initialization failed: ${error}`);
+    }
   };
 
   const addLog = (type: ConsoleLog['type'], message: string) => {
