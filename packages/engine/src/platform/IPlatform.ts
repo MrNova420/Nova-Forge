@@ -140,9 +140,9 @@ export interface IFileSystem {
 }
 
 /**
- * Job/task to be executed
+ * Job/task to be executed on platform threading
  */
-export interface IJob {
+export interface IPlatformJob {
   /**
    * Execute the job
    */
@@ -171,12 +171,12 @@ export interface IThreading {
   /**
    * Schedule a job to run on a worker thread
    */
-  scheduleJob(job: IJob): Promise<void>;
+  scheduleJob(job: IPlatformJob): Promise<void>;
 
   /**
    * Schedule multiple jobs in parallel
    */
-  scheduleJobs(jobs: IJob[]): Promise<void>;
+  scheduleJobs(jobs: IPlatformJob[]): Promise<void>;
 
   /**
    * Check if threading is supported

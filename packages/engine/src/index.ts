@@ -63,3 +63,6 @@ export * from './profiling';
 
 // Export platform abstraction layer
 export * from './platform';
+
+// Export job system
+export * from './jobs';

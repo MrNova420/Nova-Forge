@@ -15,7 +15,7 @@ import {
   PathType,
   WindowOptions,
   WindowCallbacks,
-  IJob,
+  IPlatformJob,
   NetworkRequest,
   NetworkResponse,
   IWebSocket,
@@ -111,13 +111,13 @@ class MobileThreading implements IThreading {
     return this.coreCount;
   }
 
-  async scheduleJob(job: IJob): Promise<void> {
+  async scheduleJob(job: IPlatformJob): Promise<void> {
     // Mobile platforms have limited threading
     // Execute on main thread
     await job.execute();
   }
 
-  async scheduleJobs(jobs: IJob[]): Promise<void> {
+  async scheduleJobs(jobs: IPlatformJob[]): Promise<void> {
     // Execute jobs sequentially on mobile
     for (const job of jobs) {
       await this.scheduleJob(job);

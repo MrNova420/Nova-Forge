@@ -15,7 +15,7 @@ import {
   PathType,
   WindowOptions,
   WindowCallbacks,
-  IJob,
+  IPlatformJob,
   NetworkRequest,
   NetworkResponse,
   IWebSocket,
@@ -160,13 +160,13 @@ class DesktopThreading implements IThreading {
     return this.coreCount;
   }
 
-  async scheduleJob(job: IJob): Promise<void> {
+  async scheduleJob(job: IPlatformJob): Promise<void> {
     // For now, execute on main thread
     // Full Worker implementation would require serialization
     await job.execute();
   }
 
-  async scheduleJobs(jobs: IJob[]): Promise<void> {
+  async scheduleJobs(jobs: IPlatformJob[]): Promise<void> {
     // Execute jobs in parallel using Promise.all
     await Promise.all(jobs.map((job) => this.scheduleJob(job)));
   }
