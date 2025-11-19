@@ -1,4 +1,17 @@
 /**
+ * NOVA ENGINE - Proprietary Software
+ * 
+ * Copyright (c) 2025 Kayden Shawn Massengill. All Rights Reserved.
+ * Operating as: WeNova Interactive
+ * 
+ * This software is proprietary and confidential. Unauthorized copying,
+ * modification, distribution, or use of this software, via any medium,
+ * is strictly prohibited without prior written permission.
+ * 
+ * See LICENSE file in the root directory for full license terms.
+ */
+
+/**
  * DeleteEntityCommand
  * Command for deleting an entity
  */
@@ -7,6 +20,7 @@ import { BaseCommand } from './Command';
 import type { Store } from '@reduxjs/toolkit';
 import { addEntity, removeEntity } from '../store/slices/sceneSlice';
 import type { Entity } from '../store/slices/sceneSlice';
+import type { RootState } from '../store/store';
 
 export class DeleteEntityCommand extends BaseCommand {
   readonly name: string = 'Delete Entity';
@@ -28,7 +42,7 @@ export class DeleteEntityCommand extends BaseCommand {
     }
 
     // Store entity data before deletion for undo
-    const state = this.store.getState() as any;
+    const state = this.store.getState() as RootState;
     const sceneState = state.scene;
     this.entityData = sceneState.entities[this.entityId];
 

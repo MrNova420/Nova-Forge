@@ -1,4 +1,17 @@
 /**
+ * NOVA ENGINE - Proprietary Software
+ * 
+ * Copyright (c) 2025 Kayden Shawn Massengill. All Rights Reserved.
+ * Operating as: WeNova Interactive
+ * 
+ * This software is proprietary and confidential. Unauthorized copying,
+ * modification, distribution, or use of this software, via any medium,
+ * is strictly prohibited without prior written permission.
+ * 
+ * See LICENSE file in the root directory for full license terms.
+ */
+
+/**
  * Inspector Panel
  * Property inspector for selected entities
  */
@@ -6,10 +19,12 @@
 import React from 'react';
 import { useAppSelector } from '../../hooks';
 
+type PropertyValue = string | number | boolean | { x: number; y: number; z: number } | null;
+
 interface PropertyFieldProps {
   label: string;
-  value: any;
-  onChange: (value: any) => void;
+  value: PropertyValue;
+  onChange: (value: PropertyValue) => void;
   type?: 'number' | 'text' | 'boolean' | 'vector3' | 'color';
 }
 
