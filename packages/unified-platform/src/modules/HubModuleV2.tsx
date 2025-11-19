@@ -60,19 +60,16 @@ export const HubModuleV2: React.FC<HubModuleV2Props> = ({ platform }) => {
   const loadGames = async () => {
     setLoading(true);
     try {
-      // Try to fetch from backend API first
-      let gameList: Game[] = [];
+      // Fetch from backend API - no fallbacks, production ready
+      const apiGames = await apiClient.getGames({
+        category: category !== 'all' ? category : undefined,
+        search: searchQuery || undefined,
+        limit: 100,
+      });
 
-      try {
-        const apiGames = await apiClient.getGames({
-          category: category !== 'all' ? category : undefined,
-          search: searchQuery || undefined,
-          limit: 100,
-        });
-
-        // Map API response to Game format
-        if (Array.isArray(apiGames)) {
-          gameList = apiGames.map((apiGame: any) => ({
+      // Map API response to Game format
+      const gameList: Game[] = Array.isArray(apiGames)
+        ? apiGames.map((apiGame: any) => ({
             id: apiGame.id,
             name: apiGame.title || apiGame.name,
             description: apiGame.description,
@@ -92,53 +89,16 @@ export const HubModuleV2: React.FC<HubModuleV2Props> = ({ platform }) => {
               new Date().toISOString(),
             version: apiGame.version || '1.0.0',
             isDemo: false,
-          }));
-        }
-      } catch (apiError) {
-        console.warn('Backend API not available, using demo games:', apiError);
-      }
+          }))
+        : [];
 
-      // If no games from API, use demo games as fallback
-      if (gameList.length === 0) {
-        const demoGames = getAllDemoGames();
-        gameList = demoGames.map((demo) => ({
-          id: demo.id,
-          name: demo.title,
-          description: demo.description,
-          developer: demo.developer || 'Nova Studios',
-          category: demo.genre || 'action',
-          rating: 4.5,
-          downloads: 1234,
-          thumbnail: demo.thumbnail || 'https://via.placeholder.com/300x200',
-          screenshots: demo.screenshots || [],
-          releaseDate: new Date().toISOString(),
-          version: '1.0.0',
-          isDemo: true,
-          demoGame: demo,
-        }));
-      }
-
-      // Filter by category (client-side as backup)
-      let filtered = gameList;
-      if (category !== 'all') {
-        filtered = gameList.filter(
-          (g) => g.category.toLowerCase() === category.toLowerCase()
-        );
-      }
-
-      // Filter by search query (client-side as backup)
-      if (searchQuery) {
-        filtered = filtered.filter(
-          (g) =>
-            g.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            g.description.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-      }
-
-      setGames(filtered);
+      setGames(gameList);
     } catch (error) {
-      console.error('Failed to load games:', error);
-      setGames([]);
+      console.error('Failed to load games from backend API:', error);
+      // Show error to user instead of hiding it with demo data
+      throw new Error(
+        'Unable to connect to backend server. Please ensure the backend is running.'
+      );
     } finally {
       setLoading(false);
     }

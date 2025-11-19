@@ -38,58 +38,42 @@ export const SocialModuleV2: React.FC<SocialModuleV2Props> = () => {
 
   const loadUserProfile = async () => {
     try {
+      // Fetch user profile from backend API - production ready, no fallbacks
       const profile = await apiClient.getMe();
       const stats = await apiClient.getUserStats();
 
       setCurrentUser({
         id: profile.id,
         username: profile.username,
-        level: stats.level || 42,
-        xp: stats.xp || 18250,
-        xpToNext: stats.xpToNext || 20000,
+        level: stats.level || 1,
+        xp: stats.xp || 0,
+        xpToNext: stats.xpToNext || 1000,
         avatar: profile.avatar_url || '👤',
-        title: profile.title || 'Game Master',
-        bio: profile.bio || 'Creating amazing games with Nova Engine!',
+        title: profile.title || 'Novice',
+        bio: profile.bio || '',
         gamesCreated: stats.gamesCreated || 0,
         gamesPlayed: stats.gamesPlayed || 0,
         achievementsUnlocked: stats.achievementsUnlocked || 0,
-        totalAchievements: stats.totalAchievements || 150,
+        totalAchievements: stats.totalAchievements || 0,
         friendsCount: stats.friendsCount || 0,
-        joinedDate: profile.created_at || '2023-01-15',
+        joinedDate: profile.created_at || new Date().toISOString(),
       });
     } catch (error) {
-      console.warn('Could not load user profile, using demo data:', error);
-      loadDemoProfile();
+      console.error('Failed to load user profile from backend API:', error);
+      throw new Error(
+        'Unable to load user profile. Please ensure the backend is running.'
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  const loadDemoProfile = () => {
-    setCurrentUser({
-      id: 1,
-      username: 'NovaPlayer',
-      level: 42,
-      xp: 18250,
-      xpToNext: 20000,
-      avatar: '👤',
-      title: 'Game Master',
-      bio: 'Creating amazing games with Nova Engine!',
-      gamesCreated: 15,
-      gamesPlayed: 127,
-      achievementsUnlocked: 89,
-      totalAchievements: 150,
-      friendsCount: 234,
-      joinedDate: '2023-01-15',
-    });
-  };
-
   const loadFriends = async () => {
     try {
+      // Fetch friends from backend API - production ready, no fallbacks
       const friendsData = await apiClient.getFriends();
-      if (Array.isArray(friendsData)) {
-        setFriends(
-          friendsData.map((friend: any) => ({
+      const friendsList = Array.isArray(friendsData)
+        ? friendsData.map((friend: any) => ({
             id: friend.id,
             username: friend.username,
             status: friend.status || 'offline',
@@ -97,70 +81,32 @@ export const SocialModuleV2: React.FC<SocialModuleV2Props> = () => {
             playing: friend.current_game,
             lastSeen: friend.last_seen,
           }))
-        );
-      } else {
-        loadDemoFriends();
-      }
-    } catch (error) {
-      console.warn('Could not load friends, using demo data:', error);
-      loadDemoFriends();
-    }
-  };
+        : [];
 
-  const loadDemoFriends = () => {
-    setFriends([
-      {
-        id: 1,
-        username: 'GameDev123',
-        status: 'online',
-        avatar: '🎮',
-        playing: 'Space Adventure',
-      },
-      {
-        id: 2,
-        username: 'ArtistPro',
-        status: 'online',
-        avatar: '🎨',
-        playing: 'Creating in Editor',
-      },
-    ]);
+      setFriends(friendsList);
+    } catch (error) {
+      console.error('Failed to load friends from backend API:', error);
+      throw new Error(
+        'Unable to load friends. Please ensure the backend is running.'
+      );
+    }
   };
 
   const loadAchievements = async () => {
     try {
+      // Fetch achievements from backend API - production ready, no fallbacks
       const achievementsData = await apiClient.getAchievements();
-      if (Array.isArray(achievementsData)) {
-        setAchievements(achievementsData);
-      } else {
-        loadDemoAchievements();
-      }
-    } catch (error) {
-      console.warn('Could not load achievements, using demo data:', error);
-      loadDemoAchievements();
-    }
-  };
+      const achievementsList = Array.isArray(achievementsData)
+        ? achievementsData
+        : [];
 
-  const loadDemoAchievements = () => {
-    setAchievements([
-      {
-        id: 1,
-        name: 'First Steps',
-        description: 'Create your first game',
-        icon: '🎯',
-        unlocked: true,
-        rarity: 'common',
-        date: '2023-02-01',
-      },
-      {
-        id: 2,
-        name: 'Master Builder',
-        description: 'Create 10 games',
-        icon: '🏗️',
-        unlocked: true,
-        rarity: 'rare',
-        date: '2023-06-15',
-      },
-    ]);
+      setAchievements(achievementsList);
+    } catch (error) {
+      console.error('Failed to load achievements from backend API:', error);
+      throw new Error(
+        'Unable to load achievements. Please ensure the backend is running.'
+      );
+    }
   };
 
   const friends = [

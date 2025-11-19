@@ -133,64 +133,23 @@ export const EditorModuleV2: React.FC<EditorModuleV2Props> = () => {
 
   const loadProjectAssets = async () => {
     try {
-      // Try to load assets from backend
+      // Load assets from backend API - production ready, no fallbacks
       const projectId = 'current'; // TODO: Get from actual project context
       const assetsFromAPI = await apiClient.getAssets(projectId);
 
-      if (Array.isArray(assetsFromAPI) && assetsFromAPI.length > 0) {
-        setAssets(assetsFromAPI);
-        addLog('info', `Loaded ${assetsFromAPI.length} assets from project`);
-      } else {
-        // Fall back to demo assets
-        loadDemoAssets();
-      }
-    } catch (error) {
-      console.warn('Could not load assets from API, using demo assets:', error);
-      loadDemoAssets();
-    }
-  };
+      const assetsList: Asset[] = Array.isArray(assetsFromAPI)
+        ? assetsFromAPI
+        : [];
 
-  const loadDemoAssets = () => {
-    const demoAssets: Asset[] = [
-      {
-        id: 'a1',
-        name: 'Player Character',
-        type: 'model',
-        path: '/assets/models/player.fbx',
-      },
-      {
-        id: 'a2',
-        name: 'Ground Texture',
-        type: 'texture',
-        path: '/assets/textures/ground.png',
-      },
-      {
-        id: 'a3',
-        name: 'Metal Material',
-        type: 'material',
-        path: '/assets/materials/metal.mat',
-      },
-      {
-        id: 'a4',
-        name: 'Player Controller',
-        type: 'script',
-        path: '/assets/scripts/PlayerController.ts',
-      },
-      {
-        id: 'a5',
-        name: 'Background Music',
-        type: 'audio',
-        path: '/assets/audio/bgm.mp3',
-      },
-      {
-        id: 'a6',
-        name: 'Enemy Prefab',
-        type: 'prefab',
-        path: '/assets/prefabs/enemy.prefab',
-      },
-    ];
-    setAssets(demoAssets);
-    addLog('info', 'Loaded demo assets');
+      setAssets(assetsList);
+      addLog('info', `Loaded ${assetsList.length} assets from project`);
+    } catch (error) {
+      console.error('Failed to load assets from backend API:', error);
+      addLog('error', 'Unable to load project assets. Backend connection failed.');
+      throw new Error(
+        'Unable to load project assets. Please ensure the backend is running.'
+      );
+    }
   };
 
   const initializeEngine = async () => {

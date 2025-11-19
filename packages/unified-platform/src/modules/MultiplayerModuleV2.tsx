@@ -57,10 +57,10 @@ export const MultiplayerModuleV2: React.FC<MultiplayerModuleV2Props> = () => {
 
   const loadLobbies = async () => {
     try {
+      // Fetch lobbies from backend API - production ready, no fallbacks
       const lobbiesData = await apiClient.getLobbies();
-      if (Array.isArray(lobbiesData)) {
-        setLobbies(
-          lobbiesData.map((lobby: any) => ({
+      const lobbyList: Lobby[] = Array.isArray(lobbiesData)
+        ? lobbiesData.map((lobby: any) => ({
             id: lobby.id,
             name: lobby.name,
             host: lobby.host?.username || 'Unknown',
@@ -71,83 +71,40 @@ export const MultiplayerModuleV2: React.FC<MultiplayerModuleV2Props> = () => {
             ping: lobby.ping || 50,
             region: lobby.region || 'Unknown',
           }))
-        );
-      } else {
-        loadDemoLobbies();
-      }
+        : [];
+
+      setLobbies(lobbyList);
     } catch (error) {
-      console.warn('Could not load lobbies, using demo data:', error);
-      loadDemoLobbies();
+      console.error('Failed to load lobbies from backend API:', error);
+      throw new Error(
+        'Unable to connect to multiplayer server. Please ensure the backend is running.'
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  const loadDemoLobbies = () => {
-    setLobbies([
-      {
-        id: '1',
-        name: 'Nova Warriors Arena',
-        host: 'NovaKing',
-        players: 6,
-        maxPlayers: 8,
-        gameMode: 'Team Deathmatch',
-        map: 'Space Station Omega',
-        ping: 45,
-        region: 'NA-East',
-      },
-      {
-        id: '2',
-        name: 'Cosmic Chaos',
-        host: 'StarLord',
-        players: 4,
-        maxPlayers: 6,
-        gameMode: 'Capture the Flag',
-        map: 'Asteroid Belt',
-        ping: 62,
-        region: 'NA-West',
-      },
-    ]);
-  };
-
   const loadFriends = async () => {
     try {
+      // Fetch friends from backend API - production ready, no fallbacks
       const friendsData = await apiClient.getFriends();
-      if (Array.isArray(friendsData)) {
-        setFriends(
-          friendsData.map((friend: any) => ({
+      const friendsList: Friend[] = Array.isArray(friendsData)
+        ? friendsData.map((friend: any) => ({
             id: friend.id,
             username: friend.username,
             status: friend.status || 'offline',
             game: friend.current_game,
             avatar: friend.avatar_url || 'https://via.placeholder.com/100',
           }))
-        );
-      } else {
-        loadDemoFriends();
-      }
-    } catch (error) {
-      console.warn('Could not load friends, using demo data:', error);
-      loadDemoFriends();
-    }
-  };
+        : [];
 
-  const loadDemoFriends = () => {
-    setFriends([
-      {
-        id: '1',
-        username: 'NovaFriend1',
-        status: 'online',
-        avatar: 'https://via.placeholder.com/100',
-      },
-      {
-        id: '2',
-        username: 'CosmicBuddy',
-        status: 'in-game',
-        game: 'Space Adventure',
-        avatar: 'https://via.placeholder.com/100',
-      },
-    ]);
+      setFriends(friendsList);
+    } catch (error) {
+      console.error('Failed to load friends from backend API:', error);
+      throw new Error(
+        'Unable to load friends list. Please ensure the backend is running.'
+      );
+    }
   };
 
   // Mock data - TODO: Connect to backend API and WebSocket

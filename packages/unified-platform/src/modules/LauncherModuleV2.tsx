@@ -50,64 +50,35 @@ export const LauncherModuleV2: React.FC<LauncherModuleV2Props> = () => {
   const loadUserGames = async () => {
     setLoading(true);
     try {
-      // Try to fetch user's games from API
+      // Fetch user's games from backend API - production ready, no fallbacks
       const games = await apiClient.getGames({ limit: 100 });
 
-      if (Array.isArray(games) && games.length > 0) {
-        const gameInstances: GameInstance[] = games.map((game: any) => ({
-          id: game.id,
-          name: game.title || game.name,
-          thumbnail:
-            game.thumbnail ||
-            game.thumbnail_url ||
-            'https://via.placeholder.com/300x200',
-          lastPlayed: game.last_played || 'Never',
-          playtime: game.playtime
-            ? `${Math.floor(game.playtime / 60)} hours`
-            : '0 hours',
-          saveSlots: game.save_slots || 0,
-        }));
-        setInstalledGames(gameInstances);
-      } else {
-        // Fall back to demo games
-        loadDemoGames();
-      }
+      const gameInstances: GameInstance[] = Array.isArray(games)
+        ? games.map((game: any) => ({
+            id: game.id,
+            name: game.title || game.name,
+            thumbnail:
+              game.thumbnail ||
+              game.thumbnail_url ||
+              'https://via.placeholder.com/300x200',
+            lastPlayed: game.last_played || 'Never',
+            playtime: game.playtime
+              ? `${Math.floor(game.playtime / 60)} hours`
+              : '0 hours',
+            saveSlots: game.save_slots || 0,
+          }))
+        : [];
+
+      setInstalledGames(gameInstances);
     } catch (error) {
-      console.warn('Could not load games from API, using demo games:', error);
-      loadDemoGames();
+      console.error('Failed to load games from backend API:', error);
+      // Show error to user instead of hiding it with demo data
+      throw new Error(
+        'Unable to connect to backend server. Please ensure the backend is running.'
+      );
     } finally {
       setLoading(false);
     }
-  };
-
-  const loadDemoGames = () => {
-    const demoGames: GameInstance[] = [
-      {
-        id: 'demo-1',
-        name: 'Space Adventure',
-        thumbnail: 'https://via.placeholder.com/300x200?text=Space+Adventure',
-        lastPlayed: '2 hours ago',
-        playtime: '47.5 hours',
-        saveSlots: 3,
-      },
-      {
-        id: 'demo-2',
-        name: 'Cosmic Warrior',
-        thumbnail: 'https://via.placeholder.com/300x200?text=Cosmic+Warrior',
-        lastPlayed: '1 day ago',
-        playtime: '23.8 hours',
-        saveSlots: 5,
-      },
-      {
-        id: 'demo-3',
-        name: 'Nova Quest',
-        thumbnail: 'https://via.placeholder.com/300x200?text=Nova+Quest',
-        lastPlayed: '3 days ago',
-        playtime: '156.2 hours',
-        saveSlots: 8,
-      },
-    ];
-    setInstalledGames(demoGames);
   };
 
   const handlePlayGame = async (game: GameInstance) => {
