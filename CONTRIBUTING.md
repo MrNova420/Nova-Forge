@@ -569,7 +569,14 @@ Any other context or screenshots.
 
 ## License
 
-By contributing to Nova Engine Editor, you agree that your contributions will be licensed under the same license as the project.
+By contributing to Nova Engine Editor, you agree that your contributions will be licensed under the same license as the project (MIT License).
+
+**Important:** Please review our legal documentation before contributing:
+- **[LEGAL.md](LEGAL.md)** - Complete legal documentation overview
+- **[LICENSE](LICENSE)** - MIT License for source code
+- **[Developer License](legal/NovaEngine_DeveloperLicense.pdf)** - Terms for using Nova Engine
+
+Your code contributions are licensed under the MIT License, while the Nova Engine platform has additional terms for commercial use and distribution.
 
 ---
 

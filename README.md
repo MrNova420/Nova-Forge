@@ -54,6 +54,7 @@ Comprehensive planning and documentation for the Nova Engine Editor project:
 - **[Component Breakdown](docs/COMPONENT_BREAKDOWN.md)** - Detailed component specifications
 - **[Automation](docs/AUTOMATION.md)** - Automated tracking and development systems
 - **[Contributing](CONTRIBUTING.md)** - Guidelines for contributors
+- **[Legal Documentation](LEGAL.md)** - **⚖️ IMPORTANT** - Licenses, terms, and policies
 - **[All Documentation](docs/)** - Complete documentation index
 
 ### Quick Links
@@ -352,6 +353,21 @@ The desktop launcher requires system libraries (GTK, GLib) that may not be avail
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+### Complete Legal Documentation
+
+Nova Engine has comprehensive legal documentation covering all aspects of the platform:
+
+- **[LEGAL.md](LEGAL.md)** - Complete legal documentation overview
+- **[Developer License](legal/NovaEngine_DeveloperLicense.pdf)** - Terms for game developers
+- **[Runtime License](legal/NovaEngine_RuntimeLicense.pdf)** - Game distribution terms
+- **[Privacy Policy](legal/NovaEngine_PrivacyPolicy.pdf)** - Data protection and privacy
+- **[EULA](legal/NovaEngine_EULA.pdf)** - End user license agreement
+- **[Asset Store Terms](legal/NovaEngine_AssetStoreTerms.pdf)** - Marketplace terms
+- **[Game Library Terms](legal/NovaEngine_GameLibraryTerms.pdf)** - Platform distribution terms
+- **[Brand & Trademark Policy](legal/NovaEngine_BrandTrademarkPolicy.pdf)** - Branding guidelines
+
+All legal documents are available in the [`legal/`](legal/) directory. See [LEGAL.md](LEGAL.md) for a detailed explanation of each document and when it applies.
 
 ---
 
