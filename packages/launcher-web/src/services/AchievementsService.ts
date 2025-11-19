@@ -184,6 +184,7 @@ class AchievementsService {
     // Show toast notification
     this.showUnlockNotification(achievement);
 
+    // eslint-disable-next-line no-console
     console.log(`🏆 Achievement Unlocked: ${achievement.name}`);
   }
 

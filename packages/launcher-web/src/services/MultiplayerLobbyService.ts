@@ -83,7 +83,7 @@ class MultiplayerLobbyService {
       if (!response.ok) throw new Error('Failed to fetch lobbies');
 
       const lobbies: GameLobby[] = await response.json();
-      lobbies.forEach(lobby => this.lobbies.set(lobby.id, lobby));
+      lobbies.forEach((lobby) => this.lobbies.set(lobby.id, lobby));
 
       return lobbies;
     } catch (error) {
@@ -126,6 +126,7 @@ class MultiplayerLobbyService {
       // Connect to lobby WebSocket
       this.connectToLobby(lobby.id);
 
+      // eslint-disable-next-line no-console
       console.log(`Created lobby: ${lobby.name} (${lobby.id})`);
       return lobby;
     } catch (error) {
@@ -160,6 +161,7 @@ class MultiplayerLobbyService {
       // Connect to lobby WebSocket
       this.connectToLobby(lobby.id);
 
+      // eslint-disable-next-line no-console
       console.log(`Joined lobby: ${lobby.name}`);
       return lobby;
     } catch (error) {
@@ -175,10 +177,13 @@ class MultiplayerLobbyService {
     if (!this.currentLobby) return;
 
     try {
-      const response = await fetch(`/api/multiplayer/lobbies/${this.currentLobby.id}/leave`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${this.getToken()}` },
-      });
+      const response = await fetch(
+        `/api/multiplayer/lobbies/${this.currentLobby.id}/leave`,
+        {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${this.getToken()}` },
+        }
+      );
 
       if (!response.ok) throw new Error('Failed to leave lobby');
 
@@ -193,6 +198,7 @@ class MultiplayerLobbyService {
         await this.leaveVoiceChannel();
       }
 
+      // eslint-disable-next-line no-console
       console.log(`Left lobby: ${this.currentLobby.name}`);
       this.currentLobby = null;
     } catch (error) {
@@ -226,6 +232,7 @@ class MultiplayerLobbyService {
       // Connect to lobby
       this.connectToLobby(lobby.id);
 
+      // eslint-disable-next-line no-console
       console.log(`Quick match found: ${lobby.name}`);
       return lobby;
     } catch (error) {
@@ -255,6 +262,7 @@ class MultiplayerLobbyService {
 
       if (!response.ok) throw new Error('Failed to set ready status');
 
+      // eslint-disable-next-line no-console
       console.log(`Set ready status: ${ready}`);
     } catch (error) {
       console.error('Error setting ready status:', error);
@@ -279,6 +287,7 @@ class MultiplayerLobbyService {
 
       if (!response.ok) throw new Error('Failed to start game');
 
+      // eslint-disable-next-line no-console
       console.log('Game starting...');
     } catch (error) {
       console.error('Error starting game:', error);
@@ -307,6 +316,7 @@ class MultiplayerLobbyService {
 
       if (!response.ok) throw new Error('Failed to send invite');
 
+      // eslint-disable-next-line no-console
       console.log(`Invited friend ${friendId} to lobby`);
     } catch (error) {
       console.error('Error inviting friend:', error);
@@ -335,6 +345,7 @@ class MultiplayerLobbyService {
 
       if (!response.ok) throw new Error('Failed to kick player');
 
+      // eslint-disable-next-line no-console
       console.log(`Kicked player ${playerId}`);
     } catch (error) {
       console.error('Error kicking player:', error);
@@ -347,7 +358,9 @@ class MultiplayerLobbyService {
    */
   private connectToLobby(lobbyId: string): void {
     const token = this.getToken();
-    this.ws = new WebSocket(`ws://localhost:3000/api/multiplayer/lobbies/${lobbyId}/ws?token=${token}`);
+    this.ws = new WebSocket(
+      `ws://localhost:3000/api/multiplayer/lobbies/${lobbyId}/ws?token=${token}`
+    );
 
     this.ws.onmessage = (event) => {
       const message = JSON.parse(event.data);
@@ -357,18 +370,25 @@ class MultiplayerLobbyService {
           this.handleLobbyUpdate(message.lobby);
           break;
         case 'player_joined':
+          // eslint-disable-next-line no-console
           console.log(`${message.player.username} joined the lobby`);
           break;
         case 'player_left':
+          // eslint-disable-next-line no-console
           console.log(`${message.player.username} left the lobby`);
           break;
         case 'player_ready':
-          console.log(`${message.player.username} is ${message.ready ? 'ready' : 'not ready'}`);
+          // eslint-disable-next-line no-console
+          console.log(
+            `${message.player.username} is ${message.ready ? 'ready' : 'not ready'}`
+          );
           break;
         case 'game_starting':
+          // eslint-disable-next-line no-console
           console.log('Game is starting!');
           break;
         case 'chat_message':
+          // eslint-disable-next-line no-console
           console.log(`[Chat] ${message.player.username}: ${message.message}`);
           break;
       }
@@ -379,6 +399,7 @@ class MultiplayerLobbyService {
     };
 
     this.ws.onclose = () => {
+      // eslint-disable-next-line no-console
       console.log('Disconnected from lobby');
     };
   }
@@ -391,7 +412,7 @@ class MultiplayerLobbyService {
     this.lobbies.set(lobby.id, lobby);
 
     // Notify callbacks
-    this.onLobbyUpdateCallbacks.forEach(callback => callback(lobby));
+    this.onLobbyUpdateCallbacks.forEach((callback) => callback(lobby));
   }
 
   /**
@@ -400,10 +421,12 @@ class MultiplayerLobbyService {
   async sendChatMessage(message: string): Promise<void> {
     if (!this.ws || !this.currentLobby) throw new Error('Not in a lobby');
 
-    this.ws.send(JSON.stringify({
-      type: 'chat_message',
-      message,
-    }));
+    this.ws.send(
+      JSON.stringify({
+        type: 'chat_message',
+        message,
+      })
+    );
   }
 
   /**
@@ -431,6 +454,7 @@ class MultiplayerLobbyService {
         }
       }
 
+      // eslint-disable-next-line no-console
       console.log('Joined voice channel');
     } catch (error) {
       console.error('Error joining voice channel:', error);
@@ -446,13 +470,16 @@ class MultiplayerLobbyService {
 
     // Stop audio stream
     if (this.voiceChannel.audioStream) {
-      this.voiceChannel.audioStream.getTracks().forEach(track => track.stop());
+      this.voiceChannel.audioStream
+        .getTracks()
+        .forEach((track) => track.stop());
     }
 
     // Close all peer connections
-    this.voiceChannel.peerConnections.forEach(pc => pc.close());
+    this.voiceChannel.peerConnections.forEach((pc) => pc.close());
 
     this.voiceChannel = null;
+    // eslint-disable-next-line no-console
     console.log('Left voice channel');
   }
 
@@ -471,7 +498,7 @@ class MultiplayerLobbyService {
 
     // Add local stream
     if (this.voiceChannel.audioStream) {
-      this.voiceChannel.audioStream.getTracks().forEach(track => {
+      this.voiceChannel.audioStream.getTracks().forEach((track) => {
         pc.addTrack(track, this.voiceChannel!.audioStream!);
       });
     }
@@ -487,11 +514,13 @@ class MultiplayerLobbyService {
     // Handle ICE candidates
     pc.onicecandidate = (event) => {
       if (event.candidate && this.ws) {
-        this.ws.send(JSON.stringify({
-          type: 'ice_candidate',
-          peerId,
-          candidate: event.candidate,
-        }));
+        this.ws.send(
+          JSON.stringify({
+            type: 'ice_candidate',
+            peerId,
+            candidate: event.candidate,
+          })
+        );
       }
     };
 
@@ -502,11 +531,13 @@ class MultiplayerLobbyService {
     await pc.setLocalDescription(offer);
 
     if (this.ws) {
-      this.ws.send(JSON.stringify({
-        type: 'voice_offer',
-        peerId,
-        offer,
-      }));
+      this.ws.send(
+        JSON.stringify({
+          type: 'voice_offer',
+          peerId,
+          offer,
+        })
+      );
     }
   }
 
@@ -518,6 +549,7 @@ class MultiplayerLobbyService {
     audio.srcObject = stream;
     audio.play();
 
+    // eslint-disable-next-line no-console
     console.log(`Playing audio from ${peerId}`);
   }
 
@@ -527,10 +559,11 @@ class MultiplayerLobbyService {
   toggleMute(muted: boolean): void {
     if (!this.voiceChannel || !this.voiceChannel.audioStream) return;
 
-    this.voiceChannel.audioStream.getAudioTracks().forEach(track => {
+    this.voiceChannel.audioStream.getAudioTracks().forEach((track) => {
       track.enabled = !muted;
     });
 
+    // eslint-disable-next-line no-console
     console.log(`Microphone ${muted ? 'muted' : 'unmuted'}`);
   }
 

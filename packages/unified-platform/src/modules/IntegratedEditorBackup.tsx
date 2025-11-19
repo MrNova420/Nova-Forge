@@ -22,6 +22,7 @@ export const IntegratedEditor: React.FC<IntegratedEditorProps> = ({
 
   useEffect(() => {
     // Initialize connection between unified platform and editor
+    // eslint-disable-next-line no-console
     console.log('Initializing integrated editor...');
     setIsInitialized(true);
 
@@ -32,6 +33,7 @@ export const IntegratedEditor: React.FC<IntegratedEditorProps> = ({
     });
 
     return () => {
+      // eslint-disable-next-line no-console
       console.log('Editor cleanup');
     };
   }, [platform]);

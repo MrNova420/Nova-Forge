@@ -51,6 +51,7 @@ export const NovaWorldGame: DemoGame = {
   scene: { entities: [] },
 
   init: function (engineContext: any) {
+    // eslint-disable-next-line no-console
     console.log('🌍 NOVA WORLD - AAA Open World Game Initialized');
 
     const { engine } = engineContext;
@@ -346,17 +347,29 @@ export const NovaWorldGame: DemoGame = {
       chromaticAberration: { enabled: false },
     });
 
+    // eslint-disable-next-line no-console
     console.log('✅ Nova World: Complete open world initialized');
+    // eslint-disable-next-line no-console
     console.log('  - Terrain: 2048x2048 units with procedural generation');
+    // eslint-disable-next-line no-console
     console.log('  - Trees: 500 with LOD');
+    // eslint-disable-next-line no-console
     console.log('  - Rocks: 200 environmental details');
+    // eslint-disable-next-line no-console
     console.log('  - Buildings: 4 fully interactive');
+    // eslint-disable-next-line no-console
     console.log('  - NPCs: 4 with AI and dialog');
+    // eslint-disable-next-line no-console
     console.log('  - Wildlife: 50 with behavior AI');
+    // eslint-disable-next-line no-console
     console.log('  - Water: Reflective lake with foam');
+    // eslint-disable-next-line no-console
     console.log('  - Weather: Dynamic system with 5 states');
+    // eslint-disable-next-line no-console
     console.log('  - Audio: 3D spatial sound');
+    // eslint-disable-next-line no-console
     console.log('  - Post-processing: Bloom, SSAO, tone mapping');
+    // eslint-disable-next-line no-console
     console.log('🎮 This is Unreal/Unity-level quality!');
   },
 

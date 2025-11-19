@@ -69,6 +69,7 @@ class PerformanceMonitorService {
       this.collectMetrics();
     }, 1000);
 
+    // eslint-disable-next-line no-console
     console.log(`Performance monitoring started for game ${gameId}`);
   }
 
@@ -99,6 +100,7 @@ class PerformanceMonitorService {
     const profile = this.currentProfile;
     this.currentProfile = null;
 
+    // eslint-disable-next-line no-console
     console.log('Performance monitoring stopped');
     return profile;
   }

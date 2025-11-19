@@ -51,6 +51,7 @@ class WebBuildSystemService {
     const warnings: string[] = [];
 
     try {
+      // eslint-disable-next-line no-console
       console.log(`Building ${config.name} for ${config.targetPlatform}...`);
 
       // 1. Compile TypeScript to JavaScript (in browser!)
@@ -279,6 +280,7 @@ self.addEventListener('fetch', event => {
     level: 'basic' | 'aggressive'
   ): Promise<void> {
     // Minification and optimization would happen here
+    // eslint-disable-next-line no-console
     console.log(`Optimizing build (${level})`);
   }
 
@@ -289,6 +291,7 @@ self.addEventListener('fetch', event => {
     _buildResult: BuildResult,
     config: BuildConfig
   ): Promise<string> {
+    // eslint-disable-next-line no-console
     console.log(`Deploying ${config.name} to Nova Hub...`);
 
     // Upload build files to Nova Hub

@@ -141,6 +141,7 @@ export const MultiplayerModuleV2: React.FC<MultiplayerModuleV2Props> = () => {
     }
 
     setIsSearching(true);
+    // eslint-disable-next-line no-console
     console.log('🔍 Starting matchmaking:', selectedRegion, selectedGameMode);
 
     try {
@@ -165,10 +166,12 @@ export const MultiplayerModuleV2: React.FC<MultiplayerModuleV2Props> = () => {
 
   const handleCancelMatchmaking = () => {
     setIsSearching(false);
+    // eslint-disable-next-line no-console
     console.log('✅ Matchmaking cancelled');
   };
 
   const handleJoinLobby = async (lobby: Lobby) => {
+    // eslint-disable-next-line no-console
     console.log('🚪 Joining lobby:', lobby.name);
     try {
       await apiClient.joinLobby(lobby.id);
@@ -183,12 +186,14 @@ export const MultiplayerModuleV2: React.FC<MultiplayerModuleV2Props> = () => {
   };
 
   const handleInviteFriend = (friend: Friend) => {
+    // eslint-disable-next-line no-console
     console.log('✉️ Inviting friend:', friend.username);
     alert(`Invited ${friend.username} to your party!`);
     // TODO: Send invite via WebSocket
   };
 
   const handleCreateLobby = async () => {
+    // eslint-disable-next-line no-console
     console.log('🏗️ Creating new lobby');
     try {
       const newLobby: any = await apiClient.createLobby({

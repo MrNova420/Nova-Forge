@@ -197,6 +197,7 @@ export async function initializeDatabase(): Promise<void> {
     `);
 
     await client.query('COMMIT');
+    // eslint-disable-next-line no-console
     console.log('✅ Database initialized with all tables');
   } catch (error) {
     await client.query('ROLLBACK');

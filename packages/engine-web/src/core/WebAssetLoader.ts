@@ -52,6 +52,7 @@ class WebAssetLoaderService {
       this.cache = await caches.open('nova-engine-assets-v1');
     }
 
+    // eslint-disable-next-line no-console
     console.log('Web Asset Loader initialized');
   }
 

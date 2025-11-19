@@ -122,6 +122,7 @@ export class BuildManager {
       job.progress = 100;
       job.endTime = Date.now();
 
+      // eslint-disable-next-line no-console
       console.log(
         `Build ${job.id} ${job.status} in ${job.endTime - job.startTime!}ms`
       );
@@ -149,6 +150,7 @@ export class BuildManager {
     const { request } = job;
     const { projectPath, config } = request;
 
+    // eslint-disable-next-line no-console
     console.log(
       `Starting build ${job.id} for target ${config.target} at ${projectPath}`
     );

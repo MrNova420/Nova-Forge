@@ -89,6 +89,7 @@ class OfflineSyncService {
    */
   async syncAll(): Promise<void> {
     if (!this.isOnline) {
+      // eslint-disable-next-line no-console
       console.log('Offline - skipping sync');
       return;
     }
@@ -147,6 +148,7 @@ class OfflineSyncService {
     // 1. Load local save data
     // 2. Upload to Nova Hub API
     // 3. Handle conflicts
+    // eslint-disable-next-line no-console
     console.log(`Uploading save data for game ${gameId}`);
   }
 
@@ -159,6 +161,7 @@ class OfflineSyncService {
     // 2. Compare with local save data
     // 3. Resolve conflicts
     // 4. Save to local storage
+    // eslint-disable-next-line no-console
     console.log(`Downloading save data for game ${gameId}`);
   }
 
@@ -190,6 +193,7 @@ class OfflineSyncService {
    * Handle going online
    */
   private async handleOnline(): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log('Network online - starting sync');
     await this.syncAll();
   }
@@ -198,6 +202,7 @@ class OfflineSyncService {
    * Handle going offline
    */
   private handleOffline(): void {
+    // eslint-disable-next-line no-console
     console.log('Network offline - sync paused');
   }
 

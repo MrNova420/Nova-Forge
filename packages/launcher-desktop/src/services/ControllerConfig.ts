@@ -89,6 +89,7 @@ class ControllerConfigService {
       this.handleControllerDisconnected(e.gamepad);
     });
 
+    // eslint-disable-next-line no-console
     console.log('Controller configuration service initialized');
   }
 
@@ -103,6 +104,7 @@ class ControllerConfigService {
       this.pollControllers();
     }, 16); // ~60Hz
 
+    // eslint-disable-next-line no-console
     console.log('Controller polling started');
   }
 
@@ -118,6 +120,7 @@ class ControllerConfigService {
       this.pollInterval = null;
     }
 
+    // eslint-disable-next-line no-console
     console.log('Controller polling stopped');
   }
 
@@ -170,6 +173,7 @@ class ControllerConfigService {
 
     this.controllers.set(id, info);
 
+    // eslint-disable-next-line no-console
     console.log(`Controller connected: ${gamepad.id} (index ${gamepad.index})`);
   }
 
@@ -185,6 +189,7 @@ class ControllerConfigService {
       this.controllers.delete(id);
       this.states.delete(id);
 
+      // eslint-disable-next-line no-console
       console.log(`Controller disconnected: ${gamepad.id}`);
     }
   }
@@ -248,6 +253,7 @@ class ControllerConfigService {
     const mapping = this.getMapping(gameId, controllerId);
     if (mapping) {
       mapping.buttonMappings.set(buttonIndex, action);
+      // eslint-disable-next-line no-console
       console.log(`Updated button ${buttonIndex} -> ${action} for ${gameId}`);
     }
   }
@@ -264,6 +270,7 @@ class ControllerConfigService {
     const mapping = this.getMapping(gameId, controllerId);
     if (mapping) {
       mapping.axisMappings.set(axisIndex, action);
+      // eslint-disable-next-line no-console
       console.log(`Updated axis ${axisIndex} -> ${action} for ${gameId}`);
     }
   }
@@ -338,6 +345,7 @@ class ControllerConfigService {
           weakMagnitude: 0.5,
           strongMagnitude: 1.0,
         });
+        // eslint-disable-next-line no-console
         console.log(`Vibration test for ${controllerId}`);
       } catch (error) {
         console.error('Vibration not supported:', error);
@@ -399,6 +407,7 @@ class ControllerConfigService {
     const key = `${gameId}-${controllerId}`;
     this.mappings.delete(key);
     this.createMapping(gameId, controllerId);
+    // eslint-disable-next-line no-console
     console.log(`Reset mapping for ${gameId}-${controllerId}`);
   }
 
@@ -445,6 +454,7 @@ class ControllerConfigService {
       };
 
       this.mappings.set(key, mapping);
+      // eslint-disable-next-line no-console
       console.log(`Imported mapping for ${key}`);
     } catch (error) {
       console.error('Failed to import mapping:', error);
@@ -459,6 +469,7 @@ class ControllerConfigService {
     this.stopPolling();
     this.controllers.clear();
     this.states.clear();
+    // eslint-disable-next-line no-console
     console.log('Controller service cleaned up');
   }
 }

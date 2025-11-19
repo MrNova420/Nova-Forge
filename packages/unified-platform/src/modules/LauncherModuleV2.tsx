@@ -83,6 +83,7 @@ export const LauncherModuleV2: React.FC<LauncherModuleV2Props> = () => {
     try {
       // Get full game details and launch
       const gameDetails = await apiClient.getGame(game.id);
+      // eslint-disable-next-line no-console
       console.log('✅ Launching game:', game.name, gameDetails);
 
       // TODO: Initialize Nova Engine runtime and load game
@@ -98,6 +99,7 @@ export const LauncherModuleV2: React.FC<LauncherModuleV2Props> = () => {
   const handleStopGame = () => {
     setIsPlaying(false);
     setShowPerformance(false);
+    // eslint-disable-next-line no-console
     console.log('✅ Stopped game:', selectedGame?.name);
     // TODO: Properly cleanup game runtime
   };

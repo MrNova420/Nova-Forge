@@ -97,6 +97,7 @@ class FriendsService {
 
       if (!response.ok) throw new Error('Failed to send friend request');
 
+      // eslint-disable-next-line no-console
       console.log(`Friend request sent to user ${userId}`);
     } catch (error) {
       console.error('Error sending friend request:', error);
@@ -140,6 +141,7 @@ class FriendsService {
       this.pendingRequests.delete(requestId);
       await this.getFriends(); // Refresh friends list
 
+      // eslint-disable-next-line no-console
       console.log(`Accepted friend request ${requestId}`);
     } catch (error) {
       console.error('Error accepting friend request:', error);
@@ -163,6 +165,7 @@ class FriendsService {
       if (!response.ok) throw new Error('Failed to decline request');
 
       this.pendingRequests.delete(requestId);
+      // eslint-disable-next-line no-console
       console.log(`Declined friend request ${requestId}`);
     } catch (error) {
       console.error('Error declining friend request:', error);
@@ -183,6 +186,7 @@ class FriendsService {
       if (!response.ok) throw new Error('Failed to remove friend');
 
       this.friends.delete(friendId);
+      // eslint-disable-next-line no-console
       console.log(`Removed friend ${friendId}`);
     } catch (error) {
       console.error('Error removing friend:', error);
@@ -204,6 +208,7 @@ class FriendsService {
 
       this.blockedUsers.add(userId);
       this.friends.delete(userId);
+      // eslint-disable-next-line no-console
       console.log(`Blocked user ${userId}`);
     } catch (error) {
       console.error('Error blocking user:', error);
@@ -224,6 +229,7 @@ class FriendsService {
       if (!response.ok) throw new Error('Failed to unblock user');
 
       this.blockedUsers.delete(userId);
+      // eslint-disable-next-line no-console
       console.log(`Unblocked user ${userId}`);
     } catch (error) {
       console.error('Error unblocking user:', error);
@@ -288,6 +294,7 @@ class FriendsService {
 
       if (!response.ok) throw new Error('Failed to send invite');
 
+      // eslint-disable-next-line no-console
       console.log(`Invited friend ${friendId} to game ${gameId}`);
     } catch (error) {
       console.error('Error inviting friend:', error);
@@ -397,6 +404,7 @@ class FriendsService {
     };
 
     ws.onclose = () => {
+      // eslint-disable-next-line no-console
       console.log('WebSocket closed, reconnecting in 5s...');
       setTimeout(() => this.initializeRealtimeUpdates(), 5000);
     };

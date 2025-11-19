@@ -133,6 +133,7 @@ export class Shader {
     this._vertexShader = null;
     this._fragmentShader = null;
 
+    // eslint-disable-next-line no-console
     console.log(`Shader compiled successfully: ${this._name}`);
     return true;
   }

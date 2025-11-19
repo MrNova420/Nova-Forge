@@ -92,6 +92,7 @@ export const SettingsModuleV2: React.FC<SettingsModuleV2Props> = () => {
   const updateSetting = (key: string, value: any) => {
     setSettings({ ...settings, [key]: value });
     // TODO: Backend integration - save settings to database
+    // eslint-disable-next-line no-console
     console.log('Settings updated:', { [key]: value });
   };
 

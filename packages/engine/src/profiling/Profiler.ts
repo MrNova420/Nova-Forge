@@ -71,6 +71,7 @@ export class Profiler {
    */
   public enable(): void {
     this.enabled = true;
+    // eslint-disable-next-line no-console
     console.log('Profiler enabled');
   }
 
@@ -79,6 +80,7 @@ export class Profiler {
    */
   public disable(): void {
     this.enabled = false;
+    // eslint-disable-next-line no-console
     console.log('Profiler disabled');
   }
 

@@ -56,6 +56,7 @@ app.get('/health', (_req, res) => {
 
 // WebSocket connection handling
 io.on('connection', (socket) => {
+  // eslint-disable-next-line no-console
   console.log('✅ Client connected:', socket.id);
 
   // Handle user authentication via socket
@@ -64,12 +65,14 @@ io.on('connection', (socket) => {
     socket.data.userId = userId;
     socket.data.username = username;
     socket.join(`user:${userId}`);
+    // eslint-disable-next-line no-console
     console.log(`🔐 User ${username} (${userId}) authenticated`);
     socket.emit('authenticated', { success: true });
   });
 
   // Matchmaking events
   socket.on('matchmaking:search', (data) => {
+    // eslint-disable-next-line no-console
     console.log('🎮 Matchmaking search started:', data);
     socket.join('matchmaking');
     socket.emit('matchmaking:status', { status: 'searching' });
@@ -77,6 +80,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('matchmaking:cancel', () => {
+    // eslint-disable-next-line no-console
     console.log('❌ Matchmaking cancelled');
     socket.leave('matchmaking');
     socket.emit('matchmaking:status', { status: 'cancelled' });
@@ -85,6 +89,7 @@ io.on('connection', (socket) => {
   // Lobby events
   socket.on('lobby:join', (lobbyId) => {
     socket.join(`lobby:${lobbyId}`);
+    // eslint-disable-next-line no-console
     console.log(`👥 User ${socket.data.username} joined lobby ${lobbyId}`);
     io.to(`lobby:${lobbyId}`).emit('lobby:player_joined', {
       userId: socket.data.userId,
@@ -95,6 +100,7 @@ io.on('connection', (socket) => {
 
   socket.on('lobby:leave', (lobbyId) => {
     socket.leave(`lobby:${lobbyId}`);
+    // eslint-disable-next-line no-console
     console.log(`👋 User ${socket.data.username} left lobby ${lobbyId}`);
     io.to(`lobby:${lobbyId}`).emit('lobby:player_left', {
       userId: socket.data.userId,
@@ -126,6 +132,7 @@ io.on('connection', (socket) => {
   // Friend status updates
   socket.on('status:update', (status) => {
     socket.data.status = status;
+    // eslint-disable-next-line no-console
     console.log(`📊 User ${socket.data.username} status: ${status}`);
     // TODO: Notify friends of status change
     // Get friends list from database and emit to their rooms
@@ -139,6 +146,7 @@ io.on('connection', (socket) => {
 
   // Disconnect handling
   socket.on('disconnect', () => {
+    // eslint-disable-next-line no-console
     console.log('❌ Client disconnected:', socket.id);
     if (socket.data.userId) {
       // Update user status to offline
@@ -151,9 +159,11 @@ io.on('connection', (socket) => {
 async function startServer() {
   try {
     await initializeDatabase();
+    // eslint-disable-next-line no-console
     console.log('✅ Database initialized');
 
     httpServer.listen(PORT, () => {
+      // eslint-disable-next-line no-console
       console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║              NOVA ENGINE BACKEND SERVER                  ║
@@ -180,6 +190,7 @@ async function startServer() {
 
 // Graceful shutdown
 process.on('SIGTERM', async () => {
+  // eslint-disable-next-line no-console
   console.log('SIGTERM received, closing server...');
   await pool.end();
   httpServer.close();

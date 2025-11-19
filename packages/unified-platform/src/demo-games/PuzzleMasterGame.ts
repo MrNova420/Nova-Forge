@@ -132,6 +132,7 @@ export const PuzzleMasterGame: DemoGame = {
 
   // Game initialization
   init: function (engineContext: any) {
+    // eslint-disable-next-line no-console
     console.log('🧩 Initializing Puzzle Master...');
 
     const { canvas } = engineContext;
@@ -180,6 +181,7 @@ export const PuzzleMasterGame: DemoGame = {
     // Initialize audio
     this.initializeAudio(engineContext);
 
+    // eslint-disable-next-line no-console
     console.log('✅ Puzzle Master initialized with 100 levels');
   },
 
@@ -380,6 +382,7 @@ export const PuzzleMasterGame: DemoGame = {
       piece.rotationAngle = Math.random() * Math.PI * 2;
     });
 
+    // eslint-disable-next-line no-console
     console.log(`📋 Loaded ${level.name} (${level.difficulty})`);
   },
 
@@ -525,6 +528,7 @@ export const PuzzleMasterGame: DemoGame = {
   },
 
   onLevelComplete(gameState: any) {
+    // eslint-disable-next-line no-console
     console.log('🎉 Level Complete!');
 
     gameState.completedLevels.push(gameState.currentLevel);
@@ -541,6 +545,7 @@ export const PuzzleMasterGame: DemoGame = {
       if (gameState.currentLevel < gameState.levels.length) {
         this.loadLevel(gameState, gameState.currentLevel + 1);
       } else {
+        // eslint-disable-next-line no-console
         console.log('🏆 All levels completed!');
       }
     }, 2000);
@@ -635,6 +640,7 @@ export const PuzzleMasterGame: DemoGame = {
 
   playSound(soundName: string) {
     // Play sound effect
+    // eslint-disable-next-line no-console
     console.log(`🔊 Playing sound: ${soundName}`);
   },
 

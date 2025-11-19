@@ -1,6 +1,6 @@
 /**
  * GameServerInstance - Individual game server instance with full netcode
- * 
+ *
  * Features:
  * - Real-time state synchronization (60 tick/sec)
  * - Client-side prediction
@@ -42,17 +42,17 @@ export class GameServerInstance extends EventEmitter {
   private tickRate: number = 60; // 60 ticks per second
   private tickInterval: NodeJS.Timeout | null = null;
   private currentTick: number = 0;
-  
+
   private players: Map<string, PlayerState> = new Map();
   private connections: Map<string, WebSocket> = new Map();
   private entities: Map<string, any> = new Map();
-  
+
   private startTime: number = Date.now();
   private isRunning: boolean = false;
-  
+
   // Input buffer for client-side prediction
   private inputBuffer: Map<string, any[]> = new Map();
-  
+
   // State history for lag compensation (last 1 second)
   private stateHistory: GameState[] = [];
   private maxHistorySize: number = 60; // 1 second at 60 ticks/sec
@@ -68,17 +68,19 @@ export class GameServerInstance extends EventEmitter {
    */
   start(): void {
     if (this.isRunning) return;
-    
+
     this.isRunning = true;
     this.startTime = Date.now();
-    
+
     // Start game loop
     const tickDuration = 1000 / this.tickRate;
     this.tickInterval = setInterval(() => {
       this.tick();
     }, tickDuration);
-    
+
+    // eslint-disable-next-line no-console
     console.log(`🎮 Game server started for room ${this.roomId}`);
+    // eslint-disable-next-line no-console
     console.log(`   Tick rate: ${this.tickRate} Hz`);
   }
 
@@ -87,20 +89,21 @@ export class GameServerInstance extends EventEmitter {
    */
   stop(): void {
     if (!this.isRunning) return;
-    
+
     this.isRunning = false;
-    
+
     if (this.tickInterval) {
       clearInterval(this.tickInterval);
       this.tickInterval = null;
     }
-    
+
     // Disconnect all players
     for (const [userId, ws] of this.connections) {
       ws.close(1000, 'Server shutting down');
     }
-    
+
     this.connections.clear();
+    // eslint-disable-next-line no-console
     console.log(`⏹️  Game server stopped for room ${this.roomId}`);
   }
 
@@ -110,22 +113,22 @@ export class GameServerInstance extends EventEmitter {
   private tick(): void {
     this.currentTick++;
     const timestamp = Date.now();
-    
+
     // Process input buffer
     this.processInputs();
-    
+
     // Update game state
     this.updateGameState();
-    
+
     // Validate state (anti-cheat)
     this.validateState();
-    
+
     // Store state in history for lag compensation
     this.storeStateHistory();
-    
+
     // Send state updates to clients
     this.broadcastState();
-    
+
     // Emit tick event
     this.emit('tick', this.currentTick);
   }
@@ -137,12 +140,12 @@ export class GameServerInstance extends EventEmitter {
     for (const [userId, inputs] of this.inputBuffer) {
       const player = this.players.get(userId);
       if (!player) continue;
-      
+
       // Process all queued inputs
       for (const input of inputs) {
         this.applyInput(player, input);
       }
-      
+
       // Clear processed inputs
       this.inputBuffer.set(userId, []);
     }
@@ -153,40 +156,40 @@ export class GameServerInstance extends EventEmitter {
    */
   private applyInput(player: PlayerState, input: any): void {
     const { action, data, sequenceNumber, timestamp } = input;
-    
+
     // Calculate delta time from input timestamp
     const now = Date.now();
     const delta = Math.min((now - timestamp) / 1000, 0.1); // Cap at 100ms
-    
+
     switch (action) {
       case 'move':
         // Apply movement with velocity
         player.velocity.x = data.direction.x * data.speed;
         player.velocity.y = data.direction.y * data.speed;
         player.velocity.z = data.direction.z * data.speed;
-        
+
         player.position.x += player.velocity.x * delta;
         player.position.y += player.velocity.y * delta;
         player.position.z += player.velocity.z * delta;
         break;
-        
+
       case 'rotate':
         player.rotation.x = data.rotation.x;
         player.rotation.y = data.rotation.y;
         player.rotation.z = data.rotation.z;
         break;
-        
+
       case 'fire':
         // Create projectile entity
         this.createProjectile(player, data);
         break;
-        
+
       case 'interact':
         // Handle interaction
         this.handleInteraction(player, data);
         break;
     }
-    
+
     player.lastUpdate = Date.now();
   }
 
@@ -195,19 +198,19 @@ export class GameServerInstance extends EventEmitter {
    */
   private updateGameState(): void {
     const delta = 1 / this.tickRate;
-    
+
     // Update player states
     for (const player of this.players.values()) {
       // Apply physics
       this.applyPhysics(player, delta);
-      
+
       // Check collisions
       this.checkCollisions(player);
-      
+
       // Update health regeneration, etc.
       this.updatePlayerStats(player, delta);
     }
-    
+
     // Update entities (projectiles, NPCs, etc.)
     for (const entity of this.entities.values()) {
       this.updateEntity(entity, delta);
@@ -220,11 +223,11 @@ export class GameServerInstance extends EventEmitter {
   private applyPhysics(player: PlayerState, delta: number): void {
     // Apply gravity
     player.velocity.y -= 9.8 * delta;
-    
+
     // Apply friction
     player.velocity.x *= 0.98;
     player.velocity.z *= 0.98;
-    
+
     // Ground check
     if (player.position.y <= 0) {
       player.position.y = 0;
@@ -260,13 +263,13 @@ export class GameServerInstance extends EventEmitter {
       entity.position.x += entity.velocity.x * delta;
       entity.position.y += entity.velocity.y * delta;
       entity.position.z += entity.velocity.z * delta;
-      
+
       // Check lifetime
       entity.lifetime -= delta;
       if (entity.lifetime <= 0) {
         this.entities.delete(entity.id);
       }
-      
+
       // Check projectile collisions
       this.checkProjectileCollisions(entity);
     }
@@ -285,7 +288,7 @@ export class GameServerInstance extends EventEmitter {
       damage: data.damage || 10,
       lifetime: 5.0, // 5 seconds
     };
-    
+
     this.entities.set(projectile.id, projectile);
   }
 
@@ -295,20 +298,21 @@ export class GameServerInstance extends EventEmitter {
   private checkProjectileCollisions(projectile: any): void {
     for (const player of this.players.values()) {
       if (player.userId === projectile.ownerId) continue;
-      
+
       // Simple distance check
       const dx = player.position.x - projectile.position.x;
       const dy = player.position.y - projectile.position.y;
       const dz = player.position.z - projectile.position.z;
       const distSq = dx * dx + dy * dy + dz * dz;
-      
-      if (distSq < 1.0) { // Hit radius
+
+      if (distSq < 1.0) {
+        // Hit radius
         // Apply damage
         player.health -= projectile.damage;
-        
+
         // Remove projectile
         this.entities.delete(projectile.id);
-        
+
         // Broadcast hit event
         this.broadcastEvent({
           type: 'player_hit',
@@ -316,12 +320,12 @@ export class GameServerInstance extends EventEmitter {
           sourceId: projectile.ownerId,
           damage: projectile.damage,
         });
-        
+
         // Check death
         if (player.health <= 0) {
           this.handlePlayerDeath(player, projectile.ownerId);
         }
-        
+
         break;
       }
     }
@@ -339,20 +343,20 @@ export class GameServerInstance extends EventEmitter {
    */
   private handlePlayerDeath(victim: PlayerState, killerId: string): void {
     victim.health = 0;
-    
+
     // Update scores
     const killer = this.players.get(killerId);
     if (killer) {
       killer.score++;
     }
-    
+
     // Broadcast death event
     this.broadcastEvent({
       type: 'player_death',
       victimId: victim.userId,
       killerId: killerId,
     });
-    
+
     // Respawn after delay
     setTimeout(() => {
       this.respawnPlayer(victim);
@@ -366,7 +370,7 @@ export class GameServerInstance extends EventEmitter {
     player.health = 100;
     player.position = { x: 0, y: 2, z: 0 }; // Spawn point
     player.velocity = { x: 0, y: 0, z: 0 };
-    
+
     this.broadcastEvent({
       type: 'player_respawn',
       playerId: player.userId,
@@ -381,21 +385,24 @@ export class GameServerInstance extends EventEmitter {
     for (const player of this.players.values()) {
       // Check for impossible speeds
       const speed = Math.sqrt(
-        player.velocity.x ** 2 + 
-        player.velocity.y ** 2 + 
-        player.velocity.z ** 2
+        player.velocity.x ** 2 + player.velocity.y ** 2 + player.velocity.z ** 2
       );
-      
-      if (speed > 50) { // Max speed
-        console.warn(`⚠️  Suspicious speed detected for player ${player.userId}`);
+
+      if (speed > 50) {
+        // Max speed
+        console.warn(
+          `⚠️  Suspicious speed detected for player ${player.userId}`
+        );
         // Reset velocity
         player.velocity = { x: 0, y: 0, z: 0 };
       }
-      
+
       // Check for out of bounds
-      if (Math.abs(player.position.x) > 1000 || 
-          Math.abs(player.position.z) > 1000 ||
-          player.position.y < -100) {
+      if (
+        Math.abs(player.position.x) > 1000 ||
+        Math.abs(player.position.z) > 1000 ||
+        player.position.y < -100
+      ) {
         console.warn(`⚠️  Out of bounds position for player ${player.userId}`);
         this.respawnPlayer(player);
       }
@@ -413,9 +420,9 @@ export class GameServerInstance extends EventEmitter {
       entities: new Map(this.entities),
       events: [],
     };
-    
+
     this.stateHistory.push(state);
-    
+
     // Keep only last second of history
     if (this.stateHistory.length > this.maxHistorySize) {
       this.stateHistory.shift();
@@ -431,7 +438,7 @@ export class GameServerInstance extends EventEmitter {
       type: 'state_update',
       tick: this.currentTick,
       timestamp: Date.now(),
-      players: Array.from(this.players.values()).map(p => ({
+      players: Array.from(this.players.values()).map((p) => ({
         userId: p.userId,
         pos: [p.position.x, p.position.y, p.position.z],
         rot: [p.rotation.x, p.rotation.y, p.rotation.z],
@@ -439,15 +446,15 @@ export class GameServerInstance extends EventEmitter {
         health: p.health,
         score: p.score,
       })),
-      entities: Array.from(this.entities.values()).map(e => ({
+      entities: Array.from(this.entities.values()).map((e) => ({
         id: e.id,
         type: e.type,
         pos: [e.position.x, e.position.y, e.position.z],
       })),
     };
-    
+
     const data = JSON.stringify(snapshot);
-    
+
     // Send to all connected players
     for (const [userId, ws] of this.connections) {
       if (ws.readyState === WebSocket.OPEN) {
@@ -465,7 +472,7 @@ export class GameServerInstance extends EventEmitter {
       event,
       timestamp: Date.now(),
     });
-    
+
     for (const ws of this.connections.values()) {
       if (ws.readyState === WebSocket.OPEN) {
         ws.send(data);
@@ -489,24 +496,24 @@ export class GameServerInstance extends EventEmitter {
       latency: 0,
       lastUpdate: Date.now(),
     };
-    
+
     this.players.set(userId, player);
     this.connections.set(userId, ws);
     this.inputBuffer.set(userId, []);
-    
+
     // Setup WebSocket handlers
     ws.on('message', (data) => {
       this.handlePlayerMessage(userId, data);
     });
-    
+
     ws.on('close', () => {
       this.removePlayer(userId);
     });
-    
+
     ws.on('error', (error) => {
       console.error(`WebSocket error for player ${userId}:`, error);
     });
-    
+
     // Send initial state
     const initData = JSON.stringify({
       type: 'init',
@@ -515,14 +522,15 @@ export class GameServerInstance extends EventEmitter {
       entities: Array.from(this.entities.values()),
     });
     ws.send(initData);
-    
+
     // Broadcast player join
     this.broadcastEvent({
       type: 'player_joined',
       userId,
       username,
     });
-    
+
+    // eslint-disable-next-line no-console
     console.log(`✅ Player ${username} joined room ${this.roomId}`);
   }
 
@@ -533,12 +541,13 @@ export class GameServerInstance extends EventEmitter {
     this.players.delete(userId);
     this.connections.delete(userId);
     this.inputBuffer.delete(userId);
-    
+
     this.broadcastEvent({
       type: 'player_left',
       userId,
     });
-    
+
+    // eslint-disable-next-line no-console
     console.log(`👋 Player ${userId} left room ${this.roomId}`);
   }
 
@@ -548,7 +557,7 @@ export class GameServerInstance extends EventEmitter {
   private handlePlayerMessage(userId: string, data: any): void {
     try {
       const message = JSON.parse(data.toString());
-      
+
       switch (message.type) {
         case 'input':
           // Add input to buffer
@@ -556,22 +565,26 @@ export class GameServerInstance extends EventEmitter {
           inputs.push(message.input);
           this.inputBuffer.set(userId, inputs);
           break;
-          
+
         case 'ping':
           // Respond with pong for latency measurement
           const player = this.players.get(userId);
           if (player) {
-            player.latency = message.timestamp ? Date.now() - message.timestamp : 0;
+            player.latency = message.timestamp
+              ? Date.now() - message.timestamp
+              : 0;
           }
           const ws = this.connections.get(userId);
           if (ws && ws.readyState === WebSocket.OPEN) {
-            ws.send(JSON.stringify({
-              type: 'pong',
-              timestamp: Date.now(),
-            }));
+            ws.send(
+              JSON.stringify({
+                type: 'pong',
+                timestamp: Date.now(),
+              })
+            );
           }
           break;
-          
+
         case 'chat':
           // Broadcast chat message
           this.broadcastEvent({
@@ -607,7 +620,7 @@ export class GameServerInstance extends EventEmitter {
    */
   private getAverageLatency(): number {
     if (this.players.size === 0) return 0;
-    
+
     let total = 0;
     for (const player of this.players.values()) {
       total += player.latency;

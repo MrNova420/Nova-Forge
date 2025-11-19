@@ -73,7 +73,9 @@ export class P2PNetworkService extends EventEmitter {
    * Initialize P2P network
    */
   async initialize(): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log('🌐 Initializing P2P Network...');
+    // eslint-disable-next-line no-console
     console.log(`My Peer ID: ${this.myPeerId}`);
 
     // Load local games catalog
@@ -88,6 +90,7 @@ export class P2PNetworkService extends EventEmitter {
     // Listen for incoming connections
     this.setupConnectionListener();
 
+    // eslint-disable-next-line no-console
     console.log('✅ P2P Network ready');
   }
 
@@ -115,6 +118,7 @@ export class P2PNetworkService extends EventEmitter {
         this.myGames = JSON.parse(gamesJson);
       }
 
+      // eslint-disable-next-line no-console
       console.log(`Loaded ${this.myGames.length} local games`);
     } catch (error) {
       console.error('Failed to load local games:', error);
@@ -138,6 +142,7 @@ export class P2PNetworkService extends EventEmitter {
    * Discover peers on network
    */
   private async discoverPeers(): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log('🔍 Discovering peers...');
 
     // Method 1: LAN discovery (WebRTC + mDNS)
@@ -168,6 +173,7 @@ export class P2PNetworkService extends EventEmitter {
   private async discoverLANPeers(): Promise<void> {
     // Use WebRTC to discover local peers
     // This requires a signaling mechanism - we use relay server
+    // eslint-disable-next-line no-console
     console.log('Discovering LAN peers...');
   }
 
@@ -209,6 +215,7 @@ export class P2PNetworkService extends EventEmitter {
       this.ws = new WebSocket(relayUrl);
 
       this.ws.onopen = () => {
+        // eslint-disable-next-line no-console
         console.log('✅ Connected to relay server');
 
         // Register with relay
@@ -236,11 +243,13 @@ export class P2PNetworkService extends EventEmitter {
       };
 
       this.ws.onclose = () => {
+        // eslint-disable-next-line no-console
         console.log('Relay server disconnected');
         // Continue in local mode
       };
     } catch (error) {
       console.warn('Cannot connect to relay server:', error);
+      // eslint-disable-next-line no-console
       console.log('Running in local-only mode');
     }
   }
@@ -282,6 +291,7 @@ export class P2PNetworkService extends EventEmitter {
    * Handle peer discovered
    */
   private handlePeerDiscovered(data: any): void {
+    // eslint-disable-next-line no-console
     console.log(`Discovered peer: ${data.username} (${data.peerId})`);
 
     if (!this.peers.has(data.peerId)) {
@@ -301,6 +311,7 @@ export class P2PNetworkService extends EventEmitter {
       return; // Already connected
     }
 
+    // eslint-disable-next-line no-console
     console.log(`Connecting to peer: ${username}`);
 
     try {
@@ -311,6 +322,7 @@ export class P2PNetworkService extends EventEmitter {
       const dataChannel = pc.createDataChannel('nova-engine');
 
       dataChannel.onopen = () => {
+        // eslint-disable-next-line no-console
         console.log(`✅ Connected to ${username}`);
 
         // Send our games catalog
@@ -469,6 +481,7 @@ export class P2PNetworkService extends EventEmitter {
     peerId: string,
     gameId: string
   ): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log(`Peer ${peerId} requested game: ${gameId}`);
 
     const peer = this.peers.get(peerId);
@@ -511,6 +524,7 @@ export class P2PNetworkService extends EventEmitter {
         await new Promise((resolve) => setTimeout(resolve, 10));
       }
 
+      // eslint-disable-next-line no-console
       console.log(`✅ Sent game ${gameId} to peer`);
     } catch (error) {
       console.error(`Failed to send game:`, error);
@@ -538,6 +552,7 @@ export class P2PNetworkService extends EventEmitter {
    * Publish game to network
    */
   async publishGame(game: GameInfo): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log(`📤 Publishing game: ${game.name}`);
 
     // Add to local catalog
@@ -572,6 +587,7 @@ export class P2PNetworkService extends EventEmitter {
       );
     }
 
+    // eslint-disable-next-line no-console
     console.log('✅ Game published to network');
   }
 
@@ -584,6 +600,7 @@ export class P2PNetworkService extends EventEmitter {
       throw new Error('Peer not connected');
     }
 
+    // eslint-disable-next-line no-console
     console.log(`📥 Requesting game ${gameId} from ${peer.username}`);
 
     peer.dataChannel.send(
@@ -651,6 +668,7 @@ export class P2PNetworkService extends EventEmitter {
    * Shutdown P2P network
    */
   shutdown(): void {
+    // eslint-disable-next-line no-console
     console.log('Shutting down P2P network...');
 
     // Close all peer connections
@@ -670,6 +688,7 @@ export class P2PNetworkService extends EventEmitter {
     }
 
     this.peers.clear();
+    // eslint-disable-next-line no-console
     console.log('✅ P2P network shut down');
   }
 }

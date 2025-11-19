@@ -128,6 +128,7 @@ class MobileOptimizationService {
         };
         break;
     }
+    // eslint-disable-next-line no-console
     console.log(`Performance mode set to: ${mode}`);
   }
 

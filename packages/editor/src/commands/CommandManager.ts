@@ -62,6 +62,7 @@ export class CommandManager {
     command.undo();
     this.currentIndex--;
 
+    // eslint-disable-next-line no-console
     console.log(`Undid: ${command.name}`);
     return true;
   }
@@ -87,6 +88,7 @@ export class CommandManager {
       command.execute();
     }
 
+    // eslint-disable-next-line no-console
     console.log(`Redid: ${command.name}`);
     return true;
   }

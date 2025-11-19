@@ -122,6 +122,7 @@ class GameRuntimeService {
     game: LocalGame,
     config: GameConfig
   ): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log(`Loading game runtime for ${game.name}...`);
 
     // 1. Load the Nova Engine runtime
@@ -144,7 +145,10 @@ class GameRuntimeService {
       const manifestPath = `${game.installPath}/assets/manifest.json`;
       const manifestResponse = await fetch(manifestPath);
       const manifest = await manifestResponse.json();
-      console.log(`Loaded ${manifest.assets?.length || 0} assets from manifest`);
+      // eslint-disable-next-line no-console
+      console.log(
+        `Loaded ${manifest.assets?.length || 0} assets from manifest`
+      );
     } catch (error) {
       console.warn('No asset manifest found, will load assets on-demand');
     }
@@ -161,16 +165,19 @@ class GameRuntimeService {
         gl.viewport(0, 0, canvas.width, canvas.height);
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.clear(gl.COLOR_BUFFER_BIT);
+        // eslint-disable-next-line no-console
         console.log('Graphics context initialized');
       }
     }
 
     // 4. Set up audio system
     try {
-      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      const AudioContext =
+        window.AudioContext || (window as any).webkitAudioContext;
       if (AudioContext) {
         const audioContext = new AudioContext();
         audioContext.resume(); // Resume if suspended
+        // eslint-disable-next-line no-console
         console.log('Audio system initialized');
       }
     } catch (error) {
@@ -180,6 +187,7 @@ class GameRuntimeService {
     // 5. Configure input handling
     this.setupInputHandlers(canvas);
 
+    // eslint-disable-next-line no-console
     console.log(`Game runtime loaded for ${game.name}`);
   }
 
@@ -252,6 +260,7 @@ class GameRuntimeService {
       (window as any).NovaEngine?.input?.handleTouchEnd();
     });
 
+    // eslint-disable-next-line no-console
     console.log('Input handlers configured');
   }
 
@@ -263,6 +272,7 @@ class GameRuntimeService {
     game: LocalGame,
     config: GameConfig
   ): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log(`Starting game runtime for ${game.name}...`);
 
     // 1. Create or get game canvas
@@ -286,6 +296,7 @@ class GameRuntimeService {
           quality: config.quality,
           vsync: config.vsync,
         });
+        // eslint-disable-next-line no-console
         console.log('Nova Engine runtime initialized');
       }
     } catch (error) {
@@ -301,6 +312,7 @@ class GameRuntimeService {
 
       if ((window as any).NovaEngine) {
         await (window as any).NovaEngine.loadScene(sceneData);
+        // eslint-disable-next-line no-console
         console.log('Game scene loaded');
       }
     } catch (error) {
@@ -311,6 +323,7 @@ class GameRuntimeService {
     // 4. Start the game loop
     if ((window as any).NovaEngine) {
       (window as any).NovaEngine.start();
+      // eslint-disable-next-line no-console
       console.log('Game loop started');
     }
 
@@ -324,6 +337,7 @@ class GameRuntimeService {
       engineInstance: (window as any).NovaEngine,
     });
 
+    // eslint-disable-next-line no-console
     console.log(`Game ${game.name} is now running`);
   }
 
@@ -344,10 +358,12 @@ class GameRuntimeService {
     const window = this.gameWindows.get(instanceId);
     if (window && window.engineInstance) {
       window.engineInstance.pause();
+      // eslint-disable-next-line no-console
       console.log('Engine paused');
     }
 
     instance.status = 'paused';
+    // eslint-disable-next-line no-console
     console.log(`Game ${instance.gameId} paused`);
   }
 
@@ -368,10 +384,12 @@ class GameRuntimeService {
     const window = this.gameWindows.get(instanceId);
     if (window && window.engineInstance) {
       window.engineInstance.resume();
+      // eslint-disable-next-line no-console
       console.log('Engine resumed');
     }
 
     instance.status = 'running';
+    // eslint-disable-next-line no-console
     console.log(`Game ${instance.gameId} resumed`);
   }
 
@@ -404,6 +422,7 @@ class GameRuntimeService {
       // Remove from active games
       this.activeGames.delete(instanceId);
 
+      // eslint-disable-next-line no-console
       console.log(`Game ${instance.gameId} stopped`);
     } catch (error) {
       console.error(`Error stopping game ${instanceId}:`, error);
@@ -432,6 +451,7 @@ class GameRuntimeService {
         0 // progress would come from game
       );
 
+      // eslint-disable-next-line no-console
       console.log(`Auto-saved game ${instance.gameId}`);
     } catch (error) {
       console.error(`Failed to auto-save game ${instanceId}:`, error);
@@ -507,6 +527,7 @@ class GameRuntimeService {
 
     // Apply config changes
     // In real implementation: update Nova Engine runtime settings
+    // eslint-disable-next-line no-console
     console.log(`Updated config for game ${instanceId}:`, config);
   }
 
@@ -537,6 +558,7 @@ class GameRuntimeService {
     if (window) {
       window.fullscreen = !window.fullscreen;
       // In real implementation: update Tauri window
+      // eslint-disable-next-line no-console
       console.log(`Toggled fullscreen for game ${instanceId}`);
     }
   }

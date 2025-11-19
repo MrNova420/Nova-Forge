@@ -120,6 +120,7 @@ export class Engine {
       await this._application.initialize(canvas);
       this._isInitialized = true;
 
+      // eslint-disable-next-line no-console
       console.log('Engine initialized successfully');
     } catch (error) {
       console.error('Failed to initialize engine:', error);
@@ -148,6 +149,7 @@ export class Engine {
         this._update(deltaTime);
       });
 
+      // eslint-disable-next-line no-console
       console.log('Engine started');
     } catch (error) {
       console.error('Failed to start engine:', error);
@@ -167,6 +169,7 @@ export class Engine {
     this._loop.stop();
     this._application.stop();
 
+    // eslint-disable-next-line no-console
     console.log('Engine stopped');
   }
 
@@ -190,6 +193,7 @@ export class Engine {
   destroy(): void {
     this.stop();
     this._isInitialized = false;
+    // eslint-disable-next-line no-console
     console.log('Engine destroyed');
   }
 

@@ -86,10 +86,12 @@ class MobileEditorAdapterService {
       // Single finger - select/move entity
       const touch = event.touches[0];
       if (touch) {
+        // eslint-disable-next-line no-console
         console.log('Touch start:', touch.clientX, touch.clientY);
       }
     } else if (event.touches.length === 2) {
       // Two fingers - pinch to zoom or rotate
+      // eslint-disable-next-line no-console
       console.log('Pinch/rotate gesture started');
     }
   }
@@ -102,6 +104,7 @@ class MobileEditorAdapterService {
       // Move selected entity
       const touch = event.touches[0];
       if (touch) {
+        // eslint-disable-next-line no-console
         console.log('Moving entity:', touch.clientX, touch.clientY);
       }
     } else if (event.touches.length === 2) {
@@ -113,6 +116,7 @@ class MobileEditorAdapterService {
           touch2.clientX - touch1.clientX,
           touch2.clientY - touch1.clientY
         );
+        // eslint-disable-next-line no-console
         console.log('Pinch distance:', distance);
       }
     }
@@ -122,6 +126,7 @@ class MobileEditorAdapterService {
    * Handle touch end
    */
   private handleTouchEnd(_event: TouchEvent): void {
+    // eslint-disable-next-line no-console
     console.log('Touch end');
   }
 
@@ -133,6 +138,7 @@ class MobileEditorAdapterService {
     // Simplified toolbar with essential tools only
     // Collapsible panels to save screen space
     // Bottom sheet for properties
+    // eslint-disable-next-line no-console
     console.log('Optimizing UI for mobile');
   }
 
@@ -140,6 +146,7 @@ class MobileEditorAdapterService {
    * Quick add entity (mobile-optimized)
    */
   quickAddEntity(type: 'cube' | 'sphere' | 'light' | 'camera'): void {
+    // eslint-disable-next-line no-console
     console.log(`Quick adding ${type} entity`);
     // Simplified entity creation for mobile
   }
@@ -149,6 +156,7 @@ class MobileEditorAdapterService {
    */
   async enableVoiceCommands(): Promise<void> {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      // eslint-disable-next-line no-console
       console.log('Voice commands enabled');
       // Setup speech recognition
       // Commands: "add cube", "delete", "save project", etc.
@@ -171,6 +179,7 @@ class MobileEditorAdapterService {
     // Show full-screen asset picker
     // Grid layout optimized for touch
     // Preview thumbnails
+    // eslint-disable-next-line no-console
     console.log(`Showing ${type} asset picker`);
   }
 
@@ -182,6 +191,7 @@ class MobileEditorAdapterService {
     // Two finger pinch - zoom in/out
     // Two finger rotate - rotate camera
     // Three finger swipe - pan camera
+    // eslint-disable-next-line no-console
     console.log('Camera controls configured for touch');
   }
 

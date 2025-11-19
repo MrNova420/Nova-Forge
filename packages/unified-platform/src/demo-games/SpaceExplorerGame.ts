@@ -82,6 +82,7 @@ function checkCollisions(gameState: any) {
     if (distance < asteroid.scale + 0.5) {
       // Collision!
       ship.health -= 10;
+      // eslint-disable-next-line no-console
       console.log('💥 Collision! Health:', ship.health);
     }
   });
@@ -210,6 +211,7 @@ export const SpaceExplorerGame: DemoGame = {
 
   // Game initialization
   init: function (engineContext: any) {
+    // eslint-disable-next-line no-console
     console.log('🚀 Initializing Space Explorer...');
 
     const { canvas } = engineContext;
@@ -251,6 +253,7 @@ export const SpaceExplorerGame: DemoGame = {
     // Set clear color (space black)
     gl.clearColor(0.01, 0.01, 0.05, 1.0);
 
+    // eslint-disable-next-line no-console
     console.log('✅ Space Explorer initialized');
   },
 

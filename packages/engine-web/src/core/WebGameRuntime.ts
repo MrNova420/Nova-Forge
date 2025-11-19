@@ -91,6 +91,7 @@ export class WebGameRuntime {
     directionalLight.position.set(5, 10, 5);
     this.scene.add(directionalLight);
 
+    // eslint-disable-next-line no-console
     console.log('Nova Engine Web Runtime initialized');
   }
 
@@ -104,6 +105,7 @@ export class WebGameRuntime {
     this.lastTime = performance.now();
     this.gameLoop();
 
+    // eslint-disable-next-line no-console
     console.log('Game started');
   }
 
@@ -112,6 +114,7 @@ export class WebGameRuntime {
    */
   stop(): void {
     this.isRunning = false;
+    // eslint-disable-next-line no-console
     console.log('Game stopped');
   }
 
@@ -315,6 +318,7 @@ export class WebGameRuntime {
       }
     }
 
+    // eslint-disable-next-line no-console
     console.log(`Scene loaded: ${sceneData.name}`);
   }
 
@@ -348,6 +352,7 @@ export class WebGameRuntime {
     this.stop();
     this.renderer.dispose();
     this.entities.clear();
+    // eslint-disable-next-line no-console
     console.log('Game runtime disposed');
   }
 }

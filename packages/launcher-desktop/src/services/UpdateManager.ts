@@ -241,6 +241,7 @@ class UpdateManagerService {
       const update = await check();
 
       if (update?.available) {
+        // eslint-disable-next-line no-console
         console.log('Installing launcher update...');
 
         // Download and install the update
@@ -249,6 +250,7 @@ class UpdateManagerService {
         // Relaunch the application
         await relaunch();
       } else {
+        // eslint-disable-next-line no-console
         console.log('No launcher update available');
       }
     } catch (error) {

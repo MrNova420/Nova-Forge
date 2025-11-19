@@ -71,6 +71,7 @@ class CollaborativeEditingService {
     // Connect to collaboration server
     await this.connectToServer(projectId);
 
+    // eslint-disable-next-line no-console
     console.log(`${username} joined collaborative session from ${platform}`);
   }
 
@@ -100,6 +101,7 @@ class CollaborativeEditingService {
       };
 
       this.ws.onclose = () => {
+        // eslint-disable-next-line no-console
         console.log('Collaboration session closed');
       };
     });
@@ -134,6 +136,7 @@ class CollaborativeEditingService {
   private handleUserJoined(user: SessionUser): void {
     if (!this.session) return;
     this.session.users.push(user);
+    // eslint-disable-next-line no-console
     console.log(`${user.username} joined from ${user.platform}`);
   }
 
@@ -156,6 +159,7 @@ class CollaborativeEditingService {
     // Notify all registered handlers
     this.changeHandlers.forEach((handler) => handler(change));
 
+    // eslint-disable-next-line no-console
     console.log(
       `Change from user: ${change.type} ${change.target} ${change.targetId}`
     );
@@ -177,6 +181,7 @@ class CollaborativeEditingService {
    * Handle chat message
    */
   private handleChat(message: any): void {
+    // eslint-disable-next-line no-console
     console.log(`${message.username}: ${message.text}`);
   }
 

@@ -180,6 +180,7 @@ export class UnifiedPlatformCore extends EventEmitter {
    * Initialize the unified platform
    */
   async initialize(): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log('🚀 Initializing Nova Engine Unified Platform...');
 
     // Setup online/offline detection
@@ -194,6 +195,7 @@ export class UnifiedPlatformCore extends EventEmitter {
     // Setup global event listeners
     this.setupGlobalEventListeners();
 
+    // eslint-disable-next-line no-console
     console.log('✅ Nova Engine Platform Ready');
   }
 
@@ -231,6 +233,7 @@ export class UnifiedPlatformCore extends EventEmitter {
     // Emit login event
     this.emit('login', data.user);
 
+    // eslint-disable-next-line no-console
     console.log(`✅ Welcome back, ${data.user.username}!`);
     return true;
   }
@@ -274,6 +277,7 @@ export class UnifiedPlatformCore extends EventEmitter {
     this.emit('register', data.user);
     this.emit('login', data.user); // Also emit login to trigger navigation
 
+    // eslint-disable-next-line no-console
     console.log(`✅ Account created! Welcome, ${data.user.username}!`);
     return true;
   }
@@ -310,6 +314,7 @@ export class UnifiedPlatformCore extends EventEmitter {
     // Emit event
     this.emit('logout');
 
+    // eslint-disable-next-line no-console
     console.log('✅ Logged out successfully');
   }
 
@@ -337,6 +342,7 @@ export class UnifiedPlatformCore extends EventEmitter {
 
       this.emit('sessionRestored', user);
       this.emit('login', user); // Also emit login event for navigation
+      // eslint-disable-next-line no-console
       console.log(`✅ Session restored for ${user.username}`);
 
       return true;
@@ -351,6 +357,7 @@ export class UnifiedPlatformCore extends EventEmitter {
    * Initialize user-specific features after login
    */
   private async initializeUserFeatures(): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log('Initializing user features...');
 
     // Load user stats (optional)
@@ -395,6 +402,7 @@ export class UnifiedPlatformCore extends EventEmitter {
       console.warn('Could not load friends:', error);
     }
 
+    // eslint-disable-next-line no-console
     console.log('✅ User features initialized');
   }
 
@@ -425,6 +433,7 @@ export class UnifiedPlatformCore extends EventEmitter {
     );
 
     ws.onopen = () => {
+      // eslint-disable-next-line no-console
       console.log('✅ Connected to platform');
     };
 
@@ -438,6 +447,7 @@ export class UnifiedPlatformCore extends EventEmitter {
     };
 
     ws.onclose = () => {
+      // eslint-disable-next-line no-console
       console.log('Disconnected from platform, reconnecting...');
       setTimeout(() => this.connectPlatformWebSocket(), 5000);
     };
@@ -573,6 +583,7 @@ export class UnifiedPlatformCore extends EventEmitter {
         this.syncAchievements(),
       ]);
 
+      // eslint-disable-next-line no-console
       console.log('✅ Cloud sync complete');
     } catch (error) {
       console.error('❌ Cloud sync failed:', error);
@@ -619,6 +630,7 @@ export class UnifiedPlatformCore extends EventEmitter {
     this.state.mode = mode;
 
     this.emit('modeChanged', { from: previousMode, to: mode });
+    // eslint-disable-next-line no-console
     console.log(`Switched to ${mode} mode`);
   }
 
@@ -629,6 +641,7 @@ export class UnifiedPlatformCore extends EventEmitter {
     window.addEventListener('online', () => {
       this.state.isOnline = true;
       this.emit('online');
+      // eslint-disable-next-line no-console
       console.log('✅ Connection restored');
 
       if (this.state.isLoggedIn) {
@@ -640,6 +653,7 @@ export class UnifiedPlatformCore extends EventEmitter {
     window.addEventListener('offline', () => {
       this.state.isOnline = false;
       this.emit('offline');
+      // eslint-disable-next-line no-console
       console.log('⚠️  Offline mode');
     });
   }
@@ -660,8 +674,10 @@ export class UnifiedPlatformCore extends EventEmitter {
     // Handle visibility change
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
+        // eslint-disable-next-line no-console
         console.log('App hidden');
       } else {
+        // eslint-disable-next-line no-console
         console.log('App visible');
         // Refresh data when app becomes visible
         if (this.state.isLoggedIn) {

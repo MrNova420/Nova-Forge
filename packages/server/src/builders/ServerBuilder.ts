@@ -89,43 +89,52 @@ export class ServerBuilder {
       this.ensureDirectory(outDir);
 
       // Build steps
+      // eslint-disable-next-line no-console
       console.log('Starting server build...');
 
       // 1. Bundle server code
+      // eslint-disable-next-line no-console
       console.log('1/7 Bundling server code...');
       const serverArtifacts = await this.bundleServerCode(projectPath, outDir);
       artifacts.push(...serverArtifacts);
 
       // 2. Bundle game logic
+      // eslint-disable-next-line no-console
       console.log('2/7 Bundling game logic...');
       const gameArtifacts = await this.bundleGameLogic(projectPath, outDir);
       artifacts.push(...gameArtifacts);
 
       // 3. Copy configuration files
+      // eslint-disable-next-line no-console
       console.log('3/7 Copying configuration...');
       const configArtifacts = await this.copyConfiguration(projectPath, outDir);
       artifacts.push(...configArtifacts);
 
       // 4. Setup networking
+      // eslint-disable-next-line no-console
       console.log('4/7 Setting up networking...');
       const networkArtifacts = await this.setupNetworking(outDir);
       artifacts.push(...networkArtifacts);
 
       // 5. Setup database (if enabled)
       if (this.config.includeDatabase) {
+        // eslint-disable-next-line no-console
         console.log('5/7 Setting up database...');
         const dbArtifacts = await this.setupDatabase(outDir);
         artifacts.push(...dbArtifacts);
       } else {
+        // eslint-disable-next-line no-console
         console.log('5/7 Skipping database setup...');
       }
 
       // 6. Generate deployment files
+      // eslint-disable-next-line no-console
       console.log('6/7 Generating deployment files...');
       const deployArtifacts = await this.generateDeploymentFiles(outDir);
       artifacts.push(...deployArtifacts);
 
       // 7. Generate metadata
+      // eslint-disable-next-line no-console
       console.log('7/7 Generating metadata...');
       const metadataArtifact = await this.generateMetadata(
         outDir,
@@ -134,6 +143,7 @@ export class ServerBuilder {
       );
       artifacts.push(metadataArtifact);
 
+      // eslint-disable-next-line no-console
       console.log('Server build completed successfully!');
 
       // Calculate stats
@@ -237,6 +247,7 @@ const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws, req) => {
   const playerId = generatePlayerId();
+  // eslint-disable-next-line no-console
   console.log(\`Player \${playerId} connected from \${req.socket.remoteAddress}\`);
   
   players.set(playerId, {
@@ -268,6 +279,7 @@ wss.on('connection', (ws, req) => {
   
   // Handle disconnection
   ws.on('close', () => {
+    // eslint-disable-next-line no-console
     console.log(\`Player \${playerId} disconnected\`);
     handleDisconnect(playerId);
   });
@@ -331,6 +343,7 @@ function handleCreateRoom(playerId, data) {
     room,
   }));
   
+  // eslint-disable-next-line no-console
   console.log(\`Room \${roomId} created by player \${playerId}\`);
 }
 
@@ -371,6 +384,7 @@ function handleJoinRoom(playerId, data) {
     playerId,
   });
   
+  // eslint-disable-next-line no-console
   console.log(\`Player \${playerId} joined room \${data.roomId}\`);
 }
 
@@ -393,10 +407,12 @@ function handleLeaveRoom(playerId) {
   // Delete room if empty
   if (room.players.length === 0) {
     rooms.delete(player.roomId);
+    // eslint-disable-next-line no-console
     console.log(\`Room \${player.roomId} deleted (empty)\`);
   }
   
   player.roomId = null;
+  // eslint-disable-next-line no-console
   console.log(\`Player \${playerId} left room\`);
 }
 
@@ -436,21 +452,31 @@ function generateRoomId() {
 
 // Start server
 server.listen(PORT, () => {
+  // eslint-disable-next-line no-console
   console.log(\`\${' ='.repeat(40)}\`);
+  // eslint-disable-next-line no-console
   console.log(\`  Nova Engine Dedicated Server v\${${this.config.serverVersion}}\`);
+  // eslint-disable-next-line no-console
   console.log(\`\${' ='.repeat(40)}\`);
+  // eslint-disable-next-line no-console
   console.log(\`  Status: Running\`);
+  // eslint-disable-next-line no-console
   console.log(\`  Port: \${PORT}\`);
+  // eslint-disable-next-line no-console
   console.log(\`  Max Players: \${MAX_PLAYERS}\`);
+  // eslint-disable-next-line no-console
   console.log(\`  Time: \${new Date().toLocaleString()}\`);
+  // eslint-disable-next-line no-console
   console.log(\`\${' ='.repeat(40)}\`);
 });
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
+  // eslint-disable-next-line no-console
   console.log('Shutting down server...');
   wss.close(() => {
     server.close(() => {
+      // eslint-disable-next-line no-console
       console.log('Server stopped');
       process.exit(0);
     });
@@ -654,6 +680,7 @@ CREATE TABLE IF NOT EXISTS game_state (
 );
 \`;
 
+// eslint-disable-next-line no-console
 console.log('Database initialized');
     `.trim();
 

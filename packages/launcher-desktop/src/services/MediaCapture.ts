@@ -70,6 +70,7 @@ class MediaCaptureService {
         });
       }
 
+      // eslint-disable-next-line no-console
       console.log('Media capture service initialized');
     } catch (error) {
       console.error('Failed to initialize MediaCapture:', error);
@@ -113,6 +114,7 @@ class MediaCaptureService {
 
       this.screenshots.set(id, screenshot);
 
+      // eslint-disable-next-line no-console
       console.log(`Screenshot saved: ${filename}`);
       return screenshot;
     } catch (error) {
@@ -186,6 +188,7 @@ class MediaCaptureService {
       // Start recording frames
       this.startFrameCapture(fps);
 
+      // eslint-disable-next-line no-console
       console.log(`Recording started: ${filename}`);
       return recording;
     } catch (error) {
@@ -280,6 +283,7 @@ class MediaCaptureService {
 
       this.currentRecording = null;
 
+      // eslint-disable-next-line no-console
       console.log(`Recording completed: ${recording.filename}`);
       return recording;
     } catch (error) {
@@ -342,6 +346,7 @@ class MediaCaptureService {
     try {
       // In real implementation: delete actual file
       this.screenshots.delete(screenshotId);
+      // eslint-disable-next-line no-console
       console.log(`Screenshot deleted: ${screenshot.filename}`);
     } catch (error) {
       console.error('Failed to delete screenshot:', error);
@@ -361,6 +366,7 @@ class MediaCaptureService {
     try {
       // In real implementation: delete actual file
       this.recordings.delete(recordingId);
+      // eslint-disable-next-line no-console
       console.log(`Recording deleted: ${recording.filename}`);
     } catch (error) {
       console.error('Failed to delete recording:', error);
@@ -384,6 +390,7 @@ class MediaCaptureService {
     try {
       // In real implementation: extract frames and create GIF
       const gifPath = recording.path.replace(/\.[^.]+$/, '.gif');
+      // eslint-disable-next-line no-console
       console.log(`GIF created: ${gifPath}`);
       return gifPath;
     } catch (error) {
@@ -400,6 +407,7 @@ class MediaCaptureService {
     platform: 'twitter' | 'discord' | 'clipboard'
   ): Promise<void> {
     // In real implementation: integrate with sharing APIs
+    // eslint-disable-next-line no-console
     console.log(`Sharing media ${mediaId} to ${platform}`);
   }
 
@@ -444,6 +452,7 @@ class MediaCaptureService {
       }
     }
 
+    // eslint-disable-next-line no-console
     console.log(`Cleaned up ${cleaned} old media files`);
     return cleaned;
   }

@@ -98,6 +98,7 @@ class MobileCloudSyncService {
       };
 
       // Upload to Nova Hub
+      // eslint-disable-next-line no-console
       console.log(`Uploading save ${gameId}/${slotId} to cloud`, cloudSave);
 
       const status = this.getSyncStatus(gameId);
@@ -121,6 +122,7 @@ class MobileCloudSyncService {
   ): Promise<CloudSaveData | null> {
     try {
       // Download from Nova Hub
+      // eslint-disable-next-line no-console
       console.log(`Downloading save ${gameId}/${slotId} from cloud`);
 
       return {
@@ -186,6 +188,7 @@ class MobileCloudSyncService {
    */
   private async resolveConflicts(gameId: string): Promise<void> {
     // Conflict resolution strategy: use most recent save
+    // eslint-disable-next-line no-console
     console.log(`Resolving conflicts for ${gameId}`);
   }
 
@@ -209,6 +212,7 @@ class MobileCloudSyncService {
    * Enable/disable auto-sync
    */
   setAutoSync(enabled: boolean): void {
+    // eslint-disable-next-line no-console
     console.log(`Auto-sync ${enabled ? 'enabled' : 'disabled'}`);
   }
 

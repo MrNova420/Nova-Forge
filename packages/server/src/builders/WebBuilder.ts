@@ -53,41 +53,50 @@ export class WebBuilder {
       this.ensureDirectory(outDir);
 
       // Build steps
+      // eslint-disable-next-line no-console
       console.log('Starting web build...');
 
       // 1. Bundle JavaScript/TypeScript
+      // eslint-disable-next-line no-console
       console.log('1/6 Bundling scripts...');
       const scriptArtifacts = await this.bundleScripts(projectPath, outDir);
       artifacts.push(...scriptArtifacts);
 
       // 2. Process assets
+      // eslint-disable-next-line no-console
       console.log('2/6 Processing assets...');
       const assetArtifacts = await this.processAssets(projectPath, outDir);
       artifacts.push(...assetArtifacts);
 
       // 3. Generate HTML
+      // eslint-disable-next-line no-console
       console.log('3/6 Generating HTML...');
       const htmlArtifact = await this.generateHTML(outDir, scriptArtifacts);
       artifacts.push(htmlArtifact);
 
       // 4. Generate service worker (if enabled)
       if (this.config.serviceWorker) {
+        // eslint-disable-next-line no-console
         console.log('4/6 Generating service worker...');
         const swArtifact = await this.generateServiceWorker(outDir, artifacts);
         artifacts.push(swArtifact);
       } else {
+        // eslint-disable-next-line no-console
         console.log('4/6 Skipping service worker...');
       }
 
       // 5. Compress assets (if enabled)
       if (this.config.compressAssets) {
+        // eslint-disable-next-line no-console
         console.log('5/6 Compressing assets...');
         await this.compressAssets(artifacts);
       } else {
+        // eslint-disable-next-line no-console
         console.log('5/6 Skipping compression...');
       }
 
       // 6. Generate manifest
+      // eslint-disable-next-line no-console
       console.log('6/6 Generating manifest...');
       const manifestArtifact = await this.generateManifest(outDir);
       artifacts.push(manifestArtifact);
@@ -100,6 +109,7 @@ export class WebBuilder {
         artifactCount: artifacts.length,
       };
 
+      // eslint-disable-next-line no-console
       console.log(`Build completed in ${duration}ms`);
 
       return {
@@ -251,9 +261,12 @@ export class WebBuilder {
   // Engine runtime stubs
   window.NovaEngine = {
     init: function(canvas) {
+      // eslint-disable-next-line no-console
       console.log('Nova Engine initialized');
       return {
+        // eslint-disable-next-line no-console
         start: function() { console.log('Game started'); },
+        // eslint-disable-next-line no-console
         stop: function() { console.log('Game stopped'); },
         update: function(dt) { /* update loop */ },
         render: function() { /* render loop */ }
@@ -386,6 +399,7 @@ export class WebBuilder {
     // Register service worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('/service-worker.js')
+        // eslint-disable-next-line no-console
         .then(reg => console.log('Service worker registered'))
         .catch(err => console.error('Service worker registration failed:', err));
     }

@@ -51,6 +51,7 @@ export const LauncherModuleRedesigned: React.FC<LauncherModuleProps> = ({
 
     try {
       // TODO: Initialize actual game with Nova Engine
+      // eslint-disable-next-line no-console
       console.log('Launching game:', game);
 
       // Simulate FPS counter
@@ -66,6 +67,7 @@ export const LauncherModuleRedesigned: React.FC<LauncherModuleProps> = ({
 
   const handlePauseResume = () => {
     // TODO: Implement pause/resume
+    // eslint-disable-next-line no-console
     console.log('Pause/Resume');
   };
 
@@ -90,6 +92,7 @@ export const LauncherModuleRedesigned: React.FC<LauncherModuleProps> = ({
 
   const handleLoadSave = (save: any) => {
     // TODO: Implement load save
+    // eslint-disable-next-line no-console
     console.log('Loading save:', save);
     setShowSaves(false);
   };

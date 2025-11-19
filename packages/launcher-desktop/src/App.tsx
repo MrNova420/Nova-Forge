@@ -17,6 +17,7 @@ function App() {
     // Initialize services on app start
     initializeServices()
       .then(() => {
+        // eslint-disable-next-line no-console
         console.log('Nova Launcher Desktop initialized');
         setIsInitialized(true);
       })

@@ -63,9 +63,13 @@ const MenuItem: React.FC<MenuItemProps> = ({ label, icon, items, action }) => {
 };
 
 export const MenuBar: React.FC = () => {
+  // eslint-disable-next-line no-console
   const handleNewProject = () => console.log('New Project');
+  // eslint-disable-next-line no-console
   const handleOpen = () => console.log('Open Project');
+  // eslint-disable-next-line no-console
   const handleSave = () => console.log('Save Project');
+  // eslint-disable-next-line no-console
   const handleExport = () => console.log('Export');
 
   return (
@@ -74,11 +78,19 @@ export const MenuBar: React.FC = () => {
         label="File"
         icon={<FileIcon size={14} />}
         items={[
-          { label: 'New Project', action: handleNewProject, shortcut: 'Ctrl+N' },
+          {
+            label: 'New Project',
+            action: handleNewProject,
+            shortcut: 'Ctrl+N',
+          },
           { label: 'Open Project...', action: handleOpen, shortcut: 'Ctrl+O' },
           { label: 'Save', action: handleSave, shortcut: 'Ctrl+S' },
           { label: 'Save As...', action: handleSave, shortcut: 'Ctrl+Shift+S' },
-          { label: 'Export Build...', action: handleExport, shortcut: 'Ctrl+E' },
+          {
+            label: 'Export Build...',
+            action: handleExport,
+            shortcut: 'Ctrl+E',
+          },
         ]}
       />
       <MenuItem

@@ -144,6 +144,7 @@ class MobileTouchControlsService {
     type: 'light' | 'medium' | 'heavy' = 'medium'
   ): Promise<void> {
     // Use React Native Haptics API
+    // eslint-disable-next-line no-console
     console.log(`Haptic feedback: ${type}`);
   }
 

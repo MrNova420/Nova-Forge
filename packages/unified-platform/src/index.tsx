@@ -1,6 +1,6 @@
 /**
  * Nova Engine - Unified Web Application Entry Point
- * 
+ *
  * Single web app that includes EVERYTHING:
  * - Hub (game browser)
  * - Editor (game creation)
@@ -8,7 +8,7 @@
  * - Multiplayer (online features)
  * - Social (friends, achievements)
  * - Settings (account, preferences)
- * 
+ *
  * Just run: npm start
  * Access: http://localhost:3000
  */
@@ -23,10 +23,12 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
       .register('/service-worker.js')
-      .then(registration => {
+      .then((registration) => {
+        // eslint-disable-next-line no-console
         console.log('✅ Service Worker registered:', registration);
       })
-      .catch(error => {
+      .catch((error) => {
+        // eslint-disable-next-line no-console
         console.log('Service Worker registration failed:', error);
       });
   });
@@ -44,6 +46,7 @@ root.render(
 );
 
 // Log startup info
+// eslint-disable-next-line no-console
 console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║                                                             ║
@@ -86,4 +89,5 @@ declare global {
 import { unifiedPlatform } from './core/UnifiedPlatformCore';
 window.NovaEngine = unifiedPlatform;
 
+// eslint-disable-next-line no-console
 console.log('Access the platform: window.NovaEngine');

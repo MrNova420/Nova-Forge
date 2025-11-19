@@ -24,6 +24,7 @@ import { gameRuntime } from './GameRuntime';
  * Initialize all desktop services
  */
 export async function initializeServices(): Promise<void> {
+  // eslint-disable-next-line no-console
   console.log('Initializing Nova Launcher Desktop services...');
 
   try {
@@ -35,6 +36,7 @@ export async function initializeServices(): Promise<void> {
     await mediaCapture.initialize();
     await controllerConfig.initialize();
 
+    // eslint-disable-next-line no-console
     console.log('All services initialized successfully');
   } catch (error) {
     console.error('Failed to initialize services:', error);
@@ -50,5 +52,6 @@ export function cleanupServices(): void {
   updateManager.stopUpdateChecks();
   controllerConfig.cleanup();
   gameRuntime.cleanup();
+  // eslint-disable-next-line no-console
   console.log('Services cleaned up');
 }

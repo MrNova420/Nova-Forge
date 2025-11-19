@@ -90,36 +90,44 @@ export class MobileBuilder {
       this.ensureDirectory(outDir);
 
       // Build steps
+      // eslint-disable-next-line no-console
       console.log(`Starting ${this.config.platform} build...`);
 
       // 1. Build web bundle first (mobile apps are web-based)
+      // eslint-disable-next-line no-console
       console.log('1/6 Building web bundle...');
       const webArtifacts = await this.buildWebBundle(projectPath, outDir);
       artifacts.push(...webArtifacts);
 
       // 2. Generate native project files
+      // eslint-disable-next-line no-console
       console.log('2/6 Generating native project...');
       await this.generateNativeProject(projectPath, outDir);
 
       // 3. Copy assets to native project
+      // eslint-disable-next-line no-console
       console.log('3/6 Copying assets...');
       const assetArtifacts = await this.copyAssetsToNative(projectPath, outDir);
       artifacts.push(...assetArtifacts);
 
       // 4. Build native application
+      // eslint-disable-next-line no-console
       console.log('4/6 Building native application...');
       const appArtifact = await this.buildNativeApp(projectPath, outDir);
       artifacts.push(appArtifact);
 
       // 5. Sign application (if release build)
       if (this.config.buildType === 'release') {
+        // eslint-disable-next-line no-console
         console.log('5/6 Signing application...');
         await this.signApplication(appArtifact);
       } else {
+        // eslint-disable-next-line no-console
         console.log('5/6 Skipping signing (debug build)...');
       }
 
       // 6. Generate metadata
+      // eslint-disable-next-line no-console
       console.log('6/6 Generating metadata...');
       const metadataArtifact = await this.generateMetadata(
         outDir,
@@ -128,6 +136,7 @@ export class MobileBuilder {
       );
       artifacts.push(metadataArtifact);
 
+      // eslint-disable-next-line no-console
       console.log('Mobile build completed successfully!');
 
       // Calculate stats
@@ -204,6 +213,7 @@ export class MobileBuilder {
     // For now, create placeholder
     const bundleContent = `
 // Nova Engine Mobile Runtime
+// eslint-disable-next-line no-console
 console.log('Nova Engine Mobile Runtime ${this.config.appVersion}');
 // Game code would be bundled here
     `.trim();
@@ -446,6 +456,7 @@ android {
     // - For Android: use jarsigner or apksigner with keystore
     // - For iOS: use codesign with certificate and provisioning profile
 
+    // eslint-disable-next-line no-console
     console.log(`Signing ${artifact.path}...`);
 
     if (this.config.platform === MobilePlatform.Android) {
@@ -462,6 +473,7 @@ android {
       // Would run: codesign -s identity artifact.path
     }
 
+    // eslint-disable-next-line no-console
     console.log('Application signed successfully');
   }
 

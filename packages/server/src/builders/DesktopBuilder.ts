@@ -79,6 +79,7 @@ export class DesktopBuilder {
       const outDir = path.join(projectPath, this.config.outDir);
       this.ensureDirectory(outDir);
 
+      // eslint-disable-next-line no-console
       console.log(`Starting desktop build for ${this.config.platform}...`);
 
       // Build based on framework
@@ -96,6 +97,7 @@ export class DesktopBuilder {
         artifactCount: artifacts.length,
       };
 
+      // eslint-disable-next-line no-console
       console.log(`Build completed in ${duration}ms`);
 
       return {
@@ -145,6 +147,7 @@ export class DesktopBuilder {
     outDir: string,
     artifacts: BuildArtifact[]
   ): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log('Building with Electron...');
 
     // 1. Create Electron main process file
@@ -168,6 +171,7 @@ export class DesktopBuilder {
     // - Sign the application
     // - Create installers
 
+    // eslint-disable-next-line no-console
     console.log('Electron build completed');
   }
 
@@ -179,6 +183,7 @@ export class DesktopBuilder {
     outDir: string,
     _artifacts: BuildArtifact[]
   ): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log('Building with Tauri...');
 
     // 1. Create Tauri config
@@ -193,6 +198,7 @@ export class DesktopBuilder {
     // - Sign the application
     // - Create installers
 
+    // eslint-disable-next-line no-console
     console.log('Tauri build completed');
   }
 

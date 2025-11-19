@@ -193,6 +193,7 @@ class WebEditorService {
   async loadProject(projectId: string): Promise<EditorProject> {
     try {
       // Fetch from Nova Hub
+      // eslint-disable-next-line no-console
       console.log(`Loading project ${projectId} from cloud`);
 
       // For now, create a placeholder project
@@ -219,6 +220,7 @@ class WebEditorService {
       this.currentProject.lastModified = new Date();
 
       // Save to Nova Hub
+      // eslint-disable-next-line no-console
       console.log(`Saving project ${this.currentProject.id} to cloud`);
 
       this.currentProject.cloudSynced = true;
@@ -318,6 +320,7 @@ class WebEditorService {
     this.currentProject.assets.push(asset);
 
     // Upload to cloud storage
+    // eslint-disable-next-line no-console
     console.log(`Uploading asset ${file.name} to cloud`);
 
     return asset;
@@ -343,6 +346,7 @@ class WebEditorService {
   ): Promise<string> {
     if (!this.currentProject) throw new Error('No project loaded');
 
+    // eslint-disable-next-line no-console
     console.log(`Building project for ${targetPlatform}`);
 
     // Build process would:
@@ -360,6 +364,7 @@ class WebEditorService {
   async playProject(): Promise<void> {
     if (!this.currentProject) return;
 
+    // eslint-disable-next-line no-console
     console.log('Starting project preview');
     // Open preview window with game runtime
   }

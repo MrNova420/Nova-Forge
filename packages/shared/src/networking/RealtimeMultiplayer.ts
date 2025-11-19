@@ -68,6 +68,7 @@ class RealtimeMultiplayerService {
         this.ws = new WebSocket(serverUrl);
 
         this.ws.onopen = () => {
+          // eslint-disable-next-line no-console
           console.log('Connected to multiplayer server');
           if (this.currentPlayer) {
             this.currentPlayer.connected = true;
@@ -91,6 +92,7 @@ class RealtimeMultiplayerService {
         };
 
         this.ws.onclose = () => {
+          // eslint-disable-next-line no-console
           console.log('Disconnected from multiplayer server');
           if (this.currentPlayer) {
             this.currentPlayer.connected = false;
@@ -126,6 +128,7 @@ class RealtimeMultiplayerService {
   private async handleDisconnect(): Promise<void> {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
+      // eslint-disable-next-line no-console
       console.log(
         `Attempting to reconnect (${this.reconnectAttempts}/${this.maxReconnectAttempts})...`
       );

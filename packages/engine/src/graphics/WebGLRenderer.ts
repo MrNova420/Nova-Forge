@@ -65,16 +65,24 @@ export class WebGLRenderer implements IRenderer {
     this.setupWebGLState();
 
     // Log device and WebGL info
+    // eslint-disable-next-line no-console
     console.log('✅ WebGL 2.0 Renderer initialized successfully');
+    // eslint-disable-next-line no-console
     console.log(
       '📱 Device Type:',
       isMobile ? 'Mobile' : isTablet ? 'Tablet' : 'Desktop'
     );
+    // eslint-disable-next-line no-console
     console.log('🎮 Vendor:', gl.getParameter(gl.VENDOR));
+    // eslint-disable-next-line no-console
     console.log('🖥️  Renderer:', gl.getParameter(gl.RENDERER));
+    // eslint-disable-next-line no-console
     console.log('📊 WebGL Version:', gl.getParameter(gl.VERSION));
+    // eslint-disable-next-line no-console
     console.log('⚡ Max Texture Size:', gl.getParameter(gl.MAX_TEXTURE_SIZE));
+    // eslint-disable-next-line no-console
     console.log('🎨 Max Viewport:', gl.getParameter(gl.MAX_VIEWPORT_DIMS));
+    // eslint-disable-next-line no-console
     console.log(
       '💫 Max Vertex Attribs:',
       gl.getParameter(gl.MAX_VERTEX_ATTRIBS)
@@ -143,6 +151,7 @@ export class WebGLRenderer implements IRenderer {
 
     // For now, skip rendering until ECS integration is complete
     // This allows the code to compile
+    // eslint-disable-next-line no-console
     console.log(
       `Scene has ${entities.length} entities (rendering not yet implemented)`
     );
@@ -374,6 +383,7 @@ export class WebGLRenderer implements IRenderer {
     // Update WebGL viewport
     this._gl.viewport(0, 0, width, height);
 
+    // eslint-disable-next-line no-console
     console.log(`Renderer resized to ${width}x${height}`);
   }
 
@@ -397,6 +407,7 @@ export class WebGLRenderer implements IRenderer {
     this._gl = null;
     this._canvas = null;
 
+    // eslint-disable-next-line no-console
     console.log('WebGL Renderer destroyed');
   }
 

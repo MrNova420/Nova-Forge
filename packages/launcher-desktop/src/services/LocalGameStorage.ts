@@ -207,6 +207,7 @@ class LocalGameStorageService {
     archivePath: string,
     gameData: Uint8Array
   ): Promise<void> {
+    // eslint-disable-next-line no-console
     console.log(`Installing game ${gameId} from ${archivePath}`);
 
     // Extract game files from archive
@@ -248,31 +249,39 @@ class LocalGameStorageService {
     // In production, these would be extracted from the archive
     const engineStub = `
 // Nova Engine Runtime - ${gameId}
+// eslint-disable-next-line no-console
 console.log('Nova Engine initializing...');
 
 window.NovaEngine = {
   init: async function(config) {
+    // eslint-disable-next-line no-console
     console.log('Engine initialized with config:', config);
     this.config = config;
     return true;
   },
   loadScene: async function(sceneData) {
+    // eslint-disable-next-line no-console
     console.log('Loading scene:', sceneData);
     return true;
   },
   start: function() {
+    // eslint-disable-next-line no-console
     console.log('Game loop started');
   },
   pause: function() {
+    // eslint-disable-next-line no-console
     console.log('Game paused');
   },
   resume: function() {
+    // eslint-disable-next-line no-console
     console.log('Game resumed');
   },
   stop: function() {
+    // eslint-disable-next-line no-console
     console.log('Game stopped');
   },
   cleanup: function() {
+    // eslint-disable-next-line no-console
     console.log('Resources cleaned up');
   }
 };
@@ -284,6 +293,7 @@ window.NovaEngine = {
 
     const gameStub = `
 // Game Logic - ${gameId}
+// eslint-disable-next-line no-console
 console.log('Game script loaded');
     `.trim();
 
@@ -307,6 +317,7 @@ console.log('Game script loaded');
       { baseDir: BaseDirectory.AppData }
     );
 
+    // eslint-disable-next-line no-console
     console.log(`Game ${gameId} installation complete`);
   }
 
