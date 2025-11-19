@@ -14,3 +14,5 @@
 export * from './IPlatform';
 export * from './PlatformRegistry';
 export * from './WebPlatform';
+export * from './DesktopPlatform';
+export * from './MobilePlatform';

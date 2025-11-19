@@ -440,19 +440,31 @@ class WebTiming implements ITiming {
   }
 
   setInterval(callback: () => void, ms: number): number {
-    return window.setInterval(callback, ms) as unknown as number;
+    return (typeof window !== 'undefined'
+      ? window.setInterval(callback, ms)
+      : setInterval(callback, ms)) as unknown as number;
   }
 
   clearInterval(handle: number): void {
-    window.clearInterval(handle);
+    if (typeof window !== 'undefined') {
+      window.clearInterval(handle);
+    } else {
+      clearInterval(handle as any);
+    }
   }
 
   setTimeout(callback: () => void, ms: number): number {
-    return window.setTimeout(callback, ms) as unknown as number;
+    return (typeof window !== 'undefined'
+      ? window.setTimeout(callback, ms)
+      : setTimeout(callback, ms)) as unknown as number;
   }
 
   clearTimeout(handle: number): void {
-    window.clearTimeout(handle);
+    if (typeof window !== 'undefined') {
+      window.clearTimeout(handle);
+    } else {
+      clearTimeout(handle as any);
+    }
   }
 }
 
