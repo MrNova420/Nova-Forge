@@ -321,6 +321,8 @@
 .scene-canvas {
   width: 100%;
   height: 100%;
+  display: block;
+  background: linear-gradient(135deg, #0a0015 0%, #1a0033 100%);
 }
 
 .scene-placeholder {

@@ -140,12 +140,11 @@ export const EditorModuleV2: React.FC<EditorModuleV2Props> = () => {
     } catch (error) {
       console.error('Failed to load assets from backend API:', error);
       addLog(
-        'error',
-        'Unable to load project assets. Backend connection failed.'
+        'warning',
+        'Assets API not available - working in standalone mode'
       );
-      throw new Error(
-        'Unable to load project assets. Please ensure the backend is running.'
-      );
+      // Continue without assets - don't block editor initialization
+      setAssets([]);
     }
   };
 
@@ -175,7 +174,10 @@ export const EditorModuleV2: React.FC<EditorModuleV2Props> = () => {
       engineRef.current = engine;
       await engine.initialize();
 
-      addLog('info', '✅ WebGL Renderer connected to editor');
+      // Start the engine render loop
+      engine.start();
+
+      addLog('info', '✅ WebGL Renderer connected and rendering');
       addLog('info', 'Ready to create and edit scenes');
     } catch (error) {
       console.error('Failed to initialize engine:', error);
@@ -457,14 +459,6 @@ export const EditorModuleV2: React.FC<EditorModuleV2Props> = () => {
                 <span>•</span>
                 <span>Objects: {entities.length}</span>
               </div>
-            </div>
-            {/* TODO: Render 3D scene with Nova Engine */}
-            <div className="scene-placeholder">
-              <div className="placeholder-planet"></div>
-              <p className="placeholder-text">Scene View</p>
-              <p className="placeholder-note">
-                TODO: Connect to Nova Engine renderer
-              </p>
             </div>
           </div>
 
