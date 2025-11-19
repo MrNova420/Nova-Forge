@@ -4,9 +4,10 @@
 
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { env } from '../config/env-validation';
 
-const JWT_SECRET =
-  process.env.JWT_SECRET || 'nova-engine-secret-key-change-in-production';
+// Use validated environment config - no insecure fallback
+const JWT_SECRET = env.JWT_SECRET;
 
 export interface AuthRequest extends Request {
   userId?: string;
