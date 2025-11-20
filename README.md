@@ -105,9 +105,9 @@ This is **not a fork** of Unity, Unreal, or Godot. Every line of code is custom-
 - **Regions**: Optimized for devices popular worldwide (Asia, Africa, Americas, Europe, etc.)
 
 **iOS** - Complete Apple ecosystem support:
-- **OS**: iOS 11+ (2017+) to latest
-- **Devices**: iPhone 6s and newer, ALL iPads with Metal support, Apple Vision Pro
-- **Performance**: 2-3× better than Unity/Unreal on same Apple hardware
+- **OS**: iOS 11+ (Sept 2017+) to latest
+- **Devices**: iPhone 5s+ (Sept 2013+) and newer, ALL iPads with Metal support, Apple Vision Pro
+- **Performance**: 2-3× better than Unity/Unreal on same Apple hardware (design target)
 
 **Web** - Maximum browser compatibility:
 - **Modern**: WebGPU for cutting-edge performance
@@ -115,8 +115,8 @@ This is **not a fork** of Unity, Unreal, or Godot. Every line of code is custom-
 - **Universal**: Works on Chrome, Safari, Firefox, Edge, and more
 
 **The Revolutionary Difference**:
-- **Most Compatible**: Runs on MORE devices than any AAA engine (Android 2014+, iOS 11+ which runs on 2013+ devices)
-- **Best Performance**: 2-3× faster than competition on THE SAME hardware
+- **Most Compatible**: Runs on MORE devices than any AAA engine (Android 5.0+ from late 2014, iOS 11+ from 2017 supporting iPhone 5s+ devices from 2013)
+- **Best Performance**: 2-3× faster than competition on THE SAME hardware (design target based on architectural analysis)
 - **Zero Discrimination**: MediaTek gets same optimization love as Qualcomm
 - **Automatic Scaling**: Detects YOUR device and delivers maximum possible quality
 - **World-Class Always**: Even budget devices get production-grade experience
