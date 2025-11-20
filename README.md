@@ -113,7 +113,7 @@ This is **not a fork** of Unity, Unreal, or Godot. Every line of code is custom-
 - **Universal**: Works on Chrome, Safari, Firefox, Edge, and more
 
 **The Revolutionary Difference**:
-- **Most Compatible**: Runs on MORE devices than any AAA engine (Android 2014+, iOS 2013+ devices - up to 11 years)
+- **Most Compatible**: Runs on MORE devices than any AAA engine (Android 2014+, iOS 11+ which runs on 2013+ devices)
 - **Best Performance**: 2-3× faster than competition on THE SAME hardware
 - **Zero Discrimination**: MediaTek gets same optimization love as Qualcomm
 - **Automatic Scaling**: Detects YOUR device and delivers maximum possible quality
@@ -204,7 +204,7 @@ This is **not a fork** of Unity, Unreal, or Godot. Every line of code is custom-
 - **High-end**: 120-150 FPS (vs 60 FPS competition)
 
 ### vs Unreal Engine 5.6
-- ✅ **Runs on 4 years older devices** (Android 2014+/iOS 2013+ vs 2018+)
+- ✅ **Runs on 4 years older devices** (Android 2014+, iOS 11+ supporting 2013+ devices vs 2018+)
 - ✅ **2-3× faster on every hardware tier**
 - ✅ **Universal chipset support** (not just Snapdragon/Apple)
 - ✅ **3× faster ray tracing** (UCRT neural prediction)
