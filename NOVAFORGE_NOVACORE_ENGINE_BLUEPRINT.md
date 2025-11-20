@@ -22,6 +22,64 @@ Citations from 2025 GDC/SIGGRAPH/industry developers prove feasibility.
 
 ---
 
+## 🔴 CRITICAL: CODE EXAMPLES ARE ILLUSTRATIONS ONLY 🔴
+
+**⚠️ ALL CODE SNIPPETS IN THIS BLUEPRINT ARE CONCEPTUAL EXAMPLES FOR UNDERSTANDING ⚠️**
+
+### ABSOLUTE RULES FOR ACTUAL IMPLEMENTATION:
+
+1. **NEVER copy-paste example code into production** - Examples show concepts, NOT production implementations
+2. **DESIGN FROM SCRATCH for production quality** - Every system must be architected for world-best, industry-grade AAA standards
+3. **Examples are educational** - They demonstrate:
+   - Architecture patterns and design approaches
+   - API usage and integration concepts
+   - Performance considerations and optimization strategies
+   - Data structure layouts and algorithm approaches
+4. **Actual implementation must be SUPERIOR** to examples:
+   - Full error handling (every edge case, every failure mode)
+   - Complete optimization (cache-aware, SIMD, multi-threaded)
+   - Production-grade memory management (no leaks, efficient allocation)
+   - Comprehensive testing (unit, integration, stress, device-specific)
+   - Professional documentation (inline comments, API docs, architecture diagrams)
+5. **Think deeper than the examples**:
+   - Examples may show simplified versions - implement FULL complexity
+   - Examples may omit edge cases - handle ALL edge cases
+   - Examples may skip optimizations - implement ALL optimizations
+   - Examples may use placeholder values - calculate REAL values
+6. **Quality bar is MAXIMUM**:
+   - Code quality: Industry-leading, peer-reviewed standard
+   - Performance: Better than Unreal/Unity/Godot on equivalent hardware
+   - Reliability: Zero crashes, graceful degradation, bulletproof
+   - Maintainability: Clean architecture, clear patterns, well-documented
+
+### WHEN IMPLEMENTING ANY SYSTEM:
+
+**DO:**
+- ✅ Study the example to understand the CONCEPT
+- ✅ Research best practices and latest techniques (2025 standards)
+- ✅ Design your own architecture optimized for NovaCore's specific needs
+- ✅ Implement with production-grade quality from day one
+- ✅ Test exhaustively on all target devices and scenarios
+- ✅ Profile and optimize to exceed performance targets
+- ✅ Document thoroughly for future maintenance
+
+**DON'T:**
+- ❌ Copy example code verbatim
+- ❌ Use example code as "good enough"
+- ❌ Skip any feature shown in examples thinking it's optional
+- ❌ Treat examples as complete implementations
+- ❌ Assume examples show all necessary complexity
+- ❌ Use example placeholder values without proper calculation
+
+### REMEMBER:
+
+**Examples = Learning Tool**  
+**Your Implementation = World-Class Production Code**
+
+**The goal is to BUILD THE BEST ENGINE EVER MADE, not to reproduce examples.**
+
+---
+
 ## 📋 RULE #0: PROGRESS.md IS YOUR BIBLE
 
 **EVERY development session follows this workflow**:
@@ -2137,6 +2195,618 @@ class SleepSystem {
 - Real-time visualization
 - Historical analysis
 - AI-powered bottleneck detection
+
+### Basic Systems Deep Dive: Production-Ready Foundation
+
+#### Input System: Comprehensive Multi-Modal Input
+
+**Event Queue Architecture**:
+```cpp
+struct InputEvent {
+    enum Type {
+        Touch, Mouse, Keyboard, Gamepad, 
+        Gesture, Sensor, XR_Hand
+    } type;
+    
+    uint64_t timestamp_us;  // Microsecond precision
+    uint8_t priority;       // 0=low, 255=high
+    
+    union EventData {
+        TouchEvent touch;
+        KeyboardEvent keyboard;
+        GamepadEvent gamepad;
+        GestureEvent gesture;
+        XRHandEvent xr_hand;
+    } data;
+};
+
+class InputSystem {
+    // Lock-free ring buffer for event queue
+    LockFreeQueue<InputEvent, 1024> event_queue;
+    std::array<InputEvent, 256> priority_events;  // High-priority bypass
+    
+    void ProcessEvents() {
+        // 1. Process high-priority events first (XR tracking, etc.)
+        for (auto& event : priority_events) {
+            if (event.priority > 200) {
+                DispatchEvent(event);
+            }
+        }
+        
+        // 2. Process standard event queue
+        InputEvent event;
+        while (event_queue.TryPop(event)) {
+            DispatchEvent(event);
+        }
+    }
+};
+```
+
+**Touch Gesture Recognition** (ML-powered):
+```cpp
+class GestureRecognizer {
+    struct TouchPoint {
+        vec2 position;
+        float pressure;
+        uint64_t timestamp;
+    };
+    
+    std::vector<TouchPoint> touch_history;
+    NeuralNet gesture_classifier;  // 50KB MLP trained on common gestures
+    
+    GestureType RecognizeGesture() {
+        // Extract features from touch history
+        float velocity = ComputeVelocity(touch_history);
+        float curvature = ComputeCurvature(touch_history);
+        int touch_count = GetActiveTouches();
+        vec2 direction = ComputeDirection(touch_history);
+        
+        // Feature vector
+        float features[8] = {
+            velocity, curvature, 
+            direction.x, direction.y,
+            (float)touch_count,
+            touch_history.size() / 100.0f,  // Normalized time
+            ComputeSpread(touch_history),    // For pinch detection
+            ComputeRotation(touch_history)   // For rotate detection
+        };
+        
+        // Neural classification
+        float* probabilities = gesture_classifier.Predict(features);
+        
+        // Return highest probability gesture
+        int max_idx = ArgMax(probabilities, NUM_GESTURES);
+        return (GestureType)max_idx;
+    }
+};
+
+// Supported gestures
+enum GestureType {
+    Tap, DoubleTap, LongPress,
+    Swipe_Left, Swipe_Right, Swipe_Up, Swipe_Down,
+    Pinch_In, Pinch_Out,
+    Rotate_CW, Rotate_CCW,
+    Three_Finger_Swipe,
+    Custom  // User-defined via training
+};
+```
+
+**Haptic Feedback System**:
+```cpp
+class HapticEngine {
+    enum Pattern {
+        Light_Tap,      // 10ms, 0.3 intensity
+        Medium_Tap,     // 20ms, 0.6 intensity
+        Heavy_Tap,      // 50ms, 1.0 intensity
+        Success,        // Rising intensity
+        Failure,        // Sharp-soft-sharp
+        Continuous,     // Sustained vibration
+        Custom          // User-defined waveform
+    };
+    
+    void PlayHaptic(Pattern pattern, float intensity = 1.0f) {
+        #if PLATFORM_ANDROID
+            AndroidVibrate(pattern, intensity);
+        #elif PLATFORM_IOS
+            // Use Core Haptics for precise control
+            CHHapticPattern* haptic_pattern = CreateCHPattern(pattern);
+            CHHapticPatternPlayer* player = 
+                [haptic_engine createPlayerWithPattern:haptic_pattern error:nil];
+            [player startAtTime:0 error:nil];
+        #endif
+    }
+    
+    // Adaptive haptics based on game events
+    void AdaptiveHaptic(GameEvent event, float importance) {
+        switch (event) {
+            case Event_Hit:
+                PlayHaptic(Heavy_Tap, importance);
+                break;
+            case Event_Collect:
+                PlayHaptic(Light_Tap, 0.5f);
+                break;
+            case Event_Level_Complete:
+                PlayHaptic(Success, 1.0f);
+                break;
+        }
+    }
+};
+```
+
+**Input Replay System** (for debugging and testing):
+```cpp
+class InputRecorder {
+    std::vector<InputEvent> recorded_events;
+    bool is_recording = false;
+    bool is_replaying = false;
+    size_t replay_index = 0;
+    
+    void StartRecording() {
+        recorded_events.clear();
+        is_recording = true;
+    }
+    
+    void StopRecording() {
+        is_recording = false;
+        SaveToFile("input_recording.dat");
+    }
+    
+    void RecordEvent(const InputEvent& event) {
+        if (is_recording) {
+            recorded_events.push_back(event);
+        }
+    }
+    
+    void StartReplay() {
+        LoadFromFile("input_recording.dat");
+        is_replaying = true;
+        replay_index = 0;
+    }
+    
+    bool GetNextEvent(InputEvent& event) {
+        if (!is_replaying || replay_index >= recorded_events.size()) {
+            return false;
+        }
+        
+        event = recorded_events[replay_index++];
+        return true;
+    }
+    
+    // Use case: Reproduce bugs with exact input sequence
+    // Use case: Automated testing
+    // Use case: Demo recordings
+};
+```
+
+#### Serialization: Fast, Compact, Version-Safe
+
+**Cap'n Proto Schema Example**:
+```capnp
+# Entity serialization schema
+@0xabcdef1234567890;
+
+struct Entity {
+    id @0 :UInt64;
+    version @1 :UInt32;
+    archetype @2 :UInt32;
+    
+    components @3 :List(Component);
+}
+
+struct Component {
+    typeId @0 :UInt32;
+    
+    union {
+        transform @1 :Transform;
+        rigidBody @2 :RigidBody;
+        neuralComponent @3 :NeuralComponent;
+    }
+}
+
+struct Transform {
+    position @0 :Vec3;
+    rotation @1 :Quat;
+    scale @2 :Vec3;
+}
+
+struct NeuralComponent {
+    weights @0 :Data;  # Binary blob of MLP weights
+    architecture @1 :List(UInt16);  # Layer sizes
+}
+```
+
+**Serialization Implementation**:
+```cpp
+class Serializer {
+    // Save entire game state
+    void SaveGameState(const char* filename) {
+        capnp::MallocMessageBuilder message;
+        auto game_state = message.initRoot<GameState>();
+        
+        // 1. Serialize entities
+        auto entities_list = game_state.initEntities(entity_count);
+        for (size_t i = 0; i < entity_count; i++) {
+            auto entity_builder = entities_list[i];
+            SerializeEntity(entities[i], entity_builder);
+        }
+        
+        // 2. Serialize world state
+        auto world_builder = game_state.initWorld();
+        world_builder.setTime(current_time);
+        world_builder.setSeed(world_seed);
+        
+        // 3. Serialize learned weights
+        auto weights_builder = game_state.initLearnedWeights();
+        SerializeNeuralWeights(neural_weights, weights_builder);
+        
+        // 4. Write to file (with compression)
+        std::ofstream file(filename, std::ios::binary);
+        capnp::writePackedMessageToFd(file.fileno(), message);
+    }
+    
+    // Load game state
+    void LoadGameState(const char* filename) {
+        std::ifstream file(filename, std::ios::binary);
+        capnp::PackedFdMessageReader message(file.fileno());
+        
+        auto game_state = message.getRoot<GameState>();
+        
+        // 1. Deserialize entities
+        for (auto entity : game_state.getEntities()) {
+            DeserializeEntity(entity);
+        }
+        
+        // 2. Deserialize world state
+        auto world = game_state.getWorld();
+        current_time = world.getTime();
+        world_seed = world.getSeed();
+        
+        // 3. Deserialize learned weights
+        auto weights = game_state.getLearnedWeights();
+        DeserializeNeuralWeights(weights);
+    }
+};
+```
+
+**Neural Data Compression**:
+```cpp
+// Compress neural network weights using learned codebook
+class NeuralCompressor {
+    // Codebook for weight quantization
+    std::vector<float> codebook;  // 256 entries
+    
+    void TrainCodebook(const std::vector<float>& weights) {
+        // K-means clustering to find representative values
+        codebook = KMeansClustering(weights, num_clusters=256);
+    }
+    
+    std::vector<uint8_t> Compress(const std::vector<float>& weights) {
+        std::vector<uint8_t> compressed;
+        compressed.reserve(weights.size());
+        
+        for (float weight : weights) {
+            // Find nearest codebook entry
+            uint8_t index = FindNearest(weight, codebook);
+            compressed.push_back(index);
+        }
+        
+        return compressed;  // 4× compression (32-bit → 8-bit)
+    }
+    
+    std::vector<float> Decompress(const std::vector<uint8_t>& compressed) {
+        std::vector<float> weights;
+        weights.reserve(compressed.size());
+        
+        for (uint8_t index : compressed) {
+            weights.push_back(codebook[index]);
+        }
+        
+        return weights;
+    }
+};
+
+// Result: 200KB MLP weights → 50KB compressed (+ 1KB codebook)
+```
+
+**Delta Encoding for Cloud Sync**:
+```cpp
+struct SaveDelta {
+    std::vector<EntityID> added_entities;
+    std::vector<EntityID> removed_entities;
+    std::vector<ComponentUpdate> updated_components;
+    std::vector<WeightUpdate> updated_weights;
+};
+
+SaveDelta ComputeDelta(const GameState& old_state, const GameState& new_state) {
+    SaveDelta delta;
+    
+    // Find added/removed entities
+    for (auto& entity : new_state.entities) {
+        if (!old_state.HasEntity(entity.id)) {
+            delta.added_entities.push_back(entity.id);
+        }
+    }
+    
+    for (auto& entity : old_state.entities) {
+        if (!new_state.HasEntity(entity.id)) {
+            delta.removed_entities.push_back(entity.id);
+        }
+    }
+    
+    // Find updated components
+    for (auto& entity : new_state.entities) {
+        auto* old_entity = old_state.FindEntity(entity.id);
+        if (old_entity) {
+            for (auto& component : entity.components) {
+                auto* old_component = old_entity->FindComponent(component.type);
+                if (!old_component || *old_component != component) {
+                    delta.updated_components.push_back({entity.id, component});
+                }
+            }
+        }
+    }
+    
+    return delta;  // Typically 1-5MB vs 50MB full save
+}
+```
+
+#### Scripting System: Flexible, Fast, Safe
+
+**LuaJIT Integration**:
+```cpp
+class ScriptEngine {
+    lua_State* L;
+    
+    void Initialize() {
+        L = luaL_newstate();
+        luaL_openlibs(L);
+        
+        // Register engine API
+        RegisterEntityAPI(L);
+        RegisterPhysicsAPI(L);
+        RegisterRenderingAPI(L);
+        
+        // Sandbox for user scripts
+        CreateSandbox(L);
+    }
+    
+    // Example: Bind C++ function to Lua
+    void RegisterEntityAPI(lua_State* L) {
+        lua_register(L, "CreateEntity", [](lua_State* L) -> int {
+            const char* name = lua_tostring(L, 1);
+            EntityID id = engine->CreateEntity(name);
+            lua_pushinteger(L, id.id);
+            return 1;  // 1 return value
+        });
+        
+        lua_register(L, "AddComponent", [](lua_State* L) -> int {
+            EntityID id = {(uint64_t)lua_tointeger(L, 1)};
+            const char* component_type = lua_tostring(L, 2);
+            engine->AddComponent(id, component_type);
+            return 0;
+        });
+    }
+    
+    // Run user script
+    void RunScript(const char* script_path) {
+        if (luaL_dofile(L, script_path) != LUA_OK) {
+            const char* error = lua_tostring(L, -1);
+            LogError("Script error: %s", error);
+        }
+    }
+};
+```
+
+**Example Lua Script** (game logic):
+```lua
+-- User-written enemy AI
+function OnEnemyUpdate(enemy_id, delta_time)
+    -- Get player position
+    local player = FindEntityByTag("Player")
+    local player_pos = GetPosition(player)
+    local enemy_pos = GetPosition(enemy_id)
+    
+    -- Chase player
+    local direction = Normalize(player_pos - enemy_pos)
+    local velocity = direction * 5.0  -- 5 m/s
+    
+    SetVelocity(enemy_id, velocity)
+    
+    -- Attack if close enough
+    local distance = Distance(player_pos, enemy_pos)
+    if distance < 2.0 then
+        DealDamage(player, 10)
+        PlaySound("enemy_attack")
+    end
+end
+```
+
+**Visual Node Graph → Mojo Compilation**:
+```
+Node Graph:
+[Get Player Position] → [Calculate Direction] → [Set Velocity]
+         ↓
+   [Distance Check] → [If < 2.0] → [Deal Damage]
+
+Compiled to Mojo:
+fn enemy_update(enemy_id: EntityID, dt: float32):
+    let player = find_entity_by_tag("Player")
+    let player_pos = get_position(player)
+    let enemy_pos = get_position(enemy_id)
+    
+    let direction = normalize(player_pos - enemy_pos)
+    let velocity = direction * 5.0
+    set_velocity(enemy_id, velocity)
+    
+    let distance = length(player_pos - enemy_pos)
+    if distance < 2.0:
+        deal_damage(player, 10)
+        play_sound("enemy_attack")
+```
+
+**Script Hot-Reload**:
+```cpp
+class ScriptHotReloader {
+    std::unordered_map<std::string, uint64_t> file_timestamps;
+    
+    void Update() {
+        for (auto& [script_path, last_modified] : file_timestamps) {
+            uint64_t current_modified = GetFileModifiedTime(script_path);
+            
+            if (current_modified > last_modified) {
+                // File changed - reload
+                LogInfo("Hot-reloading script: %s", script_path.c_str());
+                
+                // Unload old script
+                UnloadScript(script_path);
+                
+                // Load new script
+                LoadScript(script_path);
+                
+                // Update timestamp
+                file_timestamps[script_path] = current_modified;
+                
+                // Preserve script state if possible
+                RestoreScriptState(script_path);
+            }
+        }
+    }
+};
+```
+
+#### Logging & Profiling: Deep Performance Insight
+
+**Tracy Profiler Integration**:
+```cpp
+// Instrument critical sections
+void UpdatePhysics(float dt) {
+    ZoneScoped;  // Tracy macro - automatic scope profiling
+    
+    {
+        ZoneScopedN("Broad Phase");  // Named zone
+        BroadPhaseCollisionDetection();
+    }
+    
+    {
+        ZoneScopedN("Narrow Phase");
+        NarrowPhaseCollisionDetection();
+    }
+    
+    {
+        ZoneScopedN("Constraint Solving");
+        SolveConstraints();
+    }
+    
+    // Frame mark for Tracy
+    FrameMark;
+}
+
+// GPU profiling
+void RenderFrame() {
+    TracyGpuZone("Render Frame");
+    
+    {
+        TracyGpuZone("Shadow Pass");
+        RenderShadows();
+    }
+    
+    {
+        TracyGpuZone("GBuffer Pass");
+        RenderGBuffer();
+    }
+    
+    {
+        TracyGpuZone("Lighting Pass");
+        RenderLighting();
+    }
+    
+    TracyGpuCollect;
+}
+```
+
+**Memory Tracking**:
+```cpp
+// Custom allocator with Tracy integration
+void* TrackedAlloc(size_t size) {
+    void* ptr = malloc(size);
+    TracyAlloc(ptr, size);  // Track allocation
+    return ptr;
+}
+
+void TrackedFree(void* ptr) {
+    TracyFree(ptr);  // Track deallocation
+    free(ptr);
+}
+
+// View in Tracy:
+// - Total memory usage over time
+// - Per-system memory breakdown
+// - Allocation hotspots
+// - Memory leaks detected automatically
+```
+
+**AI-Powered Bottleneck Detection**:
+```cpp
+class PerformanceAnalyzer {
+    struct FrameProfile {
+        float total_ms;
+        float cpu_ms;
+        float gpu_ms;
+        std::unordered_map<std::string, float> zone_times;
+    };
+    
+    std::vector<FrameProfile> history;  // Last 1000 frames
+    NeuralNet bottleneck_classifier;
+    
+    std::string DetectBottleneck() {
+        // Extract features from frame history
+        float avg_cpu = ComputeAverage(history, &FrameProfile::cpu_ms);
+        float avg_gpu = ComputeAverage(history, &FrameProfile::gpu_ms);
+        float cpu_variance = ComputeVariance(history, &FrameProfile::cpu_ms);
+        float gpu_variance = ComputeVariance(history, &FrameProfile::gpu_ms);
+        
+        // Find slowest zones
+        auto slowest_zones = FindSlowestZones(history, top_k=5);
+        
+        // Feature vector for ML
+        float features[16] = {
+            avg_cpu, avg_gpu,
+            cpu_variance, gpu_variance,
+            // ... slowest zone times ...
+        };
+        
+        // Classify bottleneck type
+        int bottleneck_type = bottleneck_classifier.Predict(features);
+        
+        const char* bottleneck_names[] = {
+            "Physics (too many bodies)",
+            "Rendering (too many draw calls)",
+            "AI (expensive pathfinding)",
+            "Memory (cache misses)",
+            "GPU (shader complexity)",
+            "Network (high latency)"
+        };
+        
+        return bottleneck_names[bottleneck_type];
+    }
+    
+    std::string SuggestOptimization() {
+        std::string bottleneck = DetectBottleneck();
+        
+        // Rule-based suggestions
+        if (bottleneck.find("Physics") != std::string::npos) {
+            return "Reduce physics body count or enable sleeping system";
+        } else if (bottleneck.find("Rendering") != std::string::npos) {
+            return "Enable instancing or reduce material switching";
+        } else if (bottleneck.find("AI") != std::string::npos) {
+            return "Use spatial partitioning or reduce update frequency";
+        }
+        // ... more suggestions
+        
+        return "No clear bottleneck detected";
+    }
+};
+```
 
 ---
 
