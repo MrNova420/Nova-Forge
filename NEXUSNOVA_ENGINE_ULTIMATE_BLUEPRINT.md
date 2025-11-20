@@ -14,6 +14,449 @@ Citations from 2025 GDC/SIGGRAPH/industry developers prove feasibility.
 
 ---
 
+# ⚠️⚠️⚠️ AUTONOMOUS DEVELOPMENT COMMANDMENTS ⚠️⚠️⚠️
+
+**🔴 READ THIS SECTION BEFORE STARTING ANY WORK - THIS IS MANDATORY 🔴**
+
+**THIS IS THE SINGLE SOURCE OF TRUTH. REFERENCE THIS DOCUMENT AT THE START OF EVERY DEVELOPMENT SESSION.**
+
+---
+
+## 📋 RULE #0: PROGRESS.md IS YOUR BIBLE
+
+**EVERY development session follows this workflow**:
+
+### BEFORE Starting ANY Work:
+1. ✅ **READ `/PROGRESS.md` COMPLETELY** - Understand current state, review last 3 updates
+2. ✅ **READ THIS BLUEPRINT TOP TO BOTTOM** - Refresh on architecture, guidelines, rules
+3. ✅ **CHECK CURRENT PHASE** - Know exactly where you are in the 36-month roadmap
+4. ✅ **REVIEW WHAT'S DONE** - Don't duplicate work that already exists
+5. ✅ **REVIEW ACCEPTANCE CRITERIA** - Know what "done" means for your task
+6. ✅ **CHECK EXISTING TESTS** - Run all tests to establish baseline (must have 0 failures)
+7. ✅ **REVIEW PHASE CHECKLIST** - Confirm what needs to be done in current phase
+
+### DURING Development:
+1. ✅ **IMPLEMENT FULLY** - No TODOs, no placeholders, no "will finish later", no shortcuts
+2. ✅ **WRITE TESTS IMMEDIATELY** - Unit tests, integration tests, device tests AS YOU CODE
+3. ✅ **PROFILE CONTINUOUSLY** - Tracy profiler running, check FPS/memory/battery every 30 minutes
+4. ✅ **DOCUMENT AS YOU GO** - Code comments, architecture decisions, API docs inline
+5. ✅ **STAY ON TRACK** - Reference this blueprint every hour to ensure alignment
+6. ✅ **NO LAZY IMPLEMENTATIONS** - Every function fully fleshed out, every edge case handled
+7. ✅ **MOBILE-FIRST ALWAYS** - Test on actual devices (low/mid/high-end), not just desktop
+
+### AFTER Completing ANY Work (even 1 function):
+1. ✅ **UPDATE `/PROGRESS.md` IMMEDIATELY** with:
+   - **Session Date/Time** (timestamp of work)
+   - **Current Phase** (e.g., "Phase 1: Core Rendering - 45% complete")
+   - **What you built** (detailed description + code snippets + file paths)
+   - **Architecture decisions** (why you chose this approach, alternatives considered)
+   - **Performance metrics** (FPS on 3 device tiers, memory usage, load times, battery drain)
+   - **Test results** (all passing tests with coverage %, failed tests with reasons)
+   - **Code quality metrics** (lines added, complexity, warnings, errors)
+   - **Phase completion %** (update current phase progress, checklist items completed)
+   - **Known issues** (bugs discovered, technical debt, optimization opportunities)
+   - **What's next** (clear next steps for continuation, dependencies, blockers)
+   - **Estimated time to phase completion** (remaining work breakdown)
+2. ✅ **COMMIT WITH DESCRIPTIVE MESSAGE** referencing progress update + files changed
+3. ✅ **PUSH IMMEDIATELY** - Never leave uncommitted work (cloud backup critical)
+4. ✅ **CREATE PROGRESS.md ENTRY** - Append to file (never overwrite history)
+
+**❌ NEVER commit code without updating PROGRESS.md - NO EXCEPTIONS ❌**
+**❌ NEVER skip a PROGRESS.md update even for "small" changes - NO EXCEPTIONS ❌**
+**❌ NEVER continue to next task without completing PROGRESS.md update - NO EXCEPTIONS ❌**
+
+### PROGRESS.md Format (Use This Template):
+
+```markdown
+---
+## Progress Update - [DATE TIME]
+
+**Phase**: Phase X: [Name] - [XX%] Complete
+
+**Session Goal**: [What you planned to accomplish]
+
+**What Was Built**:
+- [Detailed description]
+- Files: `path/to/file.cpp`, `path/to/file.h`
+- Lines Added: XXX
+- Code Sample:
+  ```cpp
+  // Key implementation snippet
+  ```
+
+**Architecture Decisions**:
+- Decision: [What you decided]
+- Rationale: [Why this approach]
+- Alternatives: [What you rejected and why]
+
+**Performance Metrics**:
+- Low-end (Snapdragon 680): XX FPS, XXX MB RAM
+- Mid-range (Snapdragon 7+ Gen 3): XX FPS, XXX MB RAM
+- High-end (Snapdragon 8 Gen 3+): XX FPS, XXX MB RAM
+- Battery drain: XX%/hour
+- Load time: X.XX seconds
+
+**Test Results**:
+- Unit tests: XX/XX passing (XX% coverage)
+- Integration tests: XX/XX passing
+- Device tests: XX/XX passing
+- Failed tests: [List with reasons]
+
+**Known Issues**:
+- [Bug/issue description]
+- [Technical debt items]
+
+**Next Steps**:
+- [ ] [Next task 1]
+- [ ] [Next task 2]
+- Estimated time: XX hours
+
+**Phase Checklist Progress**:
+- [x] Completed item
+- [ ] Remaining item
+
+---
+```
+
+---
+
+## 🚨 CORE COMMANDMENTS - THESE ARE LAWS, NOT SUGGESTIONS
+
+### ⚡ COMMANDMENT #1: THIS IS A CUSTOM GROUND-UP ENGINE
+
+**THIS IS A CUSTOM GROUND-UP ENGINE** - Not a fork, not a modification of existing engines. Everything built from scratch.
+
+#### **GOLDEN RULES - NEVER VIOLATE THESE:**
+
+1. **NO LAZINESS - FULL DEPTH ALWAYS**
+   - Never skip implementation details
+   - Never use placeholders like "TODO" or "implement later"
+   - Every feature must be fully implemented, tested, and documented
+   - If something takes 1000 lines, write 1000 lines - no shortcuts
+
+2. **PROGRESS TRACKING IS MANDATORY**
+   - Update `PROGRESS.md` after EVERY significant change
+   - Document what was done, what works, what's next
+   - Include code samples, benchmarks, test results
+   - Never commit without updating progress tracking
+
+3. **CUSTOM GROUND-UP IMPLEMENTATION**
+   - Build everything from scratch - no copying from Unreal/Unity/Godot
+   - Write custom Vulkan/Metal renderers (not wgpu wrapper)
+   - Write custom physics engine (inspired by Jolt, but custom implementation)
+   - Write custom ECS architecture (Neural-Symbolic ECW is unique)
+   - Only use libraries for low-level APIs (Vulkan, Metal, SDL) and integration (Wwise)
+
+4. **QUALITY OVER SPEED**
+   - AAA production-grade code only
+   - Every system must be optimized for mobile (ARM NEON, cache-friendly)
+   - Profile everything - Tracy profiler integration required
+   - Zero tolerance for performance regressions
+
+5. **DOCUMENTATION MUST BE COMPLETE**
+   - Every function, class, system must have comprehensive documentation
+   - Architecture decisions must be explained
+   - Performance characteristics must be documented
+   - Include code examples for all public APIs
+
+6. **TESTING IS NON-NEGOTIABLE**
+   - Unit tests for all core systems
+   - Integration tests for rendering/physics/ECS
+   - Performance benchmarks for every optimization
+   - Device testing on low/mid/high-end hardware
+   - Document test results in PROGRESS.md
+
+7. **PHASE COMPLETION CRITERIA**
+   - A phase is NOT complete until all deliverables are done
+   - All tests must pass
+   - Performance targets must be met
+   - Documentation must be complete
+   - Code review must be passed
+   - PROGRESS.md must be updated with detailed summary
+
+#### **WORKFLOW FOR AUTONOMOUS DEVELOPMENT:**
+
+**Step 1: Read Current Phase from PROGRESS.md**
+- Understand what phase we're in
+- Read all acceptance criteria
+- Review what's already been completed
+
+**Step 2: Implement Current Phase Deliverables**
+- Follow the blueprint specifications EXACTLY
+- Build from scratch (no copying existing engines)
+- Write comprehensive tests as you go
+- Profile and optimize continuously
+
+**Step 3: Validate Implementation**
+- Run all unit tests
+- Run integration tests
+- Run performance benchmarks
+- Test on target devices (emulators minimum)
+- Verify all acceptance criteria are met
+
+**Step 4: Update PROGRESS.md**
+- Document what was implemented
+- Include code snippets showing key functionality
+- Document performance metrics (FPS, memory, load times)
+- List test results
+- Explain any architecture decisions
+- Update phase completion percentage
+
+**Step 5: Move to Next Deliverable**
+- Only proceed when current deliverable is 100% complete
+- Never leave partial implementations
+- Never skip validation steps
+
+#### **FORBIDDEN ACTIONS:**
+
+❌ **NEVER** use placeholder implementations
+❌ **NEVER** skip testing
+❌ **NEVER** ignore performance targets
+❌ **NEVER** copy code from other engines
+❌ **NEVER** commit without updating PROGRESS.md
+❌ **NEVER** proceed to next phase with incomplete previous phase
+❌ **NEVER** sacrifice code quality for speed
+❌ **NEVER** skip documentation
+❌ **NEVER** ignore mobile optimization requirements
+❌ **NEVER** break existing functionality
+
+#### **REQUIRED ACTIONS:**
+
+✅ **ALWAYS** build from scratch (custom implementation)
+✅ **ALWAYS** write comprehensive tests
+✅ **ALWAYS** profile and optimize
+✅ **ALWAYS** update PROGRESS.md
+✅ **ALWAYS** follow mobile-first principles
+✅ **ALWAYS** validate on target hardware
+✅ **ALWAYS** document everything
+✅ **ALWAYS** meet performance targets
+✅ **ALWAYS** complete phases 100% before moving on
+✅ **ALWAYS** maintain AAA production quality
+
+#### **PROGRESS.md STRUCTURE (MANDATORY FORMAT):**
+
+**Create `/PROGRESS.md` in repository root with this exact structure:**
+
+```markdown
+# NexusNova Engine Development Progress
+
+**Last Updated**: [ISO 8601 DateTime]
+**Total Development Time**: [X weeks/months]
+**Overall Completion**: [X]%
+
+---
+
+## 📊 Current Phase: [Phase Number and Name]
+
+**Status**: [X]% Complete  
+**Started**: [ISO 8601 Date]  
+**Target Completion**: [ISO 8601 Date]  
+**Actual Hours Spent This Phase**: [X hours]
+
+### 🎯 Phase Objectives (from Blueprint)
+- [ ] Objective 1
+- [ ] Objective 2
+- [ ] Objective 3
+
+---
+
+## ✅ Completed This Session ([Session Date/Time])
+
+### Code Implemented:
+**File**: `path/to/file.cpp` (+[X] lines)
+- Implemented [specific feature/system]
+- Key functions: `function_name()`, `other_function()`
+- Architecture notes: [Brief explanation]
+
+**File**: `path/to/test_file.cpp` (+[X] lines)
+- Unit tests for [system]
+- Integration tests for [feature]
+- Test coverage: [X]%
+
+### Tests Run:
+```
+✅ TestSuite1: 45/45 passed
+✅ TestSuite2: 23/23 passed
+✅ IntegrationTests: 12/12 passed
+Total: 80/80 tests passing (100%)
+```
+
+### Performance Benchmarks:
+```
+EntitySystemBenchmark: 5.2M entities/second (target: 5M) ✅
+RenderingBenchmark: 62 FPS @ 1080p mid-range (target: 60) ✅
+MemoryUsage: 180MB (target: <200MB) ✅
+```
+
+### Architecture Decisions:
+**Decision**: [What was decided]
+**Rationale**: [Why this approach]
+**Trade-offs**: [What we gave up, what we gained]
+**Impact**: [Performance/maintainability/future implications]
+
+---
+
+## 🔄 Current Deliverables Progress
+
+### Phase 0: Foundation (4 months total)
+
+#### Month 1: CMake Build System + Core Foundation
+- [x] **CMake Setup**: Multi-platform build (Android/iOS/Desktop) - COMPLETE
+  - Files: `CMakeLists.txt`, `android.toolchain.cmake`
+  - Test results: Builds on all 3 platforms
+  - Performance: Build time <2 minutes
+  
+- [x] **Core Types**: UUID system, version tracking - COMPLETE
+  - Files: `core/types/UUID.hpp`, `core/types/Version.hpp`
+  - Tests: 100% coverage (15/15 passing)
+  - Benchmarks: UUID generation: 50M/sec
+  
+- [ ] **Memory Allocators**: TLSF arenas - 75% COMPLETE
+  - Files: `core/memory/TLSFAllocator.cpp` (+850 lines)
+  - Remaining: Hot/cold data separation, profiling integration
+  - Tests: 18/20 passing (2 edge cases remaining)
+  - Benchmarks: Alloc: 15ns, Free: 12ns (target: <20ns) ✅
+
+#### Month 2: NSECW Core Architecture
+- [ ] **Entity System**: 0% COMPLETE
+  - Not started - blocked on memory allocators
+  
+- [ ] **Component System**: 0% COMPLETE
+  - Not started
+
+---
+
+## 📈 Overall Progress by Phase
+
+| Phase | Status | Completion | Timeline |
+|-------|--------|------------|----------|
+| Phase 0: Foundation | 🔄 Active | 37% | Month 2/4 |
+| Phase 1: Core Rendering | ⏳ Pending | 0% | Not started |
+| Phase 2: Physics | ⏳ Pending | 0% | Not started |
+| Phase 3: Neural Systems | ⏳ Pending | 0% | Not started |
+| Phase 4: Advanced | ⏳ Pending | 0% | Not started |
+| Phase 5: Polish | ⏳ Pending | 0% | Not started |
+| Phase 6: Platform | ⏳ Pending | 0% | Not started |
+
+---
+
+## 🐛 Known Issues
+
+### Critical
+- None currently
+
+### High Priority
+- Memory allocator edge case: Free list corruption when >10K mixed size allocations
+  - Tracking in: `tests/memory_stress_test.cpp:145`
+  - Investigating: TLSF bin management algorithm
+
+### Medium Priority
+- Build time optimization: Android NDK builds take 3.5 minutes (target: <2 min)
+
+---
+
+## 🎯 Next Steps (Immediate Priorities)
+
+1. **Fix memory allocator edge cases** (2-3 hours estimated)
+   - Debug free list corruption
+   - Add additional tests for mixed allocation patterns
+   - Profile and optimize if needed
+
+2. **Complete hot/cold data separation** (4-5 hours estimated)
+   - Implement temperature tracking
+   - Add memory defragmentation
+   - Benchmark impact on cache performance
+
+3. **Begin Entity System implementation** (1 week estimated)
+   - Design archetype storage layout
+   - Implement entity ID pooling
+   - Write comprehensive unit tests
+
+---
+
+## 📚 Reference Links
+
+- Blueprint: `/NEXUSNOVA_ENGINE_ULTIMATE_BLUEPRINT.md`
+- Architecture Docs: `/docs/architecture/`
+- Test Results: `/test_results/`
+- Benchmarks: `/benchmarks/results/`
+
+---
+
+## 🏗️ Code Statistics
+
+**Total Lines of Code**: [X] LOC
+**Test Coverage**: [X]%
+**Documentation Coverage**: [X]%
+
+### By Module:
+- `core/`: [X] LOC
+- `render/`: [X] LOC
+- `physics/`: [X] LOC
+- (etc.)
+
+---
+
+## 💡 Lessons Learned This Session
+
+- **Technical Insight**: [What we learned about the technology]
+- **Process Improvement**: [What we can do better next time]
+- **Gotcha Avoided**: [Pitfall we successfully avoided]
+- Memory: [X] MB
+- Load time: [X] seconds
+- Entity count: [X] at 60 FPS
+
+### Test Results:
+- Unit tests: [X]/[Y] passing
+- Integration tests: [X]/[Y] passing
+- Benchmark results: [details]
+
+### Architecture Decisions:
+- [Explain major decisions made]
+
+### Blockers/Issues:
+- [None] or [List issues]
+
+### Next Steps:
+1. [Specific next action]
+2. [Specific next action]
+```
+
+#### **HOW TO USE THIS BLUEPRINT:**
+
+1. **Start at Phase 0** (Foundation) - see Development Roadmap section
+2. **Read phase deliverables** completely before starting
+3. **Implement each system** from scratch following specifications
+4. **Test continuously** as you implement
+5. **Update PROGRESS.md** after each significant change
+6. **Validate phase completion** against criteria before moving on
+7. **Reference this blueprint** for all technical specifications
+
+#### **QUALITY STANDARDS:**
+
+**Code Quality**:
+- Modern C++23 idioms and best practices
+- Zero compiler warnings
+- Clean, readable, maintainable code
+- Consistent naming conventions
+- Comprehensive error handling
+
+**Performance**:
+- Meet or exceed performance targets for device tier
+- Profile every optimization
+- Minimize memory allocations in hot paths
+- Cache-friendly data structures (SoA, not AoS)
+- ARM NEON intrinsics where beneficial
+
+**Mobile-First**:
+- Touch-optimized UI (48pt minimum targets)
+- Battery-conscious (target 3+ hours gameplay)
+- Thermal throttling aware
+- Adaptive quality based on device capabilities
+- Small app size (<50MB engine core)
+
+---
+
 ## Table of Contents
 
 1. [Expanded Technology Stack](#expanded-technology-stack)
