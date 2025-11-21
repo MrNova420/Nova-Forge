@@ -2868,23 +2868,548 @@ NovaCore provides professional-grade tools optimized for mobile-first developmen
 ### 14.2 On-Device Development (Primary Workflow)
 
 **XR Holographic Editor** (Mobile AR/VR):
-- Edit games in 3D space using phone camera
-- Place objects by pointing phone at real-world location
-- Multi-user collaboration (see other developers in AR)
-- Works with touch, mouse, or controller input
+
+NovaCore's revolutionary XR editor lets you create games in 3D space using your phone's camera, bringing game development into the real world.
+
+**Setup** (2-minute process):
+```
+1. Launch NovaCore Editor on phone
+2. Point camera at flat surface (table, floor, wall)
+3. Tap to place "anchor point" (origin of game world)
+4. Game world appears overlaid on real world via AR
+5. Start editing in 3D space
+```
+
+**Editing Workflow**:
+```
+Touch Input:
+- Tap object to select
+- Drag to move in XY plane
+- Two-finger drag to move in Z (depth)
+- Pinch to scale
+- Rotate gesture to rotate
+- Double-tap to open properties
+
+Controller Input (Bluetooth):
+- Left stick: Move selected object XY
+- Right stick: Rotate camera around object
+- Triggers: Move object in/out (Z depth)
+- Face buttons: Quick actions (copy, delete, lock, hide)
+- D-pad: Snap to grid positions
+- Much faster for precision work
+
+Mouse Input (Bluetooth):
+- Click-drag: Move objects (like desktop 3D tools)
+- Right-click: Context menu
+- Scroll wheel: Zoom in/out
+- Middle-click-drag: Pan camera
+- Fastest for detailed positioning
+```
+
+**Multi-User Collaboration** (Revolutionary):
+```
+Setup:
+1. Developer A starts editing in AR
+2. Developer B joins same session (QR code or room code)
+3. Developer B sees Developer A's phone position as avatar in AR
+4. Both see same game world, can edit simultaneously
+5. Changes sync in real-time (<50ms)
+
+Use Case Example:
+- Level designer places buildings, roads, props (touch input)
+- Gameplay designer adds enemy spawns, triggers (controller input)
+- Both work in same space, see each other's changes instantly
+- No merge conflicts, no waiting for builds
+- 3× faster than traditional workflows
+
+Technical Details:
+- P2P or server-based (auto-selects based on network)
+- Conflict resolution (last-write-wins, optional locking)
+- Undo/redo synced across all users
+- Voice chat built-in (spatial audio, hear others based on position)
+```
+
+**XR Editor Features**:
+
+**Object Placement**:
+```cpp
+// Tap on real-world surface to place object
+XREditor::on_surface_tap([](Vector3 world_position) {
+    GameObject* obj = scene->instantiate("Enemy");
+    obj->set_position(world_position);
+    obj->set_rotation_y(random(0, 360));  // Random facing
+    
+    // Snap to ground
+    RaycastHit hit;
+    if (Physics::raycast(world_position, Vector3::DOWN, hit)) {
+        obj->set_position(hit.point);
+    }
+});
+
+// Or place relative to phone position
+XREditor::on_button_press("A", []() {
+    GameObject* obj = scene->instantiate("Pickup");
+    obj->set_position(XREditor::get_camera_forward() * 2.0f);  // 2m in front
+});
+```
+
+**Property Editing**:
+```cpp
+// Select object, properties appear in AR panel
+XREditor::on_object_selected([](GameObject* obj) {
+    XRPanel* panel = XREditor::create_panel();
+    
+    // Editable properties float next to object in AR
+    panel->add_slider("Health", obj->health, 0, 1000);
+    panel->add_color_picker("Color", obj->get_material()->color);
+    panel->add_dropdown("AI Type", obj->ai_type, 
+        {"Aggressive", "Defensive", "Patrol", "Flee"});
+    panel->add_vector3("Scale", obj->scale, 0.1f, 10.0f);
+    
+    // Changes apply instantly (hot reload)
+    panel->on_value_changed([]() {
+        XREditor::refresh_scene();  // <1 second
+    });
+});
+```
+
+**Layout Tools**:
+```cpp
+// Scatter objects in area
+XREditor::add_tool("Scatter", []() {
+    // Draw rectangle on ground in AR
+    Rect area = XREditor::draw_rectangle_on_surface();
+    
+    // Scatter 50 trees in that area
+    for (int i = 0; i < 50; i++) {
+        Vector2 random_pos = area.get_random_point();
+        GameObject* tree = scene->instantiate("Tree");
+        tree->set_position(Vector3(random_pos.x, 0, random_pos.y));
+        tree->set_scale(random(0.8f, 1.2f));  // Size variation
+        tree->set_rotation_y(random(0, 360));  // Random rotation
+    }
+});
+
+// Paint objects (like terrain editor)
+XREditor::add_tool("Paint", []() {
+    // Point phone at surface, hold button, paint objects
+    while (XRInput::button_held("RightTrigger")) {
+        Vector3 hit_point = XREditor::get_surface_hit_point();
+        GameObject* grass = scene->instantiate("GrassTuft");
+        grass->set_position(hit_point);
+        
+        delay(0.1f);  // 10 instances per second
+    }
+});
+```
+
+**Testing in AR**:
+```
+1. Build level in AR (place all objects)
+2. Tap "Play" button (holographic button in AR)
+3. Game starts running in AR space
+4. Walk around real room to see game from all angles
+5. Spot issues (enemy too high, pickup unreachable)
+6. Tap "Edit" to go back, fix issues
+7. Tap "Play" again to test fix
+8. Iteration cycle: <30 seconds
+```
+
+**Performance**:
+- Runs on mid-range 2019+ phones @ 60 FPS
+- Lower-end phones use simplified AR (marker-based, not full SLAM)
+- No phone? Desktop mode available (mouse + keyboard, no AR)
+
+---
 
 **Hot Reload System** (Instant Iteration):
-- Change code → see results in <1 second
-- Works for: Shaders, assets, scripts, UI, gameplay logic
-- No app restart required
-- Save/restore game state across reloads
 
-**Visual Debugging**:
-- Entity inspector (see all components live)
-- Physics visualizer (collision shapes, forces, velocities)
-- Rendering debugger (draw calls, overdraw, framebuffer inspection)
-- Network visualizer (packet flow, latency, bandwidth)
-- Controller debugger (see button presses, analog stick values in real-time)
+NovaCore's hot reload system is the fastest in the industry - change code, see results in <1 second, without restarting app or losing game state.
+
+**What Can Be Hot-Reloaded**:
+1. **Shaders** (graphics code)
+2. **Assets** (models, textures, animations, audio)
+3. **Scripts** (gameplay logic, AI behavior)
+4. **UI** (layouts, styles, text)
+5. **Configuration** (JSON files, parameters)
+6. **Physics** (collision shapes, material properties)
+
+**How It Works** (Technical):
+```
+1. You save file (shader, script, asset)
+2. NovaCore detects file change (filesystem watch)
+3. Incremental compilation (only changed file, <500ms)
+4. Delta patch generated (difference from old version)
+5. Delta sent to running app (local or over network)
+6. App applies patch without restart
+7. Scene refreshes (<1 second total)
+
+Traditional Workflow:
+- Change code → Full rebuild (30-180 seconds) → Restart app → Navigate back to test location → Test
+- 1-3 minutes per iteration
+
+NovaCore Workflow:
+- Change code → See result (<1 second) → Test immediately
+- <1 second per iteration
+- 60-180× faster iteration
+```
+
+**Example 1: Shader Hot Reload**
+```glsl
+// Original shader (water looks wrong)
+void main() {
+    vec3 color = texture(water_texture, uv).rgb;
+    fragColor = vec4(color, 1.0);  // No animation, looks static
+}
+
+// Save this file
+// <1 second later, water in running game updates to new shader
+
+// Fixed shader (water now animated)
+void main() {
+    vec2 animated_uv = uv + vec2(sin(time), cos(time)) * 0.1;
+    vec3 color = texture(water_texture, animated_uv).rgb;
+    fragColor = vec4(color, 1.0);  // Now animates beautifully
+}
+
+// Save again
+// <1 second later, water animation appears in game
+// No restart, no rebuild, no waiting
+```
+
+**Example 2: Script Hot Reload**
+```cpp
+// Original enemy AI (too aggressive, players complaining)
+void Enemy::update(float dt) {
+    if (can_see_player()) {
+        chase_player();  // Chases at full speed immediately
+    }
+}
+
+// Change to this
+void Enemy::update(float dt) {
+    if (can_see_player()) {
+        wait(1.0f);  // Wait 1 second before chasing
+        chase_player();  // Now player has time to react
+    }
+}
+
+// Save file
+// <1 second later, enemies in running game now wait 1 second
+// Test immediately, adjust if needed
+// No need to restart level, progress preserved
+```
+
+**Example 3: Asset Hot Reload**
+```
+Scenario: Character model looks off in-game
+
+1. Export character from game (Ctrl+E on selected object)
+2. Open in Blender (file is auto-opened)
+3. Fix model (adjust proportions, fix UV unwrap)
+4. Save in Blender (Ctrl+S)
+5. <1 second later, character in running game updates to fixed model
+6. Repeat until perfect (no rebuild, no restart)
+
+Iteration speed:
+- Traditional: 5-10 minutes per iteration (export, edit, import, rebuild, restart, navigate)
+- NovaCore: 30 seconds per iteration (edit, save, instant update)
+- 10-20× faster art iteration
+```
+
+**State Preservation** (Critical Feature):
+```cpp
+// Game state is preserved across hot reloads
+void Game::on_hot_reload() {
+    // Before reload: Save critical state
+    HotReloadState state;
+    state.save("player_position", player->position);
+    state.save("player_health", player->health);
+    state.save("inventory", player->inventory);
+    state.save("quest_progress", quest_system->progress);
+    state.save("enemy_states", enemy_manager->get_all_states());
+    
+    // Hot reload happens (code/assets update)
+    
+    // After reload: Restore state
+    player->position = state.load("player_position");
+    player->health = state.load("player_health");
+    player->inventory = state.load("inventory");
+    quest_system->progress = state.load("quest_progress");
+    enemy_manager->restore_states(state.load("enemy_states"));
+    
+    // Game continues exactly where it was
+    // Player doesn't even notice reload happened
+}
+```
+
+**Hot Reload Best Practices**:
+
+**DO**:
+- Save frequently (Ctrl+S every change)
+- Test small changes incrementally
+- Use hot reload for rapid iteration
+- Keep hot reload enabled during development
+
+**DON'T**:
+- Change core architecture during hot reload (breaks state)
+- Rely on hot reload for production builds (disabled in release)
+- Forget to test full rebuild occasionally (verify nothing breaks)
+
+**Performance**:
+- Shader reload: <500ms (compile + upload to GPU)
+- Script reload: <1000ms (incremental compile + patch)
+- Asset reload: <1000ms (import + convert + upload)
+- Configuration reload: <100ms (parse JSON + apply)
+- No rebuild, no restart, no waiting
+
+---
+
+**Visual Debugging** (Professional Tools):
+
+NovaCore provides comprehensive visual debugging tools for diagnosing issues quickly.
+
+**Entity Inspector** (See Everything):
+```
+Select any object in game (tap, click, or press A on controller)
+Inspector window shows:
+
+Entity ID: 0x4A3F89B2
+Name: "Enemy_Orc_07"
+Active: ✓ Enabled
+
+Components (7):
+├─ Transform
+│  └─ Position: (45.3, 0.5, -12.7)
+│  └─ Rotation: (0°, 135°, 0°)
+│  └─ Scale: (1.2, 1.2, 1.2)
+├─ RenderMesh
+│  └─ Mesh: "orc_lowpoly.fbx"
+│  └─ Material: "orc_skin_pbr"
+│  └─ Triangles: 5,420
+│  └─ Draw Calls: 1
+├─ PhysicsBody
+│  └─ Mass: 80kg
+│  └─ Velocity: (2.5, 0, -1.3) m/s
+│  └─ Sleeping: No (active)
+│  └─ Collider: Capsule (r=0.4, h=1.8)
+├─ AIAgent
+│  └─ State: Chasing
+│  └─ Target: Player (ID: 0x12345678)
+│  └─ Path Length: 25m (12 waypoints)
+│  └─ Decision Time: 0.05ms
+├─ Health
+│  └─ Current: 75 / 100
+│  └─ Regen: 1 HP/sec
+│  └─ Last Damage: 15 sec ago
+├─ Animation
+│  └─ Current: "run_forward"
+│  └─ Speed: 1.5× (running fast)
+│  └─ Blend Weight: 1.0 (100%)
+└─ Audio
+   └─ Playing: "orc_footsteps" (looping)
+   └─ Volume: 0.8 (80%)
+   └─ 3D Position: (45.3, 0.5, -12.7)
+
+All values are LIVE and editable
+Change "Health → Current" to 1 → Orc almost dead
+Change "AIAgent → State" to "Flee" → Orc runs away
+Changes apply instantly (hot reload)
+```
+
+**Physics Visualizer** (See The Invisible):
+```
+Enable: Settings → Debug → Physics Visualization → On
+
+What You See:
+- Collision shapes drawn as wireframe overlays (green = active, yellow = sleeping)
+- Velocity vectors (arrows showing movement direction/speed)
+- Forces applied (arrows at contact points showing push/pull)
+- Contact points (red dots where objects touch)
+- Joints & constraints (lines connecting bodies)
+- Center of mass (crosshair on each object)
+- Angular velocity (curved arrow showing rotation)
+
+Example Use Case:
+Problem: Character slides on slopes instead of walking
+Solution: 
+1. Enable physics visualizer
+2. See collision shape is sphere (rolls down slopes)
+3. Change to capsule (walks properly)
+4. Test instantly with hot reload
+5. Fixed in 30 seconds
+```
+
+**Rendering Debugger** (Optimize Graphics):
+```
+Enable: Settings → Debug → Rendering Debugger → On
+
+Overlay Information:
+┌─ Frame Stats ──────────────────────┐
+│ FPS: 58 (target: 60)               │
+│ Frame Time: 17.2ms (budget: 16.7ms)│
+│ GPU: 14.5ms (busy)                 │
+│ CPU: 2.7ms (idle)                  │
+└────────────────────────────────────┘
+
+┌─ Draw Calls ───────────────────────┐
+│ Total: 245                         │
+│ ├─ Opaque: 180                     │
+│ ├─ Transparent: 50                 │
+│ ├─ Shadow: 15                      │
+│ └─ UI: 0 (batched)                 │
+│                                    │
+│ Triangles: 2.4M                    │
+│ Vertices: 4.1M                     │
+└────────────────────────────────────┘
+
+┌─ Memory Usage ─────────────────────┐
+│ VRAM: 385MB / 2GB (19%)            │
+│ ├─ Textures: 250MB                 │
+│ ├─ Meshes: 100MB                   │
+│ ├─ Shaders: 15MB                   │
+│ └─ Framebuffers: 20MB              │
+│                                    │
+│ RAM: 420MB / 4GB (10%)             │
+│ ├─ Entities: 50MB                  │
+│ ├─ Physics: 100MB                  │
+│ ├─ Audio: 120MB                    │
+│ └─ Scripts: 150MB                  │
+└────────────────────────────────────┘
+
+Click any section to drill down:
+- Draw Calls → See list of all objects drawn, sort by cost
+- Memory → See texture list, sort by size, identify bloat
+- Frame Time → Per-stage breakdown, identify bottlenecks
+
+Visualization Modes:
+- Overdraw: See how many times each pixel is drawn (red = expensive)
+- Mipmaps: Colored checkerboard shows texture mipmap levels
+- Wireframe: See mesh topology, identify overly-dense areas
+- Normals: Visualize surface normals (debug lighting issues)
+- UVs: Show texture coordinates (debug UV unwrapping)
+```
+
+**Network Visualizer** (Debug Multiplayer):
+```
+Enable: Settings → Debug → Network Visualizer → On
+
+Real-Time Stats:
+┌─ Connection ────────────────────────┐
+│ Status: Connected                   │
+│ Ping: 45ms (good)                   │
+│ Jitter: ±5ms (stable)               │
+│ Packet Loss: 0.5% (excellent)       │
+└─────────────────────────────────────┘
+
+┌─ Bandwidth ─────────────────────────┐
+│ Sent: 28 kb/s (target: <30 kb/s)   │
+│ Received: 32 kb/s                   │
+│ ├─ Entity Updates: 20 kb/s          │
+│ ├─ RPCs: 8 kb/s                     │
+│ ├─ Voice: 4 kb/s                    │
+│ └─ Overhead: 0 kb/s                 │
+└─────────────────────────────────────┘
+
+┌─ Rollback Stats ───────────────────┐
+│ Rollbacks/sec: 2.5 (acceptable)    │
+│ Max Rollback Frames: 3 (50ms)      │
+│ Prediction Accuracy: 92%            │
+└─────────────────────────────────────┘
+
+Packet Visualizer:
+- Arrows flow from local player to remote players
+- Green = successful packet
+- Yellow = delayed packet
+- Red = dropped packet
+- Size of arrow = packet size
+
+Entity Synchronization:
+- See which entities are synced (green outline)
+- See prediction errors (red flash when corrected)
+- See bandwidth per entity (hover to see kb/s)
+```
+
+**Controller Debugger** (Bluetooth Input):
+```
+Enable: Settings → Debug → Controller Debugger → On
+
+Shows:
+┌─ Controller: Xbox Series X ────────┐
+│ Battery: 85% (connected 1h 32m)    │
+│ Signal: -45dBm (excellent)         │
+│ Latency: 8ms (imperceptible)       │
+└─────────────────────────────────────┘
+
+Button States (Real-Time):
+A: ● Pressed    B: ○ Released
+X: ○ Released   Y: ○ Released
+LB: ○ Released  RB: ● Pressed
+LT: ▓▓▓▓▓░░░░░ 50%
+RT: ▓▓▓▓▓▓▓▓▓▓ 100%
+
+Analog Sticks:
+Left:  X: +0.75  Y: -0.32  │  Right: X: -0.12  Y: +0.89
+       [Visual 2D plot showing stick position]
+
+D-Pad:
+↑: ○  ←: ●  →: ○  ↓: ○
+
+Rumble Test:
+[Slider: Intensity] ▓▓▓▓▓▓▓▓░░ 80%
+[Button: Test Left Motor]
+[Button: Test Right Motor]
+
+Input Lag Meter:
+Controller → Phone: 8ms
+Phone → Game: 2ms
+Total: 10ms (excellent for 60 FPS)
+```
+
+**Performance Profiler** (Find Bottlenecks):
+```
+Enable: Settings → Debug → Profiler → On
+
+Frame Timeline (16.7ms budget @ 60 FPS):
+[======Physics 4ms======]
+                        [===Rendering 8ms===]
+                                             [=Scripts 2ms=]
+                                                           [UI 1ms]
+0ms                    8ms                              16ms
+
+Detailed Breakdown:
+┌─ Physics (4.0ms / 24%) ─────────────┐
+│ ├─ Collision Detection: 2.5ms       │
+│ ├─ Constraint Solver: 1.0ms         │
+│ ├─ Integration: 0.3ms                │
+│ └─ Callbacks: 0.2ms                  │
+└──────────────────────────────────────┘
+
+┌─ Rendering (8.0ms / 48%) ───────────┐
+│ ├─ Culling: 0.5ms                    │
+│ ├─ Shadow Maps: 2.0ms                │
+│ ├─ G-Buffer: 2.5ms                   │
+│ ├─ Lighting: 2.0ms                   │
+│ └─ Post-Process: 1.0ms               │
+└──────────────────────────────────────┘
+
+┌─ Scripts (2.0ms / 12%) ──────────────┐
+│ ├─ AI Updates: 1.2ms                 │
+│ ├─ Player Controller: 0.5ms          │
+│ └─ Game Logic: 0.3ms                 │
+└──────────────────────────────────────┘
+
+Click any section to see function-level breakdown
+Identify expensive functions, optimize hot paths
+```
+
+**Debugging Best Practices**:
+1. Enable visualizers when issue occurs
+2. Reproduce issue while watching debug overlays
+3. Identify root cause (physics? rendering? network?)
+4. Fix with hot reload
+5. Verify fix immediately
+6. Disable debug overlays (impacts performance)
 
 ### 14.3 Cloud Development (Optional)
 
