@@ -10,7 +10,7 @@ Merged blueprint now **2× more detailed**: Proven C++23 mobile AAA (Genshin/Zen
 
 **Scale**: 4.8M LOC, 1-3 months aggressive development, $0 budget (solo/duo indie), 50 integrated phases executed in parallel with aggressive automation.
 
-**Development Model**: Hyper-aggressive indie approach leveraging AI-assisted development, code generation, and modular architecture for rapid parallel implementation by 1-2 developers.
+**Development Model**: Hyper-aggressive indie approach using **ChatGPT + Grok** (planning/architecture) and **GitHub Copilot** (development), plus modular architecture for rapid parallel implementation by 1-2 developers.
 
 Citations from 2025 GDC/SIGGRAPH/industry developers prove feasibility.
 
@@ -4686,10 +4686,11 @@ GUI Features:
 **Total Scale**: 4.8M LOC, 1-3 months aggressive development, $0 budget (indie solo/duo), 50 integrated phases
 
 **Aggressive Indie Development Model**: 
-- **Team**: 1-2 developers working with AI-assisted tools, code generation, and automation
+- **Team**: 1-2 developers using specific AI tools for maximum efficiency
 - **Budget**: $0 (using free/open-source tools, existing hardware)
 - **Timeline**: 1-3 months by executing phases in parallel clusters and leveraging:
-  - AI code generation (GitHub Copilot, ChatGPT, Claude)
+  - **ChatGPT + Grok** for planning, architecture design, problem-solving
+  - **GitHub Copilot** for code implementation and development
   - Modular architecture enabling parallel development
   - Extensive code reuse and library integration
   - Automated testing and CI/CD
@@ -5992,8 +5993,9 @@ The culmination of everything built.
 - **Budget**: $0 (using existing hardware, free tools, open-source libraries)
 - **Risk**: Medium (aggressive but achievable with modern AI-assisted development)
 - **Strategy**: 
+  - **ChatGPT + Grok**: Planning, architecture, problem-solving (10-50× design speed)
+  - **GitHub Copilot**: Code implementation, autocomplete, suggestions (10-50× dev speed)
   - Parallel phase execution across 4 development clusters
-  - Heavy use of AI code generation and pair programming tools
   - Modular architecture enabling independent system development
   - Automated testing and continuous integration
   - MVP-first approach with iterative enhancement
@@ -6003,8 +6005,8 @@ The culmination of everything built.
 ### Why This Timeline is Achievable
 
 **Modern Development Accelerators**:
-1. **AI-Assisted Coding**: GitHub Copilot, ChatGPT, Claude for 10-50× productivity boost
-2. **Code Generation**: Automated boilerplate, test generation, documentation
+1. **ChatGPT + Grok**: Planning, architecture, debugging - 10-50× design productivity
+2. **GitHub Copilot**: Code implementation, autocomplete - 10-50× development speed
 3. **Library Ecosystem**: Jolt (physics), Vulkan (rendering), ONNX (neural) - 80% functionality pre-built
 4. **Modular Design**: Independent systems can be developed in parallel
 5. **Automated Testing**: CI/CD pipelines catch regressions instantly

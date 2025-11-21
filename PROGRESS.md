@@ -32,10 +32,11 @@
 ### Why 1-3 Months is Achievable
 
 **AI-Powered Development Multipliers**:
-- 🤖 **GitHub Copilot + ChatGPT + Claude**: 10-50× productivity boost on boilerplate, algorithms, tests
+- 🧠 **ChatGPT + Grok**: Planning, architecture design, problem-solving (10-50× design productivity)
+- 💻 **GitHub Copilot**: Code implementation, autocomplete, suggestions (10-50× development speed)
 - 📦 **Library Integration**: Jolt (physics), Vulkan SDK (rendering), ONNX (neural) = 80% functionality pre-built
 - ⚡ **Parallel Execution**: 50 phases organized into 4 independent clusters for simultaneous development
-- 🔄 **Automated Testing**: CI/CD catches regressions instantly, AI generates test cases
+- 🔄 **Automated Testing**: CI/CD catches regressions instantly
 - 🎯 **MVP-First**: Core functionality first, refinement iterative
 
 **Phase Parallelization Strategy**:
@@ -276,7 +277,8 @@
 - Research citations validate technical feasibility
 - Ground-up custom approach requires clear architecture docs
 - Progress tracking from day 1 is essential
-- AI-assisted development multiplies solo developer productivity 10-50×
+- **ChatGPT + Grok** for planning multiplies design productivity 10-50×
+- **GitHub Copilot** for development multiplies coding speed 10-50×
 - Parallel phase execution enables 1-3 month timelines
 - Library integration (Jolt, Vulkan, ONNX) provides 80% base functionality
 - MVP-first approach with iterative refinement accelerates delivery

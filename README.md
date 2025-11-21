@@ -161,7 +161,7 @@ This is **not a fork** of Unity, Unreal, or Godot. Every line of code is custom-
 
 **Total Timeline**: 1-3 months (aggressive indie sprint) | **Total Budget**: $0 | **Team Size**: 1-2 
 
-**Aggressive Development Model**: Leveraging AI-assisted coding (GitHub Copilot, ChatGPT, Claude), parallel phase execution, extensive library integration, and automated tooling to achieve what traditionally takes large teams years in just weeks.
+**Aggressive Development Model**: Solo/duo indie team leveraging **ChatGPT + Grok** (planning & architecture) and **GitHub Copilot** (code implementation), plus parallel phase execution, extensive library integration, and automated tooling to achieve what traditionally takes large teams years in just weeks.
 
 | Phase Cluster | Duration | LOC | Focus |
 |---------------|----------|-----|-------|
@@ -174,7 +174,8 @@ This is **not a fork** of Unity, Unreal, or Godot. Every line of code is custom-
 **Current Status**: Phase 0 Complete - Beginning aggressive implementation - [View Progress →](PROGRESS.md)
 
 **Why 1-3 Months is Achievable**:
-- 🤖 AI code generation (10-50× productivity boost)
+- 🤖 **ChatGPT + Grok** for planning, architecture, problem-solving (10-50× design speed)
+- 💻 **GitHub Copilot** for code implementation (10-50× development productivity)
 - 📦 80% functionality from existing libraries (Jolt, Vulkan, ONNX)
 - ⚡ Parallel development of independent systems
 - 🔄 Automated testing and CI/CD
