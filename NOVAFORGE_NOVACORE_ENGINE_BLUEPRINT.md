@@ -1839,15 +1839,28 @@ void UpdatePositions_SIMD(Transform* transforms, Velocity* velocities, size_t co
 
 ### Quality Tiers (Adaptive Scaling - World-Class at Every Level)
 
-**Minimal** (Ultra-low devices - 2014-2018, $50-150 phones):
-- **Renderer**: Simple forward renderer (OpenGL ES 2.0/3.0 fallback)
-- **Lighting**: Vertex lighting, baked lightmaps, simple shadows
+**Minimal** (Ultra-low devices - 2014-2018, $50-150 phones) - **CPU-Optimized Fallback Path**:
+- **Renderer**: Simple forward renderer (OpenGL ES 2.0/3.0, **pure CPU rasterization fallback available**)
+  - **CPU Rasterization**: Software renderer for devices without GPU acceleration
+  - **Triangle Setup**: SIMD-optimized (ARM NEON) triangle rasterization on CPU
+  - **Performance**: 1M triangles @ 30 FPS on single-core, 5M triangles @ 30 FPS on quad-core
+  - **Quality**: Clean output matching GPU quality, just slower
+- **Lighting**: Vertex lighting (CPU-computed), baked lightmaps, simple blob shadows
+  - **CPU Light Culling**: Per-vertex light influence calculation
+  - **Fast Path**: Pre-computed lighting for static objects (zero runtime cost)
 - **Materials**: Basic PBR (diffuse + specular), 512x512 textures
+  - **CPU Sampling**: Optimized texture sampling with bilinear filtering
+  - **Material Batching**: Group objects by material to reduce state changes
 - **Geometry**: 1-5M triangles, manual LOD chains
-- **Effects**: Simple particles (CPU), basic post-processing
-- **Target**: 20-30 FPS stable, 540p native → 720p upscale
-- **Quality**: Clean, stylized look (think PS3/Xbox 360 quality on mobile)
-- **Examples**: Snapdragon 430, MediaTek Helio P22, older iPhones (6/7)
+  - **CPU Culling**: Frustum + occlusion culling on CPU (SIMD-optimized)
+  - **Mesh Compression**: Quantized vertices (16-bit) for faster processing
+- **Effects**: Simple particles (CPU-based), basic post-processing
+  - **CPU Particles**: 1000 particles @ 30 FPS with billboarding
+  - **Software Blur**: Fast box blur for simple post-effects
+- **Target**: 20-30 FPS stable, 540p native → 720p upscale (CPU or GPU)
+- **Quality**: Clean, stylized look (PS3/Xbox 360 quality on mobile, even without GPU)
+- **Examples**: Snapdragon 430, MediaTek Helio P22, older iPhones (6/7), devices with broken/disabled GPUs
+- **Fallback Trigger**: Automatic detection of missing/incompatible GPU, graceful degradation
 
 **Basic** (Low-end devices - 2018-2020, $150-300 phones):
 - **Renderer**: Forward+ clustered rendering (no ray tracing)
@@ -1888,6 +1901,199 @@ void UpdatePositions_SIMD(Transform* transforms, Velocity* velocities, size_t co
 - **Target**: 120+ FPS or 60 FPS with 4K/8K output
 - **Quality**: Offline renderer quality (Arnold, V-Ray, Cycles) in real-time
 - **Examples**: Snapdragon 8 Gen 3+, Apple A18 Pro, RTX 4090, PS5 Pro
+
+---
+
+### CPU Fallback Architecture (World-Class Software Rendering)
+
+**Philosophy**: Every GPU feature has a production-quality CPU fallback. Zero devices left behind.
+
+**Why CPU Fallbacks Matter**:
+- ✅ **Device Failures**: Broken/disabled GPUs, driver crashes, compatibility issues
+- ✅ **Extreme Budget Devices**: $20-50 phones with minimal/no GPU acceleration
+- ✅ **Legacy Support**: 2010-2014 devices that predate modern mobile GPUs
+- ✅ **Emerging Markets**: Billions of users on ultra-low-end hardware
+- ✅ **Testing/Debug**: CPU rendering for deterministic behavior, debugging
+- ✅ **Accessibility**: Users with GPU disabilities/restrictions can still play
+
+**Quality Mandate**: CPU fallbacks maintain 20-30 FPS with acceptable visual quality. No black screens, no "unsupported device" messages.
+
+---
+
+#### CPU Rasterization Pipeline (SIMD-Optimized)
+
+**Software Rasterizer** (Production-Grade):
+- **Architecture**: Tile-based rendering with SIMD parallelization
+  - 16x16 pixel tiles processed in parallel across CPU cores
+  - ARM NEON (4-way SIMD) for mobile, x86 SSE/AVX for desktop
+  - Hierarchical Z-buffer for early rejection (50% speedup)
+- **Triangle Setup**: Optimized edge walking
+  - Fixed-point math for sub-pixel accuracy
+  - Barycentric coordinate interpolation (SIMD-accelerated)
+  - Perspective-correct texture mapping
+- **Performance**: 
+  - **Single-core**: 1M triangles @ 30 FPS (540p)
+  - **Quad-core**: 5M triangles @ 30 FPS (540p)
+  - **Octa-core**: 10M triangles @ 30 FPS (720p)
+- **Quality**: Identical output to GPU rasterizer, pixel-perfect match
+
+**Texture Sampling** (Cache-Optimized):
+- **Bilinear Filtering**: SIMD-optimized, 4 texture taps in parallel
+- **Trilinear Filtering**: Smooth LOD transitions, minimal overhead
+- **Anisotropic Filtering**: 2x-4x available on high-end CPUs
+- **Compression**: On-the-fly texture decompression (ASTC, BC, ETC2)
+- **Performance**: 50M texture samples/second per core (typical)
+- **Memory**: Tiled texture cache (16KB L1, 256KB L2) for optimal access
+
+**Shading** (Vectorized):
+- **Vertex Shaders**: Full feature set, SIMD vertex processing
+  - Transform 4 vertices in parallel (ARM NEON)
+  - Skinning support (4 bones per vertex, SIMD-optimized)
+- **Pixel Shaders**: Simplified but capable
+  - Diffuse + specular lighting (Blinn-Phong)
+  - Normal mapping support (tangent space)
+  - Basic PBR (roughness/metallic with approximations)
+  - Process 4 pixels in parallel per core
+- **Performance**: 100M shaded pixels/second per core
+
+---
+
+#### CPU Lighting & Shadows (Efficient Algorithms)
+
+**Dynamic Lighting** (CPU-Optimized):
+- **Light Culling**: Spatial hashing for fast light queries
+  - Per-object light lists (max 4 lights per object)
+  - Distance-based attenuation, cone culling for spotlights
+- **Lighting Models**:
+  - **Vertex Lighting**: Pre-computed at vertices, interpolated across triangles (fastest)
+  - **Per-Pixel Lighting**: Full per-pixel lighting for hero objects (slower but higher quality)
+- **Performance**: 1000 lights culled to 4 per object in <1ms
+- **Quality**: Clean lighting, no harsh transitions
+
+**Shadow Rendering** (Fast Approximations):
+- **Blob Shadows**: Simple circular shadows for characters/objects
+  - Projected onto ground plane, alpha blended
+  - <0.1ms per shadow, 100+ shadows possible
+- **Shadow Maps** (Optional on multi-core):
+  - 512x512 shadow maps for key lights
+  - PCF filtering (4-tap) for soft edges
+  - 1-2ms budget on quad-core CPUs
+- **Baked Shadows**: Lightmaps for static geometry (zero runtime cost)
+- **Quality**: Adequate for gameplay, clean appearance
+
+---
+
+#### CPU Physics (Jolt with Optimizations)
+
+**Rigid Body Physics** (CPU-Only Mode):
+- **Jolt Integration**: Full Jolt 5.x physics on CPU
+  - ARM NEON optimizations for mobile (4-way SIMD)
+  - Constraint solver with warm-starting
+  - Island-based simulation (parallel across cores)
+- **Performance**:
+  - **Single-core**: 100 bodies @ 60Hz
+  - **Quad-core**: 500 bodies @ 60Hz  
+  - **Octa-core**: 1000 bodies @ 60Hz
+- **Quality**: Production-grade physics, zero compromises
+- **Features**: Full feature set (CCD, sleeping, constraints, ragdolls)
+
+**Collision Detection** (Broadphase Optimized):
+- **Spatial Hashing**: O(n) broadphase collision detection
+- **Narrow Phase**: GJK/EPA for precise collision (SIMD-optimized)
+- **Performance**: 10,000 collision pairs/second per core
+- **Quality**: Zero tunneling, accurate contact points
+
+---
+
+#### CPU Particle Systems (Lightweight)
+
+**CPU Particles** (Efficient Simulation):
+- **Billboard Particles**: Camera-facing quads with alpha blending
+  - 1000 particles @ 30 FPS on single-core
+  - 5000 particles @ 30 FPS on quad-core
+- **Physics Integration**: Gravity, wind, collision (simplified)
+- **Sorting**: Depth-sort for proper alpha blending
+- **Rendering**: Batched draws (1 draw call per particle system)
+- **Quality**: Clean appearance, suitable for effects
+
+---
+
+#### CPU Audio (Software Mixing)
+
+**Audio Pipeline** (CPU-Based):
+- **Mixer**: 32-channel software mixer
+  - Sample rate conversion, volume control, panning
+  - Simple reverb (Schroeder model), basic EQ
+- **3D Audio**: Distance attenuation, left/right panning
+- **Performance**: <1ms for 32 channels on single-core
+- **Quality**: Clean audio output, no artifacts
+
+---
+
+#### CPU Animation (Skeletal & Blend)
+
+**Animation System** (CPU-Only):
+- **Skeletal Animation**: Full skeleton evaluation on CPU
+  - 50 bones per character, 4 influences per vertex
+  - Blend between 4 animations simultaneously
+- **IK (Inverse Kinematics)**: 2-bone IK chains (feet, hands)
+  - Analytic IK solver, <0.1ms per chain
+- **Performance**:
+  - **Single-core**: 5 characters @ 30 FPS
+  - **Quad-core**: 20 characters @ 30 FPS
+- **Quality**: Smooth animation, proper blending
+
+---
+
+#### CPU AI & Pathfinding (Lightweight)
+
+**AI Systems** (CPU-Optimized):
+- **Pathfinding**: A* with hierarchical navigation mesh
+  - 100 agents @ 30 FPS on single-core
+  - Cached paths, incremental updates
+- **Behavior Trees**: Simplified decision trees
+  - 50 active agents @ 30 FPS on single-core
+- **LOD**: Distant agents use simplified logic
+- **Quality**: Believable AI behavior, responsive
+
+---
+
+### CPU Fallback Quality Standards
+
+**Performance Requirements**:
+- ✅ **20-30 FPS minimum** on single-core ARM Cortex-A53 (2014 era)
+- ✅ **30-40 FPS target** on quad-core ARM Cortex-A55 (2018 era)
+- ✅ **Consistent frame time**: No frame drops, stable performance
+- ✅ **Battery efficient**: Adaptive CPU frequency, power-aware
+
+**Visual Quality Requirements**:
+- ✅ **Clean output**: No artifacts, proper alpha blending, correct depth
+- ✅ **Acceptable fidelity**: Stylized graphics maintain artistic intent
+- ✅ **Functional gameplay**: All gameplay mechanics work identically
+- ✅ **Proper scaling**: UI readable, text clear, controls responsive
+
+**Feature Parity** (CPU vs GPU):
+- ✅ **Geometry rendering**: Full model support, LOD system
+- ✅ **Texturing**: All texture types (diffuse, normal, specular)
+- ✅ **Lighting**: Dynamic lights (simplified), baked GI
+- ✅ **Physics**: Full rigid body physics, collision detection
+- ✅ **Animation**: Skeletal animation, blending, IK
+- ✅ **Particles**: Basic particle effects for gameplay feedback
+- ✅ **Audio**: Full 3D audio with effects
+- ✅ **UI**: Complete UI rendering, input handling
+
+**Automatic Fallback Detection**:
+```
+Boot Sequence:
+1. Attempt GPU initialization (Vulkan/Metal/OpenGL ES)
+2. If GPU init fails or performance test fails:
+   → Gracefully switch to CPU fallback
+3. Display notification: "Running in software mode for compatibility"
+4. Continue game with zero interruption
+```
+
+**Quality Promise**:
+> *"NovaCore runs on EVERY device, even those without functional GPUs. CPU fallbacks maintain 20-30 FPS with production-quality visuals. Zero 'unsupported device' messages. Ever."*
 
 ---
 
@@ -2522,6 +2728,217 @@ Engine learns game-specific physics parameters automatically during gameplay:
 
 **PhysiOpt Integration** (SIGGRAPH Asia 2025 Research):
 - Post-simulation refinement reduces artifacts by 30%
+
+---
+
+### Training Quality Control & Manual Override (World-Class Quality Assurance)
+
+**Critical Distinction**: NovaCore has TWO types of training:
+
+#### 1. Automatic On-Device Training (Engine Self-Improvement)
+
+**What It Is**:
+- Engine automatically learns optimal parameters during gameplay
+- Happens invisibly in background (loading screens, idle moments)
+- Improves over time without developer intervention
+- Examples: Physics parameters, rendering LOD, AI behavior tweaks
+
+**Developer Control**:
+- ✅ **Enable/Disable**: Toggle automatic training per-game in engine settings
+- ✅ **Review Changes**: Dashboard shows what engine learned, approve/reject changes
+- ✅ **Freeze Settings**: Lock parameters to prevent further automatic adjustments
+- ✅ **Reset to Defaults**: Undo all automatic training, return to baseline
+- ✅ **Quality Thresholds**: Set minimum quality scores for automatic changes (0-100 scale)
+
+**Quality Safeguards** (Prevents Bad Learning):
+- **Validation**: Every learned parameter tested against quality metrics before deployment
+- **Rollback**: If quality degrades, engine auto-reverts to previous parameters
+- **Telemetry**: Track player feedback (did they rage-quit? stuck on level?) → don't learn from bad experiences
+- **Outlier Rejection**: Ignore extreme data points (cheaters, glitches, edge cases)
+- **Human Review**: Flagged changes await developer approval before permanent adoption
+
+**When to Use**:
+- ✅ Rapid iteration (let engine optimize while you develop other features)
+- ✅ Post-launch optimization (engine continues improving after release)
+- ✅ Per-device tuning (engine learns optimal settings for each device tier)
+
+**When to Disable**:
+- ❌ Competitive multiplayer (fairness requires identical parameters for all players)
+- ❌ Speedrunning games (consistent physics required for record validity)
+- ❌ Final production build (lock settings once game is balanced)
+
+---
+
+#### 2. Manual High-Quality Training (Developer-Controlled)
+
+**What It Is**:
+- YOU provide highest-quality training data for AI models
+- YOU control when training happens, what data is used
+- YOU approve all trained models before deployment
+- Examples: LoRA style adapters, asset generation models, character AI personalities
+
+**Your Training Workflow**:
+
+**Step 1: Prepare High-Quality Training Data**
+```
+For LoRA Style Training (Asset Generation):
+1. Curate 50-200 HERO-QUALITY assets (your best work)
+   - Models: Clean topology, proper UVs, optimized
+   - Textures: High-res sources (4K-8K), proper PBR values
+   - Materials: Physically-accurate, artist-validated
+2. Quality check every asset:
+   - No artifacts, no compression issues
+   - Consistent lighting (neutral, no baked lighting)
+   - Proper naming, organized by category
+3. Document your style guide:
+   - Color palettes, material libraries
+   - Shape language, proportions, detail density
+   - Technical specifications (poly budgets, texture res)
+```
+
+**Step 2: Initiate Training (You Control This)**
+```
+Training Interface (In-Engine):
+1. Select training type:
+   - LoRA Style Adapter (for asset generation)
+   - Character AI Personality (for NPC behavior)
+   - Combat AI Tactics (for enemy intelligence)
+2. Load your curated dataset
+3. Configure training parameters:
+   - Epochs: 50-500 (more = better quality, longer training)
+   - Learning rate: 0.0001-0.001 (lower = more stable)
+   - Batch size: 4-32 (higher = faster, needs more VRAM)
+   - Validation split: 10-20% (test on unseen data)
+4. Click "Start Training"
+   - Progress bar shows: Epoch, Loss, Validation Score
+   - Real-time preview of generated samples
+   - Training time: 2-8 hours on desktop GPU
+```
+
+**Step 3: Quality Validation (You Approve This)**
+```
+Post-Training Validation:
+1. Engine generates 100 test samples from trained model
+2. You review each sample:
+   - Visual quality (does it match your style?)
+   - Technical quality (clean topology, proper UVs?)
+   - Consistency (do all samples look cohesive?)
+3. Quality scoring:
+   - Engine auto-scores: Geometry (0-100), Texture (0-100), Style Match (0-100)
+   - You override: Accept, Reject, or "Needs More Training"
+4. Deployment decision:
+   - Accept: Model deployed to engine, available for generation
+   - Reject: Model discarded, try again with better data
+   - Refine: Continue training with adjusted parameters
+```
+
+**Step 4: Continuous Improvement**
+```
+Iterative Training Loop:
+1. Use deployed model in game
+2. Collect edge cases (assets that don't look right)
+3. Add more training data addressing edge cases
+4. Retrain model with expanded dataset
+5. Validate improvements, deploy updated model
+6. Repeat until 95%+ satisfaction rate
+
+Result: Model gets better over time with YOUR quality control
+```
+
+**Training Quality Standards** (Your Minimum Requirements):
+
+**For Asset Generation (LoRA Adapters)**:
+- ✅ **Dataset Quality**: Only hero-grade assets, manually validated
+- ✅ **Consistency**: <2% style variation across training set
+- ✅ **Technical Quality**: Clean topology, proper UVs, optimized for engine
+- ✅ **Diversity**: Cover all use cases (characters, props, environments, effects)
+- ✅ **Validation**: 90%+ generated samples meet your quality bar
+- ✅ **Manual Review**: You personally approve every trained model
+
+**For AI Behavior (Personality, Combat)**:
+- ✅ **Behavior Data**: Scripted by experienced game designers, not random gameplay
+- ✅ **Testing**: Playtested by QA, validated for fun factor
+- ✅ **Balance**: Difficulty curves tested, no frustrating AI behavior
+- ✅ **Diversity**: Multiple AI archetypes (aggressive, defensive, tactical)
+- ✅ **Edge Cases**: Handle unexpected player actions gracefully
+- ✅ **Human Oversight**: Game director approves all AI personalities
+
+---
+
+### Training Infrastructure (Enterprise-Grade Tools)
+
+**Training Dashboard** (Visual Interface):
+- **Dataset Manager**: Organize, tag, quality-check training data
+- **Training Monitor**: Real-time graphs (loss, accuracy, validation score)
+- **Sample Browser**: Review generated samples, flag issues
+- **Version Control**: Track model versions, rollback to previous
+- **Comparison Tool**: A/B test models side-by-side
+- **Export/Share**: Package trained models for team distribution
+
+**Quality Metrics** (Automatic Scoring):
+- **Geometric Quality**: Topology cleanliness, degenerate triangle detection, manifold validation
+- **Texture Quality**: Resolution, compression artifacts, color space correctness
+- **Style Consistency**: Vector distance from reference samples in latent space
+- **Performance**: Poly count, texture memory, draw call efficiency
+- **Usability**: Can it be imported into DCC tools without errors?
+
+**Training Acceleration** (Fast Iteration):
+- **GPU Training**: Multi-GPU support (4-8 GPUs for 8-hour → 1-hour training)
+- **Cloud Training**: AWS/GCP/Azure integration for massive datasets
+- **Distributed Training**: Split training across multiple machines
+- **Checkpointing**: Save/resume training at any point
+- **Early Stopping**: Auto-stop when validation plateaus (don't overtrain)
+
+**Deployment Pipeline** (Production-Safe):
+```
+1. Train model on your curated data
+2. Validate on held-out test set (you never train on this data)
+3. Generate 1000 samples for manual review
+4. Team reviews samples, approval vote
+5. Model versioned (v1.0, v1.1, etc.)
+6. Staged rollout:
+   - Internal testing (dev team)
+   - Alpha testing (trusted users)
+   - Beta testing (wider audience)
+   - Production (all users)
+7. Monitor quality metrics post-deployment
+8. Hotfix if issues arise (instant rollback available)
+```
+
+**Quality Promise**:
+> *"YOU control all model training with NovaCore. Manual high-quality training with your curated data is the default. Automatic on-device learning is optional and always under your supervision. Every trained model requires your approval before deployment. Zero compromises on training quality."*
+
+---
+
+### Training Best Practices (World-Class Results)
+
+**For LoRA Style Training**:
+1. **Start with 50 hero assets** (your absolute best work)
+2. **Consistent lighting** (neutral, HDR, no baked shadows)
+3. **Proper scale** (real-world units, consistent across assets)
+4. **Clean source files** (no hidden geometry, proper naming)
+5. **Train for 100-500 epochs** (monitor validation loss, stop when plateaus)
+6. **Generate 100 test samples**, manually review each one
+7. **Iterate**: Add more assets for problematic categories, retrain
+8. **Final validation**: 95%+ samples meet your quality standard
+
+**For Character AI Training**:
+1. **Script 20-50 personality archetypes** (brave hero, cowardly villain, wise mentor)
+2. **Playtest each archetype** (10+ hours of gameplay per archetype)
+3. **Collect telemetry** (decisions made, player reactions, combat outcomes)
+4. **Train on successful behaviors** (players enjoyed, not frustrating)
+5. **Validate with blind testing** (players can't tell it's AI)
+6. **Iterate based on feedback**, retrain until personalities feel authentic
+
+**For Combat AI Training**:
+1. **Design difficulty tiers** (easy, medium, hard, expert)
+2. **Script reference behaviors** (experienced game designers write these)
+3. **Playtesting with focus group** (recruit players, gather feedback)
+4. **Balance testing** (ensure winnable but challenging)
+5. **Train AI to match reference behaviors** (supervised learning)
+6. **Validate across skill levels** (beginners to experts all have fun)
+
+**Result**: World's best training quality because YOU control the data, YOU approve the models, YOU ensure AAA standards.
 - Jitter smoothing via temporal filtering
 - Penetration recovery without visible pop-out
 - Contact point stabilization for cleaner stacking
@@ -5954,47 +6371,299 @@ The engine no longer just renders a world — it interprets it.
 
 This is the beginnings of an engine that behaves like a player with situational awareness.
 
-### Phase 8: Universal Animation Intelligence (Months 40-42)
+### Phase 8: Universal Animation Intelligence - AAA Character Animation Systems (Months 40-42)
 
-Your characters stop being puppets; they adapt.
+**Your characters become living, breathing entities with film-quality motion.**
 
-**Deliverables**:
-- Motion matching + neural pose completion → animation stays smooth even when frames drop
-- Real-time IK for all limbs with muscle simulation (CPU fallback using analytic IK)
-- Auto-retargeting: drop in any animation file from any game → engine solves differences automatically
-- Physics-aware animations: footsteps adjust to slopes, hips stabilize dynamically
-- Neural facial puppetry from audio → synchronized lips/facial expressions in any language
-- Crowd simulation with neural compression → 5,000+ NPCs on mid-range phones
+**Quality Mandate**: Animation quality matching The Last of Us Part II, Uncharted 4, Red Dead Redemption 2. Smooth, natural, responsive character movement with zero visible artifacts.
 
-**LOC**: 200,000
+**Deliverables** (Film-Quality Animation Systems):
+
+**Motion Matching 2.0** (Neural-Enhanced):
+- **Database**: Store 10,000+ animation clips, 1M+ poses in compressed format
+  - Neural compression: 100GB animations → 500MB latent space
+  - Real-time search: Find best pose in <0.5ms on NPU
+- **Pose Blending**: Smooth transitions between any poses (zero popping)
+  - 16-frame blend window for natural transitions
+  - Neural pose completion for missing frames (frame drops invisible)
+- **Responsive Controls**: <50ms input-to-animation response time
+  - Predictive animation (anticipates player input)
+  - Momentum preservation for realistic inertia
+- **Quality**: Motion-capture quality animation without mocap costs
+- **Performance**: 100 characters @ 60 FPS on mid-range mobile
+
+**Full-Body IK (Inverse Kinematics)** (Production-Grade):
+- **Real-Time IK**: All limbs adjust to environment dynamically
+  - **Foot IK**: Feet plant correctly on slopes, stairs, uneven terrain
+  - **Hand IK**: Hands grip objects accurately (weapons, doors, ledges)
+  - **Look-At IK**: Head/eyes track targets naturally
+  - **Spline IK**: Spine curves naturally for leaning, aiming
+- **Muscle Simulation**: Procedural muscle deformation on high-end
+  - Secondary motion (jiggle, lag) for realistic flesh movement
+  - Procedural breathing, subtle idle movements
+- **CPU Fallback**: Analytic IK (2-bone solver) for low-end devices
+  - Quality: 90% visual match to full IK, <0.1ms per character
+- **Performance**: 
+  - **High-end**: 50 characters with full IK + muscle sim @ 60 FPS
+  - **Mid-range**: 100 characters with standard IK @ 60 FPS
+  - **Low-end**: 50 characters with analytic IK @ 30 FPS
+- **Quality**: Matching Uncharted 4, The Last of Us foot planting quality
+
+**Universal Animation Retargeting** (Zero-Friction Workflow):
+- **Auto-Retargeting**: Drop any animation onto any skeleton → automatic adaptation
+  - Source skeletons: Mixamo, Unity, Unreal, custom, motion capture
+  - Bone mapping: Neural network learns skeleton correspondences
+  - Proportion adjustment: Scale animation to target skeleton proportions
+- **Quality Preservation**: Maintains animation intent and style
+  - Root motion preserved, contact points maintained
+  - Secondary motion (cloth, hair) retargeted intelligently
+- **Batch Processing**: Retarget 1000s of animations overnight
+- **Performance**: <1 second per animation, real-time preview
+- **Quality**: Artists rarely need manual cleanup (95% success rate)
+
+**Physics-Aware Animation** (Natural Movement):
+- **Terrain Adaptation**: Characters adjust to ground conditions
+  - **Slope Walking**: Feet angle correctly on slopes, IK adjusts leg length
+  - **Stairs**: Automatic foot placement on steps, no floating/clipping
+  - **Uneven Terrain**: Hips stabilize, spine adjusts for balance
+  - **Jumping/Landing**: Physics-driven landing pose based on impact velocity
+- **Dynamic Balance**: Procedural stabilization
+  - **Hip Stabilization**: Keeps character upright during movement
+  - **Arm Sway**: Natural arm swing during walking/running
+  - **Momentum**: Realistic inertia when starting/stopping
+- **Ragdoll Blending**: Smooth transition between animation and physics
+  - **Hit Reactions**: Blend ragdoll physics on impact, recover to animation
+  - **Death**: Natural falling with physics, no canned death animations
+  - **Get-Up Animations**: Procedural get-up from any ragdoll position
+- **Quality**: Matches Red Dead Redemption 2 character physicality
+
+**Neural Facial Animation** (Real-Time Lip Sync):
+- **Audio-Driven**: Real-time facial animation from any audio
+  - **Lip Sync**: Accurate phoneme-to-viseme mapping (any language)
+  - **Emotional Expression**: Detect emotion in voice, apply facial expression
+  - **Eye Movement**: Procedural eye saccades, blinks, focus
+- **Performance**: <1ms per character on NPU, <5ms on CPU
+- **Multi-Language**: Works with 100+ languages without retraining
+- **Quality**: Film-quality facial animation matching Hellblade, Death Stranding
+- **Features**:
+  - Automated lip sync for all dialogue (no manual animation needed)
+  - Procedural breathing (chest rise/fall, nostril flare)
+  - Micro-expressions (subtle emotion changes)
+  - Blinking (natural cadence, 15-20 blinks/minute)
+
+**Crowd Simulation** (Massive Scale):
+- **NPU-Accelerated**: Neural compression for massive crowds
+  - 5,000 NPCs @ 60 FPS on mid-range mobile (2023+)
+  - 10,000 NPCs @ 60 FPS on high-end mobile
+  - 50,000 NPCs @ 60 FPS on desktop/console
+- **LOD System**: Adaptive detail based on distance
+  - **Hero LOD**: Full IK, physics, facial (camera-close characters)
+  - **High LOD**: Full skeleton, simplified IK (mid-distance)
+  - **Medium LOD**: Simplified skeleton, keyframe animation (far)
+  - **Low LOD**: Impostor billboards with animation (very far)
+  - **Culling**: Frustum + occlusion culling, spatial partitioning
+- **Behavior Variation**: Unique movement per NPC
+  - Procedural gait variation (walk speed, arm swing, posture)
+  - Randomized idle animations (fidgeting, looking around)
+  - Crowd flow (avoid collisions, follow paths, react to events)
+- **Performance**: 
+  - **Mobile**: 5K NPCs using 50MB RAM, 2ms CPU, 3ms GPU
+  - **Desktop**: 50K NPCs using 200MB RAM, 5ms CPU, 8ms GPU
+- **Quality**: Matches Assassin's Creed Unity crowd density and animation
+
+**Advanced Animation Features** (AAA Complete):
+- **Animation Layers**: Blend multiple animations simultaneously
+  - Base layer (locomotion), upper body layer (shooting), additive layer (breathing)
+  - Infinite layers with weight control, smooth blending
+- **Animation State Machines**: Visual state machine editor
+  - Transitions with blend trees, conditions, parameters
+  - Sub-state machines for organization
+  - Blueprint-style visual scripting
+- **Blend Spaces**: 2D animation blending (e.g., strafe directions)
+  - Walk/run blend, aim direction blend, emotion blend
+  - Real-time preview, intuitive editing
+- **Animation Events**: Trigger gameplay events from animation
+  - Footstep sounds, particle effects (dust, water splashes)
+  - Weapon fire, reload complete, ability ready
+  - Collision detection enable/disable (attack hit boxes)
+- **Root Motion**: Proper character movement from animation
+  - Extract root bone motion, apply to character controller
+  - Blends with physics for realistic movement
+  - Turn-in-place, jump distance from animation data
+
+**LOC**: 280,000 (increased for comprehensive features)
 
 **Milestones**:
-- Auto-retargeting working across different skeleton formats
-- Crowd system running 5000+ agents @ 60 FPS
-- Facial animation synced to audio in real-time
+- ✅ Motion matching running with 10,000 clips, <0.5ms pose search
+- ✅ Full-body IK working on slopes, stairs, uneven terrain
+- ✅ Auto-retargeting with 95% success rate across skeleton types
+- ✅ Facial animation synced to audio in real-time (100+ languages)
+- ✅ Crowd system running 5,000+ NPCs @ 60 FPS on mid-range mobile
+- ✅ Physics-aware animation matching Red Dead Redemption 2 quality
+- ✅ Zero visible animation artifacts (no popping, floating, clipping)
+- ✅ Animation quality matching The Last of Us Part II, Uncharted 4
 
-This turns animation from static assets into a living motor system.
+**Quality Promise**:
+> *"NovaCore animation systems deliver film-quality character movement matching Naughty Dog, Rockstar, and Guerrilla Games. Motion-capture quality without motion capture costs. 5,000+ NPCs on mobile with AAA animation quality."*
 
-### Phase 9: AI Agents, Behavior & Navigation - Next-Gen Systems (Months 43-45)
+This turns animation from static assets into a living, breathing motor system with AAA-quality motion.
 
-This is not pathfinding — this is thinking navigation.
+### Phase 9: AI Agents, Behavior & Navigation - AAA Gameplay Intelligence (Months 43-45)
 
-**Deliverables**:
-- Implicit navigation fields computed from SDFs (no baking required)
-- Neural steering behaviors for crowd avoidance + clustering
-- Hierarchical behavior planning (GOAP 2.0 hybrid) + neural hinting for decision shortcuts
-- CPU fallback uses navmesh striping + lightweight rule graphs
-- Dynamic world updates (real-time terrain deformation, buildings breaking) instantly update nav paths
-- Neural "persona cores" for NPCs: preferences, mood, memory baked into state machines
+**This is not pathfinding — this is thinking, feeling, memorable AI that rivals The Last of Us, Red Dead Redemption 2.**
 
-**LOC**: 220,000
+**Quality Mandate**: AI quality matching Naughty Dog, Rockstar, Guerrilla Games standards. NPCs with personality, memory, and believable decision-making.
+
+**Deliverables** (World-Class AI & Gameplay Systems):
+
+**Next-Gen Navigation** (Zero-Bake, Real-Time):
+- **SDF-Based Navigation**: Implicit navigation fields from signed distance fields
+  - **No Baking Required**: Navigation updates in real-time with world changes
+  - **Dynamic Obstacles**: Characters destroyed, walls fall → paths update instantly
+  - **3D Navigation**: Flying enemies, climbing, vertical movement support
+  - **Performance**: 1000 agents pathfinding @ 60 FPS on mid-range mobile
+- **Hierarchical Pathfinding**: Multi-scale planning
+  - **Strategic**: High-level waypoints (building to building)
+  - **Tactical**: Medium-level paths (room to room)
+  - **Local**: Low-level steering (avoid obstacles, NPCs)
+  - **Performance**: 10,000-node paths computed in <1ms
+- **CPU Fallback**: Traditional navmesh for low-end devices
+  - Pre-computed navmesh with dynamic obstacle avoidance
+  - Lightweight rule-based pathfinding
+  - Quality: 90% match to SDF navigation, <0.5ms per agent
+- **Quality**: Paths look natural, NPCs don't walk into walls, smooth movement
+
+**Neural Steering Behaviors** (Crowd Intelligence):
+- **Collision Avoidance**: Smooth, natural avoidance of obstacles and other agents
+  - Predictive steering (anticipates future positions)
+  - Personal space bubbles (agents maintain comfortable distance)
+  - Group cohesion (agents stay together when in groups)
+- **Crowd Dynamics**: Realistic crowd behavior
+  - Queueing (wait in lines naturally), panic behavior (run from danger)
+  - Following (trail leader), wandering (explore area aimlessly)
+  - Sitting, leaning, using props (benches, walls, railings)
+- **Performance**: 5,000 agents with steering @ 60 FPS on mid-range
+- **Quality**: Matches Assassin's Creed Unity, Watch Dogs crowd realism
+
+**Hierarchical Behavior Planning** (GOAP 2.0 + Neural Hints):
+- **Goal-Oriented Action Planning**: Intelligent decision-making
+  - NPCs form plans to achieve goals (find food, go home, attack enemy)
+  - Dynamic replanning when world changes or goals shift
+  - Action costs, preconditions, effects modeled accurately
+- **Neural Hinting**: AI learns shortcuts to common plans
+  - Pre-trained models suggest likely action sequences
+  - 10× faster planning for common scenarios
+  - Fallback to full GOAP when neural hints fail
+- **Behavior Trees**: Visual editor for complex AI logic
+  - Selectors, sequences, decorators, parallel nodes
+  - Blueprint-style visual scripting for designers
+  - Real-time debugging, breakpoints, variable inspection
+- **Utility AI**: Score-based decision making for continuous actions
+  - Multiple considerations (hunger, fear, curiosity, fatigue)
+  - Smooth action transitions, no hard switches
+  - Designer-friendly curves for tuning behavior
+- **Performance**: 100 agents with full planning @ 60 FPS
+- **Quality**: Believable, intelligent behavior matching FEAR, Halo AI
+
+**Neural Persona Cores** (Memorable NPCs):
+- **Personality System**: Each NPC has unique personality
+  - **Traits**: Brave/cowardly, friendly/hostile, curious/cautious (20+ traits)
+  - **Moods**: Happy, sad, angry, scared (dynamic, context-aware)
+  - **Preferences**: Likes/dislikes for activities, locations, other NPCs
+  - **Skills**: Combat ability, social skills, technical knowledge
+- **Memory System**: NPCs remember interactions with player
+  - **Episodic Memory**: Remember specific events (conversations, combat, gifts)
+  - **Semantic Memory**: General knowledge about world, factions, lore
+  - **Procedural Memory**: Learned skills, improved abilities over time
+  - **Forgetting**: Memories fade over time (configurable)
+- **Relationship System**: Dynamic relationships between NPCs and player
+  - **Reputation**: Faction standing, individual relationships
+  - **Trust**: Builds with positive interactions, breaks with betrayal
+  - **Romance**: Optional romantic relationships with companions
+  - **Rivalries**: Competitive relationships, friendly or hostile
+- **Dialogue System**: Context-aware, personality-driven conversations
+  - **Dynamic Dialogue**: Responses based on personality, mood, memory, relationship
+  - **Branching Conversations**: Player choices affect outcomes
+  - **Emotion**: Voice tone and facial animation match personality/mood
+  - **Barks**: Contextual one-liners (combat, exploration, reactions)
+- **Performance**: 1000 NPCs with full personality systems active
+- **Quality**: Matches Mass Effect, Dragon Age, Red Dead Redemption 2 NPC depth
+
+**Combat AI** (AAA Enemy Intelligence):
+- **Tactical Positioning**: Smart cover usage, flanking, suppression fire
+  - **Cover System**: Find cover, peek, blind fire, vault over
+  - **Flanking**: Coordinate with allies to surround player
+  - **Suppression**: Pin player down while allies advance
+  - **Retreat**: Fall back when wounded, regroup with allies
+- **Team Coordination**: Enemies work together intelligently
+  - **Formations**: Maintain tactical formations, adapt to terrain
+  - **Roles**: Tank (draw fire), support (heal/buff), DPS (damage)
+  - **Communication**: Call out player position, coordinate attacks
+  - **Leader**: Squad leaders give orders, coordinate team
+- **Difficulty Scaling**: Adaptive difficulty based on player skill
+  - **Aim Accuracy**: Better/worse aim based on difficulty
+  - **Reaction Time**: Faster/slower responses to player actions
+  - **Aggression**: More/less aggressive tactics
+  - **Cheating**: Optional aim assist for AI on higher difficulties (subtle)
+- **Performance**: 50 active combat AI @ 60 FPS
+- **Quality**: Matches The Last of Us Part II, Halo, FEAR enemy intelligence
+
+**Dynamic World Reactivity** (Living, Breathing World):
+- **Real-Time Updates**: World changes instantly update AI
+  - **Terrain Deformation**: Explosions create craters → paths update
+  - **Destruction**: Buildings collapse → NPCs flee, paths reroute
+  - **Day/Night**: NPCs adjust behavior (sleep at night, work during day)
+  - **Weather**: Rain → seek shelter, snow → slow movement
+- **Event System**: NPCs react to world events
+  - **Combat**: Civilians flee, guards respond, medics heal wounded
+  - **Crimes**: Witnesses call guards, bystanders watch
+  - **Celebrations**: NPCs gather, dance, celebrate victories
+  - **Disasters**: Panic, evacuation, helping injured
+- **Persistence**: World state persists across play sessions
+  - NPC positions, relationships, memories saved
+  - Quest states, faction standings maintained
+  - Dynamic events continue off-screen
+- **Performance**: 1000 reactive NPCs with world awareness
+- **Quality**: Matches Skyrim, Red Dead Redemption 2 living world feel
+
+**Advanced Gameplay Systems** (AAA Features):
+- **Quest System**: Dynamic quest generation and tracking
+  - Procedurally generated quests based on world state
+  - Branching questlines with multiple endings
+  - Quest journal with map markers, objectives, rewards
+- **Faction System**: Multiple factions with relationships
+  - Reputation with each faction (friendly, neutral, hostile)
+  - Faction quests, rewards, unique items
+  - Faction wars, territory control, dynamic conflicts
+- **Economy System**: Living economy with supply/demand
+  - Dynamic prices based on availability
+  - Trading, bartering, merchant inventories
+  - Player can affect economy (buy out stock, sell rare items)
+- **Crafting System**: Deep crafting with recipe discovery
+  - Gather resources, learn recipes, craft items
+  - Weapon/armor upgrades, consumables, tools
+  - Quality tiers, random bonuses, legendary crafts
+- **Progression System**: Character growth and customization
+  - Skill trees, ability unlocks, stat increases
+  - Perks, talents, specializations
+  - Respec options, build diversity
+
+**LOC**: 320,000 (increased for comprehensive gameplay features)
 
 **Milestones**:
-- SDF-based navigation working without prebaking
-- NPCs exhibiting believable personalities
-- Dynamic world changes updating navigation in <1 frame
+- ✅ SDF-based navigation working without prebaking, dynamic updates in <1 frame
+- ✅ Neural steering for 5,000 agents @ 60 FPS with natural crowd behavior
+- ✅ GOAP planning with neural hints, 10× faster common scenarios
+- ✅ Persona cores with personality, mood, memory, relationships
+- ✅ Combat AI matching The Last of Us Part II tactical intelligence
+- ✅ Dynamic world with 1000 reactive NPCs, persistent world state
+- ✅ Complete gameplay systems (quests, factions, economy, crafting, progression)
+- ✅ NPCs exhibiting believable, memorable personalities
 
-NPCs become personalities, not patterns.
+**Quality Promise**:
+> *"NovaCore AI systems deliver Naughty Dog/Rockstar-quality enemy intelligence and NPC personalities. NPCs with memory, personality, and believable decision-making. Combat AI that challenges AAA standards. Living, breathing worlds that react and persist."*
+
+NPCs become memorable personalities, not patterns. AI that thinks, feels, and remembers.
 
 ### Phase 10: Universe-Scale Simulation Layer (Months 46-48)
 
