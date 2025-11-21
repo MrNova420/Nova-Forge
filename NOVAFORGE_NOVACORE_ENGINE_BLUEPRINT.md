@@ -102,7 +102,7 @@ Citations from 2025 GDC/SIGGRAPH/industry developers prove feasibility.
 4. ✅ **DOCUMENT AS YOU GO** - Code comments, architecture decisions, API docs inline
 5. ✅ **STAY ON TRACK** - Reference this blueprint every hour to ensure alignment
 6. ✅ **NO LAZY IMPLEMENTATIONS** - Every function fully fleshed out, every edge case handled
-7. ✅ **MOBILE-FIRST ALWAYS** - Test on actual devices (low/mid/high-end), not just desktop
+7. ✅ **MOBILE-FIRST ALWAYS** - Test on actual mobile devices (low/mid/high-end budget phones to flagship), web eventually
 
 ### AFTER Completing ANY Work (even 1 function):
 1. ✅ **UPDATE `/PROGRESS.md` IMMEDIATELY** with:
@@ -643,7 +643,7 @@ MemoryUsage: 180MB (target: <200MB) ✅
 **Technical Excellence**:
 - **Performance**: 60 FPS minimum on target hardware, <200MB memory per scene
 - **Optimization**: Automatic LOD chains (4-8 levels), texture streaming, draw call batching
-- **Compatibility**: Works across all target platforms (mobile, web, desktop) without quality loss
+- **Compatibility**: Works across all target platforms (mobile primary, web eventually) without quality loss
 - **Standards Compliance**: Meets iOS, Android, WebGPU requirements without exception
 
 **Consistency Excellence**:
@@ -943,7 +943,7 @@ Source File → Format Validation → Data Extraction → Optimization Pass
   - Skeleton/rig conversion with auto-retargeting
 - **Texture Converters**: 
   - PNG ↔ JPG ↔ EXR ↔ DDS ↔ KTX ↔ ASTC with quality presets
-  - Automatic format selection per platform (ASTC mobile, BC desktop)
+  - Automatic format selection per platform (ASTC mobile, ASTC/BC7 web)
   - HDR ↔ LDR with tone mapping options
 - **Animation Converters**: 
   - FBX ↔ GLTF ↔ Alembic ↔ BVH with skeleton retargeting
@@ -977,7 +977,7 @@ Source File → Format Validation → Data Extraction → Optimization Pass
   - Queue system for large imports with progress tracking
 - **Preset Library**: 
   - **Mobile Optimized**: Aggressive compression, lower poly counts, optimized textures
-  - **Desktop High Quality**: Preserve maximum quality, higher resolution textures
+  - **Web High Quality**: Preserve maximum quality for web deployment, higher resolution textures
   - **Web Balanced**: Compromise between quality and download size
   - **VR Optimized**: Dual-eye rendering considerations, performance-critical
   - **Custom Presets**: Save your own import/export configurations, share with team
@@ -1719,13 +1719,13 @@ void UpdatePositions_SIMD(Transform* transforms, Velocity* velocities, size_t co
 - ✅ **Battery efficient**: Thermal throttling awareness, adaptive resolution, power mode support
 
 **Platform Support** (Universal Compatibility):
-- ✅ **Vulkan 1.4**: Android, Windows, Linux with ray tracing extensions
+- ✅ **Vulkan 1.4**: Android with ray tracing extensions, WebGPU for web
 - ✅ **Metal 3**: iOS, macOS with hardware ray tracing
 - ✅ **WebGPU**: Browser support with compute shader fallback
 - ✅ **Fallback paths**: Rasterization + RT accents for older devices (2018-2020)
 
 **Quality Modes** (Adaptive Scaling):
-- **Ultra** (High-end mobile/Desktop): Full path tracing, 8K textures, 1B+ triangles, 120 FPS
+- **Ultra** (High-end flagship mobile): Full path tracing, 8K textures, 1B+ triangles, 120 FPS
 - **High** (Mid-range mobile): Hybrid RT/rasterization, 4K textures, 500M triangles, 60 FPS
 - **Medium** (Low-end mobile): RT reflections only, 2K textures, 100M triangles, 60 FPS
 - **Low** (Ultra-low mobile): Rasterization + RT accents, 1K textures, 10M triangles, 30 FPS
@@ -1858,7 +1858,7 @@ void UpdatePositions_SIMD(Transform* transforms, Velocity* velocities, size_t co
   - **CPU Particles**: 1000 particles @ 30 FPS with billboarding
   - **Software Blur**: Fast box blur for simple post-effects
 - **Target**: 20-30 FPS stable, 540p native → 720p upscale (CPU or GPU)
-- **Quality**: Clean, stylized look (PS3/Xbox 360 quality on mobile, even without GPU)
+- **Quality**: Clean, stylized look (early mobile gaming quality, even without GPU via CPU fallback)
 - **Examples**: Snapdragon 430, MediaTek Helio P22, older iPhones (6/7), devices with broken/disabled GPUs
 - **Fallback Trigger**: Automatic detection of missing/incompatible GPU, graceful degradation
 
@@ -1869,7 +1869,7 @@ void UpdatePositions_SIMD(Transform* transforms, Velocity* velocities, size_t co
 - **Geometry**: 10-50M triangles, automatic LOD generation
 - **Effects**: GPU particles (10K), simple volumetrics, TAA
 - **Target**: 30-40 FPS stable, 720p native or 1080p with FSR
-- **Quality**: PS4/Xbox One equivalent on mobile
+- **Quality**: 2018-2020 flagship mobile quality equivalent
 - **Examples**: Snapdragon 665, MediaTek Helio G90T, iPhone 8/X
 
 **Standard** (Mid-range - 2021-2023, $300-600 phones):
@@ -1879,7 +1879,7 @@ void UpdatePositions_SIMD(Transform* transforms, Velocity* velocities, size_t co
 - **Geometry**: 100-500M triangles, Nanite-inspired virtual geometry
 - **Effects**: Millions of GPU particles, volumetric fog/clouds, full post-processing
 - **Target**: 60 FPS locked, 1080p native or 1440p with FSR
-- **Quality**: PS5/Xbox Series S equivalent on mobile
+- **Quality**: 2021-2023 flagship mobile quality (iPhone 13/14, Galaxy S22/S23)
 - **Examples**: Snapdragon 778G/870, Dimensity 8100, iPhone 13/14, A14/A15
 
 **High** (High-end - 2023-2024, $600-1000 phones):
@@ -1889,10 +1889,10 @@ void UpdatePositions_SIMD(Transform* transforms, Velocity* velocities, size_t co
 - **Geometry**: 1B+ triangles, LOD-free rendering, displacement mapping
 - **Effects**: Unlimited particles, Gaussian splatting volumetrics, film-grade post
 - **Target**: 60-120 FPS (adaptive), 1440p native or 4K with FSR
-- **Quality**: PS5/Xbox Series X equivalent on mobile
+- **Quality**: 2024 ultra-flagship mobile quality (bleeding-edge)
 - **Examples**: Snapdragon 8 Gen 2/3, Dimensity 9200/9300, iPhone 15 Pro, A16/A17
 
-**Ultra** (Flagship/Desktop - 2024+, $1000+ phones, PC/Console):
+**Ultra** (Ultra-Flagship Mobile - 2024+, $1000+ phones with cutting-edge mobile GPUs):
 - **Renderer**: Full path tracing, no compromises, offline-quality real-time
 - **Lighting**: Multi-bounce path tracing (8+ bounces), full caustics, spectral rendering
 - **Materials**: Procedural materials, 8K textures, unlimited shader complexity
@@ -1925,7 +1925,7 @@ void UpdatePositions_SIMD(Transform* transforms, Velocity* velocities, size_t co
 **Software Rasterizer** (Production-Grade):
 - **Architecture**: Tile-based rendering with SIMD parallelization
   - 16x16 pixel tiles processed in parallel across CPU cores
-  - ARM NEON (4-way SIMD) for mobile, x86 SSE/AVX for desktop
+  - ARM NEON (4-way SIMD) for mobile, WebAssembly SIMD for web
   - Hierarchical Z-buffer for early rejection (50% speedup)
 - **Triangle Setup**: Optimized edge walking
   - Fixed-point math for sub-pixel accuracy
@@ -2661,9 +2661,9 @@ Loss examples: penetration depth, constraint violation, energy dissipation
 - ✅ **Apple GPU**: A11-A18 Bionic, M1-M4 chips
 - ✅ **Samsung Xclipse**: Xclipse 920, 940 (RDNA-based mobile GPUs)
 - ✅ **PowerVR**: PowerVR GE8320, GT7400, BXM-8-256 (all generations)
-- ✅ **Intel**: Iris Xe, Arc graphics (mobile and desktop)
-- ✅ **NVIDIA**: Tegra X1/X2, desktop RTX series
-- ✅ **AMD**: RDNA2/3 for desktop, APU graphics
+- ✅ **Intel**: Iris Xe mobile graphics
+- ✅ **NVIDIA**: Tegra X1/X2 mobile chips
+- ✅ **AMD**: RDNA2/3 mobile APU graphics
 
 **Performance Guarantees** (Enterprise-Grade SLA):
 - ✅ **60 FPS minimum**: Physics never drops below 60 FPS on target hardware
@@ -2812,7 +2812,7 @@ Training Interface (In-Engine):
 4. Click "Start Training"
    - Progress bar shows: Epoch, Loss, Validation Score
    - Real-time preview of generated samples
-   - Training time: 2-8 hours on desktop GPU
+   - Training time: 2-8 hours on cloud GPU (AWS/GCP) or 4-12 hours on flagship mobile
 ```
 
 **Step 3: Quality Validation (You Approve This)**
@@ -3449,7 +3449,7 @@ class SleepSystem {
 - Multi-touch gestures (pinch, swipe, rotate)
 - Haptics (vibration patterns, adaptive triggers)
 - ARKit/ARCore passthrough for XR
-- Gamepad support (Xbox, PlayStation, Switch)
+- Gamepad support (Bluetooth controllers, generic mobile controllers)
 
 **Implementation**:
 - Event queue with priority handling
@@ -6135,7 +6135,7 @@ GUI Features:
 **Quality Scaling System** (World-Best at Every Tier):
 1. **Ultra-Low (2013-2017)**: Best-in-class for hardware tier - exceeds expectations, optimized beyond competition, solid 20-25 FPS
 2. **Low-End (2017-2021)**: Industry-leading mobile quality - matches what others do on mid-range, stable 30-40 FPS  
-3. **Mid-Range (2019-2023)**: Best console-quality graphics on mobile - surpasses competition, locked 60 FPS
+3. **Mid-Range (2019-2023)**: Best AAA mobile graphics - surpasses competition, locked 60 FPS
 4. **High-End (2023+)**: World's most advanced mobile engine - no competitor comes close, 120-150 FPS
 
 **Why We're Best at ALL Tiers**:
@@ -6282,7 +6282,7 @@ GUI Features:
 ### Why This Budget?
 
 - **Research**: Neural systems require ML engineers ($200K+/year)
-- **Platform**: Mobile + desktop + web + XR = 4× platforms
+- **Platform**: Mobile primary, web eventually, XR future = mobile-first architecture
 - **Scale**: 1.4M LOC of novel code (not forking existing engines)
 - **QA**: 100+ devices, automated testing, CI/CD infrastructure
 
@@ -6455,7 +6455,7 @@ This is the beginnings of an engine that behaves like a player with situational 
 - **NPU-Accelerated**: Neural compression for massive crowds
   - 5,000 NPCs @ 60 FPS on mid-range mobile (2023+)
   - 10,000 NPCs @ 60 FPS on high-end mobile
-  - 50,000 NPCs @ 60 FPS on desktop/console
+  - 50,000 NPCs @ 60 FPS on ultra-flagship mobile
 - **LOD System**: Adaptive detail based on distance
   - **Hero LOD**: Full IK, physics, facial (camera-close characters)
   - **High LOD**: Full skeleton, simplified IK (mid-distance)
@@ -6468,7 +6468,7 @@ This is the beginnings of an engine that behaves like a player with situational 
   - Crowd flow (avoid collisions, follow paths, react to events)
 - **Performance**: 
   - **Mobile**: 5K NPCs using 50MB RAM, 2ms CPU, 3ms GPU
-  - **Desktop**: 50K NPCs using 200MB RAM, 5ms CPU, 8ms GPU
+  - **Ultra-Flagship Mobile**: 50K NPCs using 200MB RAM, 5ms CPU, 8ms GPU
 - **Quality**: Matches Assassin's Creed Unity crowd density and animation
 
 **Advanced Animation Features** (AAA Complete):
@@ -6731,7 +6731,7 @@ This allows Space-Plug-style universes that never stop evolving.
 - **Social Party System**: Friends play together, party leader controls
 - **Quick Play**: Fast matching based on connection quality and skill
 - **Custom Lobbies**: Player-hosted servers with custom rules
-- **Cross-Platform**: PC, mobile, console players match seamlessly
+- **Cross-Platform**: Mobile + web players match seamlessly (eventually)
 - **Region Selection**: Manual or automatic based on latency
 
 **Voice & Text Chat** (Full Communication):
@@ -6838,7 +6838,7 @@ This gives you AAA-class networking at indie-friendly costs.
 **Universal Scale Support** (Atomic to Planetary):
 - **Micro-Scale**: Subatomic particles, dust, tiny objects
 - **Human-Scale**: Characters, vehicles, buildings (primary gameplay)
-- **Macro-Scale**: Landmasses, planets, asteroids, space objects
+- **Macro-Scale**: Large landmasses, island chains, vast mobile game worlds
 - **Unified Solver**: Single physics world, no scale transitions
 - **Precision**: 64-bit physics for astronomical scales, 32-bit for gameplay
 - **Performance**: Adaptive time-stepping based on scale
@@ -7026,7 +7026,7 @@ Empire-level toolchain.
 - Seamless asset mixing: AI-generated + traditional in same scene
 - Asset replacement system: prototype with AI, swap to polished traditional
 - Conversion tools: traditional → AI style references, AI → editable traditional formats
-- Plugin SDK with per-platform build pipelines (Android, iOS, Windows, Linux, WebGPU, consoles)
+- Plugin SDK with per-platform build pipelines (Android, iOS, WebGPU eventually)
 - "Zero-click porting": select target → engine handles all shader/material/asset conversion automatically
 
 **LOC**: 250,000
@@ -7140,7 +7140,7 @@ This is the glue that makes the same engine binary feel native everywhere.
 - Platform capabilities matrix auto-generated at build time
 - Runtime "capabilities probe" on first boot → caches device profile for future runs
 - Strict sandboxing rules so no platform-specific hack leaks into core code
-- Per-platform assertion hooks (Xcode/LLDB, Android Studio, browser console)
+- Per-platform assertion hooks (Xcode/LLDB, Android Studio, browser console eventually)
 
 **LOC**: 200,000
 
@@ -7158,9 +7158,9 @@ So the same game feels right on any control scheme.
 **Deliverables**:
 - Input abstraction layer: Actions & Axes system
 - Touch input: Multi-touch support (gestures, pinch, drag, long press), virtual joystick & buttons
-- Gamepad & controller: Support for Xbox, PS, Switch, generic Bluetooth controllers with standardized mapping
-- Motion sensors: Gyroscope, accelerometer, compass integration
-- Mouse & keyboard support (for Web + desktop)
+- Gamepad & controller: Support for generic Bluetooth mobile controllers with standardized mapping
+- Motion sensors: Gyroscope, accelerometer, compass integration (mobile-specific)
+- Mouse & keyboard support (for web eventually, on-screen keyboard for mobile)
 - Input mapping UI: players can rebind any action
 - "Input Profile" system: different layouts per game type (FPS, racing, RPG)
 - Latency-aware input sampling → synced with frame pacing to avoid jitter
@@ -7648,15 +7648,15 @@ Making the engine approachable and learnable.
 - Android NDK Optimizations: NEON SIMD, Mali/Adreno specific paths
 - iOS Metal Optimizations: Apple GPU specific features
 - Web/WASM Optimizations: WebGL/WebGPU best practices
-- Console Ports Preparation: Architecture ready for console SDKs
-- Desktop Optimizations: High-end PC specific features
+- Web Port Preparation: Architecture ready for WebGPU/WASM deployment
+- Mobile Optimizations: Battery efficiency, thermal management, adaptive quality
 
 **LOC**: 150,000
 
 **Milestones**:
 - Platform-specific code improving performance 20-30%
 - Each platform feeling native
-- Console ports feasible
+- Web ports feasible (Progressive Web Apps)
 
 Squeezing maximum performance from each platform.
 
