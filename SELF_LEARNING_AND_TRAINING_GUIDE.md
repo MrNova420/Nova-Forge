@@ -16,6 +16,8 @@
    - Full authority over all engine-level training
    - Approves all platform-wide model updates
    - Controls what gets committed to the main engine
+   - Can delegate authority to trusted team members via Master Control Dashboard
+   - Emergency procedures: Designated backup admins can perform rollbacks only
 
 2. **Real Users (Developers & Players)**
    - Contribute training data through normal usage
@@ -24,9 +26,11 @@
 
 **TRAINING IS NEVER PERFORMED BY:**
 - ❌ Automated systems without human approval
-- ❌ AI assistants (like GitHub Copilot, ChatGPT, etc.)
-- ❌ Third-party services
-- ❌ Any system that bypasses manual approval
+- ❌ AI code assistants autonomously initiating training (GitHub Copilot, ChatGPT, etc. cannot start or approve training sessions)
+- ❌ Third-party services without owner authorization
+- ❌ Any system that bypasses manual approval workflow
+
+**CLARIFICATION**: AI is used extensively WITHIN the training system (neural networks, diffusion models, etc.), but training SESSIONS must always be initiated and approved by authorized humans. AI assistants may help document or explain training but cannot execute training operations.
 
 **THIS DOCUMENT DOES NOT AUTHORIZE ANY AI/AUTOMATED SYSTEM TO PERFORM TRAINING.**
 **All training workflows described require manual initiation and approval by the platform owner.**
@@ -405,9 +409,25 @@ Settings → Privacy → Telemetry & Learning
     "deployment_stages": ["internal", "alpha", "beta", "production"],
     "rollback_on_regression": true,
     "rollback_window_days": 30
+  },
+  "safety_settings_protection": {
+    "require_mfa_to_modify": true,
+    "require_confirmation_dialog": true,
+    "audit_all_changes": true,
+    "protected_settings": [
+      "auto_apply_improvements",
+      "auto_deploy_to_production",
+      "require_owner_approval"
+    ],
+    "cannot_disable_via_api": true
   }
 }
 ```
+
+**CRITICAL SAFETY SETTINGS** (Protected, Cannot Be Changed Without Multi-Factor Auth):
+- `auto_apply_improvements: false` - HARDCODED protection, requires MFA + confirmation to change
+- `auto_deploy_to_production: false` - HARDCODED protection, requires MFA + confirmation to change
+- `require_owner_approval: true` - HARDCODED protection, cannot be disabled
 
 ### Emergency Controls
 
@@ -1782,6 +1802,7 @@ MANDATORY SPECIFICATIONS:
   "physics_feel_targets": {
     "project_name": "Dark Fantasy Kingdom",
     "version": "1.0",
+    "units_note": "All values use SI units unless otherwise specified",
     
     "character_controller": {
       "jump": {
@@ -1789,31 +1810,42 @@ MANDATORY SPECIFICATIONS:
         "height_meters": 2.0,
         "time_to_apex_seconds": 0.4,
         "fall_multiplier": 2.5,
+        "fall_multiplier_note": "Multiplier applied to gravity during fall (1.0 = normal gravity, 2.5 = faster fall)",
         "coyote_time_seconds": 0.1,
-        "jump_buffer_seconds": 0.15
+        "coyote_time_note": "Grace period after leaving platform where jump still registers",
+        "jump_buffer_seconds": 0.15,
+        "jump_buffer_note": "Time before landing where jump input is remembered"
       },
       "movement": {
         "feel": "Snappy but grounded",
         "max_speed_mps": 8.0,
-        "acceleration_time": 0.15,
-        "deceleration_time": 0.1,
-        "air_control_percent": 60
+        "max_speed_note": "Maximum horizontal velocity in meters per second",
+        "acceleration_time_seconds": 0.15,
+        "acceleration_note": "Time to reach max speed from standstill",
+        "deceleration_time_seconds": 0.1,
+        "deceleration_note": "Time to stop from max speed",
+        "air_control_percent": 60,
+        "air_control_note": "Percentage of ground control available while airborne (0-100)"
       },
       "ground": {
         "feel": "Planted, solid footing",
-        "friction": "high",
+        "friction_coefficient": 0.8,
+        "friction_note": "0.0 = ice, 0.5 = normal, 1.0 = high grip",
         "slope_limit_degrees": 45,
-        "step_height_meters": 0.3
+        "step_height_meters": 0.3,
+        "step_height_note": "Maximum step-up height without jumping"
       }
     },
     
     "combat_physics": {
       "hit_reactions": {
         "feel": "Impactful but not floaty",
-        "knockback_light": 1.5,
-        "knockback_heavy": 4.0,
+        "knockback_light_meters": 1.5,
+        "knockback_heavy_meters": 4.0,
         "hitstun_frames_light": 8,
-        "hitstun_frames_heavy": 20
+        "hitstun_frames_note": "At 60 FPS, 8 frames = 133ms of stun",
+        "hitstun_frames_heavy": 20,
+        "hitstun_heavy_note": "At 60 FPS, 20 frames = 333ms of stun"
       },
       "projectiles": {
         "feel": "Fast, deadly, visible",
@@ -2285,8 +2317,14 @@ novacore-admin training approve TRAIN-2025-1124-001 --deploy-stage internal
 # You control each stage promotion.
 # Rollback is always available.
 # 
-# Type your name to confirm: Kayden Shawn Massengill
+# SECURITY VERIFICATION REQUIRED:
+# 1. Biometric authentication: ✅ Verified
+# 2. Hardware key detected: ✅ YubiKey present
+# 3. Time-based OTP: Enter code from authenticator: [______]
 # 
+# > 847293
+# 
+# ✅ Multi-factor authentication complete
 # ✅ APPROVED AND DEPLOYING
 # 
 # Deployment ID: DEPLOY-2025-1124-001
