@@ -51,6 +51,18 @@
    - [4.6 Physics Feel Training](#physics-feel-training)
    - [4.7 AI Behavior Training](#ai-behavior-training)
    - [4.8 Procedural Generation Training](#procedural-generation-training)
+   - [4.9 Terrain & Landscape Training](#terrain-training)
+   - [4.10 World & Level Design Training](#world-training)
+   - [4.11 3D Model & Mesh Training](#model-training)
+   - [4.12 Material & Shader Training](#material-training)
+   - [4.13 Lighting & Global Illumination Training](#lighting-training)
+   - [4.14 UI/UX & Interface Training](#ui-training)
+   - [4.15 Character & Creature Training](#character-training)
+   - [4.16 Vehicle & Mechanical Training](#vehicle-training)
+   - [4.17 Water & Fluid Training](#water-training)
+   - [4.18 Foliage & Vegetation Training](#foliage-training)
+   - [4.19 Destruction & Debris Training](#destruction-training)
+   - [4.20 Cinematics & Cutscene Training](#cinematics-training)
 5. [Engine Owner Training Workflow](#owner-training-workflow)
 6. [User-Contributed Training System](#user-contributed-training)
 7. [Training from Published Games](#published-games-training)
@@ -1984,16 +1996,1255 @@ physics_training_data/
 
 **Purpose**: Train NPC behaviors, combat AI, and companion intelligence to match your design vision while being fun and fair.
 
-[Content continues with AI behavior training details...]
+#### AI Behavior Training Guide
+
+**STEP 1: Define AI Archetypes**
+
+```json
+{
+  "ai_archetypes": {
+    "aggressive_warrior": {
+      "attack_frequency": "high",
+      "dodge_tendency": "low",
+      "group_behavior": "charge_together",
+      "retreat_threshold": 0.1
+    },
+    "cautious_archer": {
+      "preferred_range": "far",
+      "cover_seeking": "high",
+      "attack_frequency": "moderate",
+      "retreat_threshold": 0.4
+    },
+    "support_healer": {
+      "heal_priority": "lowest_health_ally",
+      "self_preservation": "high",
+      "combat_engagement": "minimal",
+      "positioning": "back_of_group"
+    }
+  }
+}
+```
+
+**STEP 2: Configure AI Training**
+
+```json
+{
+  "ai_training": {
+    "dataset_path": "./ai_training_data/",
+    "output_path": "./trained_ai_models/",
+    
+    "behavior_learning": {
+      "enabled": true,
+      "learn_from_player_feedback": true,
+      "learn_from_win_loss": true,
+      "balance_for_fun": true
+    },
+    
+    "difficulty_scaling": {
+      "enabled": true,
+      "adapt_to_player_skill": true,
+      "min_difficulty": 0.3,
+      "max_difficulty": 1.0
+    },
+    
+    "quality_requirements": {
+      "min_player_satisfaction": 80,
+      "max_frustration_events": 5,
+      "require_fairness_check": true
+    }
+  }
+}
+```
 
 ---
 
 <a name="procedural-generation-training"></a>
 ### 4.8 Procedural Generation Training
 
-**Purpose**: Train procedural systems to generate levels, items, and content that match your design standards.
+**Purpose**: Train procedural systems to generate levels, dungeons, items, and content that match your design standards.
 
-[Content continues with procedural generation training details...]
+#### Procedural Generation Training Guide
+
+**STEP 1: Prepare Reference Content**
+
+```
+procedural_training_data/
+├── level_layouts/
+│   ├── dungeon_layout_01.json
+│   ├── dungeon_layout_02.json
+│   └── town_layout_01.json
+├── room_templates/
+│   ├── combat_room_01.json
+│   ├── puzzle_room_01.json
+│   └── treasure_room_01.json
+├── item_templates/
+│   ├── weapon_stats.json
+│   ├── armor_stats.json
+│   └── consumable_stats.json
+└── procedural_rules.json
+```
+
+**STEP 2: Configure Procedural Training**
+
+```json
+{
+  "procedural_training": {
+    "level_generation": {
+      "enabled": true,
+      "style": "interconnected_rooms",
+      "connectivity": "branching_paths",
+      "difficulty_progression": true
+    },
+    
+    "item_generation": {
+      "enabled": true,
+      "balance_stats": true,
+      "rarity_distribution": [0.6, 0.25, 0.1, 0.04, 0.01],
+      "prevent_overpowered": true
+    },
+    
+    "quality_requirements": {
+      "playability_score": 90,
+      "balance_score": 85,
+      "variety_score": 80
+    }
+  }
+}
+```
+
+---
+
+<a name="terrain-training"></a>
+### 4.9 Terrain & Landscape Training
+
+**Purpose**: Train the engine to generate and optimize terrain, heightmaps, biomes, and landscape features matching your world style.
+
+#### Terrain Training Guide
+
+**STEP 1: Prepare Terrain Training Data**
+
+```
+terrain_training_data/
+├── heightmaps/
+│   ├── mountain_range_01.exr         (32-bit heightmap)
+│   ├── rolling_hills_01.exr
+│   ├── canyon_formation_01.exr
+│   ├── coastal_cliffs_01.exr
+│   └── volcanic_crater_01.exr
+├── biomes/
+│   ├── temperate_forest/
+│   │   ├── terrain_config.json
+│   │   ├── vegetation_density.png
+│   │   └── moisture_map.png
+│   ├── desert_dunes/
+│   ├── arctic_tundra/
+│   ├── tropical_jungle/
+│   └── swamp_wetlands/
+├── erosion_patterns/
+│   ├── water_erosion_01.json
+│   ├── wind_erosion_01.json
+│   └── thermal_erosion_01.json
+├── terrain_textures/
+│   ├── grass_blend_01.mat
+│   ├── rock_layered_01.mat
+│   ├── sand_dunes_01.mat
+│   └── snow_packed_01.mat
+└── terrain_style_guide.json
+```
+
+**Terrain Requirements:**
+```
+MANDATORY SPECIFICATIONS:
+├── Heightmap Format: EXR (32-bit float) or RAW (16-bit)
+├── Resolution: 1024×1024 minimum, 4096×4096 recommended
+├── Height Range: Normalized 0-1 or real-world meters
+├── Tile Size: Power of 2 (256, 512, 1024, 2048)
+├── LOD Levels: 4-8 levels for streaming
+├── Material Layers: Up to 16 blend layers
+└── Physics: Collision mesh at appropriate detail
+```
+
+**STEP 2: Create Terrain Style Guide**
+
+```json
+{
+  "terrain_style_guide": {
+    "name": "Dark Fantasy Kingdom Terrain",
+    "version": "1.0",
+    
+    "height_characteristics": {
+      "max_world_height_meters": 2000,
+      "base_height_meters": 100,
+      "cliff_threshold_degrees": 60,
+      "walkable_slope_max_degrees": 45
+    },
+    
+    "biome_distribution": {
+      "lowlands": {
+        "height_range": [0, 200],
+        "terrain_types": ["grassland", "forest", "swamp"],
+        "vegetation_density": "high"
+      },
+      "midlands": {
+        "height_range": [200, 800],
+        "terrain_types": ["hills", "mixed_forest", "rocky"],
+        "vegetation_density": "medium"
+      },
+      "highlands": {
+        "height_range": [800, 1500],
+        "terrain_types": ["mountain", "alpine", "barren"],
+        "vegetation_density": "low"
+      },
+      "peaks": {
+        "height_range": [1500, 2000],
+        "terrain_types": ["snow", "ice", "rocky_peak"],
+        "vegetation_density": "none"
+      }
+    },
+    
+    "erosion_settings": {
+      "water_erosion_strength": 0.7,
+      "thermal_erosion_strength": 0.4,
+      "wind_erosion_strength": 0.2,
+      "erosion_iterations": 50
+    },
+    
+    "texture_blending": {
+      "blend_sharpness": 0.7,
+      "slope_based_texturing": true,
+      "height_based_texturing": true,
+      "noise_variation": 0.3
+    }
+  }
+}
+```
+
+**STEP 3: Configure Terrain Training**
+
+```json
+{
+  "terrain_training": {
+    "dataset_path": "./terrain_training_data/",
+    "output_path": "./trained_terrain_models/",
+    
+    "heightmap_generation": {
+      "enabled": true,
+      "model_type": "terrain_diffusion",
+      "resolution": 2048,
+      "features": ["mountains", "valleys", "plateaus", "canyons", "rivers"]
+    },
+    
+    "biome_generation": {
+      "enabled": true,
+      "climate_simulation": true,
+      "moisture_mapping": true,
+      "temperature_mapping": true
+    },
+    
+    "erosion_simulation": {
+      "enabled": true,
+      "physics_based": true,
+      "iterations": 100
+    },
+    
+    "texture_generation": {
+      "enabled": true,
+      "auto_blend_weights": true,
+      "detail_maps": true
+    },
+    
+    "quality_requirements": {
+      "visual_quality_score": 90,
+      "playability_score": 95,
+      "performance_budget_ms": 3.0,
+      "no_impossible_slopes": true,
+      "walkable_paths_exist": true
+    },
+    
+    "anti_wonky_terrain": {
+      "reject_floating_terrain": true,
+      "reject_impossible_overhangs": true,
+      "reject_too_steep_for_gameplay": true,
+      "reject_texture_stretching": true,
+      "max_slope_for_walkable": 50
+    }
+  }
+}
+```
+
+---
+
+<a name="world-training"></a>
+### 4.10 World & Level Design Training
+
+**Purpose**: Train the engine to generate complete worlds, levels, and game environments that are playable, beautiful, and match your design vision.
+
+#### World/Level Training Guide
+
+**STEP 1: Prepare World Training Data**
+
+```
+world_training_data/
+├── complete_levels/
+│   ├── tutorial_level_01/
+│   │   ├── layout.json
+│   │   ├── spawn_points.json
+│   │   ├── objectives.json
+│   │   └── navigation_mesh.nav
+│   ├── dungeon_level_01/
+│   ├── boss_arena_01/
+│   └── hub_town_01/
+├── level_components/
+│   ├── entrances/
+│   ├── corridors/
+│   ├── rooms/
+│   ├── outdoor_areas/
+│   └── transitions/
+├── gameplay_flow/
+│   ├── difficulty_curves.json
+│   ├── pacing_templates.json
+│   └── encounter_spacing.json
+├── world_rules/
+│   ├── connectivity_rules.json
+│   ├── theme_consistency.json
+│   └── progression_gates.json
+└── world_style_guide.json
+```
+
+**STEP 2: World Style Guide**
+
+```json
+{
+  "world_style_guide": {
+    "name": "Dark Fantasy Kingdom Worlds",
+    "version": "1.0",
+    
+    "level_structure": {
+      "type": "semi_open_world",
+      "hub_and_spoke": true,
+      "backtracking_allowed": true,
+      "shortcuts_unlock": true
+    },
+    
+    "pacing": {
+      "combat_to_exploration_ratio": 0.4,
+      "rest_point_frequency": "every_5_minutes",
+      "difficulty_curve": "gradual_with_spikes",
+      "boss_placement": "end_of_major_areas"
+    },
+    
+    "environmental_storytelling": {
+      "enabled": true,
+      "detail_density": "high",
+      "lore_items_per_area": 3,
+      "visual_narrative_cues": true
+    },
+    
+    "navigation": {
+      "clear_paths": true,
+      "subtle_guidance": true,
+      "hidden_areas": true,
+      "secret_frequency": "medium"
+    }
+  }
+}
+```
+
+**STEP 3: Configure World Training**
+
+```json
+{
+  "world_training": {
+    "dataset_path": "./world_training_data/",
+    "output_path": "./trained_world_models/",
+    
+    "level_generation": {
+      "enabled": true,
+      "types": ["dungeon", "outdoor", "town", "boss_arena", "hub"],
+      "size_range": ["small", "medium", "large"],
+      "complexity_levels": [1, 2, 3, 4, 5]
+    },
+    
+    "layout_learning": {
+      "learn_flow": true,
+      "learn_pacing": true,
+      "learn_encounters": true,
+      "learn_secrets": true
+    },
+    
+    "connectivity": {
+      "ensure_completable": true,
+      "no_dead_ends": false,
+      "multiple_paths": true,
+      "loop_backs": true
+    },
+    
+    "quality_requirements": {
+      "playability_score": 95,
+      "navigation_score": 90,
+      "pacing_score": 85,
+      "visual_coherence": 90
+    },
+    
+    "anti_wonky_world": {
+      "reject_uncompletable_levels": true,
+      "reject_impossible_jumps": true,
+      "reject_stuck_points": true,
+      "reject_boring_layouts": true,
+      "ensure_spawn_to_exit_path": true
+    }
+  }
+}
+```
+
+---
+
+<a name="model-training"></a>
+### 4.11 3D Model & Mesh Training
+
+**Purpose**: Train the engine to generate high-quality 3D models, meshes, and geometry for any object type in your game.
+
+#### 3D Model Training Guide
+
+**STEP 1: Prepare Model Training Data**
+
+```
+model_training_data/
+├── props/
+│   ├── furniture/
+│   │   ├── chair_wooden_01.fbx
+│   │   ├── table_ornate_01.fbx
+│   │   └── bed_medieval_01.fbx
+│   ├── containers/
+│   │   ├── chest_treasure_01.fbx
+│   │   ├── barrel_wooden_01.fbx
+│   │   └── crate_metal_01.fbx
+│   ├── decorations/
+│   │   ├── statue_hero_01.fbx
+│   │   ├── painting_01.fbx
+│   │   └── candle_holder_01.fbx
+│   └── interactables/
+│       ├── lever_01.fbx
+│       ├── door_wooden_01.fbx
+│       └── switch_01.fbx
+├── architecture/
+│   ├── walls/
+│   ├── floors/
+│   ├── ceilings/
+│   ├── pillars/
+│   ├── arches/
+│   └── stairs/
+├── natural/
+│   ├── rocks/
+│   ├── crystals/
+│   ├── mushrooms/
+│   └── coral/
+├── mechanical/
+│   ├── gears/
+│   ├── pipes/
+│   ├── machines/
+│   └── tools/
+└── model_style_guide.json
+```
+
+**STEP 2: Model Style Guide**
+
+```json
+{
+  "model_style_guide": {
+    "name": "Dark Fantasy Kingdom Models",
+    "version": "1.0",
+    
+    "geometry_standards": {
+      "topology": "quad_dominant",
+      "edge_flow": "follow_form",
+      "detail_level": "medium_high",
+      "smoothing": "hard_edges_on_90deg"
+    },
+    
+    "polygon_budgets": {
+      "hero_props": [5000, 20000],
+      "standard_props": [500, 5000],
+      "background_props": [100, 500],
+      "architecture_pieces": [1000, 10000],
+      "natural_objects": [200, 2000]
+    },
+    
+    "uv_standards": {
+      "texel_density": "consistent",
+      "padding": 4,
+      "no_overlaps": true,
+      "efficient_packing": true
+    },
+    
+    "style_characteristics": {
+      "silhouette": "readable_interesting",
+      "proportions": "slightly_stylized",
+      "detail_density": "high_on_focal_points",
+      "weathering": "moderate_to_heavy"
+    }
+  }
+}
+```
+
+**STEP 3: Configure Model Training**
+
+```json
+{
+  "model_training": {
+    "dataset_path": "./model_training_data/",
+    "output_path": "./trained_model_generators/",
+    
+    "mesh_generation": {
+      "enabled": true,
+      "model_type": "mesh_diffusion_3d",
+      "output_formats": ["fbx", "gltf", "obj"],
+      "include_lods": true,
+      "include_collision": true
+    },
+    
+    "categories": {
+      "props": true,
+      "architecture": true,
+      "natural": true,
+      "mechanical": true,
+      "custom": true
+    },
+    
+    "quality_requirements": {
+      "geometry_quality": 90,
+      "topology_score": 85,
+      "uv_quality": 90,
+      "style_match": 95
+    },
+    
+    "anti_wonky_models": {
+      "reject_non_manifold": true,
+      "reject_degenerate_faces": true,
+      "reject_inverted_normals": true,
+      "reject_overlapping_uvs": true,
+      "reject_impossible_shapes": true,
+      "max_poly_budget_exceeded": false
+    }
+  }
+}
+```
+
+---
+
+<a name="material-training"></a>
+### 4.12 Material & Shader Training
+
+**Purpose**: Train the engine to generate physically-accurate materials and shaders that match your visual style.
+
+#### Material Training Guide
+
+**STEP 1: Prepare Material Training Data**
+
+```
+material_training_data/
+├── pbr_materials/
+│   ├── metals/
+│   │   ├── steel_polished.mat
+│   │   ├── steel_weathered.mat
+│   │   ├── gold_ornate.mat
+│   │   ├── copper_aged.mat
+│   │   └── iron_rusty.mat
+│   ├── stone/
+│   │   ├── granite_grey.mat
+│   │   ├── marble_white.mat
+│   │   ├── cobblestone.mat
+│   │   └── brick_old.mat
+│   ├── wood/
+│   │   ├── oak_polished.mat
+│   │   ├── pine_rough.mat
+│   │   ├── mahogany_rich.mat
+│   │   └── driftwood.mat
+│   ├── fabric/
+│   │   ├── silk_fine.mat
+│   │   ├── wool_coarse.mat
+│   │   ├── leather_worn.mat
+│   │   └── canvas_rough.mat
+│   └── organic/
+│       ├── skin_human.mat
+│       ├── scales_dragon.mat
+│       ├── fur_wolf.mat
+│       └── chitin_insect.mat
+├── special_materials/
+│   ├── emissive/
+│   ├── transparent/
+│   ├── subsurface/
+│   └── anisotropic/
+├── texture_sets/
+│   ├── albedo/
+│   ├── normal/
+│   ├── roughness/
+│   ├── metallic/
+│   ├── ao/
+│   └── height/
+└── material_style_guide.json
+```
+
+**STEP 2: Material Style Guide**
+
+```json
+{
+  "material_style_guide": {
+    "name": "Dark Fantasy Kingdom Materials",
+    "version": "1.0",
+    
+    "pbr_standards": {
+      "workflow": "metallic_roughness",
+      "color_space": {
+        "albedo": "sRGB",
+        "normal": "linear",
+        "roughness": "linear",
+        "metallic": "linear"
+      },
+      "resolution_default": 2048,
+      "mip_generation": true
+    },
+    
+    "material_characteristics": {
+      "metals": {
+        "roughness_range": [0.2, 0.8],
+        "weathering": "moderate",
+        "color_variation": "subtle"
+      },
+      "stone": {
+        "roughness_range": [0.6, 0.95],
+        "detail_frequency": "high",
+        "moss_accumulation": "in_crevices"
+      },
+      "wood": {
+        "roughness_range": [0.4, 0.85],
+        "grain_visibility": "clear",
+        "age_signs": "moderate"
+      },
+      "fabric": {
+        "roughness_range": [0.7, 1.0],
+        "weave_detail": "visible",
+        "wear_patterns": "natural"
+      }
+    },
+    
+    "forbidden_values": {
+      "pure_black_albedo": false,
+      "pure_white_albedo": false,
+      "metallic_with_color": false,
+      "roughness_0_for_non_mirror": false
+    }
+  }
+}
+```
+
+**STEP 3: Configure Material Training**
+
+```json
+{
+  "material_training": {
+    "dataset_path": "./material_training_data/",
+    "output_path": "./trained_material_models/",
+    
+    "texture_generation": {
+      "enabled": true,
+      "model_type": "material_diffusion",
+      "channels": ["albedo", "normal", "roughness", "metallic", "ao", "height"],
+      "resolution": 2048,
+      "seamless": true
+    },
+    
+    "material_types": {
+      "metals": true,
+      "stone": true,
+      "wood": true,
+      "fabric": true,
+      "organic": true,
+      "special": true
+    },
+    
+    "quality_requirements": {
+      "pbr_accuracy": 95,
+      "seamless_tiling": true,
+      "no_artifacts": true,
+      "style_consistency": 90
+    },
+    
+    "anti_wonky_materials": {
+      "reject_unrealistic_pbr": true,
+      "reject_visible_seams": true,
+      "reject_color_banding": true,
+      "reject_incorrect_normal_maps": true,
+      "enforce_energy_conservation": true
+    }
+  }
+}
+```
+
+---
+
+<a name="lighting-training"></a>
+### 4.13 Lighting & Global Illumination Training
+
+**Purpose**: Train the engine to create optimal lighting setups, atmosphere, and global illumination for any scene.
+
+#### Lighting Training Guide
+
+**STEP 1: Prepare Lighting Training Data**
+
+```
+lighting_training_data/
+├── lighting_presets/
+│   ├── interior/
+│   │   ├── torch_lit_dungeon.light
+│   │   ├── sunlit_cathedral.light
+│   │   ├── cozy_tavern.light
+│   │   └── dark_crypt.light
+│   ├── exterior/
+│   │   ├── sunny_day.light
+│   │   ├── overcast_moody.light
+│   │   ├── sunset_dramatic.light
+│   │   └── moonlit_night.light
+│   └── mixed/
+│       ├── cave_entrance.light
+│       └── window_lit_room.light
+├── light_rigs/
+│   ├── three_point_hero.rig
+│   ├── dramatic_side.rig
+│   ├── soft_ambient.rig
+│   └── high_contrast.rig
+├── color_palettes/
+│   ├── warm_fantasy.json
+│   ├── cool_mysterious.json
+│   ├── neutral_realistic.json
+│   └── dramatic_contrast.json
+├── gi_settings/
+│   ├── interior_bounces.json
+│   ├── exterior_sky.json
+│   └── mixed_probe.json
+└── lighting_style_guide.json
+```
+
+**STEP 2: Lighting Style Guide**
+
+```json
+{
+  "lighting_style_guide": {
+    "name": "Dark Fantasy Kingdom Lighting",
+    "version": "1.0",
+    
+    "overall_philosophy": {
+      "mood": "Dramatic, atmospheric, cinematic",
+      "contrast": "High contrast with soft fills",
+      "color_temperature": "Warm practicals, cool ambients",
+      "shadow_density": "Deep shadows, readable silhouettes"
+    },
+    
+    "interior_lighting": {
+      "primary_sources": ["torches", "candles", "fireplaces", "magical_lights"],
+      "fill_strategy": "bounce_from_surfaces",
+      "shadow_softness": 0.3,
+      "ambient_intensity": 0.15
+    },
+    
+    "exterior_lighting": {
+      "sun_intensity": 1.0,
+      "sky_contribution": 0.4,
+      "atmospheric_scattering": true,
+      "god_rays": "when_appropriate"
+    },
+    
+    "color_guidelines": {
+      "key_light": "warm_yellow_orange",
+      "fill_light": "cool_blue_purple",
+      "rim_light": "neutral_to_warm",
+      "ambient": "desaturated_cool"
+    },
+    
+    "forbidden_lighting": {
+      "flat_even_lighting": false,
+      "pure_white_lights": false,
+      "no_shadow_scenes": false,
+      "over_saturated_colors": false
+    }
+  }
+}
+```
+
+**STEP 3: Configure Lighting Training**
+
+```json
+{
+  "lighting_training": {
+    "dataset_path": "./lighting_training_data/",
+    "output_path": "./trained_lighting_models/",
+    
+    "auto_lighting": {
+      "enabled": true,
+      "scene_analysis": true,
+      "mood_detection": true,
+      "time_of_day_adaptation": true
+    },
+    
+    "gi_optimization": {
+      "enabled": true,
+      "probe_placement": "automatic",
+      "bounce_optimization": true,
+      "performance_budget_ms": 2.0
+    },
+    
+    "quality_requirements": {
+      "visual_quality": 90,
+      "mood_accuracy": 85,
+      "no_light_leaks": true,
+      "stable_gi": true
+    },
+    
+    "anti_wonky_lighting": {
+      "reject_light_leaks": true,
+      "reject_shadow_acne": true,
+      "reject_over_exposure": true,
+      "reject_pitch_black_areas": true,
+      "reject_flickering": true
+    }
+  }
+}
+```
+
+---
+
+<a name="ui-training"></a>
+### 4.14 UI/UX & Interface Training
+
+**Purpose**: Train the engine to generate UI elements, HUD designs, menus, and interfaces matching your game's visual style.
+
+#### UI Training Guide
+
+**STEP 1: Prepare UI Training Data**
+
+```
+ui_training_data/
+├── elements/
+│   ├── buttons/
+│   │   ├── button_primary.png
+│   │   ├── button_secondary.png
+│   │   ├── button_danger.png
+│   │   └── button_disabled.png
+│   ├── panels/
+│   │   ├── panel_main.9.png
+│   │   ├── panel_popup.9.png
+│   │   └── panel_tooltip.9.png
+│   ├── icons/
+│   │   ├── icon_health.png
+│   │   ├── icon_mana.png
+│   │   ├── icon_stamina.png
+│   │   └── icon_inventory.png
+│   ├── bars/
+│   │   ├── health_bar.png
+│   │   ├── experience_bar.png
+│   │   └── loading_bar.png
+│   └── frames/
+│       ├── portrait_frame.png
+│       ├── item_frame.png
+│       └── skill_frame.png
+├── screens/
+│   ├── main_menu.json
+│   ├── pause_menu.json
+│   ├── inventory_screen.json
+│   ├── character_screen.json
+│   └── settings_screen.json
+├── hud/
+│   ├── combat_hud.json
+│   ├── exploration_hud.json
+│   └── dialogue_hud.json
+├── fonts/
+│   ├── title_font.ttf
+│   ├── body_font.ttf
+│   └── ui_font.ttf
+└── ui_style_guide.json
+```
+
+**STEP 2: Configure UI Training**
+
+```json
+{
+  "ui_training": {
+    "dataset_path": "./ui_training_data/",
+    "output_path": "./trained_ui_models/",
+    
+    "element_generation": {
+      "enabled": true,
+      "types": ["buttons", "panels", "icons", "bars", "frames"],
+      "style_matching": true,
+      "resolution_scaling": true
+    },
+    
+    "layout_generation": {
+      "enabled": true,
+      "responsive": true,
+      "accessibility_compliant": true
+    },
+    
+    "quality_requirements": {
+      "visual_consistency": 95,
+      "readability": 90,
+      "touch_friendly": true,
+      "accessibility_score": 85
+    },
+    
+    "anti_wonky_ui": {
+      "reject_unreadable_text": true,
+      "reject_tiny_touch_targets": true,
+      "reject_clashing_colors": true,
+      "reject_inconsistent_styles": true,
+      "min_touch_target_px": 44
+    }
+  }
+}
+```
+
+---
+
+<a name="character-training"></a>
+### 4.15 Character & Creature Training
+
+**Purpose**: Train the engine to generate complete characters and creatures with proper anatomy, rigging, and style consistency.
+
+#### Character Training Guide
+
+**STEP 1: Prepare Character Training Data**
+
+```
+character_training_data/
+├── humanoids/
+│   ├── heroes/
+│   │   ├── knight_male_01.fbx
+│   │   ├── mage_female_01.fbx
+│   │   └── rogue_male_01.fbx
+│   ├── npcs/
+│   │   ├── villager_variants/
+│   │   ├── guard_variants/
+│   │   └── merchant_variants/
+│   └── enemies/
+│       ├── bandit_variants/
+│       ├── skeleton_variants/
+│       └── cultist_variants/
+├── creatures/
+│   ├── beasts/
+│   │   ├── wolf_dire.fbx
+│   │   ├── bear_armored.fbx
+│   │   └── boar_giant.fbx
+│   ├── monsters/
+│   │   ├── goblin_variants/
+│   │   ├── troll_variants/
+│   │   └── ogre_variants/
+│   └── mythical/
+│       ├── dragon_fire.fbx
+│       ├── griffin_01.fbx
+│       └── phoenix_01.fbx
+├── anatomy_references/
+│   ├── human_proportions.json
+│   ├── creature_anatomy.json
+│   └── stylization_rules.json
+├── rigs/
+│   ├── humanoid_rig.fbx
+│   ├── quadruped_rig.fbx
+│   └── creature_rig.fbx
+└── character_style_guide.json
+```
+
+**STEP 2: Configure Character Training**
+
+```json
+{
+  "character_training": {
+    "dataset_path": "./character_training_data/",
+    "output_path": "./trained_character_models/",
+    
+    "mesh_generation": {
+      "enabled": true,
+      "types": ["humanoid", "creature", "beast", "mythical"],
+      "include_rig": true,
+      "include_lods": true
+    },
+    
+    "anatomy_enforcement": {
+      "enabled": true,
+      "proportions_check": true,
+      "joint_placement": true,
+      "deformation_friendly": true
+    },
+    
+    "quality_requirements": {
+      "anatomy_accuracy": 90,
+      "rig_quality": 95,
+      "deformation_quality": 90,
+      "style_match": 95
+    },
+    
+    "anti_wonky_characters": {
+      "reject_broken_anatomy": true,
+      "reject_impossible_poses": true,
+      "reject_bad_proportions": true,
+      "reject_unsuitable_for_rigging": true,
+      "reject_uncanny_faces": true
+    }
+  }
+}
+```
+
+---
+
+<a name="vehicle-training"></a>
+### 4.16 Vehicle & Mechanical Training
+
+**Purpose**: Train the engine to generate vehicles, machines, and mechanical objects with proper functionality and style.
+
+#### Vehicle Training Guide
+
+**STEP 1: Prepare Vehicle Training Data**
+
+```
+vehicle_training_data/
+├── land_vehicles/
+│   ├── carts/
+│   ├── wagons/
+│   ├── carriages/
+│   └── siege_engines/
+├── mounts/
+│   ├── horses/
+│   ├── exotic_mounts/
+│   └── flying_mounts/
+├── ships/
+│   ├── rowboats/
+│   ├── sailing_ships/
+│   └── warships/
+├── mechanical/
+│   ├── windmills/
+│   ├── watermills/
+│   ├── elevators/
+│   └── traps/
+└── vehicle_style_guide.json
+```
+
+**STEP 2: Configure Vehicle Training**
+
+```json
+{
+  "vehicle_training": {
+    "dataset_path": "./vehicle_training_data/",
+    "output_path": "./trained_vehicle_models/",
+    
+    "mesh_generation": {
+      "enabled": true,
+      "types": ["land", "mount", "ship", "mechanical"],
+      "functional_parts": true,
+      "physics_ready": true
+    },
+    
+    "quality_requirements": {
+      "mechanical_accuracy": 85,
+      "visual_quality": 90,
+      "physics_compatibility": 95
+    }
+  }
+}
+```
+
+---
+
+<a name="water-training"></a>
+### 4.17 Water & Fluid Training
+
+**Purpose**: Train the engine to generate water bodies, fluid effects, and liquid simulations matching your visual style.
+
+#### Water Training Guide
+
+**STEP 1: Prepare Water Training Data**
+
+```
+water_training_data/
+├── water_bodies/
+│   ├── ocean/
+│   ├── lake/
+│   ├── river/
+│   ├── pond/
+│   └── puddle/
+├── water_effects/
+│   ├── splashes/
+│   ├── ripples/
+│   ├── waves/
+│   ├── foam/
+│   └── caustics/
+├── special_liquids/
+│   ├── lava/
+│   ├── poison/
+│   ├── magical_water/
+│   └── blood/
+└── water_style_guide.json
+```
+
+**STEP 2: Configure Water Training**
+
+```json
+{
+  "water_training": {
+    "dataset_path": "./water_training_data/",
+    "output_path": "./trained_water_models/",
+    
+    "water_generation": {
+      "enabled": true,
+      "types": ["ocean", "lake", "river", "waterfall", "rain"],
+      "physics_simulation": true,
+      "caustics": true,
+      "foam": true
+    },
+    
+    "quality_requirements": {
+      "visual_quality": 90,
+      "physics_accuracy": 85,
+      "performance_budget_ms": 2.0
+    }
+  }
+}
+```
+
+---
+
+<a name="foliage-training"></a>
+### 4.18 Foliage & Vegetation Training
+
+**Purpose**: Train the engine to generate trees, plants, grass, and vegetation that matches your world's ecosystem.
+
+#### Foliage Training Guide
+
+**STEP 1: Prepare Foliage Training Data**
+
+```
+foliage_training_data/
+├── trees/
+│   ├── deciduous/
+│   ├── coniferous/
+│   ├── tropical/
+│   ├── dead/
+│   └── magical/
+├── plants/
+│   ├── bushes/
+│   ├── flowers/
+│   ├── ferns/
+│   ├── mushrooms/
+│   └── vines/
+├── grass/
+│   ├── short_grass/
+│   ├── tall_grass/
+│   ├── wheat/
+│   └── reeds/
+└── foliage_style_guide.json
+```
+
+**STEP 2: Configure Foliage Training**
+
+```json
+{
+  "foliage_training": {
+    "dataset_path": "./foliage_training_data/",
+    "output_path": "./trained_foliage_models/",
+    
+    "plant_generation": {
+      "enabled": true,
+      "types": ["trees", "bushes", "flowers", "grass"],
+      "wind_animation": true,
+      "lod_generation": true,
+      "billboard_generation": true
+    },
+    
+    "quality_requirements": {
+      "visual_quality": 90,
+      "performance_optimized": true,
+      "style_consistency": 95
+    }
+  }
+}
+```
+
+---
+
+<a name="destruction-training"></a>
+### 4.19 Destruction & Debris Training
+
+**Purpose**: Train the engine to generate destruction effects, debris, and damage states for objects.
+
+#### Destruction Training Guide
+
+**STEP 1: Configure Destruction Training**
+
+```json
+{
+  "destruction_training": {
+    "dataset_path": "./destruction_training_data/",
+    "output_path": "./trained_destruction_models/",
+    
+    "fracture_generation": {
+      "enabled": true,
+      "materials": ["wood", "stone", "metal", "glass", "organic"],
+      "fragment_count_range": [5, 50],
+      "physics_ready": true
+    },
+    
+    "damage_states": {
+      "enabled": true,
+      "levels": ["pristine", "damaged", "heavily_damaged", "destroyed"],
+      "progressive": true
+    },
+    
+    "quality_requirements": {
+      "visual_quality": 85,
+      "physics_stability": 95,
+      "performance_budget_ms": 1.0
+    }
+  }
+}
+```
+
+---
+
+<a name="cinematics-training"></a>
+### 4.20 Cinematics & Cutscene Training
+
+**Purpose**: Train the engine to generate camera work, cinematics, and cutscene elements matching your storytelling style.
+
+#### Cinematics Training Guide
+
+**STEP 1: Configure Cinematics Training**
+
+```json
+{
+  "cinematics_training": {
+    "dataset_path": "./cinematics_training_data/",
+    "output_path": "./trained_cinematics_models/",
+    
+    "camera_work": {
+      "enabled": true,
+      "shot_types": ["establishing", "closeup", "medium", "wide", "tracking", "crane"],
+      "transitions": ["cut", "fade", "dissolve", "wipe"],
+      "composition_rules": true
+    },
+    
+    "scene_staging": {
+      "enabled": true,
+      "character_blocking": true,
+      "lighting_for_mood": true,
+      "focus_attention": true
+    },
+    
+    "quality_requirements": {
+      "cinematic_quality": 90,
+      "pacing_score": 85,
+      "emotional_impact": 80
+    }
+  }
+}
+```
 
 ---
 
