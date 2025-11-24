@@ -3788,6 +3788,45 @@ Reject if: <90% quality, retrain with more/better data
 
 ---
 
+### 16.3 Training Authority & Complete Guide Reference
+
+#### ⚠️ CRITICAL: Who Can Train the Engine
+
+**TRAINING IS EXCLUSIVELY CONTROLLED BY:**
+
+1. **The Platform Owner (Kayden Shawn Massengill / WeNova Interactive)**
+   - Full authority over all engine-level training
+   - Approves all platform-wide model updates
+   - Controls what gets committed to the main engine
+
+2. **Real Users (Developers & Players)**  
+   - Contribute training data through normal usage
+   - Their gameplay, editing, and published games provide learning signals
+   - NO direct control over training - only contribution through usage
+
+**TRAINING IS NEVER PERFORMED BY:**
+- ❌ Automated systems without human approval
+- ❌ AI assistants (GitHub Copilot, ChatGPT, etc.)
+- ❌ Third-party services
+- ❌ Any system that bypasses manual approval
+
+#### Complete Training Guide
+
+For comprehensive training documentation covering all content types (LoRA, sounds, skyboxes, VFX, animations, physics, AI behavior), see:
+
+**📚 SELF_LEARNING_AND_TRAINING_GUIDE.md**
+
+This guide includes:
+- Step-by-step training workflows for all content types
+- Engine owner training process
+- How to commit training to the main engine
+- Strategic training patterns (Style-Consistent Infinite Content, Live-Service Optimization, Budget-Tiered Assets, Cross-Platform Optimization)
+- Anti-wonky generation quality control
+- Privacy-first worldwide learning system
+- No auto-push policy details
+
+---
+
 ## 17. Deployment & Distribution
 
 ### 17.1 Build Pipeline (Mobile-First)

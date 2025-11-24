@@ -34,6 +34,57 @@ This is **not a fork** of Unity, Unreal, or Godot. Every line of code is custom-
 | **Dual-Workflow Asset System** | Production-grade Zero-Asset Diffusion (5MB prompt-based, Flux.1/Mochi-1, 4-8s generation) + Complete traditional pipeline (FBX/GLTF/PBR) - both AAA-quality | Industry-first: AI generation OR traditional assets OR hybrid - zero compromises on quality |
 | **Holographic XR Editor** | Primary spatial editing interface; walk around scenes at 1:1 scale in VR/AR | First XR-native game engine; redefines the editing paradigm |
 | **Self-Optimizing Pipelines** | Engine retrains rendering/physics/AI per-scene; +50% FPS improvements over time | First continually learning engine |
+| **Worldwide Self-Learning** | Learns from all users globally (privacy-protected) with owner-controlled approval | Always the world's best - continuous improvement with quality control |
+
+---
+
+## 🧠 Self-Learning & Continuous Improvement
+
+NovaCore is the **world's first continuously self-improving game engine**. It learns from users worldwide to always deliver the best quality.
+
+### How It Works
+
+```
+WORLDWIDE LEARNING (Privacy-First):
+├── Collects anonymized data from gameplay, editing, published games
+├── Aggregates into improvement candidates
+├── Owner reviews and approves each improvement
+└── Approved updates deployed to all users worldwide
+
+TRAINING AUTHORITY:
+├── Platform Owner: Full control, final approval required
+├── Real Users: Contribute through normal usage only
+├── AI Assistants: NEVER perform training (documentation only)
+└── Auto-Push: DISABLED (manual approval always required)
+```
+
+### What NovaCore Learns
+
+| Content Type | Learning Source | Result |
+|--------------|-----------------|--------|
+| **Visual Assets (LoRA)** | Quality ratings, usage patterns | Consistent style, higher quality generation |
+| **Sound/Audio** | Listening quality feedback | Better audio generation, spatial mixing |
+| **Animations** | Smoothness metrics, blend quality | Natural movement, no foot sliding |
+| **Physics** | Gameplay telemetry | Perfect game feel, stable simulation |
+| **VFX/Particles** | Performance + quality data | Beautiful effects, 60 FPS guaranteed |
+| **AI Behavior** | Player interaction patterns | Intelligent, fun, fair AI opponents |
+
+### Quality Control
+
+- **No Auto-Push**: Nothing deployed without owner explicit approval
+- **Anti-Wonky Systems**: Rejects broken/crazy generations automatically
+- **Quality Threshold**: 95/100 minimum score for any improvement
+- **Staged Rollout**: Internal → Alpha (1%) → Beta (10%) → Production
+- **Instant Rollback**: 30-day rollback window for any deployment
+
+### Privacy Protection
+
+- **Zero PII Collected**: No names, emails, device IDs, IP addresses
+- **Full Anonymization**: All data aggregated, no individual tracking
+- **Opt-Out Available**: Users can disable contribution completely
+- **GDPR/CCPA Compliant**: Meets strictest global privacy standards
+
+📚 **Complete Guide**: See [SELF_LEARNING_AND_TRAINING_GUIDE.md](SELF_LEARNING_AND_TRAINING_GUIDE.md) for full documentation.
 
 ---
 
