@@ -7,18 +7,30 @@
 
 ## 📚 Documentation Overview
 
-This folder contains all comprehensive documentation for the NovaCore Engine and NovaForge Platform.
+This folder contains supporting documentation for the NovaCore Engine and NovaForge Platform. **The main comprehensive blueprint is in the repository root.**
 
 ---
 
-## 📖 Core Documentation
+## 🎯 PRIMARY DOCUMENT (All-in-One Blueprint)
 
-| Document | Description | Audience |
-|----------|-------------|----------|
-| [**NOVACORE_COMPLETE_DOCUMENTATION.md**](NOVACORE_COMPLETE_DOCUMENTATION.md) | Complete API reference and system documentation | All developers |
-| [**EDITOR_AND_GAME_BUILDER_GUIDE.md**](EDITOR_AND_GAME_BUILDER_GUIDE.md) | Comprehensive guide to the NovaCore Editor IDE | All developers |
-| [**SELF_LEARNING_AND_TRAINING_GUIDE.md**](SELF_LEARNING_AND_TRAINING_GUIDE.md) | Self-learning systems, training, quality control | Platform owner, advanced users |
-| [**PROGRESS.md**](PROGRESS.md) | Development progress tracking and milestones | All contributors |
+| Document | Description |
+|----------|-------------|
+| [**NOVAFORGE_NOVACORE_ENGINE_BLUEPRINT.md**](../NOVAFORGE_NOVACORE_ENGINE_BLUEPRINT.md) | **MAIN DOCUMENT** - Complete engine blueprint with ALL systems, features, and platform integration. This is the single source of truth. |
+
+**The blueprint contains everything:**
+- Complete engine architecture
+- Universal Scripting System (20+ languages)
+- Editor & Game Builder
+- Asset Store integration
+- Game Library & Publishing
+- AI Generation systems
+- Review System
+- Platform Integration
+- Security & Trust
+- Monetization
+- Community features
+- Development roadmap
+- And much more...
 
 ---
 

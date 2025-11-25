@@ -4587,7 +4587,7 @@ End User Experience:
 - Free tier: 70,000 users (0 revenue, audience building)
 - Pro tier: 25,000 users × $50/month = $1.25M/month = $15M/year
 - Enterprise tier: 5,000 users × $200/month avg = $1M/month = $12M/year
-- Asset store: 10% commission on $5M sales = $500K/year
+- Asset store: 5% commission on $5M sales = $500K/year
 - **Total Year 1**: $27.5M revenue
 
 **Market Position Goals**:
@@ -14022,6 +14022,1694 @@ A: Yes, completely commercial-friendly. Free for individuals, indie studios, and
 3. Custom systems development
 4. Engine extension/modification
 5. Platform-specific optimization
+
+---
+
+## 🌐 NOVAFORGE UNIFIED PLATFORM INTEGRATION
+
+### Complete All-in-One Platform Architecture
+
+**NovaForge** is a **unified 3-in-1 platform** delivered as a single mobile-first application that seamlessly integrates:
+1. **NovaCore Editor** - Full game development IDE
+2. **NovaForge Asset Store** - Marketplace for assets, templates, and plugins
+3. **NovaForge Game Library** - Platform to publish, discover, and play games
+
+All components are **deeply integrated** to provide a seamless experience from development to publishing to playing.
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                     NOVAFORGE UNIFIED PLATFORM ARCHITECTURE                      │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                         SINGLE APP EXPERIENCE                            │    │
+│  │  ┌───────────────────┐ ┌───────────────────┐ ┌───────────────────┐      │    │
+│  │  │   🛠️ CREATE       │ │   🛒 STORE        │ │   🎮 PLAY         │      │    │
+│  │  │   NovaCore Editor │ │   Asset Store     │ │   Game Library    │      │    │
+│  │  │                   │ │                   │ │                   │      │    │
+│  │  │ • Scene Editor    │ │ • 3D Models       │ │ • Browse Games    │      │    │
+│  │  │ • Code Editor     │ │ • Textures        │ │ • Play Instantly  │      │    │
+│  │  │ • Visual Script   │ │ • Audio           │ │ • Rate & Review   │      │    │
+│  │  │ • Material Editor │ │ • Animations      │ │ • Follow Devs     │      │    │
+│  │  │ • AI Generation   │ │ • Scripts         │ │ • Leaderboards    │      │    │
+│  │  │ • Build & Test    │ │ • Templates       │ │ • Achievements    │      │    │
+│  │  │ • Publish         │ │ • Complete Games  │ │ • Cloud Saves     │      │    │
+│  │  └───────────────────┘ └───────────────────┘ └───────────────────┘      │    │
+│  │            │                    │                    │                   │    │
+│  │            └────────────────────┴────────────────────┘                   │    │
+│  │                              │                                           │    │
+│  │                              ▼                                           │    │
+│  │  ┌─────────────────────────────────────────────────────────────────┐    │    │
+│  │  │                    UNIFIED BACKEND SERVICES                      │    │    │
+│  │  │  • User Accounts & Profiles                                      │    │    │
+│  │  │  • Cloud Storage & Sync                                          │    │    │
+│  │  │  • Payment Processing                                            │    │    │
+│  │  │  • Content Delivery Network                                      │    │    │
+│  │  │  • Review & Moderation System                                    │    │    │
+│  │  │  • Analytics & Telemetry                                         │    │    │
+│  │  │  • Multiplayer Services                                          │    │    │
+│  │  │  • AI Generation Services                                        │    │    │
+│  │  └─────────────────────────────────────────────────────────────────┘    │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Platform Navigation & User Flows
+
+**Single App Entry Points**:
+```
+APP LAUNCH → HOME SCREEN
+├── [🛠️ CREATE] → NovaCore Editor
+│   ├── New Project
+│   ├── Open Project
+│   ├── Recent Projects
+│   └── Templates (from Asset Store)
+├── [🛒 STORE] → Asset Store
+│   ├── Browse Categories
+│   ├── Search Assets
+│   ├── My Purchases
+│   └── Sell Assets
+├── [🎮 PLAY] → Game Library
+│   ├── Featured Games
+│   ├── Browse Categories
+│   ├── My Games (Published)
+│   ├── Favorites
+│   └── Play History
+└── [👤 PROFILE] → User Account
+    ├── My Profile
+    ├── My Games (as Developer)
+    ├── My Assets (as Creator)
+    ├── Earnings Dashboard
+    ├── Settings
+    └── Logout
+```
+
+---
+
+### 🛒 NovaForge Asset Store - Complete Marketplace
+
+**The Asset Store** is a fully integrated marketplace where creators sell assets and developers purchase them for use in their games.
+
+#### Asset Categories
+
+| Category | Types | File Formats |
+|----------|-------|--------------|
+| **3D Models** | Characters, props, vehicles, environments, weapons | .nmesh, .fbx, .gltf, .obj |
+| **Textures** | PBR materials, decals, sprites, UI elements | .ntex, .png, .jpg, .exr |
+| **Audio** | SFX, music, voice, ambience | .naudio, .wav, .ogg |
+| **Animations** | Motion capture, keyframe, procedural | .nanim, .fbx, .bvh |
+| **Scripts** | Components, systems, AI behaviors | .lua, .mojo, .nvgraph |
+| **Templates** | Complete game templates, scene templates | .nproject, .nscene |
+| **Plugins** | Editor extensions, tools, integrations | .nplugin |
+| **AI Models** | LoRA adapters, custom styles | .lora, .nseed |
+| **Complete Games** | Source projects for learning | .nproject |
+
+#### Asset Store Features
+
+```
+ASSET STORE ARCHITECTURE:
+═══════════════════════════════════════════════════════════════════════════════
+
+FOR BUYERS:
+├── DISCOVERY
+│   ├── Featured & Trending
+│   ├── Categories & Tags
+│   ├── Search with Filters (price, rating, date, compatibility)
+│   ├── AI Recommendations ("Similar to what you use")
+│   └── Collections & Bundles
+├── PREVIEW
+│   ├── 3D Model Viewer (rotate, zoom, lighting)
+│   ├── Texture Preview (all channels)
+│   ├── Audio Preview (play samples)
+│   ├── Animation Preview (on standard skeleton)
+│   ├── Script Documentation
+│   └── User Reviews & Ratings
+├── PURCHASE
+│   ├── One-Click Buy
+│   ├── Add to Cart (for bundles)
+│   ├── Wishlists
+│   ├── Gift to Friend
+│   └── Payment Methods (Card, PayPal, Mobile Wallet)
+├── LIBRARY
+│   ├── My Purchases
+│   ├── Download Manager
+│   ├── Auto-Updates
+│   ├── License Management
+│   └── Usage History
+└── INTEGRATION
+    ├── Import Directly to Project
+    ├── Drag-Drop from Store to Scene
+    ├── Version Compatibility Check
+    └── Dependency Resolution
+
+FOR SELLERS:
+├── UPLOAD
+│   ├── Asset Uploader (drag-drop)
+│   ├── Metadata Editor (title, description, tags)
+│   ├── Preview Generator (auto-captures)
+│   ├── Pricing (free, paid, subscription)
+│   ├── License Selection (standard, extended)
+│   └── Version Management
+├── MANAGEMENT
+│   ├── Asset Dashboard
+│   ├── Sales Analytics
+│   ├── Customer Reviews
+│   ├── Update Publishing
+│   └── Bundle Creation
+├── EARNINGS
+│   ├── Revenue Dashboard
+│   ├── Payout Settings
+│   ├── Tax Information
+│   ├── Commission Reports (NovaForge takes 5%)
+│   └── Withdrawal to Bank/PayPal
+└── SUPPORT
+    ├── Customer Questions
+    ├── Refund Requests
+    ├── Bug Reports
+    └── Feature Requests
+```
+
+#### Asset Store Pricing Model
+
+| Tier | Price Range | Commission | Description |
+|------|-------------|------------|-------------|
+| **Free** | $0 | 0% | Community sharing, portfolio pieces |
+| **Standard** | $0.99 - $49.99 | 10% | Individual assets |
+| **Premium** | $50 - $199 | 10% | High-quality packs, templates |
+| **Enterprise** | $200+ | 8% | Complete solutions, source games |
+| **Subscription** | $4.99 - $29.99/mo | 15% | Asset libraries, ongoing updates |
+
+#### Asset Store Integration with Editor
+
+```json
+{
+  "asset_store_integration": {
+    "in_editor_browser": {
+      "enabled": true,
+      "panel_location": "bottom_right",
+      "features": {
+        "search_while_editing": true,
+        "preview_in_scene": true,
+        "one_click_import": true,
+        "drag_drop_to_scene": true,
+        "auto_dependency_resolution": true
+      }
+    },
+    
+    "auto_import": {
+      "supported_types": ["models", "textures", "audio", "animations", "scripts"],
+      "auto_configure": true,
+      "respect_project_settings": true,
+      "create_prefabs": true
+    },
+    
+    "update_notifications": {
+      "show_available_updates": true,
+      "auto_update_option": true,
+      "changelog_preview": true
+    }
+  }
+}
+```
+
+---
+
+### 🎮 NovaForge Game Library - Publishing & Playing Platform
+
+**The Game Library** allows developers to publish games directly to the NovaForge platform, where millions of users can discover and play them instantly.
+
+#### Publishing Flow
+
+```
+GAME PUBLISHING WORKFLOW:
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: PREPARE GAME
+├── Complete development in NovaCore Editor
+├── Test on multiple device profiles
+├── Optimize for target audience
+├── Create store listing assets:
+│   ├── Icon (512x512, 1024x1024)
+│   ├── Screenshots (5-10)
+│   ├── Promotional video (optional)
+│   ├── Description & tags
+│   └── Age rating questionnaire
+
+STEP 2: SUBMIT FOR REVIEW
+├── Click "Publish to NovaForge Library"
+├── Select visibility:
+│   ├── Public (everyone can play)
+│   ├── Unlisted (link only)
+│   └── Private (invite only)
+├── Set monetization:
+│   ├── Free
+│   ├── Paid ($0.99 - $59.99)
+│   ├── Free with IAP
+│   └── Subscription
+├── Accept Developer Agreement
+└── Submit to Review Queue
+
+STEP 3: REVIEW PROCESS
+├── Automated Checks (instant):
+│   ├── Malware scan
+│   ├── Content policy compliance
+│   ├── Performance validation
+│   └── Crash detection
+├── Human Review (if flagged):
+│   ├── Content review
+│   ├── Gameplay review
+│   └── Monetization review
+└── Review Timeline:
+    ├── Auto-approved: <1 hour (high reputation devs)
+    ├── Standard: 24-48 hours
+    └── Flagged: 3-5 business days
+
+STEP 4: LIVE ON PLATFORM
+├── Game appears in library
+├── Players can discover & play
+├── Analytics dashboard active
+├── Reviews & ratings incoming
+└── Revenue tracking (if paid)
+
+STEP 5: POST-LAUNCH
+├── Monitor analytics
+├── Respond to reviews
+├── Push updates
+├── Run promotions
+└── Engage community
+```
+
+#### Game Library Features for Players
+
+```
+PLAYER EXPERIENCE:
+═══════════════════════════════════════════════════════════════════════════════
+
+DISCOVERY:
+├── HOME FEED
+│   ├── Personalized recommendations
+│   ├── Trending games
+│   ├── New releases
+│   ├── Staff picks
+│   └── Friend activity
+├── BROWSE
+│   ├── Categories (Action, Puzzle, RPG, etc.)
+│   ├── Tags (Multiplayer, Offline, etc.)
+│   ├── Filters (Rating, Size, Controller support)
+│   └── Collections (curated lists)
+├── SEARCH
+│   ├── Text search
+│   ├── Voice search
+│   ├── Visual search (screenshot → similar games)
+│   └── Advanced filters
+
+GAME PAGE:
+├── INFORMATION
+│   ├── Screenshots & video
+│   ├── Description
+│   ├── Developer info
+│   ├── Size & requirements
+│   ├── Age rating
+│   └── Last updated
+├── SOCIAL
+│   ├── User reviews & ratings
+│   ├── Friends who play
+│   ├── Global leaderboards
+│   └── Community discussions
+├── ACTIONS
+│   ├── [PLAY NOW] - Instant play (streaming or download)
+│   ├── [ADD TO FAVORITES]
+│   ├── [SHARE]
+│   └── [FOLLOW DEVELOPER]
+
+PLAYING:
+├── INSTANT PLAY
+│   ├── No download required (streaming)
+│   ├── Or download for offline
+│   └── Cloud save sync
+├── IN-GAME
+│   ├── Overlay menu (NovaForge bar)
+│   ├── Quick settings
+│   ├── Screenshot capture
+│   ├── Screen recording
+│   └── Report issue
+├── ACHIEVEMENTS
+│   ├── Game-specific achievements
+│   ├── NovaForge platform achievements
+│   └── Cross-game progression
+
+POST-PLAY:
+├── Rate & review
+├── Share to social
+├── Follow developer
+├── Wishlist similar games
+└── View time played
+```
+
+#### Game Publishing Settings
+
+```json
+{
+  "game_publishing": {
+    "store_listing": {
+      "title": "My Awesome Game",
+      "description": "An epic adventure...",
+      "short_description": "Epic mobile RPG",
+      "category": "rpg",
+      "tags": ["action", "adventure", "multiplayer", "offline"],
+      "age_rating": "everyone_10",
+      "content_warnings": [],
+      "languages": ["en", "es", "fr", "de", "ja", "zh"],
+      
+      "media": {
+        "icon_512": "assets/store/icon_512.png",
+        "icon_1024": "assets/store/icon_1024.png",
+        "screenshots": [
+          "assets/store/screenshot_1.png",
+          "assets/store/screenshot_2.png",
+          "assets/store/screenshot_3.png"
+        ],
+        "video_url": "https://youtube.com/...",
+        "feature_graphic": "assets/store/feature.png"
+      }
+    },
+    
+    "distribution": {
+      "visibility": "public",
+      "regions": ["worldwide"],
+      "platforms": ["android", "ios", "web"],
+      "min_os_version": {
+        "android": "5.0",
+        "ios": "11.0"
+      }
+    },
+    
+    "monetization": {
+      "type": "free_with_iap",
+      "price": 0,
+      "iap_enabled": true,
+      "ads_enabled": false,
+      "subscription_enabled": false
+    },
+    
+    "features": {
+      "cloud_saves": true,
+      "achievements": true,
+      "leaderboards": true,
+      "multiplayer": true,
+      "controller_support": "full",
+      "offline_play": true
+    }
+  }
+}
+```
+
+---
+
+### 🔄 Platform Review System - Quality & Safety
+
+**The Review System** ensures all content on NovaForge meets quality and safety standards while remaining fair and accessible.
+
+#### Review Pipeline
+
+```
+CONTENT REVIEW PIPELINE:
+═══════════════════════════════════════════════════════════════════════════════
+
+SUBMISSION
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 1: AUTOMATED CHECKS (Instant)                                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ ✓ Malware/virus scan                                                         │
+│ ✓ Content policy AI scan (inappropriate content detection)                   │
+│ ✓ Copyright/trademark detection                                              │
+│ ✓ Performance validation (must run on target devices)                        │
+│ ✓ Crash detection (automated test runs)                                      │
+│ ✓ Size validation (within limits)                                            │
+│ ✓ Metadata validation (required fields present)                              │
+│                                                                              │
+│ Result: PASS → Stage 2 | FAIL → Reject with reason | FLAG → Human Review    │
+└─────────────────────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 2: REPUTATION-BASED ROUTING                                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Developer Reputation Score determines path:                                  │
+│                                                                              │
+│ ⭐⭐⭐⭐⭐ (95-100): Auto-approve (trusted developer)                        │
+│ ⭐⭐⭐⭐ (80-94): Quick review (24h)                                         │
+│ ⭐⭐⭐ (60-79): Standard review (48h)                                        │
+│ ⭐⭐ (40-59): Extended review (72h)                                          │
+│ ⭐ (0-39): Full manual review (5 days)                                       │
+│ 🆕 New Developer: First submission full review                               │
+│                                                                              │
+│ Reputation based on: Previous approvals, user reports, review history        │
+└─────────────────────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 3: HUMAN REVIEW (If Required)                                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Review Team checks:                                                          │
+│ • Gameplay quality (playable, not broken)                                    │
+│ • Content appropriateness (matches age rating)                               │
+│ • Monetization fairness (no predatory practices)                             │
+│ • Store listing accuracy (screenshots match game)                            │
+│ • Legal compliance (copyright, trademark)                                    │
+│                                                                              │
+│ Decisions:                                                                   │
+│ ✅ APPROVE - Published immediately                                           │
+│ 🔄 REQUEST CHANGES - Developer fixes and resubmits                           │
+│ ❌ REJECT - With detailed reason and appeal option                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 4: POST-PUBLISH MONITORING                                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Continuous monitoring after approval:                                        │
+│ • User reports tracking                                                      │
+│ • Review sentiment analysis                                                  │
+│ • Crash rate monitoring                                                      │
+│ • Policy violation detection                                                 │
+│                                                                              │
+│ Automatic actions if issues detected:                                        │
+│ • Warning to developer                                                       │
+│ • Temporary suspension                                                       │
+│ • Permanent removal (severe violations)                                      │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Review Dashboard (Platform Owner)
+
+```
+PLATFORM REVIEW DASHBOARD:
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ REVIEW QUEUE                                            [Filter ▼] [Search] │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ PENDING REVIEW (47)                                                          │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│                                                                              │
+│ 🎮 "Space Shooter Pro"          Developer: @john_dev                         │
+│    Submitted: 2h ago            Type: Game         Status: 🟡 Pending        │
+│    Reputation: ⭐⭐⭐⭐ (87)      Category: Action   Size: 45MB               │
+│    [Review] [Quick Approve] [Reject] [Flag]                                  │
+│                                                                              │
+│ 🎨 "Fantasy Character Pack"     Creator: @artist_pro                         │
+│    Submitted: 5h ago            Type: Asset        Status: 🟡 Pending        │
+│    Reputation: ⭐⭐⭐⭐⭐ (96)    Category: 3D Model Size: 120MB              │
+│    [Review] [Quick Approve] [Reject] [Flag]                                  │
+│                                                                              │
+│ 🎮 "Puzzle Quest"               Developer: @new_dev (NEW)                    │
+│    Submitted: 1d ago            Type: Game         Status: 🟠 Review         │
+│    Reputation: 🆕 First Sub     Category: Puzzle   Size: 28MB               │
+│    ⚠️ First submission - requires full review                                │
+│    [Review] [Request Changes] [Reject]                                       │
+│                                                                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ STATISTICS                                                                   │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│ Today: 124 reviewed | 118 approved | 4 changes requested | 2 rejected       │
+│ Avg review time: 4.2 hours | Auto-approved: 67% | Manual: 33%               │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 🤖 AI Generation System Integration
+
+**AI Generation** is deeply integrated across the entire platform - Editor, Asset Store, and Game Library.
+
+#### AI Integration Points
+
+```
+AI GENERATION INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+IN EDITOR (Content Creation):
+├── Asset Generation
+│   ├── "Generate a fantasy sword" → 3D model in 4-8 seconds
+│   ├── "Create metal texture with rust" → PBR material
+│   ├── "Generate footstep sounds on stone" → Audio files
+│   └── "Create idle animation" → Animation clip
+├── Code Generation
+│   ├── "Create player controller with double jump" → Lua/Visual Script
+│   ├── "Generate enemy AI that patrols and attacks" → Behavior tree
+│   └── "Create inventory system" → Complete script
+├── Level Generation
+│   ├── "Generate forest environment" → Complete scene
+│   ├── "Create dungeon layout" → Procedural level
+│   └── "Design village with 10 buildings" → Populated scene
+└── UI Generation
+    ├── "Create main menu with modern style" → UI layout
+    ├── "Generate health bar" → UI component
+    └── "Design inventory grid" → UI system
+
+IN ASSET STORE (Discovery & Creation):
+├── Smart Search
+│   ├── "Find assets similar to this screenshot"
+│   ├── "Show me medieval weapon packs"
+│   └── Natural language queries
+├── Asset Enhancement
+│   ├── "Generate variations of this model"
+│   ├── "Create texture for this mesh"
+│   └── "Add animations to this character"
+└── Bundle Generation
+    ├── "Create complete RPG asset pack"
+    └── AI-curated collections
+
+IN GAME LIBRARY (Player Experience):
+├── Game Recommendations
+│   ├── "Games similar to what I play"
+│   ├── "Popular in my region"
+│   └── Personalized discovery
+├── Content Generation (In Published Games)
+│   ├── Procedural levels
+│   ├── Dynamic NPCs
+│   └── Adaptive difficulty
+└── Accessibility
+    ├── Auto-generated tutorials
+    ├── Difficulty adjustment
+    └── Content adaptation
+```
+
+#### AI Generation Configuration
+
+```json
+{
+  "ai_generation_integration": {
+    "editor": {
+      "asset_generation": {
+        "enabled": true,
+        "models": {
+          "3d_models": "flux_schnell_3d_v2",
+          "textures": "flux_schnell_texture_v2",
+          "audio": "audio_diffusion_v2",
+          "animations": "motion_diffusion_v2"
+        },
+        "quality_settings": {
+          "preview": {"time": "2-4s", "quality": "medium"},
+          "production": {"time": "4-8s", "quality": "high"}
+        }
+      },
+      "code_generation": {
+        "enabled": true,
+        "languages": ["lua", "visual_script", "mojo"],
+        "context_aware": true,
+        "project_style_matching": true
+      },
+      "level_generation": {
+        "enabled": true,
+        "styles": ["procedural", "ai_assisted", "template_based"]
+      }
+    },
+    
+    "asset_store": {
+      "search": {
+        "natural_language": true,
+        "visual_search": true,
+        "similarity_search": true
+      },
+      "recommendations": {
+        "personalized": true,
+        "project_based": true,
+        "trending": true
+      }
+    },
+    
+    "game_library": {
+      "recommendations": {
+        "play_history_based": true,
+        "friend_based": true,
+        "content_based": true
+      },
+      "in_game_generation": {
+        "allowed_in_published_games": true,
+        "requires_player_consent": true
+      }
+    }
+  }
+}
+```
+
+---
+
+### 🔗 Cross-Platform Data Integration
+
+**All platform components share data** for a seamless experience:
+
+```
+DATA INTEGRATION ARCHITECTURE:
+═══════════════════════════════════════════════════════════════════════════════
+
+USER ACCOUNT (Single Sign-On):
+├── Profile shared across all platform areas
+├── Unified purchase history (Asset Store + Game Library)
+├── Consolidated earnings (Asset sales + Game revenue)
+├── Single friends list (works everywhere)
+└── Universal achievements & progress
+
+PROJECT DATA:
+├── Editor projects → Publishable to Game Library
+├── Asset Store purchases → Auto-available in Editor
+├── Game analytics → Visible in Editor dashboard
+└── User feedback → Integrated into Editor
+
+ANALYTICS:
+├── Development analytics (Editor usage, build times)
+├── Asset analytics (downloads, usage in games)
+├── Game analytics (plays, retention, revenue)
+└── Platform analytics (user engagement, trends)
+
+CLOUD SERVICES:
+├── Unified cloud storage (projects, saves, assets)
+├── Single CDN (assets, games, updates)
+├── Shared authentication
+├── Cross-feature notifications
+└── Integrated messaging/chat
+```
+
+#### Integration API
+
+```json
+{
+  "platform_integration_api": {
+    "user": {
+      "get_profile": "/api/user/profile",
+      "get_purchases": "/api/user/purchases",
+      "get_earnings": "/api/user/earnings",
+      "get_projects": "/api/user/projects",
+      "get_published_games": "/api/user/games"
+    },
+    
+    "asset_store": {
+      "browse": "/api/store/browse",
+      "search": "/api/store/search",
+      "purchase": "/api/store/purchase",
+      "download": "/api/store/download/{asset_id}",
+      "import_to_project": "/api/store/import/{asset_id}/{project_id}"
+    },
+    
+    "game_library": {
+      "browse": "/api/games/browse",
+      "search": "/api/games/search",
+      "play": "/api/games/play/{game_id}",
+      "publish": "/api/games/publish",
+      "update": "/api/games/update/{game_id}",
+      "analytics": "/api/games/analytics/{game_id}"
+    },
+    
+    "editor": {
+      "create_project": "/api/editor/project/create",
+      "save_project": "/api/editor/project/save",
+      "build": "/api/editor/build",
+      "test": "/api/editor/test",
+      "publish": "/api/editor/publish"
+    },
+    
+    "ai_generation": {
+      "generate_asset": "/api/ai/generate/asset",
+      "generate_code": "/api/ai/generate/code",
+      "generate_level": "/api/ai/generate/level"
+    }
+  }
+}
+```
+
+---
+
+### 📱 Mobile-First Unified Experience
+
+**The entire platform is designed mobile-first**, with the same complete experience on phones as on desktop.
+
+```
+MOBILE APP STRUCTURE:
+═══════════════════════════════════════════════════════════════════════════════
+
+BOTTOM NAVIGATION:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                              │
+│                         [CURRENT VIEW CONTENT]                               │
+│                                                                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  🏠 Home  │  🛠️ Create  │  🛒 Store  │  🎮 Play  │  👤 Profile              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+HOME TAB:
+├── 🔥 Top Free Games (Featured free games, high ratings)
+├── 🆓 All Free Games (Complete free games section)
+├── 🎮 Recommended For You (Personalized)
+├── 📈 Trending Now (Popular this week)
+├── ⭐ New Releases
+├── 👥 Friend Activity (What friends are playing/creating)
+├── 🛠️ Recent Projects (Your development work)
+└── 📢 Platform Announcements
+
+CREATE TAB:
+├── Project list
+├── New project button
+├── Quick actions (open recent, templates)
+├── Free templates section
+└── Development tips/tutorials
+
+STORE TAB:
+├── 🆓 Free Assets (Featured at top)
+├── 🔥 Top Free Assets
+├── 📦 All Free Assets
+├── ⭐ Featured Paid Assets
+├── 📂 Categories (with free filter)
+├── 🔍 Search (with price filters)
+├── 🛒 My Purchases
+└── 💰 Sell Assets
+
+PLAY TAB:
+├── ▶️ Continue Playing (Resume your games)
+├── 🆓 TOP FREE GAMES (Prominently featured)
+├── 📦 ALL FREE GAMES (Complete free section)
+├── ⭐ Featured Games (Mix of free & paid)
+├── 📈 Trending Games
+├── 🆕 New Releases
+├── 📂 Categories (with free/price filters)
+├── ❤️ My Favorites
+├── 👥 Friend Activity
+└── 🔍 Search with Filters
+
+PROFILE TAB:
+├── Avatar & username
+├── Stats (games made, hours played)
+├── My games (published)
+├── My assets (selling)
+├── Earnings (95% of all revenue)
+├── Settings
+└── Help & support
+```
+
+---
+
+### 🔍 COMPREHENSIVE FILTER & DISCOVERY SYSTEM
+
+**Filters are available across all browsing areas** - Store, Play, and Home tabs all support comprehensive filtering with FREE content prominently featured.
+
+```
+UNIVERSAL FILTER SYSTEM:
+═══════════════════════════════════════════════════════════════════════════════
+
+PRICE FILTERS (Always Visible):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ PRICE                                                                        │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│ [🆓 FREE] [Under $1] [Under $5] [Under $10] [$10-$25] [$25+] [All Prices]  │
+│                                                                              │
+│ Price Range: $[0.00] ─────●───────────────────── $[59.99]                   │
+│                                                                              │
+│ [✓] Show Free First (Free items always appear at top of results)            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+GAME FILTERS (Play Tab):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ FILTER GAMES                                          [Clear All] [Apply]   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ PRICE:           [🆓 Free ▼]  [Paid] [Free+IAP] [All]                       │
+│                                                                              │
+│ CATEGORY:        [All ▼]                                                     │
+│   Action, Adventure, Arcade, Board, Card, Casino, Casual, Educational,      │
+│   Music, Puzzle, Racing, Role Playing, Simulation, Sports, Strategy,        │
+│   Trivia, Word                                                               │
+│                                                                              │
+│ RATING:          [⭐ All ▼]  [4+ Stars] [4.5+ Stars] [Highly Rated]         │
+│                                                                              │
+│ FEATURES:        [ ] Offline Play  [ ] Multiplayer  [ ] Controller Support  │
+│                  [ ] Cloud Saves   [ ] Achievements [ ] Leaderboards        │
+│                                                                              │
+│ SIZE:            [All ▼]  [Under 50MB] [Under 100MB] [Under 500MB]          │
+│                                                                              │
+│ RELEASE:         [All ▼]  [This Week] [This Month] [This Year]              │
+│                                                                              │
+│ SORT BY:         [Relevance ▼] [Rating] [Downloads] [Newest] [Price ↑↓]     │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+ASSET FILTERS (Store Tab):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ FILTER ASSETS                                         [Clear All] [Apply]   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ PRICE:           [🆓 Free ▼]  [Under $5] [Under $20] [$20+] [All]           │
+│                                                                              │
+│ TYPE:            [All ▼]                                                     │
+│   3D Models, Textures, Materials, Audio, Music, Animations, Scripts,        │
+│   Templates, Plugins, AI Models, Complete Projects, UI Assets, VFX          │
+│                                                                              │
+│ STYLE:           [All ▼]                                                     │
+│   Realistic, Stylized, Cartoon, Low Poly, Pixel Art, Hand Painted,          │
+│   Sci-Fi, Fantasy, Modern, Historical, Horror, Cute                         │
+│                                                                              │
+│ COMPATIBILITY:   [✓] My Engine Version  [ ] All Versions                    │
+│                                                                              │
+│ RATING:          [⭐ All ▼]  [4+ Stars] [Highly Rated]                      │
+│                                                                              │
+│ LICENSE:         [All ▼]  [Standard] [Extended] [Open Source]               │
+│                                                                              │
+│ SORT BY:         [Relevance ▼] [Rating] [Downloads] [Newest] [Price ↑↓]     │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+QUICK FILTER BUTTONS (Always Visible in Headers):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ [🆓 FREE] [⭐ TOP RATED] [🔥 TRENDING] [🆕 NEW] [📥 MOST DOWNLOADED]        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+SEARCH WITH FILTERS:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🔍 Search games, assets, creators...                    [🎤] [Filter ▼]    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Recent: "fantasy sword" "pixel art" "free rpg template"                     │
+│ Suggestions: "free 3d models" "top free games" "free sound effects"         │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 🆓 FREE CONTENT DISCOVERY
+
+**Free content is prominently featured** throughout the platform to help users discover quality free games and assets.
+
+```
+FREE CONTENT SECTIONS:
+═══════════════════════════════════════════════════════════════════════════════
+
+HOME TAB - FREE SECTIONS:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🔥 TOP FREE GAMES                                          [See All →]      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐           │
+│  │ [IMG]   │  │ [IMG]   │  │ [IMG]   │  │ [IMG]   │  │ [IMG]   │           │
+│  │ Space   │  │ Puzzle  │  │ Racing  │  │ RPG     │  │ Action  │           │
+│  │ Quest   │  │ Master  │  │ Fury    │  │ Legends │  │ Hero    │           │
+│  │ 🆓 FREE │  │ 🆓 FREE │  │ 🆓 FREE │  │ 🆓 FREE │  │ 🆓 FREE │           │
+│  │ ⭐ 4.8  │  │ ⭐ 4.7  │  │ ⭐ 4.9  │  │ ⭐ 4.6  │  │ ⭐ 4.8  │           │
+│  │ 50K+▶️  │  │ 30K+▶️  │  │ 80K+▶️  │  │ 25K+▶️  │  │ 45K+▶️  │           │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘  └─────────┘           │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 📦 ALL FREE GAMES                                          [See All →]      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Browse 5,000+ completely free games from our community                       │
+│                                                                              │
+│ Categories: [Action] [Puzzle] [RPG] [Racing] [Casual] [Strategy] [More...]  │
+│                                                                              │
+│ [Browse All Free Games →]                                                    │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+PLAY TAB - FREE SECTIONS:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🎮 PLAY                                              [🔍 Search] [Filter]   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ ▶️ CONTINUE PLAYING                                                          │
+│ ┌─────────┐ ┌─────────┐ ┌─────────┐                                         │
+│ │ Game 1  │ │ Game 2  │ │ Game 3  │  [See All →]                            │
+│ └─────────┘ └─────────┘ └─────────┘                                         │
+│                                                                              │
+│ ═══════════════════════════════════════════════════════════════════════════ │
+│                                                                              │
+│ 🆓 TOP FREE GAMES                                          [See All →]      │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ [Game] [Game] [Game] [Game] [Game] →                                        │
+│                                                                              │
+│ 📦 ALL FREE GAMES                                          [Browse All →]   │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ Action (234) | Puzzle (456) | RPG (123) | Racing (89) | Casual (567) | ...  │
+│                                                                              │
+│ ═══════════════════════════════════════════════════════════════════════════ │
+│                                                                              │
+│ ⭐ FEATURED GAMES                                          [See All →]      │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ [Game] [Game] [Game] [Game] [Game] →                                        │
+│                                                                              │
+│ 📈 TRENDING NOW                                            [See All →]      │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ [Game] [Game] [Game] [Game] [Game] →                                        │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+STORE TAB - FREE SECTIONS:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🛒 ASSET STORE                                       [🔍 Search] [Filter]   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ 🆓 FREE ASSETS                                             [See All →]      │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ Quality free assets from our community                                       │
+│ [Asset] [Asset] [Asset] [Asset] [Asset] →                                   │
+│                                                                              │
+│ 🔥 TOP FREE ASSETS                                         [See All →]      │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ Highest rated free assets                                                    │
+│ [Asset] [Asset] [Asset] [Asset] [Asset] →                                   │
+│                                                                              │
+│ 📦 ALL FREE BY CATEGORY                                    [Browse All →]   │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ 3D Models (1.2K) | Textures (3.4K) | Audio (2.1K) | Scripts (890) | ...     │
+│                                                                              │
+│ ═══════════════════════════════════════════════════════════════════════════ │
+│                                                                              │
+│ ⭐ FEATURED (Paid)                                         [See All →]      │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ Premium quality assets                                                       │
+│ [Asset] [Asset] [Asset] [Asset] [Asset] →                                   │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 🚀 Development Workflow Integration
+
+**Complete workflow from idea to published game**:
+
+```
+INTEGRATED DEVELOPMENT WORKFLOW:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. IDEATION
+   └── Browse Game Library for inspiration
+   └── Check Asset Store for available resources
+   └── Use AI to brainstorm concepts
+
+2. PROJECT SETUP
+   └── Create new project in Editor
+   └── Select template (or start blank)
+   └── Import assets from Store purchases
+   └── Generate initial assets with AI
+
+3. DEVELOPMENT
+   └── Build game in Editor
+   └── Use any programming language
+   └── AI-assisted coding and design
+   └── Real-time testing on device
+
+4. ASSET CREATION
+   └── Create custom assets
+   └── Generate with AI
+   └── Purchase from Store
+   └── Mix all sources seamlessly
+
+5. TESTING
+   └── Test on multiple device profiles
+   └── Share beta builds with friends
+   └── Gather feedback through platform
+
+6. PUBLISHING
+   └── One-click publish to Game Library
+   └── Set pricing and monetization
+   └── Automatic review process
+   └── Live within hours
+
+7. POST-LAUNCH
+   └── Monitor analytics in Editor
+   └── Respond to reviews
+   └── Push updates
+   └── Sell successful assets on Store
+
+8. MONETIZATION
+   └── Game revenue (100% yours or with IAP)
+   └── Asset sales (95% yours)
+   └── Earn while others use your work
+```
+
+---
+
+## 🔧 COMPLETE SYSTEM INTEGRATION SPECIFICATIONS
+
+### Editor ↔ Asset Store Integration
+
+**Seamless asset discovery and import directly within the editor**:
+
+```
+EDITOR-STORE INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+IN-EDITOR ASSET STORE PANEL:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ASSET STORE                                              [🔍 Search...]     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Categories: [All ▼] [3D Models] [Textures] [Audio] [Scripts] [Templates]   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐           │
+│  │ [3D]    │  │ [3D]    │  │ [3D]    │  │ [TEX]   │  │ [AUDIO] │           │
+│  │ Fantasy │  │ Sci-Fi  │  │ Modern  │  │ PBR     │  │ Ambient │           │
+│  │ Sword   │  │ Gun     │  │ Chair   │  │ Metal   │  │ Forest  │           │
+│  │ $4.99   │  │ $9.99   │  │ FREE    │  │ $2.99   │  │ $1.99   │           │
+│  │ ⭐4.8   │  │ ⭐4.9   │  │ ⭐4.5   │  │ ⭐4.7   │  │ ⭐4.6   │           │
+│  │[Import] │  │[Import] │  │[Import] │  │[Import] │  │[Import] │           │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘  └─────────┘           │
+│                                                                              │
+│  [Load More...]                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+INTEGRATION FEATURES:
+├── One-Click Import
+│   ├── Click "Import" → Asset added to project immediately
+│   ├── Auto-creates appropriate folder structure
+│   ├── Resolves dependencies automatically
+│   └── Sets up prefabs/materials as needed
+├── Drag-Drop to Scene
+│   ├── Drag asset thumbnail directly into viewport
+│   ├── Preview before placing
+│   ├── Auto-import if not yet in project
+│   └── Smart placement (snaps to surfaces)
+├── AI-Powered Recommendations
+│   ├── "Assets that work well with your current project"
+│   ├── "Similar to assets you've used"
+│   ├── "Popular in games like yours"
+│   └── "Complete your scene with..."
+├── Version Management
+│   ├── Update notifications for purchased assets
+│   ├── Changelog preview before update
+│   ├── Rollback to previous versions
+│   └── Compatibility warnings
+└── License Tracking
+    ├── Shows license type for each asset
+    ├── Warns if license doesn't cover use case
+    ├── Tracks commercial vs personal projects
+    └── Export includes license documentation
+```
+
+### Editor ↔ Game Library Integration
+
+**Publish games directly from the editor to the platform**:
+
+```
+EDITOR-LIBRARY INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+PUBLISH WIZARD (In Editor):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ PUBLISH TO NOVAFORGE GAME LIBRARY                          Step 1 of 5     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ STEP 1: GAME INFORMATION                                                     │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│                                                                              │
+│ Title:        [My Awesome Game                    ]                          │
+│ Description:  [An epic adventure through magical lands...                   │
+│               ________________________________________________]             │
+│ Category:     [Adventure ▼]                                                  │
+│ Tags:         [action] [rpg] [fantasy] [+ Add Tag]                          │
+│                                                                              │
+│ Age Rating:   (●) Everyone  ( ) 10+  ( ) Teen  ( ) Mature                   │
+│                                                                              │
+│ Languages:    [✓] English  [✓] Spanish  [ ] French  [+ More]                │
+│                                                                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                        [Cancel]  [Save Draft]  [Next →]     │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+STEP 2: MEDIA & SCREENSHOTS
+├── Auto-capture screenshots from editor
+├── Record gameplay video
+├── Upload custom promotional images
+├── Generate icon from game assets
+└── AI-assisted description writing
+
+STEP 3: MONETIZATION
+├── Free / Paid / Free with IAP
+├── Set price ($0.99 - $59.99)
+├── Configure IAP items
+├── Set up subscriptions
+└── Regional pricing
+
+STEP 4: DISTRIBUTION
+├── Select target platforms (Android/iOS/Web)
+├── Set minimum requirements
+├── Choose regions
+├── Schedule release date
+└── Beta testing options
+
+STEP 5: REVIEW & SUBMIT
+├── Pre-submission checklist
+├── Automated validation
+├── Submit for review
+├── Track review status
+└── Receive notifications
+
+POST-PUBLISH (In Editor):
+├── Live analytics dashboard
+├── Review management
+├── Push updates
+├── A/B testing
+└── Revenue tracking
+```
+
+### Editor ↔ AI Generation Integration
+
+**AI generation deeply integrated into every editor workflow**:
+
+```
+EDITOR-AI INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+AI ASSISTANT PANEL (Always Available):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🤖 NOVA AI ASSISTANT                                      [Settings ⚙️]    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ What would you like to create?                                               │
+│ ┌─────────────────────────────────────────────────────────────────────────┐ │
+│ │ Generate a medieval castle with towers and a moat                       │ │
+│ └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                              [Generate 🚀]  │
+│                                                                              │
+│ QUICK ACTIONS:                                                               │
+│ [🏠 3D Model] [🎨 Texture] [🔊 Sound] [📜 Script] [🎬 Animation] [🌍 Level] │
+│                                                                              │
+│ RECENT GENERATIONS:                                                          │
+│ • Fantasy sword (3D) - 2 min ago                                            │
+│ • Metal texture (PBR) - 15 min ago                                          │
+│ • Enemy patrol script - 1 hour ago                                          │
+│                                                                              │
+│ GENERATION HISTORY:                                                          │
+│ [View All] [Favorites] [Re-generate]                                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+CONTEXT-AWARE AI:
+├── Scene Context
+│   ├── "Generate assets matching current scene style"
+│   ├── "Create enemy appropriate for this level"
+│   ├── "Add ambient sounds for this environment"
+│   └── AI understands scene content and suggests relevant generations
+├── Code Context
+│   ├── "Complete this function"
+│   ├── "Fix this bug"
+│   ├── "Optimize this script"
+│   └── AI reads current code and provides contextual help
+├── Asset Context
+│   ├── "Generate variations of selected asset"
+│   ├── "Create texture for this model"
+│   ├── "Animate this character"
+│   └── AI understands selected assets and offers relevant actions
+└── Project Context
+    ├── "Generate assets in project art style"
+    ├── "Match existing naming conventions"
+    ├── "Follow project code patterns"
+    └── AI learns from entire project
+
+AI IN EVERY EDITOR:
+├── Scene Editor
+│   ├── "Populate this area with trees"
+│   ├── "Generate terrain based on sketch"
+│   ├── "Create interior for this building"
+│   └── "Place props naturally"
+├── Code Editor
+│   ├── Auto-complete with AI
+│   ├── "Write unit tests for this"
+│   ├── "Document this function"
+│   └── "Translate to another language"
+├── Material Editor
+│   ├── "Create material from description"
+│   ├── "Generate texture variations"
+│   ├── "Match reference image style"
+│   └── "Optimize for mobile"
+├── Animation Editor
+│   ├── "Create walk cycle"
+│   ├── "Generate attack animation"
+│   ├── "Smooth this motion"
+│   └── "Retarget to skeleton"
+├── Audio Editor
+│   ├── "Generate sound effect"
+│   ├── "Create ambient loop"
+│   ├── "Compose background music"
+│   └── "Generate voice line"
+└── UI Editor
+    ├── "Design main menu"
+    ├── "Create HUD layout"
+    ├── "Generate button styles"
+    └── "Make responsive layout"
+```
+
+### Asset Store ↔ Game Library Integration
+
+**Assets and games interconnected**:
+
+```
+STORE-LIBRARY INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+ASSET → GAME CONNECTIONS:
+├── Asset Pages Show
+│   ├── "Games using this asset" (with developer permission)
+│   ├── "See it in action" → Links to playable games
+│   ├── Ratings from game developers
+│   └── Usage statistics
+├── Game Pages Show
+│   ├── "Assets used in this game" (public assets only)
+│   ├── Direct links to purchase same assets
+│   ├── "Make a game like this" → Asset bundle
+│   └── Developer's other assets
+└── Cross-Promotion
+    ├── Asset creators can showcase their games
+    ├── Game developers can sell their assets
+    ├── Bundle deals (game + source assets)
+    └── "Inspired by" connections
+
+DEVELOPER JOURNEY:
+├── Phase 1: Player
+│   └── Play games in Library → Get inspired
+├── Phase 2: Learner
+│   └── Buy asset packs → Study how they work
+├── Phase 3: Creator
+│   └── Create game using assets → Publish to Library
+├── Phase 4: Seller
+│   └── Create assets from game → Sell on Store
+└── Phase 5: Mentor
+    └── Create tutorials/templates → Help others
+
+REVENUE ECOSYSTEM:
+├── Play Games → Developers earn
+├── Buy Assets → Creators earn
+├── Sell Assets → You earn
+├── Publish Games → You earn
+└── Platform grows → Everyone benefits
+```
+
+### AI Generation ↔ Asset Store Integration
+
+**AI-generated assets can be sold and shared**:
+
+```
+AI-STORE INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+SELLING AI-GENERATED ASSETS:
+├── Generation → Refinement → Listing
+│   ├── Generate base asset with AI
+│   ├── Refine and polish in editor
+│   ├── Create variations
+│   ├── Package with documentation
+│   └── List on Asset Store
+├── Disclosure Requirements
+│   ├── "AI-Assisted" badge on listings
+│   ├── Disclose AI involvement level
+│   ├── Human refinement percentage
+│   └── Transparency builds trust
+├── Quality Standards
+│   ├── Same quality bar as traditional assets
+│   ├── Must pass automated checks
+│   ├── Human review for first submissions
+│   └── Customer reviews affect reputation
+└── Licensing
+    ├── Clear ownership (creator owns refinements)
+    ├── Commercial use allowed
+    ├── No restrictions on derivative works
+    └── Follows platform standard license
+
+AI-POWERED STORE FEATURES:
+├── Smart Search
+│   ├── "Find a sword like this" [upload image]
+│   ├── Natural language queries
+│   ├── Style matching
+│   └── "Assets that work together"
+├── Recommendations
+│   ├── "Complete your project with..."
+│   ├── "Others who bought X also bought..."
+│   ├── "Trending in your genre"
+│   └── Personalized suggestions
+├── Preview Enhancement
+│   ├── AI-generated usage examples
+│   ├── "See in different lighting"
+│   ├── "Preview in various scenes"
+│   └── Automatic turntable views
+└── Quality Scoring
+    ├── AI evaluates technical quality
+    ├── Topology analysis
+    ├── Texture resolution check
+    └── Performance impact estimate
+```
+
+### AI Generation ↔ Game Library Integration
+
+**AI enhances both game creation and player experience**:
+
+```
+AI-LIBRARY INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+FOR DEVELOPERS (Creating Games):
+├── Pre-Production
+│   ├── "Generate game concept based on trending genres"
+│   ├── "Create mood board from description"
+│   ├── "Estimate development time"
+│   └── "Suggest asset requirements"
+├── Production
+│   ├── Generate all asset types
+│   ├── AI coding assistance
+│   ├── Procedural content generation
+│   └── Automated testing
+├── Publishing
+│   ├── AI-written store descriptions
+│   ├── Auto-generated screenshots
+│   ├── Suggested pricing based on market
+│   └── Optimal release timing
+└── Post-Launch
+    ├── AI-analyzed player feedback
+    ├── Suggested improvements
+    ├── Automated responses to reviews
+    └── Content update recommendations
+
+FOR PLAYERS (Playing Games):
+├── Discovery
+│   ├── Personalized recommendations
+│   ├── "Games like X but with Y"
+│   ├── Mood-based suggestions
+│   └── Friend activity analysis
+├── Gameplay
+│   ├── Dynamic difficulty adjustment
+│   ├── Procedural content in games
+│   ├── AI-powered NPCs
+│   └── Personalized experiences
+├── Accessibility
+│   ├── Auto-generated tutorials
+│   ├── Adaptive controls
+│   ├── Content warnings
+│   └── Language translation
+└── Social
+    ├── Smart matchmaking
+    ├── Toxicity detection
+    ├── Community management
+    └── Content moderation
+```
+
+---
+
+## 🔐 PLATFORM SECURITY & TRUST INTEGRATION
+
+### Unified Security Across All Components
+
+```
+PLATFORM SECURITY ARCHITECTURE:
+═══════════════════════════════════════════════════════════════════════════════
+
+AUTHENTICATION (Single Sign-On):
+├── One account for everything
+│   ├── Editor access
+│   ├── Asset Store purchases
+│   ├── Game Library playing
+│   ├── Developer publishing
+│   └── Creator selling
+├── Security Levels
+│   ├── Basic: Email/password
+│   ├── Enhanced: 2FA (TOTP, SMS)
+│   ├── Premium: Hardware keys (YubiKey)
+│   └── Enterprise: SSO integration
+└── Session Management
+    ├── Secure token handling
+    ├── Device tracking
+    ├── Suspicious activity alerts
+    └── Remote logout
+
+PAYMENT SECURITY:
+├── Asset Store Transactions
+│   ├── PCI-DSS compliant
+│   ├── Encrypted payment data
+│   ├── Fraud detection
+│   └── Chargeback protection
+├── Game Purchases
+│   ├── Secure checkout
+│   ├── Receipt verification
+│   ├── Refund handling
+│   └── Subscription management
+└── Developer Payouts
+    ├── Verified accounts
+    ├── Tax compliance
+    ├── Secure transfers
+    └── Audit trails
+
+CONTENT SECURITY:
+├── Asset Protection
+│   ├── DRM options for premium assets
+│   ├── Watermarking
+│   ├── License enforcement
+│   └── Piracy detection
+├── Game Protection
+│   ├── Build encryption
+│   ├── Anti-tampering
+│   ├── Cheat detection
+│   └── Integrity verification
+└── User Content
+    ├── Moderation pipeline
+    ├── Copyright detection
+    ├── Inappropriate content filtering
+    └── Report handling
+
+DATA PRIVACY:
+├── GDPR Compliance
+│   ├── Data portability
+│   ├── Right to deletion
+│   ├── Consent management
+│   └── Privacy controls
+├── User Data
+│   ├── Minimal collection
+│   ├── Encrypted storage
+│   ├── No selling to third parties
+│   └── Transparent policies
+└── Analytics
+    ├── Anonymized by default
+    ├── Opt-out available
+    ├── On-device when possible
+    └── Aggregate only sharing
+```
+
+---
+
+## 📊 UNIFIED ANALYTICS & INSIGHTS
+
+### Cross-Platform Analytics Dashboard
+
+```
+UNIFIED ANALYTICS:
+═══════════════════════════════════════════════════════════════════════════════
+
+DEVELOPER DASHBOARD:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MY NOVAFORGE DASHBOARD                                    [Last 30 Days ▼] │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ OVERVIEW                                                                     │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│ Total Earnings: $1,234.56        Games Published: 3                          │
+│ Asset Sales: $456.78             Assets Listed: 12                           │
+│ Game Revenue: $777.78            Total Downloads: 45,678                     │
+│                                                                              │
+│ MY GAMES                                                                     │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│ 📱 Space Adventure       ⭐4.7   12,345 plays   $234.56 revenue   [Manage]  │
+│ 📱 Puzzle Quest          ⭐4.5    8,901 plays   $123.45 revenue   [Manage]  │
+│ 📱 Racing Thunder        ⭐4.8   24,432 plays   $419.77 revenue   [Manage]  │
+│                                                                              │
+│ MY ASSETS                                                                    │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│ 🎨 Fantasy Weapon Pack   ⭐4.9     567 sales    $283.50 revenue   [Manage]  │
+│ 🎨 UI Sound Effects      ⭐4.6     234 sales     $93.60 revenue   [Manage]  │
+│ 🎨 Character Animations  ⭐4.8     123 sales     $79.68 revenue   [Manage]  │
+│                                                                              │
+│ INSIGHTS                                                                     │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│ 📈 Your games are trending in Brazil (+45% plays)                           │
+│ 💡 Users are searching for "sci-fi weapons" - consider creating assets      │
+│ ⭐ "Space Adventure" review: "Amazing game!" - respond?                     │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+ANALYTICS INTEGRATION:
+├── Game Analytics (in Library)
+│   ├── Play sessions, duration, retention
+│   ├── Level completion rates
+│   ├── Monetization metrics
+│   └── Player feedback
+├── Asset Analytics (in Store)
+│   ├── Views, downloads, purchases
+│   ├── Usage in published games
+│   ├── Customer ratings
+│   └── Support requests
+├── Editor Analytics (optional)
+│   ├── Feature usage
+│   ├── Build times
+│   ├── Error rates
+│   └── Performance metrics
+└── Cross-Platform Insights
+    ├── How assets perform in games
+    ├── Which asset buyers become game developers
+    ├── Community trends
+    └── Market opportunities
+```
+
+---
+
+## 🌍 COMMUNITY & SOCIAL INTEGRATION
+
+### Unified Community Across Platform
+
+```
+COMMUNITY INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+PROFILE (Universal):
+├── One profile everywhere
+│   ├── Avatar, username, bio
+│   ├── Developer portfolio
+│   ├── Player stats
+│   ├── Creator showcase
+│   └── Achievements
+├── Reputation System
+│   ├── Developer reputation (game quality)
+│   ├── Creator reputation (asset quality)
+│   ├── Player reputation (community behavior)
+│   └── Combined trust score
+└── Social Connections
+    ├── Follow developers/creators
+    ├── Friends list
+    ├── Teams/studios
+    └── Community groups
+
+ACTIVITY FEED:
+├── Friend Activity
+│   ├── "John published a new game"
+│   ├── "Sarah released an asset pack"
+│   ├── "Mike achieved 100k downloads"
+│   └── "Team XYZ is working on..."
+├── Platform News
+│   ├── Featured games
+│   ├── Trending assets
+│   ├── Platform updates
+│   └── Events & contests
+└── Personalized
+    ├── Updates from followed creators
+    ├── Games you might like
+    ├── Assets for your projects
+    └── Learning resources
+
+COMMUNICATION:
+├── Direct Messages
+│   ├── Developer-to-developer
+│   ├── Customer support for assets
+│   ├── Collaboration invites
+│   └── Business inquiries
+├── Forums/Discussions
+│   ├── General community
+│   ├── Game-specific forums
+│   ├── Asset Q&A
+│   ├── Technical support
+│   └── Showcase gallery
+├── Comments & Reviews
+│   ├── Game reviews
+│   ├── Asset reviews
+│   ├── Tutorial feedback
+│   └── Forum posts
+└── Notifications
+    ├── Cross-platform notifications
+    ├── Email digests (configurable)
+    ├── Push notifications (mobile)
+    └── In-app alerts
+
+COLLABORATION:
+├── Team Projects
+│   ├── Shared project access
+│   ├── Role management
+│   ├── Version control integration
+│   └── Task tracking
+├── Asset Collaboration
+│   ├── Co-creators on assets
+│   ├── Revenue splitting
+│   ├── Attribution
+│   └── Licensing flexibility
+└── Game Collaboration
+    ├── Multi-developer games
+    ├── Publisher relationships
+    ├── Marketing partnerships
+    └── Cross-promotion
+```
+
+---
+
+## 💰 UNIFIED MONETIZATION SYSTEM
+
+### Complete Revenue Integration
+
+```
+MONETIZATION INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+REVENUE STREAMS:
+├── Game Sales (Game Library)
+│   ├── Paid games (one-time purchase)
+│   ├── Free-to-play with IAP
+│   ├── Subscriptions
+│   ├── Ad revenue sharing
+│   └── 100% to developer (no platform cut on base)
+├── Asset Sales (Asset Store)
+│   ├── One-time purchases
+│   ├── Subscription bundles
+│   ├── 95% to creator (5% platform fee)
+│   └── Volume discounts available
+├── Services
+│   ├── Premium templates
+│   ├── Custom asset commissions
+│   ├── Tutorial sales
+│   └── Consulting/support
+└── Platform Services (Optional)
+    ├── Cloud builds (pay per build)
+    ├── Extended storage
+    ├── Priority review
+    └── Marketing boost
+
+UNIFIED WALLET:
+├── Single Balance
+│   ├── All earnings in one place
+│   ├── Game revenue + Asset sales combined
+│   ├── Real-time balance updates
+│   └── Transaction history
+├── Payouts
+│   ├── Multiple withdrawal methods
+│   ├── Scheduled payouts (weekly/monthly)
+│   ├── Minimum threshold ($10)
+│   └── Tax documentation
+├── Spending
+│   ├── Use earnings to buy assets
+│   ├── Pay for platform services
+│   ├── Transfer to bank
+│   └── Gift to other users
+└── Reports
+    ├── Revenue breakdown by source
+    ├── Tax reports
+    ├── Sales analytics
+    └── Forecasting
+
+PRICING TOOLS:
+├── Game Pricing
+│   ├── Market analysis
+│   ├── Competitor pricing
+│   ├── Regional adjustments
+│   └── A/B testing
+├── Asset Pricing
+│   ├── Category benchmarks
+│   ├── Quality-based suggestions
+│   ├── Bundle optimization
+│   └── Sale scheduling
+└── Promotions
+    ├── Platform-wide sales
+    ├── Personal discounts
+    ├── Bundle deals
+    └── Loyalty rewards
+```
 
 ---
 
