@@ -51,6 +51,12 @@ WORLDWIDE LEARNING (Privacy-First):
 ├── Owner reviews and approves each improvement
 └── Approved updates deployed to all users worldwide
 
+LEARNING SOURCES:
+├── 🎮 Gameplay Sessions: Real players playing games worldwide
+├── 📱 Published Games: Released games in app stores
+├── 🛠️ Developer Editing: NovaCore editor usage
+└── 📊 Quality Feedback: User ratings and reports
+
 TRAINING AUTHORITY:
 ├── Platform Owner: Full control, final approval required
 ├── Real Users: Contribute through normal usage only
@@ -58,16 +64,36 @@ TRAINING AUTHORITY:
 └── Auto-Push: DISABLED (manual approval always required)
 ```
 
-### What NovaCore Learns
+### What NovaCore Learns (Comprehensive)
 
-| Content Type | Learning Source | Result |
-|--------------|-----------------|--------|
-| **Visual Assets (LoRA)** | Quality ratings, usage patterns | Consistent style, higher quality generation |
-| **Sound/Audio** | Listening quality feedback | Better audio generation, spatial mixing |
-| **Animations** | Smoothness metrics, blend quality | Natural movement, no foot sliding |
-| **Physics** | Gameplay telemetry | Perfect game feel, stable simulation |
-| **VFX/Particles** | Performance + quality data | Beautiful effects, 60 FPS guaranteed |
-| **AI Behavior** | Player interaction patterns | Intelligent, fun, fair AI opponents |
+| Category | Learning Source | Improvements |
+|----------|-----------------|--------------|
+| **Performance** | FPS, frame times, memory usage | Optimized defaults, better efficiency |
+| **Graphics** | Quality settings, visual fidelity | Smarter quality presets, better rendering |
+| **Network** | Wi-Fi, cellular, latency data | Reduced ping, better stability |
+| **Physics** | Simulation data, collision quality | More stable, realistic physics |
+| **AI Behavior** | NPC interactions, combat data | Smarter, more responsive AI |
+| **Audio** | Sound quality, spatial accuracy | Better mixing, clearer audio |
+| **Loading** | Asset load times, streaming data | Faster loading, reduced pop-in |
+| **Battery** | Power consumption patterns | Longer play sessions |
+| **Visuals (LoRA)** | Quality ratings, style data | Higher quality generation |
+| **Animations** | Smoothness metrics, blend quality | Natural movement |
+
+### Everything Improves
+
+NovaCore continuously learns to improve **every aspect** of the engine:
+
+```
+📊 Performance:     FPS, memory, CPU/GPU utilization, thermal management
+🎨 Graphics:        Rendering, quality presets, LOD, texture streaming
+🌐 Network:         Wi-Fi, cellular, latency, bandwidth, connection stability
+🎮 Gameplay:        Input response, physics, AI, animations, collision
+🔊 Audio:           Spatial sound, mixing, voice quality, music
+⚡ Loading:         Asset loading, streaming, compilation, caching
+🔋 Battery:         Power efficiency, thermal management, background tasks
+🎬 Generation:      LoRA assets, textures, animations, VFX, sounds
+🛠️ Tools:           Editor performance, build times, debugging
+```
 
 ### Quality Control
 
