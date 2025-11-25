@@ -122,7 +122,11 @@ This blueprint is designed for development readiness. It includes proven C++23 m
 
 **🔴 READ THIS SECTION BEFORE STARTING ANY WORK - THIS IS MANDATORY 🔴**
 
-**THIS IS THE SINGLE SOURCE OF TRUTH. REFERENCE THIS DOCUMENT AT THE START OF EVERY DEVELOPMENT SESSION.**
+> **📖 MASTER REFERENCE DOCUMENT:** [`AUTONOMOUS_DEVELOPMENT_GUIDE.md`](AUTONOMOUS_DEVELOPMENT_GUIDE.md)
+> 
+> For a consolidated, easy-to-reference guide for autonomous development, see the Autonomous Development Guide. It contains all rules, workflows, and checklists needed to start and continue development.
+
+**THIS BLUEPRINT IS THE COMPLETE TECHNICAL SPECIFICATION. REFERENCE IT DURING IMPLEMENTATION.**
 
 ---
 

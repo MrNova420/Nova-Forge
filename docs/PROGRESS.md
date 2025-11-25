@@ -9,6 +9,14 @@
 
 ---
 
+## 🚀 STARTING POINT - READ THIS FIRST
+
+> **📖 For autonomous development, start with:** [`AUTONOMOUS_DEVELOPMENT_GUIDE.md`](../AUTONOMOUS_DEVELOPMENT_GUIDE.md)
+> 
+> The Autonomous Development Guide is the **single master reference document** for starting and continuing full autonomous development. It consolidates all rules, guidelines, and workflows needed for development.
+
+---
+
 ## ⚠️ WORK IN PROGRESS - ACTIVE DEVELOPMENT ⚠️
 
 > **NovaForge is currently in the planning phase.** No code has been written yet. This document tracks progress as development begins. All timelines and features are subject to change.
@@ -169,6 +177,9 @@ After Android first release (Engine is COMPLETE and stable):
 ## 📝 RECENT UPDATES
 
 ### 2025-11-25 (Latest)
+- ✅ **Created AUTONOMOUS_DEVELOPMENT_GUIDE.md** - Single master reference document for autonomous development
+- ✅ Consolidates all rules, workflows, checklists, and guidelines into one easy-to-reference document
+- ✅ Updated blueprint and PROGRESS.md to reference the new master guide
 - ✅ **Updated blueprint plans with ENGINE-FIRST development approach**
 - ✅ Added clear priority: NovaCore engine MUST be fully developed BEFORE building full platform
 - ✅ Updated 3-month roadmap to clarify engine vs platform development phases
@@ -194,12 +205,16 @@ After Android first release (Engine is COMPLETE and stable):
 
 When development begins:
 
-1. **Set up development environment**
+1. **Read the master guide first**
+   - Start with `AUTONOMOUS_DEVELOPMENT_GUIDE.md`
+   - Follow the session start checklist
+
+2. **Set up development environment**
    - Install Android Studio and NDK
    - Configure CMake
    - Set up Git repository
 
-2. **Start ENGINE development (Month 1)**
+3. **Start ENGINE development (Month 1)**
    - Create project structure
    - Set up build system
    - Begin core ENGINE systems implementation
