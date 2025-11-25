@@ -34,6 +34,141 @@ This is **not a fork** of Unity, Unreal, or Godot. Every line of code is custom-
 | **Dual-Workflow Asset System** | Production-grade Zero-Asset Diffusion (5MB prompt-based, Flux.1/Mochi-1, 4-8s generation) + Complete traditional pipeline (FBX/GLTF/PBR) - both AAA-quality | Industry-first: AI generation OR traditional assets OR hybrid - zero compromises on quality |
 | **Holographic XR Editor** | Primary spatial editing interface; walk around scenes at 1:1 scale in VR/AR | First XR-native game engine; redefines the editing paradigm |
 | **Self-Optimizing Pipelines** | Engine retrains rendering/physics/AI per-scene; +50% FPS improvements over time | First continually learning engine |
+| **Worldwide Self-Learning** | Learns from all users globally (privacy-protected) with owner-controlled approval | Always the world's best - continuous improvement with quality control |
+
+---
+
+## 🧠 Self-Learning & Continuous Improvement
+
+NovaCore is the **world's first continuously self-improving game engine**. It learns from users worldwide to always deliver the best quality.
+
+### How It Works
+
+```
+WORLDWIDE LEARNING (Privacy-First):
+├── Collects anonymized data from gameplay, editing, published games
+├── Aggregates into improvement candidates
+├── Owner reviews and approves each improvement
+└── Approved updates deployed to all users worldwide
+
+TRAINING AUTHORITY:
+├── Platform Owner: Full control, final approval required
+├── Real Users: Contribute through normal usage only
+├── AI Assistants: NEVER perform training (documentation only)
+└── Auto-Push: DISABLED (manual approval always required)
+```
+
+### What NovaCore Learns
+
+| Content Type | Learning Source | Result |
+|--------------|-----------------|--------|
+| **Visual Assets (LoRA)** | Quality ratings, usage patterns | Consistent style, higher quality generation |
+| **Sound/Audio** | Listening quality feedback | Better audio generation, spatial mixing |
+| **Animations** | Smoothness metrics, blend quality | Natural movement, no foot sliding |
+| **Physics** | Gameplay telemetry | Perfect game feel, stable simulation |
+| **VFX/Particles** | Performance + quality data | Beautiful effects, 60 FPS guaranteed |
+| **AI Behavior** | Player interaction patterns | Intelligent, fun, fair AI opponents |
+
+### Quality Control
+
+- **No Auto-Push**: Nothing deployed without owner explicit approval
+- **Anti-Wonky Systems**: Rejects broken/crazy generations automatically
+- **Quality Threshold**: 95/100 minimum score for any improvement
+- **Staged Rollout**: Internal → Alpha (1%) → Beta (10%) → Production
+- **Instant Rollback**: 30-day rollback window for any deployment
+
+### Privacy Protection
+
+- **Zero PII Collected**: No names, emails, device IDs, IP addresses
+- **Full Anonymization**: All data aggregated, no individual tracking
+- **Opt-Out Available**: Users can disable contribution completely
+- **GDPR/CCPA Compliant**: Meets strictest global privacy standards
+
+📚 **Complete Guide**: See [SELF_LEARNING_AND_TRAINING_GUIDE.md](SELF_LEARNING_AND_TRAINING_GUIDE.md) for full documentation.
+
+---
+
+## 🎛️ Master Control Dashboard
+
+The **Master Control Dashboard** is the ultimate command center for the entire NovaCore platform—a full visual graphical interface (not command-line) providing complete control over every aspect of the engine.
+
+### Dashboard Features
+
+| Tab | Purpose |
+|-----|---------|
+| 🏠 **Home** | Live global stats, quick actions, active alerts |
+| 📊 **Analytics** | Platform performance, user metrics, revenue tracking |
+| 🧠 **Training** | 20-category learning progress, pending approvals |
+| 🎨 **Generation** | All 10 AI models, performance, pending upgrades |
+| 📋 **Review** | Content moderation queue, batch operations |
+| ⚙️ **Settings** | Complete platform configuration |
+| 🔒 **Security** | AI governance, tamper protection, threat detection |
+| 📦 **Deployments** | Staged rollout pipeline, promotion controls |
+| 🚨 **Alerts** | Emergency control center |
+
+### Security (100% Invisible to Users)
+
+- **Complete Stealth**: Not visible in app list, process list, task manager, or memory dumps
+- **5-Factor Authentication**: Password + Hardware key + Biometric + Device cert + Location
+- **Secret Launch Methods**: Gesture, voice, hardware key, NFC token
+- **MFA Required**: For all critical operations
+
+---
+
+## 🛡️ Platform Security & AI Governance
+
+NovaCore implements **military-grade security** and **complete AI containment**.
+
+### AI Model Governance
+
+| Layer | Protection |
+|-------|-----------|
+| **Isolation** | Sandboxed, no network, no cross-model communication |
+| **Behavior** | Rate limits, output filters, content boundaries |
+| **Evolution** | No self-modification, no weight changes, versioned |
+| **Emergency** | Kill switch, freeze, purge - owner only |
+
+### Security Architecture
+
+- **6-Layer Security**: Code signing, data encryption, network security, access control, monitoring, incident response
+- **Tamper-Proof**: Ed25519 signing, AES-256-GCM encryption, hardware-backed keys
+- **Real-Time Detection**: Threat monitoring, anomaly detection, automatic response
+- **Immutable Audit**: Blockchain-style logs, 7-year retention
+
+### Emergency Controls
+
+| Control | Effect |
+|---------|--------|
+| **Kill Switch** | Immediately terminate any AI model |
+| **Full Lockdown** | Disable all external access |
+| **Secure Wipe** | Cryptographically erase data |
+| **Network Isolation** | Block all network traffic |
+
+### Compliance
+
+GDPR • CCPA • COPPA • PIPL • LGPD • ISO 27001 • SOC2
+
+---
+
+## 📋 Platform Review System
+
+All flagged content goes to **Platform Review** for owner approval—**no automatic rejections**.
+
+### Review Process
+
+1. **User Generates Content** → Quality + moderation check
+2. **Flagged Content** → Sent to Review Queue (not rejected)
+3. **Owner Reviews** → Approve or Deny with reasoning
+4. **Approved** → Available to user | **Denied** → Removed
+
+### Automated Review (High Volume)
+
+For situations when owner/team is unavailable:
+- **Auto-Approve**: Quality ≥98, Reputation ≥95%, low-risk (daily limit: 1,000)
+- **Auto-Deny**: Quality <50, spam, duplicates (daily limit: 500)
+- **Never Auto**: Inappropriate, copyright, age-restricted, first-time users
+
+📚 **Complete Documentation**: See [NOVACORE_COMPLETE_DOCUMENTATION.md](NOVACORE_COMPLETE_DOCUMENTATION.md) for all details.
 
 ---
 
