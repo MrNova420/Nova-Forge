@@ -1,6 +1,6 @@
 # NovaCore Documentation Index
 
-> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive  
+> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive (operating as Kayden Shawn Massengill)  
 > **Last Updated**: 2025-11-25
 
 ---

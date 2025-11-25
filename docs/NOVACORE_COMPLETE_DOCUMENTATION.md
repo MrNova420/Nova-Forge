@@ -1,7 +1,7 @@
 # NovaCore Complete Documentation
 ## The World's Most Advanced Mobile-First Game Engine
 
-> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive
+> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive (operating as Kayden Shawn Massengill)
 
 ---
 

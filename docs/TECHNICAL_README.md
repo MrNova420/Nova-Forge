@@ -3,7 +3,7 @@
 > **The World's First Neural-Symbolic Game Engine**  
 > *Hybrid AI-Powered, Mobile-First, XR-Native Game Development Platform*
 > 
-> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive
+> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive (operating as Kayden Shawn Massengill)
 
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Web-blue.svg)](#platform-targets)

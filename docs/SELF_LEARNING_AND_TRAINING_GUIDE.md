@@ -1,6 +1,6 @@
 # NovaCore Self-Learning & Training Complete Guide
 
-> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive  
+> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive (operating as Kayden Shawn Massengill)  
 > **Document Version**: 1.0 | **Last Updated**: 2025-11-24  
 > **Purpose**: Comprehensive guide for all self-learning, self-improving, and training systems
 

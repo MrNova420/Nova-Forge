@@ -575,7 +575,7 @@ Your games export to standard formats. You can take them anywhere.
 
 <div align="center">
 
-### Made with ❤️ by WeNova Interactive
+### Made with ❤️ by WeNova Interactive (operating as Kayden Shawn Massengill)
 
 *"Making game development accessible to everyone, everywhere."*
 
