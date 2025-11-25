@@ -1,7 +1,13 @@
 # NovaCore Documentation Index
 
-> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive  
+> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive (operating as Kayden Shawn Massengill)  
 > **Last Updated**: 2025-11-25
+
+---
+
+## ⚠️ WORK IN PROGRESS - ACTIVE DEVELOPMENT ⚠️
+
+> **This documentation is under active development.** All features, specifications, and information are subject to change. NovaForge is being continuously improved with new features and content being added regularly.
 
 ---
 

@@ -3,11 +3,17 @@
 > **The World's First Neural-Symbolic Game Engine**  
 > *Hybrid AI-Powered, Mobile-First, XR-Native Game Development Platform*
 > 
-> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive
+> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive (operating as Kayden Shawn Massengill)
 
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Web-blue.svg)](#platform-targets)
-[![Status](https://img.shields.io/badge/Status-Phase%200%20Complete-green.svg)](docs/PROGRESS.md)
+[![Status](https://img.shields.io/badge/Status-In%20Development-purple.svg)](docs/PROGRESS.md)
+
+---
+
+## ⚠️ WORK IN PROGRESS - ACTIVE DEVELOPMENT ⚠️
+
+> **This project is under active development.** All features, specifications, and information are subject to change. NovaForge is being continuously improved with non-stop new features and content being added regularly. Nothing is final or official yet.
 
 ---
 
@@ -363,7 +369,7 @@ For situations when owner/team is unavailable:
 - **Latency**: <50ms input latency perceived, even on 100-150ms connections
 - **Fairness**: Deterministic simulation, identical for all players, no host advantage
 - **Quality**: Zero desync, smooth rollback, invisible to players
-- **Scale**: Support for 2-64 players in competitive matches
+- **Scale**: Support for 2-10,000 players in competitive matches and MMO-scale experiences
 
 **Lagless 4G/5G Performance** - Mobile-Optimized:
 - **Adaptive Prediction**: Neural networks predict player inputs with 95% accuracy

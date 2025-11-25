@@ -1,6 +1,14 @@
 # NovaCore Complete Documentation
 ## The World's Most Advanced Mobile-First Game Engine
 
+> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive (operating as Kayden Shawn Massengill)
+
+---
+
+## ⚠️ WORK IN PROGRESS - ACTIVE DEVELOPMENT ⚠️
+
+> **This documentation is under active development.** All features, specifications, and information are subject to change. NovaForge is being continuously improved with new features and content being added regularly.
+
 ---
 
 ## 📖 Table of Contents
@@ -2595,13 +2603,13 @@ NovaCore's networking system delivers AAA multiplayer quality (Fortnite, Call of
 4. Resimulate with correct input
 5. Smooth interpolation (hide rollback from player)
 
-**Performance**: 64 players, <50ms latency, 60 FPS
+**Performance**: 10,000 players, <50ms latency, 60 FPS
 
 **Example**:
 ```cpp
 // Setup rollback netcode
 RollbackManager* netcode = network->create_rollback_manager();
-netcode->set_max_players(64);
+netcode->set_max_players(10000);
 netcode->set_max_prediction_frames(8);  // 133ms @ 60 FPS
 netcode->set_input_delay(2);  // 33ms delay for stability
 
@@ -2800,7 +2808,7 @@ void Server::on_player_action(PlayerID player, Action action) {
 
 **AAA Networking** (Fortnite, Call of Duty, Apex Legends) at indie costs:
 - <50ms latency (feels local)
-- 64 players (large battles)
+- 10,000 players (massive battles, MMO-scale)
 - 99.9% uptime (reliable)
 - <$0.01/player-hour (<$100/day for 1000 players)
 

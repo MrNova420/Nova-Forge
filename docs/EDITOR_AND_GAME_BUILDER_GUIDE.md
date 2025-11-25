@@ -1,8 +1,14 @@
 # NovaCore Editor & Game Builder - Complete Production Guide
 
-> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive  
+> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive (operating as Kayden Shawn Massengill)  
 > **Document Version**: 1.0 | **Last Updated**: 2025-11-25  
 > **Purpose**: Comprehensive guide for the NovaCore Editor, Game Builder, and all content creation tools
+
+---
+
+## ⚠️ WORK IN PROGRESS - ACTIVE DEVELOPMENT ⚠️
+
+> **This documentation is under active development.** All features, specifications, and information are subject to change. NovaForge is being continuously improved with new features and content being added regularly.
 
 ---
 
