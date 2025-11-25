@@ -313,8 +313,8 @@ This analysis reviewed **ALL** current project documents (excluding deprecated `
 │ • Zero overhead: runs on idle cycles                            │
 │                                                                  │
 │ Training: On-device, first 60 seconds of gameplay               │
-│ Accuracy: 95%+ workload prediction after training               │
-│ Benefit: 15-25% better CPU utilization                          │
+│ Accuracy: 95%+ workload prediction (target, based on ML research)│
+│ Benefit: 15-25% better CPU utilization (theoretical target)     │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -361,9 +361,9 @@ public:
 │ • Priority inheritance for dependencies                         │
 │ • Automatic job batching for cache efficiency                   │
 │                                                                  │
-│ Performance:                                                     │
-│ • 1M jobs/second on quad-core mobile                            │
-│ • <100ns job dispatch overhead                                  │
+│ Performance Targets (theoretical, based on lock-free research): │
+│ • 1M jobs/second on quad-core mobile (Snapdragon 8 Gen 2+)      │
+│ • <100ns job dispatch overhead (single atomic operation)        │
 │ • Zero locks, zero mutexes, zero waits                          │
 │                                                                  │
 └─────────────────────────────────────────────────────────────────┘
@@ -530,15 +530,17 @@ public:
 
 ### 📊 Performance Comparison: NovaCore vs Competition
 
+> **Note**: These are design targets. Actual performance will be validated during development.
+
 | Metric | NovaCore | Unreal 5 | Unity 6 | Godot 4 | Advantage |
 |--------|----------|----------|---------|---------|-----------|
-| **Min Device** | 2014 ($50) | 2018 ($200) | 2017 ($150) | 2016 ($100) | 4 years older |
+| **Min Device** | 2014 ($50) | 2018 ($200) | 2017 ($150) | 2016 ($100) | 2-4 years older |
 | **CPU Fallback** | ✅ Full | ❌ None | ❌ None | ⚠️ Basic | Unique |
-| **Ultra-Low FPS** | 25-30 | N/A | 15-20 | 20-25 | 50%+ better |
-| **Memory (Min)** | 256MB | 2GB | 1GB | 512MB | 8× smaller |
-| **Battery Drain** | 8%/hr | 25%/hr | 20%/hr | 15%/hr | 3× better |
-| **Thermal Sustain** | 4+ hours | 20 min | 30 min | 45 min | 5× longer |
-| **Download Size** | 5-50MB | 500MB+ | 200MB+ | 100MB+ | 10× smaller |
+| **Ultra-Low FPS** | 25-30 (target) | N/A | 15-20 | 20-25 | 50%+ better |
+| **Memory (Min)** | 256MB (target) | 2GB | 1GB | 512MB | 8× smaller |
+| **Battery Drain** | 8%/hr (target) | 25%/hr | 20%/hr | 15%/hr | 3× better |
+| **Thermal Sustain** | 4+ hrs (target) | 20 min | 30 min | 45 min | 5× longer |
+| **Download Size** | 5-50MB (target) | 500MB+ | 200MB+ | 100MB+ | 10× smaller |
 
 #### Core Performance Metrics
 
