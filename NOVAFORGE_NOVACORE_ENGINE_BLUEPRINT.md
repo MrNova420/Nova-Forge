@@ -4543,7 +4543,7 @@ Step 4: Build Game
 
 Step 5: Publish Game
 - Menu → Publish → Submit to NovaForge
-- Game appears as "A NovaForge Game by [Your Name]"
+- Game appears as "A NovaForge Game by [Creator Name]"
 - Auto-generates store listing materials
 - Submit for review
 - Game goes live on NovaForge platform

@@ -362,15 +362,18 @@ YOUR GAME SELLS FOR $9.99:
 
   $9.99  Game Price
 - $1.50  Platform Fee (15%)
-- $0.29  Payment Processing (~3%)
+- $0.29  Payment Processing (~3% - industry standard)
 ────────
-= $8.20  YOU GET (82%!)
+= $8.20  YOU GET (82% after payment processing!)
+
+NovaForge takes 15%. Payment processors take ~3%.
+You keep everything else!
 
 Compare to other platforms:
 - Apple App Store: 70% (they take 30%!)
 - Google Play: 70% (same deal)
 - Steam: 70% (yep, 30% again)
-- NovaForge: 82%+ 🎉
+- NovaForge: 82%+ after all fees 🎉
 ```
 
 ### 🛒 Sell More Than Games
