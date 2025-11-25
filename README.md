@@ -146,12 +146,16 @@ MAKE → PUBLISH → PROFIT
 
 All in one app:
 ├── 🛠️ Build your game
-├── 📤 One-click publish
-├── 🎮 Players find it in our library
+├── 📤 Publish under NovaForge
+├── 🎮 Players find YOUR game in our library
 ├── 💰 You get paid (85%!)
 └── 📊 See real-time analytics
 
-No App Store fees. No Google Play fees. No Steam fees.
+Your game appears as:
+"A NovaForge Game by [Your Name]"
+Powered by NovaCore Engine
+
+You get full credit. We handle distribution.
 Just 15% to NovaForge. That's IT.
 ```
 
@@ -232,7 +236,9 @@ Not "free with a catch." Actually free games from creators worldwide.
 ├── 📈 Trending - What's popular right now
 └── 🎯 By Genre - Action, Puzzle, RPG, Racing, etc.
 
-💡 All games are made by real creators using NovaForge!
+💡 All games are NovaForge games, created by real creators!
+   Each game shows: "A NovaForge Game by [Creator Name]"
+   Powered by NovaCore Engine
 ```
 
 ### 🎯 Find Your Perfect Game
@@ -402,9 +408,11 @@ Real-time analytics for everything:
 - ✅ Full game engine
 - ✅ AI generation (5-25 uses/day)
 - ✅ 5 projects
-- ✅ Publish unlimited games
+- ✅ Publish unlimited games under NovaForge
 - ✅ Keep 85% of sales
 - ✅ All tutorials & docs
+- ⚠️ NovaCore splash screen required (3 seconds on game launch)
+- ⚠️ "A NovaForge Game" branding
 
 ### Free Forever:
 - ✅ No trial period

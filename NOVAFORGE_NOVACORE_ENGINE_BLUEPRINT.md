@@ -19,6 +19,26 @@
 - 🎮 **PLAY** - Game library to browse and play games
 - 💰 **EARN** - Sell games and assets (keep 85%, 15% platform fee)
 
+**How Games are Published:**
+- Games are created UNDER NovaForge (the platform)
+- Games are created BY the Creator (fully credited)
+- All games show: "A NovaForge Game by [Creator Name]"
+- All games include NovaCore engine splash/branding (required for free tier)
+- Creators keep 85% of all revenue, NovaForge keeps 15%
+
+**Branding Structure:**
+```
+┌─────────────────────────────────────────┐
+│         🎮 GAME TITLE 🎮                │
+│                                         │
+│      A NovaForge Game                   │
+│      by [Creator Name]                  │
+│                                         │
+│      Powered by NovaCore Engine         │
+│      (splash screen on launch)          │
+└─────────────────────────────────────────┘
+```
+
 **Key Platform Features:**
 - AI asset generation (5-25 uses/day for free tier)
 - 10,000-player multiplayer support
@@ -4522,36 +4542,40 @@ Step 4: Build Game
 - NovaCore Runtime embedded in build (5-50MB)
 
 Step 5: Publish Game
-- Menu → Publish → Google Play / App Store
+- Menu → Publish → Submit to NovaForge
+- Game appears as "A NovaForge Game by [Your Name]"
 - Auto-generates store listing materials
 - Submit for review
-- Game goes live with NovaCore Runtime embedded
+- Game goes live on NovaForge platform
 
 End User Experience:
-- Downloads game from App Store/Google Play
-- Plays game (NovaCore Runtime invisible)
-- Never interacts with NovaCore directly
-- Updates to runtime handled transparently
+- Opens NovaForge app
+- Browses Game Library
+- Sees "A NovaForge Game by [Creator Name]"
+- Downloads and plays game
+- NovaCore splash on launch (Free Tier)
+- Plays game seamlessly
 ```
 
 ### Business Model (Three Tiers)
 
 **Free Tier** (70% of users):
 - ✅ Full editor features (no limitations)
-- ✅ Build and publish unlimited games
+- ✅ Build and publish unlimited games under NovaForge
 - ✅ Zero-Asset Diffusion AI generation (5-25 uses/day)
 - ✅ Traditional asset import (100+ formats)
 - ✅ Community support (forums, Discord)
 - ✅ Cloud storage: 1GB
 - ✅ 5 projects
 - ✅ Keep 85% of sales (15% platform fee)
-- ⚠️ NovaCore splash screen required (3 seconds)
-- ⚠️ "Made with NovaCore" watermark
+- ⚠️ NovaCore engine splash screen required (3 seconds on game launch)
+- ⚠️ "A NovaForge Game by [Creator]" branding required
 
 **Pro Tier** ($50/month or $500/year - 25% of users):
 - ✅ All Free features
 - ✅ Unlimited AI generation
-- ✅ No splash screen or watermark
+- ✅ No splash screen required (optional)
+- ✅ Custom branding options
 - ✅ Priority support (24-hour response)
 - ✅ Cloud storage: 100GB
 - ✅ Advanced analytics dashboard
@@ -11432,10 +11456,10 @@ Development follows this EXACT order. Do NOT skip ahead to later platforms.
 | Task | Priority | Est. Hours | Status |
 |------|----------|------------|--------|
 | Design game library UI | Critical | 8 | [ ] |
-| Implement game browsing | Critical | 8 | [ ] |
+| Implement game browsing (by creator) | Critical | 8 | [ ] |
 | Create game download system | Critical | 8 | [ ] |
 | Build game launching | Critical | 8 | [ ] |
-| Implement basic publishing workflow | Critical | 12 | [ ] |
+| Implement publishing workflow (creator publishes to NovaForge) | Critical | 12 | [ ] |
 | Add project export (APK generation) | Critical | 12 | [ ] |
 
 **Week 12: Launch Preparation**
@@ -11454,8 +11478,8 @@ Development follows this EXACT order. Do NOT skip ahead to later platforms.
 - ✅ Lua scripting with API bindings
 - ✅ Audio system (effects + music)
 - ✅ Touch and controller input
-- ✅ Game library (browse/download/play)
-- ✅ Basic publishing workflow
+- ✅ Game library (browse/download/play games published by creators on NovaForge)
+- ✅ Publishing workflow (creators publish their games to NovaForge)
 - ✅ User accounts
 - ✅ 🎉 **ANDROID FIRST RELEASE ON GOOGLE PLAY**
 
