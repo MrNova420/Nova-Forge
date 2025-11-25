@@ -4052,7 +4052,7 @@ GENERATION →
 
 ### Overview: How Auto-Learning Works
 
-NovaCore's Auto-Learning system continuously collects training data from ALL sources worldwide, processes it, and prepares improvements - **BUT** nothing ever gets pushed automatically. Here's the complete workflow:
+NovaCore's Auto-Learning system continuously collects training data from **all opted-in, consented sources worldwide** (with full privacy protection), processes it, and prepares improvements - **BUT** nothing ever gets pushed automatically. Here's the complete workflow:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
