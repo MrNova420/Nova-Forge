@@ -13,6 +13,15 @@
 [![Download](https://img.shields.io/badge/Download-FREE-brightgreen?style=for-the-badge&logo=google-play)](https://novaforge.dev)
 [![Platform](https://img.shields.io/badge/Platform-Coming%20Soon-blue?style=for-the-badge)](https://novaforge.dev)
 [![Status](https://img.shields.io/badge/Status-In%20Development-purple?style=for-the-badge)](https://novaforge.dev/community)
+[![Tech Stack](https://img.shields.io/badge/Tech-C++23%20|%20Vulkan%20|%20Metal-orange?style=for-the-badge)](docs/TECHNOLOGY_ANALYSIS.md)
+
+---
+
+## 🏆 WORLD'S BEST, AAA ENTERPRISE-GRADE ENGINE
+
+> **NovaCore is built to be the WORLD'S BEST, HIGHEST QUALITY, ENTERPRISE-GRADE, PRODUCTION-GRADE, AAA game engine.**
+
+**Technology Stack**: C++23 (95%) + Mojo (3%) + Rust (2%) — [Full Analysis →](docs/TECHNOLOGY_ANALYSIS.md)
 
 ---
 
