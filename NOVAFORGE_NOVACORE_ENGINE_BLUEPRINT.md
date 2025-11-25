@@ -3078,25 +3078,36 @@ CONFIGURATION:
 }
 ```
 
-#### All Content Types Trained
+#### All Content Types Trained (Complete List - 20 Categories)
 
-NovaCore learns from worldwide usage to improve generation of **ALL content types**:
+NovaCore learns from worldwide usage to improve generation of **ALL content types** - every aspect of game development:
 
-| Content Type | Learning Source | Improvement Target |
-|--------------|-----------------|-------------------|
-| **3D Models (LoRA)** | Quality ratings, usage patterns | Style consistency, topology quality |
-| **Textures/Materials** | Visual quality feedback | PBR accuracy, style matching |
-| **Sound Effects** | Audio quality ratings | Style consistency, clarity |
-| **Music** | Listening patterns, ratings | Genre matching, production quality |
-| **Skyboxes/HDRIs** | Visual feedback, usage | Atmosphere accuracy, HDR quality |
-| **VFX/Particles** | Performance data, ratings | Visual quality, performance balance |
-| **Animations** | Smoothness metrics, feedback | Motion quality, blend smoothness |
-| **Physics** | Gameplay telemetry | Feel accuracy, stability |
-| **AI Behavior** | Player interaction data | Intelligence, fairness, fun factor |
+| # | Content Type | Learning Source | Improvement Target |
+|---|--------------|-----------------|-------------------|
+| 4.1 | **LoRA Style (Visual Assets)** | Quality ratings, usage patterns | Style consistency, topology quality |
+| 4.2 | **Sound & Audio** | Audio quality ratings, listening data | Style consistency, clarity, spatial accuracy |
+| 4.3 | **Skybox & Environment** | Visual feedback, atmosphere ratings | HDR quality, mood accuracy, seamless tiling |
+| 4.4 | **VFX & Effects** | Performance data, visual ratings | Quality vs performance balance, style matching |
+| 4.5 | **Animation & Movement** | Smoothness metrics, blend feedback | Motion quality, foot IK, blend smoothness |
+| 4.6 | **Physics Feel** | Gameplay telemetry, feel ratings | Responsiveness, stability, game feel accuracy |
+| 4.7 | **AI Behavior** | Player interaction data, fairness metrics | Intelligence, fairness, fun factor |
+| 4.8 | **Procedural Generation** | Level completion rates, player paths | Playability, balance, variety |
+| 4.9 | **Terrain & Landscape** | Visual ratings, playability data | Height realism, biome accuracy, walkability |
+| 4.10 | **World & Level Design** | Completion rates, navigation data | Flow, pacing, navigation clarity |
+| 4.11 | **3D Models & Meshes** | Quality ratings, topology analysis | Clean topology, proper UVs, style match |
+| 4.12 | **Materials & Shaders** | PBR accuracy checks, visual ratings | Physically accurate values, style consistency |
+| 4.13 | **Lighting & GI** | Visual quality ratings, mood accuracy | Atmosphere, shadow quality, GI stability |
+| 4.14 | **UI/UX & Interface** | Usability metrics, accessibility scores | Readability, touch-friendliness, consistency |
+| 4.15 | **Character & Creature** | Anatomy checks, rig quality metrics | Proper anatomy, deformation quality |
+| 4.16 | **Vehicle & Mechanical** | Physics accuracy, visual ratings | Mechanical correctness, physics ready |
+| 4.17 | **Water & Fluid** | Visual ratings, physics accuracy | Realistic simulation, caustics quality |
+| 4.18 | **Foliage & Vegetation** | Performance data, visual ratings | LOD quality, wind animation, billboard quality |
+| 4.19 | **Destruction & Debris** | Physics stability, visual ratings | Fragment realism, physics stability |
+| 4.20 | **Cinematics & Cutscene** | Composition ratings, pacing data | Camera work quality, emotional impact |
 
-#### Anti-Wonky Generation (Quality Control)
+#### Anti-Wonky Generation (Quality Control for ALL Content Types)
 
-All learned improvements include **anti-wonky safeguards**:
+All learned improvements include **anti-wonky safeguards** for every content category:
 
 ```json
 {
@@ -3122,6 +3133,68 @@ All learned improvements include **anti-wonky safeguards**:
       "reject_artifacts": true,
       "reject_extreme_frequencies": true
     },
+    "terrain": {
+      "reject_floating_terrain": true,
+      "reject_impossible_overhangs": true,
+      "reject_too_steep_for_gameplay": true,
+      "reject_texture_stretching": true
+    },
+    "worlds_levels": {
+      "reject_uncompletable_levels": true,
+      "reject_impossible_jumps": true,
+      "reject_stuck_points": true,
+      "ensure_spawn_to_exit_path": true
+    },
+    "models_meshes": {
+      "reject_non_manifold": true,
+      "reject_degenerate_faces": true,
+      "reject_inverted_normals": true,
+      "reject_overlapping_uvs": true
+    },
+    "materials": {
+      "reject_unrealistic_pbr": true,
+      "reject_visible_seams": true,
+      "reject_color_banding": true,
+      "enforce_energy_conservation": true
+    },
+    "lighting": {
+      "reject_light_leaks": true,
+      "reject_shadow_acne": true,
+      "reject_over_exposure": true,
+      "reject_flickering": true
+    },
+    "ui_interface": {
+      "reject_unreadable_text": true,
+      "reject_tiny_touch_targets": true,
+      "reject_clashing_colors": true,
+      "min_touch_target_px": 44
+    },
+    "characters": {
+      "reject_broken_anatomy": true,
+      "reject_bad_proportions": true,
+      "reject_unsuitable_for_rigging": true,
+      "reject_uncanny_faces": true
+    },
+    "water_fluids": {
+      "reject_physics_instability": true,
+      "reject_visual_artifacts": true,
+      "performance_budget_ms": 2.0
+    },
+    "foliage": {
+      "reject_floating_vegetation": true,
+      "reject_scale_inconsistency": true,
+      "enforce_lod_quality": true
+    },
+    "destruction": {
+      "reject_physics_explosions": true,
+      "reject_unrealistic_fragments": true,
+      "performance_budget_ms": 1.0
+    },
+    "cinematics": {
+      "reject_jump_cuts_unintended": true,
+      "reject_bad_composition": true,
+      "reject_audio_desync": true
+    },
     "quality_threshold": 95,
     "auto_reject_below_threshold": true
   }
@@ -3130,22 +3203,50 @@ All learned improvements include **anti-wonky safeguards**:
 
 #### Complete Training Guide Reference
 
-For detailed step-by-step training guides covering all content types, see:
+For detailed step-by-step training guides covering ALL 20 content types, see:
 
 **📚 SELF_LEARNING_AND_TRAINING_GUIDE.md**
 
-This comprehensive guide (2800+ lines) includes:
-- Complete LoRA style training workflow
-- Sound/audio training guide
-- Skybox/environment training guide
-- VFX/effects training guide  
-- Animation/movement training guide
-- Physics feel training guide
-- AI behavior training guide
-- Procedural generation training guide
+This comprehensive guide (4000+ lines) includes complete training workflows for:
+
+**Core Content Training (4.1-4.8):**
+- 4.1 LoRA style training workflow (visual assets)
+- 4.2 Sound/audio training guide
+- 4.3 Skybox/environment training guide
+- 4.4 VFX/effects training guide  
+- 4.5 Animation/movement training guide
+- 4.6 Physics feel training guide
+- 4.7 AI behavior training guide
+- 4.8 Procedural generation training guide
+
+**Extended Content Training (4.9-4.20):**
+- 4.9 Terrain & landscape training guide
+- 4.10 World & level design training guide
+- 4.11 3D model & mesh training guide
+- 4.12 Material & shader training guide
+- 4.13 Lighting & global illumination training guide
+- 4.14 UI/UX & interface training guide
+- 4.15 Character & creature training guide
+- 4.16 Vehicle & mechanical training guide
+- 4.17 Water & fluid training guide
+- 4.18 Foliage & vegetation training guide
+- 4.19 Destruction & debris training guide
+- 4.20 Cinematics & cutscene training guide
+
+**Platform & Engine Training:**
 - Owner training workflow (how to commit to main engine)
+- User-contributed training system
+- Training from published games
+- Quality assurance & verification
 - Strategic patterns (Style-Consistent, Live-Service, Budget-Tiered, Cross-Platform)
-- Anti-wonky generation quality control systems
+- Anti-wonky generation quality control systems for ALL content types
+
+**Each Training Section Includes:**
+- Training data preparation structure
+- Style guide templates (JSON examples)
+- Configuration parameters
+- Quality requirements and thresholds
+- Anti-wonky generation controls specific to that content type
 
 ---
 
