@@ -15,6 +15,17 @@
 
 ---
 
+## 🔴 ENGINE-FIRST DEVELOPMENT APPROACH 🔴
+
+> **⚠️ CRITICAL: The NovaCore game engine MUST be fully developed and functional BEFORE building the complete NovaForge platform. The engine is the foundation upon which the entire platform is built.**
+
+**Development Priority Order**:
+1. **🔧 NovaCore Engine** (Months 1-2) - Core engine systems FIRST
+2. **📱 Basic Platform** (Month 3) - Minimal platform for engine testing/distribution
+3. **🚀 Full Platform** (Post-Launch) - Complete platform features after engine is stable
+
+---
+
 ## 🎯 PROJECT VISION
 
 **NovaForge** is a mobile-first game development platform (app) that will enable:
@@ -38,16 +49,25 @@
 | Phase | Status | Progress | Notes |
 |-------|--------|----------|-------|
 | **Planning** | ✅ Complete | 100% | Blueprint and documentation ready |
-| **Month 1: Foundation** | ⏸️ Not Started | 0% | Build system, core, rendering foundation |
-| **Month 2: Rendering & Editor** | ⏸️ Not Started | 0% | Graphics, physics, mobile editor |
-| **Month 3: Platform & Launch** | ⏸️ Not Started | 0% | Scripting, game library, publishing |
+| **Month 1: ENGINE Foundation** | ⏸️ Not Started | 0% | Build system, core, rendering - ENGINE FOCUS |
+| **Month 2: ENGINE Rendering & Physics** | ⏸️ Not Started | 0% | Graphics, physics, mobile editor - ENGINE FOCUS |
+| **Month 3: ENGINE Completion + Basic Platform** | ⏸️ Not Started | 0% | Scripting, audio, input + minimal platform |
+| **Post-Release: Full Platform** | ⏸️ Waiting | 0% | Complete platform features AFTER engine is stable |
 
 **Code Written**: 0 LOC  
 **First Release Target**: ~350,000 LOC
 
 ---
 
-## 📅 3-MONTH FIRST RELEASE ROADMAP
+## 📅 3-MONTH FIRST RELEASE ROADMAP (ENGINE-FIRST APPROACH)
+
+### Development Priority Order
+
+| Priority | Component | Status | Timeline | Notes |
+|----------|-----------|--------|----------|-------|
+| **1st** | **NovaCore Engine** | 🎯 PRIMARY | Months 1-2 | ENGINE MUST BE COMPLETE FIRST |
+| **2nd** | **Basic Platform** | ⏳ After Engine | Month 3 | Minimal platform for testing/release |
+| **3rd** | **Full Platform** | ⏳ Post-Release | Months 4+ | After engine is stable and tested |
 
 ### Platform Development Order
 
@@ -58,9 +78,10 @@
 | **3rd** | Web | ⏸️ Waiting | Post-Release |
 | **4th** | XR/VR | ⏸️ Waiting | After all platforms stable |
 
-### Month 1: Foundation & Core (Android)
+### Month 1: ENGINE Foundation & Core (Android)
 
-**Status**: ⏸️ NOT STARTED
+**Status**: ⏸️ NOT STARTED  
+**Focus**: Building the NovaCore engine foundation - NO platform features yet
 
 **Week 1: Project Setup**
 - [ ] Git repository structure
@@ -86,9 +107,10 @@
 - [ ] Render pass system
 - [ ] "Hello Triangle" on Android
 
-### Month 2: Rendering & Editor (Android)
+### Month 2: ENGINE Rendering & Physics (Android)
 
-**Status**: ⏸️ NOT STARTED
+**Status**: ⏸️ NOT STARTED  
+**Focus**: Building the NovaCore engine's rendering and physics systems - ENGINE DEVELOPMENT CONTINUES
 
 - [ ] PBR material system
 - [ ] Texture and mesh loading
@@ -97,30 +119,34 @@
 - [ ] Mobile editor UI
 - [ ] Scene hierarchy and inspector
 
-### Month 3: Platform & Launch (Android)
+### Month 3: ENGINE Completion + Basic Platform (Android)
 
-**Status**: ⏸️ NOT STARTED
+**Status**: ⏸️ NOT STARTED  
+**Focus**: Complete the remaining ENGINE features first, then add minimal platform features for first release
 
+**ENGINE Features (Weeks 9-10)**:
 - [ ] Lua scripting integration
 - [ ] Audio system
 - [ ] Input handling
-- [ ] Game library UI
-- [ ] Publishing workflow
-- [ ] User accounts
+
+**BASIC PLATFORM Features (Weeks 11-12)**:
+- [ ] Basic game library UI
+- [ ] Basic publishing workflow
+- [ ] Basic user accounts
 - [ ] 🚀 Google Play submission
 
 ---
 
 ## 📈 POST-RELEASE ROADMAP
 
-After Android first release:
+After Android first release (Engine is COMPLETE and stable):
 
-| Update | Focus | Status |
-|--------|-------|--------|
-| Update 1 | iOS Platform | ⏸️ Waiting |
-| Update 2 | Web Platform | ⏸️ Waiting |
-| Update 3 | Advanced Features (AI, Networking) | ⏸️ Waiting |
-| Update 4 | XR/VR Platform | ⏸️ Waiting |
+| Update | Focus | Status | Notes |
+|--------|-------|--------|-------|
+| Update 1 | **Full Platform Features + iOS** | ⏸️ Waiting | Complete platform features (game library, asset store, payments) + iOS port |
+| Update 2 | Web Platform | ⏸️ Waiting | Port engine to web |
+| Update 3 | Advanced Features (AI, Networking) | ⏸️ Waiting | AI asset generation, 10K networking |
+| Update 4 | XR/VR Platform | ⏸️ Waiting | After all platforms stable |
 
 ---
 
@@ -142,7 +168,16 @@ After Android first release:
 
 ## 📝 RECENT UPDATES
 
-### 2025-11-25
+### 2025-11-25 (Latest)
+- ✅ **Updated blueprint plans with ENGINE-FIRST development approach**
+- ✅ Added clear priority: NovaCore engine MUST be fully developed BEFORE building full platform
+- ✅ Updated 3-month roadmap to clarify engine vs platform development phases
+- ✅ Added ENGINE-FIRST DEVELOPMENT MANDATE section to blueprint
+- ✅ Updated Month labels to clearly indicate ENGINE focus (Months 1-2)
+- ✅ Clarified Month 3 as "ENGINE Completion + Basic Platform"
+- ✅ Updated post-release to show "Full Platform Features" come AFTER engine is stable
+
+### 2025-11-25 (Earlier)
 - ✅ Updated all documentation with correct pricing (85%/15% split)
 - ✅ Updated multiplayer to 10,000 players
 - ✅ Added Optional Ads Creator Program documentation
@@ -164,10 +199,11 @@ When development begins:
    - Configure CMake
    - Set up Git repository
 
-2. **Start Week 1 tasks**
+2. **Start ENGINE development (Month 1)**
    - Create project structure
    - Set up build system
-   - Begin core systems implementation
+   - Begin core ENGINE systems implementation
+   - **Focus on ENGINE - NO platform features yet**
 
 3. **Track progress in this document**
    - Update task checkboxes
