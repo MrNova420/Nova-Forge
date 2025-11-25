@@ -2945,9 +2945,9 @@ Result: Model gets better over time with YOUR quality control
 
 ---
 
-### Training Best Practices (World-Class Results)
+### Training Best Practices (World-Class Results - ALL 20 Categories)
 
-**For LoRA Style Training**:
+#### 4.1 LoRA Style Training (Visual Assets)
 1. **Start with 50 hero assets** (your absolute best work)
 2. **Consistent lighting** (neutral, HDR, no baked shadows)
 3. **Proper scale** (real-world units, consistent across assets)
@@ -2957,23 +2957,197 @@ Result: Model gets better over time with YOUR quality control
 7. **Iterate**: Add more assets for problematic categories, retrain
 8. **Final validation**: 95%+ samples meet your quality standard
 
-**For Character AI Training**:
+#### 4.2 Sound & Audio Training
+1. **Curate 100+ reference sounds** per category (ambient, SFX, UI, music)
+2. **Consistent recording quality** (same sample rate, bit depth, normalization)
+3. **Tag with metadata** (mood, intensity, environment type, duration)
+4. **Train separate models** for different audio categories
+5. **Validate spatial accuracy** for 3D audio positioning
+6. **Test across devices** (headphones, speakers, mobile)
+7. **Check for artifacts** (clipping, distortion, unwanted noise)
+8. **A/B test with players** for emotional impact
+
+#### 4.3 Skybox & Environment Training
+1. **Collect 50+ HDRI skyboxes** in your target style
+2. **Include time-of-day variations** (dawn, noon, dusk, night)
+3. **Weather conditions** (clear, cloudy, stormy, foggy)
+4. **Consistent resolution** (4K minimum for training)
+5. **Seamless tiling validation** (no visible seams at horizon)
+6. **Color palette consistency** with your game's art direction
+7. **Atmospheric scattering accuracy** for realistic lighting
+8. **Performance testing** across device tiers
+
+#### 4.4 VFX & Effects Training
+1. **Create 30+ reference VFX** per effect type (fire, smoke, magic, impacts)
+2. **Consistent particle settings** (spawn rates, lifetimes, physics)
+3. **Style guide for colors and shapes** (your game's visual language)
+4. **Performance budgets** (particle counts per device tier)
+5. **Train for visual-performance balance**
+6. **Validate motion blur compatibility**
+7. **Test alpha blending** and sorting accuracy
+8. **Mobile optimization** passes
+
+#### 4.5 Animation & Movement Training
+1. **Mocap or keyframe 50+ animation clips** per character type
+2. **Consistent rig structure** across all characters
+3. **Root motion accuracy** (no foot sliding, proper physics)
+4. **Blend tree coverage** (walk, run, jump, combat, idles)
+5. **IK target validation** (feet, hands, look-at)
+6. **Transition smoothness** between all animation states
+7. **Frame rate consistency** (60 FPS animations for training)
+8. **Retargeting validation** across body types
+
+#### 4.6 Physics Feel Training
+1. **Define target feel profile** (responsive, weighty, floaty, snappy)
+2. **Create reference gameplay videos** showing ideal feel
+3. **Collect player feedback metrics** (enjoyment, frustration points)
+4. **Train on successful game feel** from playtesting
+5. **Validate jump curves** (height, hang time, fall speed)
+6. **Movement acceleration/deceleration** curves
+7. **Collision response** tuning (bouncy vs. solid)
+8. **Device-specific adjustments** for input latency
+
+#### 4.7 AI Behavior Training
 1. **Script 20-50 personality archetypes** (brave hero, cowardly villain, wise mentor)
 2. **Playtest each archetype** (10+ hours of gameplay per archetype)
 3. **Collect telemetry** (decisions made, player reactions, combat outcomes)
 4. **Train on successful behaviors** (players enjoyed, not frustrating)
 5. **Validate with blind testing** (players can't tell it's AI)
-6. **Iterate based on feedback**, retrain until personalities feel authentic
+6. **Difficulty scaling** that adapts to player skill
+7. **Fairness validation** (no cheap shots, telegraphed attacks)
+8. **Iterate based on feedback**, retrain until personalities feel authentic
 
-**For Combat AI Training**:
-1. **Design difficulty tiers** (easy, medium, hard, expert)
-2. **Script reference behaviors** (experienced game designers write these)
-3. **Playtesting with focus group** (recruit players, gather feedback)
-4. **Balance testing** (ensure winnable but challenging)
-5. **Train AI to match reference behaviors** (supervised learning)
-6. **Validate across skill levels** (beginners to experts all have fun)
+#### 4.8 Procedural Generation Training
+1. **Design 30+ handcrafted reference levels** as training targets
+2. **Define layout rules** (room connections, dead-end limits, loop frequency)
+3. **Difficulty progression curves** (start easy, ramp up)
+4. **Playability validation** (all levels completable)
+5. **Variety metrics** (no two levels feel identical)
+6. **Loot and encounter balance** training
+7. **Performance testing** for complex generated content
+8. **Player path analysis** to improve flow
 
-**Result**: World's best training quality because YOU control the data, YOU approve the models, YOU ensure AAA standards.
+#### 4.9 Terrain & Landscape Training
+1. **Create 20+ reference heightmaps** in your terrain style
+2. **Biome distribution rules** (mountains, valleys, plains, water)
+3. **Erosion patterns** (realistic water/wind erosion simulation)
+4. **Walkability constraints** (max slopes for navigation)
+5. **Texture blending rules** (cliff faces, grass-to-rock transitions)
+6. **LOD generation** for distant terrain
+7. **Collision mesh accuracy** for physics
+8. **Vegetation placement rules** per biome
+
+#### 4.10 World & Level Design Training
+1. **Playtest 50+ levels** to understand flow patterns
+2. **Pacing curves** (combat, exploration, story beats)
+3. **Navigation clarity** (players never get lost)
+4. **Spawn-to-exit path validation** (all levels completable)
+5. **Secret area placement** rules
+6. **Environmental storytelling** guidelines
+7. **Backtracking vs. linear** flow decisions
+8. **Performance budgets** per area
+
+#### 4.11 3D Model & Mesh Training
+1. **Prepare 100+ reference models** per category (props, architecture, nature)
+2. **Topology standards** (quad-dominant, edge flow rules)
+3. **Polygon budgets** per asset tier (hero, standard, background)
+4. **UV mapping standards** (texel density, no overlaps)
+5. **LOD generation rules** (4-8 LOD levels)
+6. **Collision mesh standards** (convex vs. complex)
+7. **Style consistency** across all asset types
+8. **Material slot organization** standards
+
+#### 4.12 Material & Shader Training
+1. **Create 50+ reference materials** per category (metal, stone, wood, fabric)
+2. **PBR accuracy standards** (metallic, roughness ranges)
+3. **Texture resolution standards** (1K, 2K, 4K per use case)
+4. **Seamless tiling validation**
+5. **Normal map accuracy** (correct tangent space)
+6. **Energy conservation** validation
+7. **Performance budgets** per shader complexity tier
+8. **Mobile fallback** shader variants
+
+#### 4.13 Lighting & Global Illumination Training
+1. **Create 30+ reference lighting setups** per mood/time-of-day
+2. **Color temperature rules** (warm/cool contrast)
+3. **Key/fill/rim lighting** composition standards
+4. **GI bounce accuracy** (color bleeding, ambient occlusion)
+5. **Shadow quality standards** (soft vs. hard, resolution)
+6. **No light leaks** validation
+7. **Performance budgets** per lighting complexity
+8. **Baked vs. real-time** decision rules
+
+#### 4.14 UI/UX & Interface Training
+1. **Design 20+ reference UI screens** per type (HUD, menus, dialogs)
+2. **Touch target size standards** (44px minimum)
+3. **Readability standards** (contrast, font sizes)
+4. **Accessibility compliance** (colorblind modes, screen readers)
+5. **Animation standards** (hover, press, transition)
+6. **Responsive layout rules** (phone, tablet, desktop)
+7. **Localization support** (text expansion, RTL languages)
+8. **Performance budgets** (draw calls, overdraw)
+
+#### 4.15 Character & Creature Training
+1. **Create 30+ reference characters** per archetype
+2. **Anatomy accuracy** (proportions, joint placement)
+3. **Rig compatibility** (standard skeleton structure)
+4. **Deformation quality** (no mesh explosions, proper skinning)
+5. **Face rig standards** (blend shapes, bone-based)
+6. **Cloth/hair simulation** rules
+7. **LOD generation** for characters
+8. **Silhouette readability** at all distances
+
+#### 4.16 Vehicle & Mechanical Training
+1. **Create 20+ reference vehicles** per type (ground, air, water)
+2. **Mechanical accuracy** (moving parts, articulation)
+3. **Physics setup standards** (wheels, suspension, mass)
+4. **Damage states** (pristine, damaged, destroyed)
+5. **Interior/exterior detail** levels
+6. **Animation for mechanical parts** (doors, turrets, landing gear)
+7. **Audio integration** (engine sounds, interactions)
+8. **Player control feel** standards
+
+#### 4.17 Water & Fluid Training
+1. **Create 20+ reference water setups** (ocean, lake, river, puddle)
+2. **Wave simulation** standards per water type
+3. **Reflection/refraction** accuracy
+4. **Caustics generation** rules
+5. **Foam and splash** particle integration
+6. **Underwater rendering** standards
+7. **Physics buoyancy** accuracy
+8. **Performance budgets** per water complexity
+
+#### 4.18 Foliage & Vegetation Training
+1. **Create 50+ reference plants** per biome
+2. **Wind animation** standards (sway, bend, flutter)
+3. **LOD and billboard** generation rules
+4. **Density and placement** rules per area
+5. **Season variations** (spring, summer, fall, winter)
+6. **Interaction systems** (player movement through foliage)
+7. **Shadow casting** optimization
+8. **Instancing and batching** standards
+
+#### 4.19 Destruction & Debris Training
+1. **Create 30+ destruction reference setups**
+2. **Fracture patterns** per material (wood, stone, metal, glass)
+3. **Fragment count budgets** per device tier
+4. **Physics stability** (no explosions or tunneling)
+5. **Debris cleanup** timing rules
+6. **Damage propagation** (chain reactions)
+7. **Audio integration** (breaking sounds)
+8. **Performance budgets** during destruction events
+
+#### 4.20 Cinematics & Cutscene Training
+1. **Create 20+ reference cinematics** showing ideal camera work
+2. **Shot composition rules** (rule of thirds, leading lines)
+3. **Camera movement** standards (speed, easing, shake)
+4. **Transition types** (cuts, fades, dissolves)
+5. **Lighting for cinematics** (dramatic, emotional)
+6. **Audio sync** accuracy (lip sync, music timing)
+7. **Pacing and rhythm** guidelines
+8. **Performance capture** integration standards
+
+**Result**: World's best training quality because YOU control the data, YOU approve the models, YOU ensure AAA standards across ALL 20 content categories.
 
 ---
 
