@@ -4587,7 +4587,7 @@ End User Experience:
 - Free tier: 70,000 users (0 revenue, audience building)
 - Pro tier: 25,000 users × $50/month = $1.25M/month = $15M/year
 - Enterprise tier: 5,000 users × $200/month avg = $1M/month = $12M/year
-- Asset store: 10% commission on $5M sales = $500K/year
+- Asset store: 5% commission on $5M sales = $500K/year
 - **Total Year 1**: $27.5M revenue
 
 **Market Position Goals**:
@@ -7164,6 +7164,914 @@ class SleepSystem {
 - Async execution for long-running scripts
 - Debug breakpoints and inspection
 
+---
+
+## 🌐 UNIVERSAL SCRIPTING SYSTEM - RUN ANY CODE, ANY LANGUAGE
+
+### World-Best Multi-Language Runtime (Better Than Godot/Unreal/Unity)
+
+**NovaCore's Universal Scripting System** is the **most comprehensive scripting architecture ever built into a game engine**. Unlike competitors that limit you to one or two languages, NovaCore supports **ANY programming language** through a unified runtime architecture.
+
+**Why This Matters**:
+- ✅ **Use your existing skills** - No need to learn a new language
+- ✅ **Best tool for each job** - Use Python for AI, Lua for gameplay, C++ for performance
+- ✅ **Team flexibility** - Different team members can use different languages
+- ✅ **Ecosystem access** - Use any library from any language ecosystem
+- ✅ **Future-proof** - New languages can be added without engine changes
+
+### Complete Language Support Matrix
+
+| Language | Status | Use Case | Hot Reload | Performance | Debugging |
+|----------|--------|----------|------------|-------------|-----------|
+| **Lua / LuaJIT** | ✅ Native | Gameplay, AI, UI, Modding | ✅ Instant | ⭐⭐⭐⭐ Fast | ✅ Full |
+| **Mojo** | ✅ Native | ML/AI, Differentiable Logic, GPU Compute | ✅ <1 sec | ⭐⭐⭐⭐⭐ C++ Speed | ✅ Full |
+| **JavaScript/TypeScript** | ✅ Native | UI, Web Integration, Tools | ✅ Instant | ⭐⭐⭐ Good | ✅ Full |
+| **Python** | ✅ Native | AI/ML, Tools, Asset Processing, Prototyping | ✅ Instant | ⭐⭐ Moderate | ✅ Full |
+| **C#** | ✅ Bridge | Unity-style Scripting, Enterprise | ✅ <2 sec | ⭐⭐⭐⭐ Fast | ✅ Full |
+| **C++** | ✅ Native | Engine Extensions, Performance-Critical | ⚠️ Rebuild | ⭐⭐⭐⭐⭐ Fastest | ✅ Full |
+| **Rust** | ✅ Native | Networking, Security, Systems | ⚠️ Rebuild | ⭐⭐⭐⭐⭐ Fastest | ✅ Full |
+| **GDScript** | ✅ Bridge | Godot Migration, Familiar Syntax | ✅ Instant | ⭐⭐⭐ Good | ✅ Full |
+| **Visual Script** | ✅ Native | Non-Programmers, Designers | ✅ Instant | ⭐⭐⭐⭐ Fast | ✅ Visual |
+| **Wren** | ✅ Native | Lightweight Embedding, Modding | ✅ Instant | ⭐⭐⭐⭐ Fast | ✅ Full |
+| **Squirrel** | ✅ Bridge | Legacy Support | ✅ Instant | ⭐⭐⭐ Good | ✅ Full |
+| **AngelScript** | ✅ Bridge | C-like Syntax | ✅ Instant | ⭐⭐⭐⭐ Fast | ✅ Full |
+| **Ruby** | ✅ Bridge | Scripting, DSLs | ✅ Instant | ⭐⭐ Moderate | ✅ Full |
+| **Java/Kotlin** | ✅ Bridge | Android Integration, Enterprise | ✅ <2 sec | ⭐⭐⭐⭐ Fast | ✅ Full |
+| **Swift** | ✅ Bridge | iOS Integration, Apple Ecosystem | ✅ <2 sec | ⭐⭐⭐⭐⭐ Fastest | ✅ Full |
+| **Go** | ✅ Bridge | Networking, Servers, Tools | ⚠️ Rebuild | ⭐⭐⭐⭐⭐ Fast | ✅ Full |
+| **Haxe** | ✅ Bridge | Cross-Platform, Game Dev | ✅ <1 sec | ⭐⭐⭐⭐ Fast | ✅ Full |
+| **Nim** | ✅ Bridge | Systems, Performance | ⚠️ Rebuild | ⭐⭐⭐⭐⭐ Fastest | ✅ Full |
+| **Zig** | ✅ Bridge | Low-Level, Safety | ⚠️ Rebuild | ⭐⭐⭐⭐⭐ Fastest | ✅ Full |
+| **WASM** | ✅ Native | Any Compiled Language | ✅ Instant | ⭐⭐⭐⭐ Fast | ⚠️ Limited |
+| **Shell/Bash** | ✅ Bridge | Build Scripts, Automation | ✅ Instant | ⭐ Script | ⚠️ Basic |
+
+### Universal Script Runtime Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        NOVACORE UNIVERSAL SCRIPT RUNTIME                         │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                          LANGUAGE FRONTENDS                              │    │
+│  │  ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐ ┌─────────┐           │    │
+│  │  │   Lua   │ │  Mojo   │ │ Python  │ │   C#    │ │   JS    │  ...      │    │
+│  │  │ LuaJIT  │ │ MLIR    │ │ CPython │ │  Mono   │ │   V8    │           │    │
+│  │  └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘ └────┬────┘           │    │
+│  └───────│──────────│──────────│──────────│──────────│─────────────────────┘    │
+│          │          │          │          │          │                          │
+│          ▼          ▼          ▼          ▼          ▼                          │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                      UNIFIED BINDING LAYER (UBL)                         │    │
+│  │  ┌─────────────────────────────────────────────────────────────────────┐│    │
+│  │  │  • Automatic API Exposure    • Type Marshalling                     ││    │
+│  │  │  • Memory Safety Wrapper     • Exception Translation                ││    │
+│  │  │  • Hot-Reload Coordination   • Cross-Language Calls                 ││    │
+│  │  │  • Sandbox Enforcement       • Permission System                    ││    │
+│  │  └─────────────────────────────────────────────────────────────────────┘│    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                       │                                          │
+│                                       ▼                                          │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                         ENGINE API SURFACE                               │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │    │
+│  │  │ Entity   │ │ Physics  │ │ Render   │ │  Audio   │ │ Network  │       │    │
+│  │  │   API    │ │   API    │ │   API    │ │   API    │ │   API    │       │    │
+│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘       │    │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐       │    │
+│  │  │  Input   │ │   UI     │ │   AI     │ │  Assets  │ │  Scene   │       │    │
+│  │  │   API    │ │   API    │ │   API    │ │   API    │ │   API    │       │    │
+│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘       │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                       │                                          │
+│                                       ▼                                          │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                         NOVACORE ENGINE CORE                             │    │
+│  │                    (C++23 / Vulkan / Metal / NSECW)                      │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Native Language Implementations
+
+#### Lua/LuaJIT - Primary Gameplay Language
+
+**Why Lua as Primary**:
+- ⚡ **LuaJIT achieves 90% of C++ speed** with dynamic typing
+- 🔄 **Instant hot-reload** - change code while game runs
+- 📦 **Tiny footprint** - 200KB runtime
+- 🛡️ **Battle-tested** - Used in Roblox, World of Warcraft, Angry Birds
+
+```lua
+-- Complete Lua API Example: Player Controller
+local Player = {}
+Player.__index = Player
+
+-- Engine lifecycle events
+function Player:OnCreate()
+    -- Get required components
+    self.transform = self:GetComponent("Transform")
+    self.rigidbody = self:GetComponent("RigidBody")
+    self.animator = self:GetComponent("Animator")
+    
+    -- Initialize state
+    self.moveSpeed = 5.0
+    self.jumpForce = 500.0
+    self.isGrounded = true
+    self.health = 100
+    
+    -- Subscribe to events
+    Engine.Events:Subscribe("OnDamage", function(amount, source)
+        self:TakeDamage(amount, source)
+    end)
+end
+
+function Player:OnUpdate(deltaTime)
+    -- Get input
+    local moveX = Input.GetAxis("Horizontal")
+    local moveZ = Input.GetAxis("Vertical")
+    
+    -- Calculate movement
+    local movement = Vector3.new(moveX, 0, moveZ)
+    movement = movement:Normalize() * self.moveSpeed * deltaTime
+    
+    -- Apply movement
+    self.transform.position = self.transform.position + movement
+    
+    -- Handle jumping
+    if Input.GetButtonDown("Jump") and self.isGrounded then
+        self.rigidbody:AddForce(Vector3.up * self.jumpForce)
+        self.isGrounded = false
+        self.animator:Play("Jump")
+    end
+    
+    -- Update animation
+    if movement:Length() > 0.01 then
+        self.animator:SetFloat("Speed", movement:Length())
+    else
+        self.animator:SetFloat("Speed", 0)
+    end
+end
+
+function Player:OnCollisionEnter(collision)
+    if collision.gameObject.tag == "Ground" then
+        self.isGrounded = true
+    elseif collision.gameObject.tag == "Enemy" then
+        self:TakeDamage(10, collision.gameObject)
+    end
+end
+
+function Player:TakeDamage(amount, source)
+    self.health = self.health - amount
+    
+    -- Visual feedback
+    self.animator:Play("Hit")
+    Audio.PlaySound("player_hurt", self.transform.position)
+    VFX.Spawn("blood_splash", collision.point)
+    
+    -- Death check
+    if self.health <= 0 then
+        self:Die()
+    end
+end
+
+function Player:Die()
+    self.animator:Play("Death")
+    Engine.Events:Emit("PlayerDeath", self)
+    Timer.After(2.0, function()
+        Scene.Load("GameOver")
+    end)
+end
+
+return Player
+```
+
+#### Mojo - High-Performance ML & Differentiable Logic
+
+**Why Mojo**:
+- ⚡ **35,000× faster than Python** for ML workloads
+- 🧠 **Native autodiff** - Backpropagation in microseconds
+- 🎮 **GPU/NPU dispatch** - Direct hardware acceleration
+- 🔗 **C++ interop** - Zero-overhead calls to engine
+
+```python
+# Mojo: Neural NPC Behavior with On-Device Learning
+from nova.ai import NeuralNet, Optimizer
+from nova.ecs import Component, Entity
+from nova.math import Vector3, lerp
+
+struct NeuralNPC:
+    var brain: NeuralNet
+    var optimizer: Optimizer
+    var target: Entity
+    var aggression: Float32
+    
+    fn __init__(inout self):
+        # Define neural network architecture
+        self.brain = NeuralNet([
+            Dense(8, activation="relu"),   # Input: distance, health, etc.
+            Dense(16, activation="relu"),  # Hidden layer
+            Dense(4, activation="softmax") # Output: attack, flee, patrol, idle
+        ])
+        self.optimizer = Adam(lr=0.001)
+        self.aggression = 0.5
+    
+    fn decide_action(inout self, state: Tensor) -> Int:
+        """Neural decision making with real-time learning"""
+        # Forward pass
+        let action_probs = self.brain.forward(state)
+        
+        # Sample action
+        let action = multinomial_sample(action_probs)
+        
+        return action
+    
+    fn learn_from_outcome(inout self, state: Tensor, action: Int, reward: Float32):
+        """On-device reinforcement learning"""
+        # Compute policy gradient
+        let action_probs = self.brain.forward(state)
+        let loss = -log(action_probs[action]) * reward
+        
+        # Backpropagate - happens in <100 microseconds
+        self.brain.backward(loss)
+        self.optimizer.step()
+    
+    fn update(inout self, entity: Entity, dt: Float32):
+        # Gather state information
+        let my_pos = entity.get_component[Transform]().position
+        let my_health = entity.get_component[Health]().current
+        let target_pos = self.target.get_component[Transform]().position
+        let target_health = self.target.get_component[Health]().current
+        let distance = (target_pos - my_pos).length()
+        
+        # Create state tensor
+        let state = Tensor([
+            distance / 100.0,           # Normalized distance
+            my_health / 100.0,          # My health percentage
+            target_health / 100.0,      # Target health percentage
+            self.aggression,            # Personality trait
+            # ... more features
+        ])
+        
+        # Neural decision
+        let action = self.decide_action(state)
+        
+        # Execute action
+        match action:
+            case 0:  # Attack
+                self.attack(entity, self.target)
+            case 1:  # Flee
+                self.flee(entity, target_pos)
+            case 2:  # Patrol
+                self.patrol(entity)
+            case 3:  # Idle
+                pass
+        
+        # Learn from result (after combat outcome)
+        let reward = self.compute_reward()
+        self.learn_from_outcome(state, action, reward)
+```
+
+#### JavaScript/TypeScript - UI & Web Integration
+
+**Why JavaScript/TypeScript**:
+- 🌐 **Web ecosystem access** - npm packages, web APIs
+- 📱 **React/Vue-style UI** - Familiar component patterns
+- 🔄 **Async/await native** - Clean asynchronous code
+- 📝 **TypeScript types** - IDE intellisense, catch errors early
+
+```typescript
+// TypeScript: Game UI System with React-like Components
+import { Component, Entity, UI, Input, Network } from '@novacore/engine';
+
+interface PlayerStats {
+    health: number;
+    maxHealth: number;
+    mana: number;
+    maxMana: number;
+    gold: number;
+    level: number;
+    experience: number;
+}
+
+class GameHUD extends UI.Component<{}, PlayerStats> {
+    state: PlayerStats = {
+        health: 100,
+        maxHealth: 100,
+        mana: 50,
+        maxMana: 50,
+        gold: 0,
+        level: 1,
+        experience: 0
+    };
+
+    async onMount(): Promise<void> {
+        // Subscribe to player events
+        this.subscribe('PlayerHealth', (health: number) => {
+            this.setState({ health });
+        });
+        
+        this.subscribe('PlayerMana', (mana: number) => {
+            this.setState({ mana });
+        });
+        
+        // Load saved data
+        const savedData = await Network.fetch('/api/player/stats');
+        if (savedData) {
+            this.setState(savedData);
+        }
+    }
+
+    render(): UI.Element {
+        return UI.Container({
+            style: { position: 'absolute', top: 10, left: 10 },
+            children: [
+                // Health Bar
+                UI.ProgressBar({
+                    value: this.state.health / this.state.maxHealth,
+                    color: '#ff4444',
+                    label: `HP: ${this.state.health}/${this.state.maxHealth}`
+                }),
+                
+                // Mana Bar
+                UI.ProgressBar({
+                    value: this.state.mana / this.state.maxMana,
+                    color: '#4444ff',
+                    label: `MP: ${this.state.mana}/${this.state.maxMana}`
+                }),
+                
+                // Level & Experience
+                UI.Text({
+                    text: `Level ${this.state.level}`,
+                    style: { fontSize: 24, color: '#gold' }
+                }),
+                
+                UI.ProgressBar({
+                    value: this.state.experience / this.getExpRequired(),
+                    color: '#44ff44',
+                    label: `EXP: ${this.state.experience}/${this.getExpRequired()}`
+                }),
+                
+                // Gold
+                UI.Row({
+                    children: [
+                        UI.Image({ src: 'icons/gold.png', size: 24 }),
+                        UI.Text({ text: `${this.state.gold}` })
+                    ]
+                })
+            ]
+        });
+    }
+
+    getExpRequired(): number {
+        return this.state.level * 100;
+    }
+}
+
+// Export for engine registration
+export default GameHUD;
+```
+
+#### Python - AI, Tools, Asset Processing
+
+**Why Python**:
+- 🤖 **ML ecosystem** - TensorFlow, PyTorch, scikit-learn
+- 🛠️ **Tool scripting** - Asset pipelines, build automation
+- 📊 **Data analysis** - Game analytics, balance tuning
+- 🎓 **Beginner-friendly** - Great for learning
+
+```python
+# Python: AI Training Pipeline & Asset Processing
+from novacore import Engine, Entity, Component, Asset
+from novacore.ai import NeuralNet, TrainingPipeline
+import numpy as np
+import tensorflow as tf
+
+class AITrainer:
+    """Train NPCs using collected gameplay data"""
+    
+    def __init__(self):
+        self.model = self.create_model()
+        self.data_buffer = []
+        self.batch_size = 64
+        
+    def create_model(self):
+        """Create neural network for NPC decision making"""
+        model = tf.keras.Sequential([
+            tf.keras.layers.Dense(128, activation='relu', input_shape=(32,)),
+            tf.keras.layers.Dropout(0.2),
+            tf.keras.layers.Dense(64, activation='relu'),
+            tf.keras.layers.Dropout(0.2),
+            tf.keras.layers.Dense(32, activation='relu'),
+            tf.keras.layers.Dense(8, activation='softmax')  # 8 possible actions
+        ])
+        model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+        return model
+    
+    def collect_gameplay_data(self, state, action, reward):
+        """Collect data from gameplay sessions"""
+        self.data_buffer.append({
+            'state': state,
+            'action': action,
+            'reward': reward
+        })
+        
+        # Train when buffer is full
+        if len(self.data_buffer) >= self.batch_size:
+            self.train_batch()
+            
+    def train_batch(self):
+        """Train on collected data"""
+        states = np.array([d['state'] for d in self.data_buffer])
+        actions = np.array([d['action'] for d in self.data_buffer])
+        rewards = np.array([d['reward'] for d in self.data_buffer])
+        
+        # Weight actions by reward
+        sample_weights = (rewards - rewards.min()) / (rewards.max() - rewards.min() + 1e-8)
+        
+        # Train
+        self.model.fit(states, actions, sample_weight=sample_weights, epochs=5, verbose=0)
+        
+        # Export to engine format
+        self.export_to_engine()
+        
+        # Clear buffer
+        self.data_buffer = []
+        
+    def export_to_engine(self):
+        """Export trained model to NovaCore format"""
+        # Convert to ONNX for cross-platform deployment
+        import tf2onnx
+        model_proto, _ = tf2onnx.convert.from_keras(self.model)
+        
+        # Save to assets
+        Asset.save("models/npc_brain.onnx", model_proto)
+        
+        # Hot-reload in engine
+        Engine.reload_asset("models/npc_brain.onnx")
+
+
+class AssetProcessor:
+    """Process and optimize game assets"""
+    
+    @staticmethod
+    def batch_convert_textures(input_dir: str, output_dir: str):
+        """Convert all textures to engine format with optimization"""
+        from PIL import Image
+        import os
+        
+        for filename in os.listdir(input_dir):
+            if filename.endswith(('.png', '.jpg', '.tga')):
+                # Load image
+                img = Image.open(os.path.join(input_dir, filename))
+                
+                # Generate mipmaps
+                mipmaps = AssetProcessor.generate_mipmaps(img)
+                
+                # Compress for mobile
+                compressed = AssetProcessor.compress_for_mobile(mipmaps)
+                
+                # Save in engine format
+                output_path = os.path.join(output_dir, filename.replace('.', '.ntex'))
+                Asset.save_texture(output_path, compressed)
+                
+                print(f"Processed: {filename} -> {output_path}")
+    
+    @staticmethod
+    def generate_mipmaps(image):
+        """Generate mipmap chain"""
+        mipmaps = [image]
+        current = image
+        
+        while current.width > 1 and current.height > 1:
+            new_size = (max(1, current.width // 2), max(1, current.height // 2))
+            current = current.resize(new_size, Image.LANCZOS)
+            mipmaps.append(current)
+            
+        return mipmaps
+    
+    @staticmethod
+    def compress_for_mobile(mipmaps):
+        """Apply ASTC compression for mobile"""
+        # Use engine's built-in compressor
+        return Asset.compress_astc(mipmaps, quality='high')
+
+
+# Editor Tool: Level Generator
+class ProceduralLevelGenerator:
+    """Generate game levels procedurally"""
+    
+    def __init__(self, seed: int = None):
+        self.rng = np.random.RandomState(seed)
+        
+    def generate_dungeon(self, width: int, height: int, room_count: int) -> dict:
+        """Generate a dungeon layout"""
+        rooms = []
+        corridors = []
+        
+        # Generate rooms
+        for _ in range(room_count):
+            room = self.generate_room(width, height, rooms)
+            if room:
+                rooms.append(room)
+                
+        # Connect rooms with corridors
+        for i in range(len(rooms) - 1):
+            corridor = self.connect_rooms(rooms[i], rooms[i + 1])
+            corridors.append(corridor)
+            
+        # Create level data
+        level_data = {
+            'rooms': rooms,
+            'corridors': corridors,
+            'spawn_point': rooms[0]['center'],
+            'exit_point': rooms[-1]['center']
+        }
+        
+        return level_data
+    
+    def generate_room(self, max_x, max_y, existing_rooms):
+        """Generate a single room that doesn't overlap"""
+        for _ in range(100):  # Max attempts
+            w = self.rng.randint(5, 15)
+            h = self.rng.randint(5, 15)
+            x = self.rng.randint(0, max_x - w)
+            y = self.rng.randint(0, max_y - h)
+            
+            room = {
+                'x': x, 'y': y, 'width': w, 'height': h,
+                'center': (x + w // 2, y + h // 2)
+            }
+            
+            if not any(self.rooms_overlap(room, r) for r in existing_rooms):
+                return room
+                
+        return None
+    
+    def rooms_overlap(self, room1, room2):
+        """Check if two rooms overlap"""
+        return not (room1['x'] + room1['width'] < room2['x'] or
+                   room2['x'] + room2['width'] < room1['x'] or
+                   room1['y'] + room1['height'] < room2['y'] or
+                   room2['y'] + room2['height'] < room1['y'])
+    
+    def connect_rooms(self, room1, room2):
+        """Create a corridor between two rooms"""
+        x1, y1 = room1['center']
+        x2, y2 = room2['center']
+        
+        # L-shaped corridor
+        if self.rng.random() < 0.5:
+            return [(x1, y1), (x2, y1), (x2, y2)]
+        else:
+            return [(x1, y1), (x1, y2), (x2, y2)]
+
+
+# Register with engine
+if __name__ == "__main__":
+    # Register AI trainer as editor tool
+    Engine.register_tool("AI Trainer", AITrainer)
+    
+    # Register asset processor
+    Engine.register_tool("Asset Processor", AssetProcessor)
+    
+    # Register level generator
+    Engine.register_tool("Procedural Level Generator", ProceduralLevelGenerator)
+```
+
+#### C# - Unity-Style Scripting (Bridge)
+
+**Why C#**:
+- 🎮 **Unity migration** - Familiar to millions of developers
+- 💼 **Enterprise support** - .NET ecosystem, tooling
+- 🔒 **Type safety** - Catch errors at compile time
+- 📚 **Rich libraries** - NuGet packages
+
+```csharp
+// C#: Unity-Style Player Controller (Works in NovaCore)
+using NovaCore;
+using NovaCore.Physics;
+using NovaCore.Input;
+using NovaCore.Audio;
+
+namespace MyGame
+{
+    [RequireComponent(typeof(RigidBody))]
+    [RequireComponent(typeof(Animator))]
+    public class PlayerController : MonoBehaviour
+    {
+        // Serialized fields (editable in Inspector)
+        [SerializeField] private float moveSpeed = 5.0f;
+        [SerializeField] private float jumpForce = 500.0f;
+        [SerializeField] private float rotationSpeed = 720.0f;
+        [SerializeField] private LayerMask groundLayer;
+        
+        // Private components
+        private RigidBody rb;
+        private Animator animator;
+        private bool isGrounded;
+        
+        // State
+        private Vector3 moveDirection;
+        private float currentSpeed;
+        
+        void Awake()
+        {
+            rb = GetComponent<RigidBody>();
+            animator = GetComponent<Animator>();
+        }
+        
+        void Update()
+        {
+            // Get input
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
+            
+            // Calculate movement direction
+            moveDirection = new Vector3(horizontal, 0, vertical).Normalized;
+            currentSpeed = moveDirection.Magnitude * moveSpeed;
+            
+            // Rotate towards movement direction
+            if (moveDirection.Magnitude > 0.1f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+                transform.Rotation = Quaternion.RotateTowards(
+                    transform.Rotation, 
+                    targetRotation, 
+                    rotationSpeed * Time.DeltaTime
+                );
+            }
+            
+            // Handle jumping
+            if (Input.GetButtonDown("Jump") && isGrounded)
+            {
+                Jump();
+            }
+            
+            // Update animator
+            animator.SetFloat("Speed", currentSpeed);
+            animator.SetBool("IsGrounded", isGrounded);
+        }
+        
+        void FixedUpdate()
+        {
+            // Apply movement
+            Vector3 movement = moveDirection * moveSpeed * Time.FixedDeltaTime;
+            rb.MovePosition(transform.Position + movement);
+            
+            // Ground check
+            isGrounded = Physics.Raycast(
+                transform.Position, 
+                Vector3.Down, 
+                1.1f, 
+                groundLayer
+            );
+        }
+        
+        private void Jump()
+        {
+            rb.AddForce(Vector3.Up * jumpForce, ForceMode.Impulse);
+            animator.SetTrigger("Jump");
+            AudioManager.PlaySound("player_jump", transform.Position);
+        }
+        
+        void OnCollisionEnter(Collision collision)
+        {
+            if (collision.GameObject.CompareTag("Enemy"))
+            {
+                // Take damage
+                Health health = GetComponent<Health>();
+                health.TakeDamage(10, collision.GameObject);
+            }
+        }
+    }
+}
+```
+
+### Visual Scripting System (NovaGraph)
+
+**NovaGraph** is NovaCore's **production-grade visual scripting system** - designed to be **better than Unreal Blueprints and Unity Visual Scripting**.
+
+**Why NovaGraph is World-Best**:
+- ✅ **Compiles to native code** - Same performance as C++
+- ✅ **Full API access** - Everything C++ can do, NovaGraph can do
+- ✅ **Live debugging** - See values flow through nodes in real-time
+- ✅ **AI assistance** - Natural language to node graph
+- ✅ **Git-friendly** - Text-based format for version control
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      NOVAGRAPH VISUAL SCRIPTING SYSTEM                          │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  NODE CATEGORIES:                                                                │
+│  ═══════════════════════════════════════════════════════════════════════════════│
+│                                                                                  │
+│  EVENTS (Entry Points)           FLOW CONTROL              VARIABLES            │
+│  ─────────────────────           ────────────              ─────────            │
+│  • OnStart                       • Branch                  • Get Variable        │
+│  • OnUpdate                      • Switch                  • Set Variable        │
+│  • OnFixedUpdate                 • Sequence                • Local Variable      │
+│  • OnDestroy                     • ForLoop                 • Array Operations    │
+│  • OnCollisionEnter              • WhileLoop               • Dictionary Ops      │
+│  • OnCollisionExit               • ForEach                 • Struct Operations   │
+│  • OnTriggerEnter                • Gate                                          │
+│  • OnTriggerExit                 • DoOnce                  MATH                  │
+│  • OnMouseClick                  • Delay                   ────                  │
+│  • OnKeyPress                    • Timeline                • Add / Subtract      │
+│  • OnAnimationEvent              • Parallel                • Multiply / Divide   │
+│  • OnNetworkMessage              • Race                    • Power / Sqrt        │
+│  • Custom Event                                            • Sin / Cos / Tan     │
+│                                  ENTITY                    • Lerp / Clamp        │
+│  INPUT                           ──────                    • Random              │
+│  ─────                           • Get Component           • Abs / Sign          │
+│  • Get Axis                      • Add Component           • Min / Max           │
+│  • Get Button                    • Remove Component        • Floor / Ceil        │
+│  • Get Button Down               • Get Entity                                    │
+│  • Get Button Up                 • Spawn Entity            VECTOR                │
+│  • Get Mouse Position            • Destroy Entity          ──────                │
+│  • Get Touch                     • Find By Tag             • Make Vector         │
+│  • Get Gamepad                   • Find By Name            • Break Vector        │
+│  • Get Gesture                   • Get Children            • Normalize           │
+│  • Raycast                       • Get Parent              • Dot Product         │
+│                                  • Set Active              • Cross Product       │
+│  PHYSICS                                                   • Distance            │
+│  ───────                         TRANSFORM                 • Reflect             │
+│  • Add Force                     ─────────                                       │
+│  • Add Torque                    • Get Position            RENDERING             │
+│  • Set Velocity                  • Set Position            ─────────             │
+│  • Get Velocity                  • Get Rotation            • Set Material        │
+│  • Move Position                 • Set Rotation            • Set Color           │
+│  • Raycast                       • Get Scale               • Enable/Disable      │
+│  • Sphere Cast                   • Set Scale               • Set Texture         │
+│  • Overlap Sphere                • LookAt                  • Spawn VFX           │
+│  • Overlap Box                   • Translate                                     │
+│                                  • Rotate                  AUDIO                 │
+│  ANIMATION                       • Move Towards            ─────                 │
+│  ─────────                       • Rotate Towards          • Play Sound          │
+│  • Play Animation                                          • Stop Sound          │
+│  • Stop Animation                AI / NAVIGATION           • Set Volume          │
+│  • Cross Fade                    ─────────────             • Play Music          │
+│  • Set Parameter                 • Move To                 • Fade Audio          │
+│  • Get Current State             • Follow Path                                   │
+│  • Set IK Target                 • Find Path               NETWORKING            │
+│  • Set Root Motion               • Avoid Obstacle          ──────────            │
+│                                  • Patrol                  • RPC Call            │
+│  UI                              • Behavior Tree           • Sync Variable       │
+│  ──                                                        • Is Server           │
+│  • Get UI Element                UTILITY                   • Is Client           │
+│  • Set Text                      ───────                   • Spawn Network       │
+│  • Set Image                     • Print / Log                                   │
+│  • Set Progress                  • Format String           CUSTOM                │
+│  • Show / Hide                   • Timer                   ──────                │
+│  • Animate UI                    • Delay                   • Execute Lua         │
+│  • Button Click                  • Random                  • Execute Python      │
+│  • Slider Change                 • Save / Load             • Execute Mojo        │
+│                                  • Scene Load              • Call C++ Function   │
+│                                                            • Create Custom Node  │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Cross-Language Interoperability
+
+**Call any language from any other language** - NovaCore's Unified Binding Layer handles all conversions automatically.
+
+```lua
+-- Lua calling Python AI, C++ physics, and JavaScript UI
+local function UpdateEnemy(enemy)
+    -- Call Python AI for decision making
+    local decision = Python.call("ai_brain.decide", {
+        enemy_pos = enemy.transform.position,
+        player_pos = player.transform.position,
+        enemy_health = enemy.health
+    })
+    
+    -- Call C++ physics for movement
+    CPP.call("physics_move_towards", enemy.rigidbody, decision.target_pos, 5.0)
+    
+    -- Call JavaScript UI to update health bar
+    JavaScript.call("ui.updateHealthBar", enemy.id, enemy.health)
+    
+    -- Call Mojo for neural network inference
+    local predicted_action = Mojo.call("npc_brain.predict", enemy.state_vector)
+end
+```
+
+### Script Security & Sandboxing
+
+**Enterprise-grade security** for running untrusted code (modding, UGC):
+
+```json
+{
+  "script_security": {
+    "sandbox_levels": {
+      "trusted": {
+        "file_access": "full",
+        "network_access": "full",
+        "system_calls": "allowed",
+        "memory_limit": "unlimited"
+      },
+      "game_scripts": {
+        "file_access": "game_directory_only",
+        "network_access": "game_server_only",
+        "system_calls": "blocked",
+        "memory_limit": "256MB"
+      },
+      "mod_scripts": {
+        "file_access": "mod_directory_only",
+        "network_access": "blocked",
+        "system_calls": "blocked",
+        "memory_limit": "64MB",
+        "cpu_time_limit": "100ms_per_frame"
+      },
+      "user_generated": {
+        "file_access": "none",
+        "network_access": "none",
+        "system_calls": "blocked",
+        "memory_limit": "16MB",
+        "cpu_time_limit": "10ms_per_frame",
+        "blocked_apis": ["System", "File", "Network", "Process"]
+      }
+    },
+    
+    "permission_system": {
+      "grant_on_first_use": true,
+      "user_approval_required": ["file_write", "network", "camera", "microphone"],
+      "audit_logging": true,
+      "revocable": true
+    }
+  }
+}
+```
+
+### Hot-Reload System
+
+**Change code while the game runs** - No restart, no state loss:
+
+```
+HOT-RELOAD CAPABILITIES:
+═══════════════════════════════════════════════════════════════════════════════
+
+LANGUAGE         RELOAD TIME    STATE PRESERVED    WORKS IN PLAY MODE
+─────────────    ───────────    ───────────────    ──────────────────
+Lua              <50ms          ✅ Full            ✅ Yes
+JavaScript       <50ms          ✅ Full            ✅ Yes
+Python           <100ms         ✅ Full            ✅ Yes
+Mojo             <500ms         ✅ Full            ✅ Yes
+C#               <2 sec         ✅ Full            ✅ Yes
+Visual Script    Instant        ✅ Full            ✅ Yes
+Shaders          <1 sec         ✅ Full            ✅ Yes
+C++              Rebuild        ⚠️ Partial         ❌ Stop required
+Rust             Rebuild        ⚠️ Partial         ❌ Stop required
+
+HOW IT WORKS:
+1. File system watcher detects changes
+2. Compiler/interpreter reloads changed files
+3. Object references are patched to new code
+4. Existing state (variables, positions) preserved
+5. Execution continues seamlessly
+```
+
+### Debugging Tools
+
+**Professional debugging for ALL languages**:
+
+```
+DEBUGGING FEATURES:
+═══════════════════════════════════════════════════════════════════════════════
+
+BREAKPOINTS
+• Line breakpoints          - Break at specific line
+• Conditional breakpoints   - Break when condition is true
+• Logpoints                 - Print without breaking
+• Function breakpoints      - Break when function is called
+• Exception breakpoints     - Break on error
+
+STEPPING
+• Step Over                 - Execute line, skip into functions
+• Step Into                 - Enter function calls
+• Step Out                  - Exit current function
+• Continue                  - Run until next breakpoint
+• Run to Cursor             - Run until selected line
+
+INSPECTION
+• Local variables           - See all variables in scope
+• Watch expressions         - Evaluate custom expressions
+• Call stack                - See function call hierarchy
+• Threads                   - Debug multi-threaded code
+• Memory                    - Inspect raw memory
+
+VISUAL SCRIPT DEBUGGING
+• Flow visualization        - See execution path highlighted
+• Value display             - See values on node pins
+• Slow-motion execution     - Step through nodes slowly
+• Replay                    - Rewind and replay execution
+```
+
+---
+
 ### Logging/Profiling
 
 **Tracy Profiler**:
@@ -8822,6 +9730,621 @@ class ParticlePhysicsCoupling {
 **Neural Compression**:
 - Export materials as 200KB MLPs
 - Lossy but visually identical
+
+---
+
+## 🎮 NOVACORE EDITOR & GAME BUILDER - WORLD'S BEST IDE
+
+### Complete Integrated Development Environment (Better Than Unity/Unreal/Godot)
+
+**NovaCore Editor** is a **complete, production-grade game development environment** that runs on mobile, web, and XR devices. This is the **world's first mobile-native AAA game engine IDE**.
+
+**Why NovaCore Editor is World-Best**:
+- ✅ **Full IDE on mobile** - Make AAA games on your phone
+- ✅ **XR spatial editing** - Edit in VR/AR with hand tracking
+- ✅ **Faster than competitors** - <1 second iteration on all changes
+- ✅ **All languages supported** - Use any programming language
+- ✅ **AI-powered** - Natural language to code/assets/levels
+- ✅ **Real-time collaboration** - Multiple developers, same scene
+
+### Editor Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                        NOVACORE EDITOR ARCHITECTURE                              │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                         EDITOR APPLICATION                               │    │
+│  │  ┌──────────────────────────────────────────────────────────────────┐   │    │
+│  │  │  WORKSPACE MANAGER                                                │   │    │
+│  │  │  • Docking system (like VS Code / Unity)                         │   │    │
+│  │  │  • Multiple layouts (programming, art, level design, audio)      │   │    │
+│  │  │  • Panel management (scene, inspector, hierarchy, console)       │   │    │
+│  │  │  • Keyboard shortcuts (customizable, cross-platform)             │   │    │
+│  │  └──────────────────────────────────────────────────────────────────┘   │    │
+│  │                                                                          │    │
+│  │  ┌──────────────────────────────────────────────────────────────────┐   │    │
+│  │  │  CORE EDITORS                                                     │   │    │
+│  │  │  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐     │   │    │
+│  │  │  │   Scene    │ │    Code    │ │  Material  │ │ Animation  │     │   │    │
+│  │  │  │   Editor   │ │   Editor   │ │   Editor   │ │   Editor   │     │   │    │
+│  │  │  └────────────┘ └────────────┘ └────────────┘ └────────────┘     │   │    │
+│  │  │  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐     │   │    │
+│  │  │  │   Visual   │ │  Particle  │ │   Audio    │ │    UI      │     │   │    │
+│  │  │  │  Scripting │ │   & VFX    │ │  Designer  │ │  Builder   │     │   │    │
+│  │  │  └────────────┘ └────────────┘ └────────────┘ └────────────┘     │   │    │
+│  │  │  ┌────────────┐ ┌────────────┐ ┌────────────┐ ┌────────────┐     │   │    │
+│  │  │  │  Terrain   │ │    AI      │ │  Physics   │ │  Sequencer │     │   │    │
+│  │  │  │ Landscape  │ │ Behavior   │ │  Debugger  │ │ Cutscenes  │     │   │    │
+│  │  │  └────────────┘ └────────────┘ └────────────┘ └────────────┘     │   │    │
+│  │  └──────────────────────────────────────────────────────────────────┘   │    │
+│  │                                                                          │    │
+│  │  ┌──────────────────────────────────────────────────────────────────┐   │    │
+│  │  │  TOOLS & UTILITIES                                                │   │    │
+│  │  │  • Asset Browser & Content Manager                               │   │    │
+│  │  │  • Project Settings & Build Configuration                        │   │    │
+│  │  │  • Profiler & Performance Analyzer                               │   │    │
+│  │  │  • Version Control Integration (Git, Perforce, Plastic)          │   │    │
+│  │  │  • Localization Manager                                          │   │    │
+│  │  │  • Plugin Manager                                                │   │    │
+│  │  │  • Collaboration & Team Features                                 │   │    │
+│  │  └──────────────────────────────────────────────────────────────────┘   │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Scene Editor - World-Class 3D/2D Editing
+
+**Scene View Features**:
+
+| Feature | Description | Better Than |
+|---------|-------------|-------------|
+| **Multi-View** | 4 simultaneous viewports (perspective + ortho) | Unity/Unreal |
+| **Infinite Undo** | Complete operation history with branching | All competitors |
+| **Live Physics** | Preview physics while editing | Unique to NovaCore |
+| **AI Placement** | "Place trees naturally along path" | Unique to NovaCore |
+| **Real-time GI** | See lighting changes instantly | Faster than Unreal |
+| **Layer System** | Unlimited editing layers with visibility | More powerful |
+| **Multi-Select** | Select across scenes, bulk operations | More comprehensive |
+
+**Navigation Controls**:
+```
+KEYBOARD/MOUSE (Desktop):
+├── Pan: Middle Mouse Drag
+├── Orbit: Right Mouse Drag  
+├── Zoom: Scroll Wheel
+├── Fly: Hold Right + WASD
+├── Focus: F (frame selected)
+├── Snap to Ground: End key
+└── Quick Views: Numpad 1-9
+
+TOUCH (Mobile):
+├── Pan: Two-finger drag
+├── Orbit: Two-finger rotate
+├── Zoom: Pinch
+├── Fly: Virtual joystick
+├── Focus: Double-tap
+└── Menu: Long press
+
+XR (Vision Pro / Quest):
+├── Pan: Grab empty space + drag
+├── Orbit: Two-hand rotate gesture
+├── Zoom: Pull hands apart/together
+├── Fly: Point and move
+├── Focus: Gaze + pinch
+└── Menu: Voice command "Menu"
+```
+
+**Transform Tools**:
+```
+GIZMO MODES:
+├── Move (W) - Translate on X/Y/Z axes
+├── Rotate (E) - Rotate around pivot point
+├── Scale (R) - Uniform or non-uniform scaling
+├── Rect (T) - 2D rectangle manipulation
+├── Universal (Y) - All transforms in one gizmo
+└── Custom Pivot - User-defined transform center
+
+COORDINATE SPACES:
+├── World - Global axes
+├── Local - Object's own axes
+├── View - Camera-relative axes
+├── Parent - Parent object's axes
+└── Custom - User-defined orientation
+
+SNAPPING:
+├── Grid Snap: Configurable (0.1, 0.25, 0.5, 1.0, etc.)
+├── Rotation Snap: 5°, 15°, 45°, 90°
+├── Scale Snap: 0.1, 0.25, 0.5, 1.0
+├── Surface Snap: Align to geometry
+├── Vertex Snap: Snap to vertices
+└── Pivot Snap: Snap pivots together
+```
+
+### Code Editor - Full-Featured IDE
+
+**NovaCore includes a complete code editor** with professional features for all supported languages.
+
+**IDE Features**:
+```
+CODE INTELLIGENCE:
+├── IntelliSense / Auto-complete
+│   ├── Context-aware suggestions
+│   ├── Parameter hints
+│   ├── Documentation popups
+│   └── Import suggestions
+├── Syntax Highlighting (all languages)
+├── Error Detection (real-time)
+├── Linting (configurable rules)
+├── Code Formatting (auto-format on save)
+├── Refactoring
+│   ├── Rename symbol
+│   ├── Extract method
+│   ├── Extract variable
+│   ├── Move to file
+│   └── Organize imports
+└── Navigation
+    ├── Go to Definition (F12)
+    ├── Find All References (Shift+F12)
+    ├── Go to Symbol (Ctrl+T)
+    ├── Peek Definition (Alt+F12)
+    └── Breadcrumbs
+
+EDITING:
+├── Multi-cursor editing
+├── Column selection
+├── Code folding
+├── Bracket matching
+├── Comment toggling
+├── Line operations (move, duplicate, delete)
+├── Find & Replace (regex support)
+└── Search across files
+
+DEBUGGING:
+├── Breakpoints (line, conditional, logpoint)
+├── Step through code (over, into, out)
+├── Variable inspection
+├── Call stack view
+├── Watch expressions
+├── Debug console
+└── Exception handling
+
+VERSION CONTROL:
+├── Git integration (inline diff, blame)
+├── Change indicators
+├── Merge conflict resolution
+└── Commit from editor
+```
+
+### Visual Scripting - NovaGraph (Production-Grade)
+
+**NovaGraph** is NovaCore's **Blueprint-style visual scripting system** that compiles to native code for zero performance overhead.
+
+**Why NovaGraph is Better**:
+- ✅ **Compiles to C++/Mojo** - Same speed as hand-written code
+- ✅ **Full API access** - Every engine feature available
+- ✅ **Debugging** - Breakpoints, value inspection, slow-motion playback
+- ✅ **AI Generation** - "Create a double-jump mechanic" → nodes
+- ✅ **Type-safe** - Catch errors before running
+- ✅ **Version control** - Text-based format, clean diffs
+
+### Asset Browser - Complete Content Management
+
+**Asset Types & Features**:
+
+| Asset Type | Preview | Import From | Export To |
+|------------|---------|-------------|-----------|
+| **3D Models** | Rotating 3D | FBX, GLTF, OBJ, USD, Blender | FBX, GLTF, OBJ, USD |
+| **Textures** | 2D + Channels | PNG, JPG, EXR, PSD, TGA | PNG, JPG, EXR |
+| **Materials** | Sphere/Cube | Substance, USD | Custom, GLTF |
+| **Audio** | Waveform + Play | WAV, OGG, MP3, FLAC | WAV, OGG |
+| **Animations** | Skeleton + Play | FBX, BVH, GLTF | FBX, GLTF |
+| **Scripts** | Code preview | All languages | All languages |
+| **Scenes** | Thumbnail | Unity, Unreal, Godot | Custom |
+| **Prefabs** | 3D preview | Custom | Custom |
+| **VFX** | Animated | Custom | Custom |
+
+**Asset Operations**:
+```
+IMPORT:
+├── Drag-and-drop from file system
+├── Batch import with settings preset
+├── Format auto-detection
+├── Missing reference resolution
+├── Automatic optimization
+└── Dependency tracking
+
+ORGANIZATION:
+├── Folder structure (mirrors file system)
+├── Labels/Tags for categorization
+├── Search with filters
+├── Favorites for quick access
+├── Recent items
+└── Asset bundles
+
+OPERATIONS:
+├── Rename (updates all references)
+├── Move (updates all references)
+├── Duplicate
+├── Delete (with reference check)
+├── Find references
+└── Reimport
+
+VERSION CONTROL:
+├── Lock/Unlock for exclusive edit
+├── Diff comparison
+├── History view
+├── Revert to version
+└── Merge conflict resolution
+```
+
+### Material Editor - Substrate 2.0
+
+**Node-based material system** with 200+ built-in nodes:
+
+```
+MATERIAL NODES:
+═══════════════════════════════════════════════════════════════════════════════
+
+INPUTS:                    MATH:                      TEXTURE:
+├── Texture Sample        ├── Add/Subtract           ├── Sample 2D
+├── Constant (float)      ├── Multiply/Divide        ├── Sample Cube
+├── Constant (color)      ├── Power/Sqrt             ├── Normal Map
+├── Constant (vector)     ├── Sin/Cos/Tan            ├── Blur
+├── Parameter             ├── Lerp                   ├── Sharpen
+├── Vertex Color          ├── Clamp/Saturate         ├── Parallax
+├── UV Coordinates        ├── Abs/Sign               ├── Triplanar
+└── Time                  └── Dot/Cross              └── Flow Map
+
+COLOR:                     PROCEDURAL:                UTILITY:
+├── HSV Adjust            ├── Perlin Noise           ├── Fresnel
+├── Brightness            ├── Voronoi                ├── View Direction
+├── Contrast              ├── Gradient               ├── World Position
+├── Overlay               ├── Checker                ├── Object Position
+├── Blend Modes           ├── Brick                  ├── Screen Position
+├── Color Ramp            ├── Dots                   ├── Reflection Vector
+└── Hue Shift             └── Custom Function        └── Vertex Normal
+
+OUTPUT (PBR):
+├── Base Color (Albedo)
+├── Normal
+├── Metallic
+├── Roughness
+├── Ambient Occlusion
+├── Emissive
+├── Opacity
+├── Displacement
+├── Subsurface
+├── Clear Coat
+├── Anisotropy
+└── Custom Data
+```
+
+### Animation Editor - Timeline & State Machine
+
+**Complete animation system**:
+
+```
+ANIMATION FEATURES:
+═══════════════════════════════════════════════════════════════════════════════
+
+TIMELINE:
+├── Keyframe editing (transform, properties)
+├── Curve editor (bezier, linear, stepped)
+├── Dope sheet view
+├── Multi-track editing
+├── Animation layers (additive, override)
+├── Animation events (trigger callbacks)
+├── Root motion extraction
+└── Preview in viewport
+
+STATE MACHINE:
+├── Visual state graph editor
+├── Transition conditions
+├── Blend trees (1D, 2D, directional)
+├── Sub-state machines
+├── Animation parameters
+├── Preview transitions
+└── Debug visualization
+
+RETARGETING:
+├── Automatic skeleton mapping
+├── Manual bone remapping
+├── Scale correction
+├── IK constraint preservation
+└── Preview before apply
+
+IMPORT/EXPORT:
+├── FBX (full support)
+├── GLTF (animations)
+├── BVH (motion capture)
+├── Alembic (vertex animation)
+└── Custom format optimization
+```
+
+### Terrain & Landscape Editor
+
+**Professional terrain tools**:
+
+```
+TERRAIN TOOLS:
+═══════════════════════════════════════════════════════════════════════════════
+
+SCULPTING:
+├── Raise/Lower - Height modification
+├── Smooth - Average heights
+├── Flatten - Level to target
+├── Stamp - Apply heightmap stamp
+├── Erosion - Hydraulic/thermal simulation
+├── Noise - Procedural terrain
+└── Clone - Copy terrain areas
+
+PAINTING:
+├── Texture layers (up to 16)
+├── Blend masks (auto or manual)
+├── Detail textures
+├── Wetness/puddles
+├── Snow accumulation
+└── Procedural rules
+
+FOLIAGE:
+├── Tree painting
+├── Grass/ground cover
+├── Rocks/props
+├── Density control
+├── Slope constraints
+├── Altitude constraints
+├── Collision avoidance
+└── LOD management
+
+PROCEDURAL:
+├── World Machine import
+├── Gaea import  
+├── Height from image
+├── Erosion simulation
+├── River carving
+├── Road/path creation
+└── City placement
+```
+
+### Audio Designer
+
+**Complete audio authoring**:
+
+```
+AUDIO TOOLS:
+═══════════════════════════════════════════════════════════════════════════════
+
+MIXER:
+├── Channel groups (unlimited)
+├── Sends/returns
+├── Effects chain (EQ, reverb, delay, etc.)
+├── Volume automation
+├── Duck/sidechain
+└── Snapshot system
+
+3D AUDIO:
+├── Spatial positioning
+├── Distance attenuation curves
+├── Doppler effect
+├── Occlusion/obstruction
+├── Reverb zones
+├── HRTF binaural
+└── Ambisonics support
+
+SOUND DESIGN:
+├── Waveform editor
+├── Sound variations (random pitch, volume)
+├── Layered sounds
+├── Crossfade loops
+├── Granular synthesis
+└── Procedural generation
+
+MUSIC:
+├── Adaptive music system
+├── Horizontal re-sequencing
+├── Vertical layering
+├── Tempo/beat matching
+├── Stingers/transitions
+└── MIDI support
+
+INTEGRATION:
+├── Wwise 2025 (full support)
+├── FMOD Studio 2025 (full support)
+├── Native audio engine
+└── Custom DSP plugins
+```
+
+### UI Builder - Nova UI
+
+**Visual UI design system**:
+
+```
+UI COMPONENTS:
+═══════════════════════════════════════════════════════════════════════════════
+
+LAYOUT:
+├── Canvas (screen/world space)
+├── Panel (container)
+├── Stack Layout (horizontal/vertical)
+├── Grid Layout
+├── Scroll View
+├── Tab View
+└── Split View
+
+INPUT:
+├── Button (states, events)
+├── Toggle/Checkbox
+├── Slider
+├── Progress Bar
+├── Text Input
+├── Dropdown
+├── Color Picker
+└── Date Picker
+
+DISPLAY:
+├── Label/Text (rich text, markup)
+├── Image
+├── Raw Image (render texture)
+├── Video Player
+├── Chart/Graph
+├── 3D View (render 3D in UI)
+└── Web View
+
+ANIMATION:
+├── Transitions (fade, slide, scale)
+├── State animations
+├── Curve-based animation
+├── Particle effects
+└── Shader effects
+
+RESPONSIVE:
+├── Anchors (edge/corner)
+├── Pivots
+├── Aspect ratio fitter
+├── Content size fitter
+├── Safe area handling
+└── Layout groups
+```
+
+### Build System & Deployment
+
+**One-click deployment to all platforms**:
+
+```
+BUILD TARGETS:
+═══════════════════════════════════════════════════════════════════════════════
+
+MOBILE:
+├── Android (APK, AAB)
+│   ├── Min SDK: 21 (Android 5.0)
+│   ├── Target SDK: 34 (Android 14)
+│   ├── Architectures: ARM64, ARMv7, x86_64
+│   └── Split APKs for size optimization
+├── iOS (IPA)
+│   ├── Min iOS: 11.0
+│   ├── Architectures: ARM64
+│   └── App Store / TestFlight ready
+└── Progressive Web App (PWA)
+    ├── Service worker for offline
+    ├── Web manifest
+    └── Installable from browser
+
+BUILD OPTIONS:
+├── Debug (full debugging, no optimization)
+├── Development (debugging + some optimization)
+├── Profile (optimized + profiling enabled)
+└── Release (full optimization, code stripping)
+
+OPTIMIZATION:
+├── Code stripping (remove unused code)
+├── Asset compression (platform-specific)
+├── Texture compression (ASTC, ETC2, BC7)
+├── Mesh optimization (LOD, simplification)
+├── Audio compression (platform-specific)
+└── Shader compilation (offline)
+
+SIGNING:
+├── Android: Keystore management
+├── iOS: Certificate/profile management
+└── Automatic signing available
+
+OUTPUT:
+├── Build size report
+├── Dependency analysis
+├── Performance estimates
+└── Compatibility warnings
+```
+
+### Collaboration & Team Features
+
+**Real-time multiplayer editing**:
+
+```
+COLLABORATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+REAL-TIME SYNC:
+├── Live cursors (see where others are)
+├── Selection highlighting
+├── Transform sync (see others' edits)
+├── Comment threads on objects
+├── Voice chat integration
+└── Screen sharing
+
+ASSET LOCKING:
+├── Check out for exclusive edit
+├── Lock indicators
+├── Force unlock (admin)
+└── Automatic lock on edit
+
+REVIEW WORKFLOW:
+├── Submit for review
+├── Approval/rejection
+├── Feedback comments
+├── Version comparison
+└── Merge request
+
+PERMISSIONS:
+├── Role-based access (viewer, editor, admin)
+├── Per-folder permissions
+├── Per-asset permissions
+└── Audit logging
+```
+
+### Plugin & Extension System
+
+**Extend NovaCore with custom tools**:
+
+```
+PLUGIN TYPES:
+═══════════════════════════════════════════════════════════════════════════════
+
+EDITOR PLUGINS:
+├── Custom windows/panels
+├── Custom inspectors
+├── Menu extensions
+├── Toolbar buttons
+├── Context menu items
+├── Gizmos/handles
+└── Asset importers/exporters
+
+RUNTIME PLUGINS:
+├── Custom components
+├── Render features
+├── Physics extensions
+├── Audio processors
+├── Network protocols
+└── Platform integrations
+
+SCRIPT PLUGINS:
+├── New language support
+├── Custom node types (visual script)
+├── API extensions
+└── Code generators
+
+PLUGIN MANIFEST:
+{
+  "name": "MyPlugin",
+  "version": "1.0.0",
+  "author": "Developer",
+  "description": "Custom editor tool",
+  "entry_point": "plugin.lua",
+  "dependencies": [],
+  "permissions": ["file_read", "network"],
+  "editor_extensions": {
+    "panels": ["MyCustomPanel"],
+    "menus": [
+      { "path": "Tools/MyTool", "action": "OpenMyTool" }
+    ],
+    "inspectors": {
+      "MyComponent": "MyComponentInspector"
+    }
+  }
+}
+```
 
 ---
 
@@ -12499,6 +14022,2218 @@ A: Yes, completely commercial-friendly. Free for individuals, indie studios, and
 3. Custom systems development
 4. Engine extension/modification
 5. Platform-specific optimization
+
+---
+
+## 🌐 NOVAFORGE UNIFIED PLATFORM INTEGRATION
+
+### Complete All-in-One Platform Architecture
+
+**NovaForge** is a **unified 3-in-1 platform** delivered as a single mobile-first application that seamlessly integrates:
+1. **NovaCore Editor** - Full game development IDE
+2. **NovaForge Asset Store** - Marketplace for assets, templates, and plugins
+3. **NovaForge Game Library** - Platform to publish, discover, and play games
+
+All components are **deeply integrated** to provide a seamless experience from development to publishing to playing.
+
+```
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                     NOVAFORGE UNIFIED PLATFORM ARCHITECTURE                      │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│                                                                                  │
+│  ┌─────────────────────────────────────────────────────────────────────────┐    │
+│  │                         SINGLE APP EXPERIENCE                            │    │
+│  │  ┌───────────────────┐ ┌───────────────────┐ ┌───────────────────┐      │    │
+│  │  │   🛠️ CREATE       │ │   🛒 STORE        │ │   🎮 PLAY         │      │    │
+│  │  │   NovaCore Editor │ │   Asset Store     │ │   Game Library    │      │    │
+│  │  │                   │ │                   │ │                   │      │    │
+│  │  │ • Scene Editor    │ │ • 3D Models       │ │ • Browse Games    │      │    │
+│  │  │ • Code Editor     │ │ • Textures        │ │ • Play Instantly  │      │    │
+│  │  │ • Visual Script   │ │ • Audio           │ │ • Rate & Review   │      │    │
+│  │  │ • Material Editor │ │ • Animations      │ │ • Follow Devs     │      │    │
+│  │  │ • AI Generation   │ │ • Scripts         │ │ • Leaderboards    │      │    │
+│  │  │ • Build & Test    │ │ • Templates       │ │ • Achievements    │      │    │
+│  │  │ • Publish         │ │ • Complete Games  │ │ • Cloud Saves     │      │    │
+│  │  └───────────────────┘ └───────────────────┘ └───────────────────┘      │    │
+│  │            │                    │                    │                   │    │
+│  │            └────────────────────┴────────────────────┘                   │    │
+│  │                              │                                           │    │
+│  │                              ▼                                           │    │
+│  │  ┌─────────────────────────────────────────────────────────────────┐    │    │
+│  │  │                    UNIFIED BACKEND SERVICES                      │    │    │
+│  │  │  • User Accounts & Profiles                                      │    │    │
+│  │  │  • Cloud Storage & Sync                                          │    │    │
+│  │  │  • Payment Processing                                            │    │    │
+│  │  │  • Content Delivery Network                                      │    │    │
+│  │  │  • Review & Moderation System                                    │    │    │
+│  │  │  • Analytics & Telemetry                                         │    │    │
+│  │  │  • Multiplayer Services                                          │    │    │
+│  │  │  • AI Generation Services                                        │    │    │
+│  │  └─────────────────────────────────────────────────────────────────┘    │    │
+│  └─────────────────────────────────────────────────────────────────────────┘    │
+│                                                                                  │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Platform Navigation & User Flows
+
+**Single App Entry Points**:
+```
+APP LAUNCH → HOME SCREEN
+├── [🛠️ CREATE] → NovaCore Editor
+│   ├── New Project
+│   ├── Open Project
+│   ├── Recent Projects
+│   └── Templates (from Asset Store)
+├── [🛒 STORE] → Asset Store
+│   ├── Browse Categories
+│   ├── Search Assets
+│   ├── My Purchases
+│   └── Sell Assets
+├── [🎮 PLAY] → Game Library
+│   ├── Featured Games
+│   ├── Browse Categories
+│   ├── My Games (Published)
+│   ├── Favorites
+│   └── Play History
+└── [👤 PROFILE] → User Account
+    ├── My Profile
+    ├── My Games (as Developer)
+    ├── My Assets (as Creator)
+    ├── Earnings Dashboard
+    ├── Settings
+    └── Logout
+```
+
+---
+
+### 🛒 NovaForge Asset Store - Complete Marketplace
+
+**The Asset Store** is a fully integrated marketplace where creators sell assets and developers purchase them for use in their games.
+
+#### Asset Categories
+
+| Category | Types | File Formats |
+|----------|-------|--------------|
+| **3D Models** | Characters, props, vehicles, environments, weapons | .nmesh, .fbx, .gltf, .obj |
+| **Textures** | PBR materials, decals, sprites, UI elements | .ntex, .png, .jpg, .exr |
+| **Audio** | SFX, music, voice, ambience | .naudio, .wav, .ogg |
+| **Animations** | Motion capture, keyframe, procedural | .nanim, .fbx, .bvh |
+| **Scripts** | Components, systems, AI behaviors | .lua, .mojo, .nvgraph |
+| **Templates** | Complete game templates, scene templates | .nproject, .nscene |
+| **Plugins** | Editor extensions, tools, integrations | .nplugin |
+| **AI Models** | LoRA adapters, custom styles | .lora, .nseed |
+| **Complete Games** | Source projects for learning | .nproject |
+
+#### Asset Store Features
+
+```
+ASSET STORE ARCHITECTURE:
+═══════════════════════════════════════════════════════════════════════════════
+
+FOR BUYERS:
+├── DISCOVERY
+│   ├── Featured & Trending
+│   ├── Categories & Tags
+│   ├── Search with Filters (price, rating, date, compatibility)
+│   ├── AI Recommendations ("Similar to what you use")
+│   └── Collections & Bundles
+├── PREVIEW
+│   ├── 3D Model Viewer (rotate, zoom, lighting)
+│   ├── Texture Preview (all channels)
+│   ├── Audio Preview (play samples)
+│   ├── Animation Preview (on standard skeleton)
+│   ├── Script Documentation
+│   └── User Reviews & Ratings
+├── PURCHASE
+│   ├── One-Click Buy
+│   ├── Add to Cart (for bundles)
+│   ├── Wishlists
+│   ├── Gift to Friend
+│   └── Payment Methods (Card, PayPal, Mobile Wallet)
+├── LIBRARY
+│   ├── My Purchases
+│   ├── Download Manager
+│   ├── Auto-Updates
+│   ├── License Management
+│   └── Usage History
+└── INTEGRATION
+    ├── Import Directly to Project
+    ├── Drag-Drop from Store to Scene
+    ├── Version Compatibility Check
+    └── Dependency Resolution
+
+FOR SELLERS:
+├── UPLOAD
+│   ├── Asset Uploader (drag-drop)
+│   ├── Metadata Editor (title, description, tags)
+│   ├── Preview Generator (auto-captures)
+│   ├── Pricing (free, paid, subscription)
+│   ├── License Selection (standard, extended)
+│   └── Version Management
+├── MANAGEMENT
+│   ├── Asset Dashboard
+│   ├── Sales Analytics
+│   ├── Customer Reviews
+│   ├── Update Publishing
+│   └── Bundle Creation
+├── EARNINGS
+│   ├── Revenue Dashboard
+│   ├── Payout Settings
+│   ├── Tax Information
+│   ├── Commission Reports (NovaForge takes 5%)
+│   └── Withdrawal to Bank/PayPal
+└── SUPPORT
+    ├── Customer Questions
+    ├── Refund Requests
+    ├── Bug Reports
+    └── Feature Requests
+```
+
+#### Asset Store Pricing Model
+
+| Tier | Price Range | Commission | Description |
+|------|-------------|------------|-------------|
+| **Free** | $0 | 0% | Community sharing, portfolio pieces |
+| **Standard** | $0.99 - $49.99 | 10% | Individual assets |
+| **Premium** | $50 - $199 | 10% | High-quality packs, templates |
+| **Enterprise** | $200+ | 8% | Complete solutions, source games |
+| **Subscription** | $4.99 - $29.99/mo | 15% | Asset libraries, ongoing updates |
+
+#### Asset Store Integration with Editor
+
+```json
+{
+  "asset_store_integration": {
+    "in_editor_browser": {
+      "enabled": true,
+      "panel_location": "bottom_right",
+      "features": {
+        "search_while_editing": true,
+        "preview_in_scene": true,
+        "one_click_import": true,
+        "drag_drop_to_scene": true,
+        "auto_dependency_resolution": true
+      }
+    },
+    
+    "auto_import": {
+      "supported_types": ["models", "textures", "audio", "animations", "scripts"],
+      "auto_configure": true,
+      "respect_project_settings": true,
+      "create_prefabs": true
+    },
+    
+    "update_notifications": {
+      "show_available_updates": true,
+      "auto_update_option": true,
+      "changelog_preview": true
+    }
+  }
+}
+```
+
+---
+
+### 🎮 NovaForge Game Library - Publishing & Playing Platform
+
+**The Game Library** allows developers to publish games directly to the NovaForge platform, where millions of users can discover and play them instantly.
+
+#### Publishing Flow
+
+```
+GAME PUBLISHING WORKFLOW:
+═══════════════════════════════════════════════════════════════════════════════
+
+STEP 1: PREPARE GAME
+├── Complete development in NovaCore Editor
+├── Test on multiple device profiles
+├── Optimize for target audience
+├── Create store listing assets:
+│   ├── Icon (512x512, 1024x1024)
+│   ├── Screenshots (5-10)
+│   ├── Promotional video (optional)
+│   ├── Description & tags
+│   └── Age rating questionnaire
+
+STEP 2: SUBMIT FOR REVIEW
+├── Click "Publish to NovaForge Library"
+├── Select visibility:
+│   ├── Public (everyone can play)
+│   ├── Unlisted (link only)
+│   └── Private (invite only)
+├── Set monetization:
+│   ├── Free
+│   ├── Paid ($0.99 - $59.99)
+│   ├── Free with IAP
+│   └── Subscription
+├── Accept Developer Agreement
+└── Submit to Review Queue
+
+STEP 3: REVIEW PROCESS
+├── Automated Checks (instant):
+│   ├── Malware scan
+│   ├── Content policy compliance
+│   ├── Performance validation
+│   └── Crash detection
+├── Human Review (if flagged):
+│   ├── Content review
+│   ├── Gameplay review
+│   └── Monetization review
+└── Review Timeline:
+    ├── Auto-approved: <1 hour (high reputation devs)
+    ├── Standard: 24-48 hours
+    └── Flagged: 3-5 business days
+
+STEP 4: LIVE ON PLATFORM
+├── Game appears in library
+├── Players can discover & play
+├── Analytics dashboard active
+├── Reviews & ratings incoming
+└── Revenue tracking (if paid)
+
+STEP 5: POST-LAUNCH
+├── Monitor analytics
+├── Respond to reviews
+├── Push updates
+├── Run promotions
+└── Engage community
+```
+
+#### Game Library Features for Players
+
+```
+PLAYER EXPERIENCE:
+═══════════════════════════════════════════════════════════════════════════════
+
+DISCOVERY:
+├── HOME FEED
+│   ├── Personalized recommendations
+│   ├── Trending games
+│   ├── New releases
+│   ├── Staff picks
+│   └── Friend activity
+├── BROWSE
+│   ├── Categories (Action, Puzzle, RPG, etc.)
+│   ├── Tags (Multiplayer, Offline, etc.)
+│   ├── Filters (Rating, Size, Controller support)
+│   └── Collections (curated lists)
+├── SEARCH
+│   ├── Text search
+│   ├── Voice search
+│   ├── Visual search (screenshot → similar games)
+│   └── Advanced filters
+
+GAME PAGE:
+├── INFORMATION
+│   ├── Screenshots & video
+│   ├── Description
+│   ├── Developer info
+│   ├── Size & requirements
+│   ├── Age rating
+│   └── Last updated
+├── SOCIAL
+│   ├── User reviews & ratings
+│   ├── Friends who play
+│   ├── Global leaderboards
+│   └── Community discussions
+├── ACTIONS
+│   ├── [PLAY NOW] - Instant play (streaming or download)
+│   ├── [ADD TO FAVORITES]
+│   ├── [SHARE]
+│   └── [FOLLOW DEVELOPER]
+
+PLAYING:
+├── INSTANT PLAY
+│   ├── No download required (streaming)
+│   ├── Or download for offline
+│   └── Cloud save sync
+├── IN-GAME
+│   ├── Overlay menu (NovaForge bar)
+│   ├── Quick settings
+│   ├── Screenshot capture
+│   ├── Screen recording
+│   └── Report issue
+├── ACHIEVEMENTS
+│   ├── Game-specific achievements
+│   ├── NovaForge platform achievements
+│   └── Cross-game progression
+
+POST-PLAY:
+├── Rate & review
+├── Share to social
+├── Follow developer
+├── Wishlist similar games
+└── View time played
+```
+
+#### Game Publishing Settings
+
+```json
+{
+  "game_publishing": {
+    "store_listing": {
+      "title": "My Awesome Game",
+      "description": "An epic adventure...",
+      "short_description": "Epic mobile RPG",
+      "category": "rpg",
+      "tags": ["action", "adventure", "multiplayer", "offline"],
+      "age_rating": "everyone_10",
+      "content_warnings": [],
+      "languages": ["en", "es", "fr", "de", "ja", "zh"],
+      
+      "media": {
+        "icon_512": "assets/store/icon_512.png",
+        "icon_1024": "assets/store/icon_1024.png",
+        "screenshots": [
+          "assets/store/screenshot_1.png",
+          "assets/store/screenshot_2.png",
+          "assets/store/screenshot_3.png"
+        ],
+        "video_url": "https://youtube.com/...",
+        "feature_graphic": "assets/store/feature.png"
+      }
+    },
+    
+    "distribution": {
+      "visibility": "public",
+      "regions": ["worldwide"],
+      "platforms": ["android", "ios", "web"],
+      "min_os_version": {
+        "android": "5.0",
+        "ios": "11.0"
+      }
+    },
+    
+    "monetization": {
+      "type": "free_with_iap",
+      "price": 0,
+      "iap_enabled": true,
+      "ads_enabled": false,
+      "subscription_enabled": false
+    },
+    
+    "features": {
+      "cloud_saves": true,
+      "achievements": true,
+      "leaderboards": true,
+      "multiplayer": true,
+      "controller_support": "full",
+      "offline_play": true
+    }
+  }
+}
+```
+
+---
+
+### 🔄 Platform Review System - Quality & Safety
+
+**The Review System** ensures all content on NovaForge meets quality and safety standards while remaining fair and accessible.
+
+#### Review Pipeline
+
+```
+CONTENT REVIEW PIPELINE:
+═══════════════════════════════════════════════════════════════════════════════
+
+SUBMISSION
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 1: AUTOMATED CHECKS (Instant)                                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ ✓ Malware/virus scan                                                         │
+│ ✓ Content policy AI scan (inappropriate content detection)                   │
+│ ✓ Copyright/trademark detection                                              │
+│ ✓ Performance validation (must run on target devices)                        │
+│ ✓ Crash detection (automated test runs)                                      │
+│ ✓ Size validation (within limits)                                            │
+│ ✓ Metadata validation (required fields present)                              │
+│                                                                              │
+│ Result: PASS → Stage 2 | FAIL → Reject with reason | FLAG → Human Review    │
+└─────────────────────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 2: REPUTATION-BASED ROUTING                                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Developer Reputation Score determines path:                                  │
+│                                                                              │
+│ ⭐⭐⭐⭐⭐ (95-100): Auto-approve (trusted developer)                        │
+│ ⭐⭐⭐⭐ (80-94): Quick review (24h)                                         │
+│ ⭐⭐⭐ (60-79): Standard review (48h)                                        │
+│ ⭐⭐ (40-59): Extended review (72h)                                          │
+│ ⭐ (0-39): Full manual review (5 days)                                       │
+│ 🆕 New Developer: First submission full review                               │
+│                                                                              │
+│ Reputation based on: Previous approvals, user reports, review history        │
+└─────────────────────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 3: HUMAN REVIEW (If Required)                                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Review Team checks:                                                          │
+│ • Gameplay quality (playable, not broken)                                    │
+│ • Content appropriateness (matches age rating)                               │
+│ • Monetization fairness (no predatory practices)                             │
+│ • Store listing accuracy (screenshots match game)                            │
+│ • Legal compliance (copyright, trademark)                                    │
+│                                                                              │
+│ Decisions:                                                                   │
+│ ✅ APPROVE - Published immediately                                           │
+│ 🔄 REQUEST CHANGES - Developer fixes and resubmits                           │
+│ ❌ REJECT - With detailed reason and appeal option                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+    │
+    ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ STAGE 4: POST-PUBLISH MONITORING                                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Continuous monitoring after approval:                                        │
+│ • User reports tracking                                                      │
+│ • Review sentiment analysis                                                  │
+│ • Crash rate monitoring                                                      │
+│ • Policy violation detection                                                 │
+│                                                                              │
+│ Automatic actions if issues detected:                                        │
+│ • Warning to developer                                                       │
+│ • Temporary suspension                                                       │
+│ • Permanent removal (severe violations)                                      │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+#### Review Dashboard (Platform Owner)
+
+```
+PLATFORM REVIEW DASHBOARD:
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ REVIEW QUEUE                                            [Filter ▼] [Search] │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ PENDING REVIEW (47)                                                          │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│                                                                              │
+│ 🎮 "Space Shooter Pro"          Developer: @john_dev                         │
+│    Submitted: 2h ago            Type: Game         Status: 🟡 Pending        │
+│    Reputation: ⭐⭐⭐⭐ (87)      Category: Action   Size: 45MB               │
+│    [Review] [Quick Approve] [Reject] [Flag]                                  │
+│                                                                              │
+│ 🎨 "Fantasy Character Pack"     Creator: @artist_pro                         │
+│    Submitted: 5h ago            Type: Asset        Status: 🟡 Pending        │
+│    Reputation: ⭐⭐⭐⭐⭐ (96)    Category: 3D Model Size: 120MB              │
+│    [Review] [Quick Approve] [Reject] [Flag]                                  │
+│                                                                              │
+│ 🎮 "Puzzle Quest"               Developer: @new_dev (NEW)                    │
+│    Submitted: 1d ago            Type: Game         Status: 🟠 Review         │
+│    Reputation: 🆕 First Sub     Category: Puzzle   Size: 28MB               │
+│    ⚠️ First submission - requires full review                                │
+│    [Review] [Request Changes] [Reject]                                       │
+│                                                                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ STATISTICS                                                                   │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│ Today: 124 reviewed | 118 approved | 4 changes requested | 2 rejected       │
+│ Avg review time: 4.2 hours | Auto-approved: 67% | Manual: 33%               │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 🤖 AI Generation System Integration
+
+**AI Generation** is deeply integrated across the entire platform - Editor, Asset Store, and Game Library.
+
+#### AI Integration Points
+
+```
+AI GENERATION INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+IN EDITOR (Content Creation):
+├── Asset Generation
+│   ├── "Generate a fantasy sword" → 3D model in 4-8 seconds
+│   ├── "Create metal texture with rust" → PBR material
+│   ├── "Generate footstep sounds on stone" → Audio files
+│   └── "Create idle animation" → Animation clip
+├── Code Generation
+│   ├── "Create player controller with double jump" → Lua/Visual Script
+│   ├── "Generate enemy AI that patrols and attacks" → Behavior tree
+│   └── "Create inventory system" → Complete script
+├── Level Generation
+│   ├── "Generate forest environment" → Complete scene
+│   ├── "Create dungeon layout" → Procedural level
+│   └── "Design village with 10 buildings" → Populated scene
+└── UI Generation
+    ├── "Create main menu with modern style" → UI layout
+    ├── "Generate health bar" → UI component
+    └── "Design inventory grid" → UI system
+
+IN ASSET STORE (Discovery & Creation):
+├── Smart Search
+│   ├── "Find assets similar to this screenshot"
+│   ├── "Show me medieval weapon packs"
+│   └── Natural language queries
+├── Asset Enhancement
+│   ├── "Generate variations of this model"
+│   ├── "Create texture for this mesh"
+│   └── "Add animations to this character"
+└── Bundle Generation
+    ├── "Create complete RPG asset pack"
+    └── AI-curated collections
+
+IN GAME LIBRARY (Player Experience):
+├── Game Recommendations
+│   ├── "Games similar to what I play"
+│   ├── "Popular in my region"
+│   └── Personalized discovery
+├── Content Generation (In Published Games)
+│   ├── Procedural levels
+│   ├── Dynamic NPCs
+│   └── Adaptive difficulty
+└── Accessibility
+    ├── Auto-generated tutorials
+    ├── Difficulty adjustment
+    └── Content adaptation
+```
+
+#### AI Generation Configuration
+
+```json
+{
+  "ai_generation_integration": {
+    "editor": {
+      "asset_generation": {
+        "enabled": true,
+        "models": {
+          "3d_models": "flux_schnell_3d_v2",
+          "textures": "flux_schnell_texture_v2",
+          "audio": "audio_diffusion_v2",
+          "animations": "motion_diffusion_v2"
+        },
+        "quality_settings": {
+          "preview": {"time": "2-4s", "quality": "medium"},
+          "production": {"time": "4-8s", "quality": "high"}
+        }
+      },
+      "code_generation": {
+        "enabled": true,
+        "languages": ["lua", "visual_script", "mojo"],
+        "context_aware": true,
+        "project_style_matching": true
+      },
+      "level_generation": {
+        "enabled": true,
+        "styles": ["procedural", "ai_assisted", "template_based"]
+      }
+    },
+    
+    "asset_store": {
+      "search": {
+        "natural_language": true,
+        "visual_search": true,
+        "similarity_search": true
+      },
+      "recommendations": {
+        "personalized": true,
+        "project_based": true,
+        "trending": true
+      }
+    },
+    
+    "game_library": {
+      "recommendations": {
+        "play_history_based": true,
+        "friend_based": true,
+        "content_based": true
+      },
+      "in_game_generation": {
+        "allowed_in_published_games": true,
+        "requires_player_consent": true
+      }
+    }
+  }
+}
+```
+
+---
+
+### 🔗 Cross-Platform Data Integration
+
+**All platform components share data** for a seamless experience:
+
+```
+DATA INTEGRATION ARCHITECTURE:
+═══════════════════════════════════════════════════════════════════════════════
+
+USER ACCOUNT (Single Sign-On):
+├── Profile shared across all platform areas
+├── Unified purchase history (Asset Store + Game Library)
+├── Consolidated earnings (Asset sales + Game revenue)
+├── Single friends list (works everywhere)
+└── Universal achievements & progress
+
+PROJECT DATA:
+├── Editor projects → Publishable to Game Library
+├── Asset Store purchases → Auto-available in Editor
+├── Game analytics → Visible in Editor dashboard
+└── User feedback → Integrated into Editor
+
+ANALYTICS:
+├── Development analytics (Editor usage, build times)
+├── Asset analytics (downloads, usage in games)
+├── Game analytics (plays, retention, revenue)
+└── Platform analytics (user engagement, trends)
+
+CLOUD SERVICES:
+├── Unified cloud storage (projects, saves, assets)
+├── Single CDN (assets, games, updates)
+├── Shared authentication
+├── Cross-feature notifications
+└── Integrated messaging/chat
+```
+
+#### Integration API
+
+```json
+{
+  "platform_integration_api": {
+    "user": {
+      "get_profile": "/api/user/profile",
+      "get_purchases": "/api/user/purchases",
+      "get_earnings": "/api/user/earnings",
+      "get_projects": "/api/user/projects",
+      "get_published_games": "/api/user/games"
+    },
+    
+    "asset_store": {
+      "browse": "/api/store/browse",
+      "search": "/api/store/search",
+      "purchase": "/api/store/purchase",
+      "download": "/api/store/download/{asset_id}",
+      "import_to_project": "/api/store/import/{asset_id}/{project_id}"
+    },
+    
+    "game_library": {
+      "browse": "/api/games/browse",
+      "search": "/api/games/search",
+      "play": "/api/games/play/{game_id}",
+      "publish": "/api/games/publish",
+      "update": "/api/games/update/{game_id}",
+      "analytics": "/api/games/analytics/{game_id}"
+    },
+    
+    "editor": {
+      "create_project": "/api/editor/project/create",
+      "save_project": "/api/editor/project/save",
+      "build": "/api/editor/build",
+      "test": "/api/editor/test",
+      "publish": "/api/editor/publish"
+    },
+    
+    "ai_generation": {
+      "generate_asset": "/api/ai/generate/asset",
+      "generate_code": "/api/ai/generate/code",
+      "generate_level": "/api/ai/generate/level"
+    }
+  }
+}
+```
+
+---
+
+### 📱 Mobile-First Unified Experience
+
+**The entire platform is designed mobile-first**, with the same complete experience on phones as on desktop.
+
+```
+MOBILE APP STRUCTURE:
+═══════════════════════════════════════════════════════════════════════════════
+
+BOTTOM NAVIGATION:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                              │
+│                         [CURRENT VIEW CONTENT]                               │
+│                                                                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  🏠 Home  │  🛠️ Create  │  🛒 Store  │  🎮 Play  │  👤 Profile              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+HOME TAB:
+├── 🔥 Top Free Games (Featured free games, high ratings)
+├── 🆓 All Free Games (Complete free games section)
+├── 🎮 Recommended For You (Personalized)
+├── 📈 Trending Now (Popular this week)
+├── ⭐ New Releases
+├── 👥 Friend Activity (What friends are playing/creating)
+├── 🛠️ Recent Projects (Your development work)
+└── 📢 Platform Announcements
+
+CREATE TAB:
+├── Project list
+├── New project button
+├── Quick actions (open recent, templates)
+├── Free templates section
+└── Development tips/tutorials
+
+STORE TAB:
+├── 🆓 Free Assets (Featured at top)
+├── 🔥 Top Free Assets
+├── 📦 All Free Assets
+├── ⭐ Featured Paid Assets
+├── 📂 Categories (with free filter)
+├── 🔍 Search (with price filters)
+├── 🛒 My Purchases
+└── 💰 Sell Assets
+
+PLAY TAB:
+├── ▶️ Continue Playing (Resume your games)
+├── 🆓 TOP FREE GAMES (Prominently featured)
+├── 📦 ALL FREE GAMES (Complete free section)
+├── ⭐ Featured Games (Mix of free & paid)
+├── 📈 Trending Games
+├── 🆕 New Releases
+├── 📂 Categories (with free/price filters)
+├── ❤️ My Favorites
+├── 👥 Friend Activity
+└── 🔍 Search with Filters
+
+PROFILE TAB:
+├── Avatar & username
+├── Stats (games made, hours played)
+├── My games (published)
+├── My assets (selling)
+├── Earnings (95% of all revenue)
+├── Settings
+└── Help & support
+```
+
+---
+
+### 🔍 COMPREHENSIVE FILTER & DISCOVERY SYSTEM
+
+**Filters are available across all browsing areas** - Store, Play, and Home tabs all support comprehensive filtering with FREE content prominently featured.
+
+```
+UNIVERSAL FILTER SYSTEM:
+═══════════════════════════════════════════════════════════════════════════════
+
+PRICE FILTERS (Always Visible):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ PRICE                                                                        │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│ [🆓 FREE] [Under $1] [Under $5] [Under $10] [$10-$25] [$25+] [All Prices]  │
+│                                                                              │
+│ Price Range: $[0.00] ─────●───────────────────── $[59.99]                   │
+│                                                                              │
+│ [✓] Show Free First (Free items always appear at top of results)            │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+GAME FILTERS (Play Tab):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ FILTER GAMES                                          [Clear All] [Apply]   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ PRICE:           [🆓 Free ▼]  [Paid] [Free+IAP] [All]                       │
+│                                                                              │
+│ CATEGORY:        [All ▼]                                                     │
+│   Action, Adventure, Arcade, Board, Card, Casino, Casual, Educational,      │
+│   Music, Puzzle, Racing, Role Playing, Simulation, Sports, Strategy,        │
+│   Trivia, Word                                                               │
+│                                                                              │
+│ RATING:          [⭐ All ▼]  [4+ Stars] [4.5+ Stars] [Highly Rated]         │
+│                                                                              │
+│ FEATURES:        [ ] Offline Play  [ ] Multiplayer  [ ] Controller Support  │
+│                  [ ] Cloud Saves   [ ] Achievements [ ] Leaderboards        │
+│                                                                              │
+│ SIZE:            [All ▼]  [Under 50MB] [Under 100MB] [Under 500MB]          │
+│                                                                              │
+│ RELEASE:         [All ▼]  [This Week] [This Month] [This Year]              │
+│                                                                              │
+│ SORT BY:         [Relevance ▼] [Rating] [Downloads] [Newest] [Price ↑↓]     │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+ASSET FILTERS (Store Tab):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ FILTER ASSETS                                         [Clear All] [Apply]   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ PRICE:           [🆓 Free ▼]  [Under $5] [Under $20] [$20+] [All]           │
+│                                                                              │
+│ TYPE:            [All ▼]                                                     │
+│   3D Models, Textures, Materials, Audio, Music, Animations, Scripts,        │
+│   Templates, Plugins, AI Models, Complete Projects, UI Assets, VFX          │
+│                                                                              │
+│ STYLE:           [All ▼]                                                     │
+│   Realistic, Stylized, Cartoon, Low Poly, Pixel Art, Hand Painted,          │
+│   Sci-Fi, Fantasy, Modern, Historical, Horror, Cute                         │
+│                                                                              │
+│ COMPATIBILITY:   [✓] My Engine Version  [ ] All Versions                    │
+│                                                                              │
+│ RATING:          [⭐ All ▼]  [4+ Stars] [Highly Rated]                      │
+│                                                                              │
+│ LICENSE:         [All ▼]  [Standard] [Extended] [Open Source]               │
+│                                                                              │
+│ SORT BY:         [Relevance ▼] [Rating] [Downloads] [Newest] [Price ↑↓]     │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+QUICK FILTER BUTTONS (Always Visible in Headers):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ [🆓 FREE] [⭐ TOP RATED] [🔥 TRENDING] [🆕 NEW] [📥 MOST DOWNLOADED]        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+SEARCH WITH FILTERS:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🔍 Search games, assets, creators...                    [🎤] [Filter ▼]    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Recent: "fantasy sword" "pixel art" "free rpg template"                     │
+│ Suggestions: "free 3d models" "top free games" "free sound effects"         │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### 🆓 FREE CONTENT DISCOVERY
+
+**Free content is prominently featured** throughout the platform to help users discover quality free games and assets.
+
+```
+FREE CONTENT SECTIONS:
+═══════════════════════════════════════════════════════════════════════════════
+
+HOME TAB - FREE SECTIONS:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🔥 TOP FREE GAMES                                          [See All →]      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐           │
+│  │ [IMG]   │  │ [IMG]   │  │ [IMG]   │  │ [IMG]   │  │ [IMG]   │           │
+│  │ Space   │  │ Puzzle  │  │ Racing  │  │ RPG     │  │ Action  │           │
+│  │ Quest   │  │ Master  │  │ Fury    │  │ Legends │  │ Hero    │           │
+│  │ 🆓 FREE │  │ 🆓 FREE │  │ 🆓 FREE │  │ 🆓 FREE │  │ 🆓 FREE │           │
+│  │ ⭐ 4.8  │  │ ⭐ 4.7  │  │ ⭐ 4.9  │  │ ⭐ 4.6  │  │ ⭐ 4.8  │           │
+│  │ 50K+▶️  │  │ 30K+▶️  │  │ 80K+▶️  │  │ 25K+▶️  │  │ 45K+▶️  │           │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘  └─────────┘           │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 📦 ALL FREE GAMES                                          [See All →]      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Browse 5,000+ completely free games from our community                       │
+│                                                                              │
+│ Categories: [Action] [Puzzle] [RPG] [Racing] [Casual] [Strategy] [More...]  │
+│                                                                              │
+│ [Browse All Free Games →]                                                    │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+PLAY TAB - FREE SECTIONS:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🎮 PLAY                                              [🔍 Search] [Filter]   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ ▶️ CONTINUE PLAYING                                                          │
+│ ┌─────────┐ ┌─────────┐ ┌─────────┐                                         │
+│ │ Game 1  │ │ Game 2  │ │ Game 3  │  [See All →]                            │
+│ └─────────┘ └─────────┘ └─────────┘                                         │
+│                                                                              │
+│ ═══════════════════════════════════════════════════════════════════════════ │
+│                                                                              │
+│ 🆓 TOP FREE GAMES                                          [See All →]      │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ [Game] [Game] [Game] [Game] [Game] →                                        │
+│                                                                              │
+│ 📦 ALL FREE GAMES                                          [Browse All →]   │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ Action (234) | Puzzle (456) | RPG (123) | Racing (89) | Casual (567) | ...  │
+│                                                                              │
+│ ═══════════════════════════════════════════════════════════════════════════ │
+│                                                                              │
+│ ⭐ FEATURED GAMES                                          [See All →]      │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ [Game] [Game] [Game] [Game] [Game] →                                        │
+│                                                                              │
+│ 📈 TRENDING NOW                                            [See All →]      │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ [Game] [Game] [Game] [Game] [Game] →                                        │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+STORE TAB - FREE SECTIONS:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🛒 ASSET STORE                                       [🔍 Search] [Filter]   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ 🆓 FREE ASSETS                                             [See All →]      │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ Quality free assets from our community                                       │
+│ [Asset] [Asset] [Asset] [Asset] [Asset] →                                   │
+│                                                                              │
+│ 🔥 TOP FREE ASSETS                                         [See All →]      │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ Highest rated free assets                                                    │
+│ [Asset] [Asset] [Asset] [Asset] [Asset] →                                   │
+│                                                                              │
+│ 📦 ALL FREE BY CATEGORY                                    [Browse All →]   │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ 3D Models (1.2K) | Textures (3.4K) | Audio (2.1K) | Scripts (890) | ...     │
+│                                                                              │
+│ ═══════════════════════════════════════════════════════════════════════════ │
+│                                                                              │
+│ ⭐ FEATURED (Paid)                                         [See All →]      │
+│ ───────────────────────────────────────────────────────────────────────────│
+│ Premium quality assets                                                       │
+│ [Asset] [Asset] [Asset] [Asset] [Asset] →                                   │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### 🚀 Development Workflow Integration
+
+**Complete workflow from idea to published game**:
+
+```
+INTEGRATED DEVELOPMENT WORKFLOW:
+═══════════════════════════════════════════════════════════════════════════════
+
+1. IDEATION
+   └── Browse Game Library for inspiration
+   └── Check Asset Store for available resources
+   └── Use AI to brainstorm concepts
+
+2. PROJECT SETUP
+   └── Create new project in Editor
+   └── Select template (or start blank)
+   └── Import assets from Store purchases
+   └── Generate initial assets with AI
+
+3. DEVELOPMENT
+   └── Build game in Editor
+   └── Use any programming language
+   └── AI-assisted coding and design
+   └── Real-time testing on device
+
+4. ASSET CREATION
+   └── Create custom assets
+   └── Generate with AI
+   └── Purchase from Store
+   └── Mix all sources seamlessly
+
+5. TESTING
+   └── Test on multiple device profiles
+   └── Share beta builds with friends
+   └── Gather feedback through platform
+
+6. PUBLISHING
+   └── One-click publish to Game Library
+   └── Set pricing and monetization
+   └── Automatic review process
+   └── Live within hours
+
+7. POST-LAUNCH
+   └── Monitor analytics in Editor
+   └── Respond to reviews
+   └── Push updates
+   └── Sell successful assets on Store
+
+8. MONETIZATION
+   └── Game revenue (100% yours or with IAP)
+   └── Asset sales (95% yours)
+   └── Earn while others use your work
+```
+
+---
+
+## 🔧 COMPLETE SYSTEM INTEGRATION SPECIFICATIONS
+
+### Editor ↔ Asset Store Integration
+
+**Seamless asset discovery and import directly within the editor**:
+
+```
+EDITOR-STORE INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+IN-EDITOR ASSET STORE PANEL:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ ASSET STORE                                              [🔍 Search...]     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ Categories: [All ▼] [3D Models] [Textures] [Audio] [Scripts] [Templates]   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐           │
+│  │ [3D]    │  │ [3D]    │  │ [3D]    │  │ [TEX]   │  │ [AUDIO] │           │
+│  │ Fantasy │  │ Sci-Fi  │  │ Modern  │  │ PBR     │  │ Ambient │           │
+│  │ Sword   │  │ Gun     │  │ Chair   │  │ Metal   │  │ Forest  │           │
+│  │ $4.99   │  │ $9.99   │  │ FREE    │  │ $2.99   │  │ $1.99   │           │
+│  │ ⭐4.8   │  │ ⭐4.9   │  │ ⭐4.5   │  │ ⭐4.7   │  │ ⭐4.6   │           │
+│  │[Import] │  │[Import] │  │[Import] │  │[Import] │  │[Import] │           │
+│  └─────────┘  └─────────┘  └─────────┘  └─────────┘  └─────────┘           │
+│                                                                              │
+│  [Load More...]                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+INTEGRATION FEATURES:
+├── One-Click Import
+│   ├── Click "Import" → Asset added to project immediately
+│   ├── Auto-creates appropriate folder structure
+│   ├── Resolves dependencies automatically
+│   └── Sets up prefabs/materials as needed
+├── Drag-Drop to Scene
+│   ├── Drag asset thumbnail directly into viewport
+│   ├── Preview before placing
+│   ├── Auto-import if not yet in project
+│   └── Smart placement (snaps to surfaces)
+├── AI-Powered Recommendations
+│   ├── "Assets that work well with your current project"
+│   ├── "Similar to assets you've used"
+│   ├── "Popular in games like yours"
+│   └── "Complete your scene with..."
+├── Version Management
+│   ├── Update notifications for purchased assets
+│   ├── Changelog preview before update
+│   ├── Rollback to previous versions
+│   └── Compatibility warnings
+└── License Tracking
+    ├── Shows license type for each asset
+    ├── Warns if license doesn't cover use case
+    ├── Tracks commercial vs personal projects
+    └── Export includes license documentation
+```
+
+### Editor ↔ Game Library Integration
+
+**Publish games directly from the editor to the platform**:
+
+```
+EDITOR-LIBRARY INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+PUBLISH WIZARD (In Editor):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ PUBLISH TO NOVAFORGE GAME LIBRARY                          Step 1 of 5     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ STEP 1: GAME INFORMATION                                                     │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│                                                                              │
+│ Title:        [My Awesome Game                    ]                          │
+│ Description:  [An epic adventure through magical lands...                   │
+│               ________________________________________________]             │
+│ Category:     [Adventure ▼]                                                  │
+│ Tags:         [action] [rpg] [fantasy] [+ Add Tag]                          │
+│                                                                              │
+│ Age Rating:   (●) Everyone  ( ) 10+  ( ) Teen  ( ) Mature                   │
+│                                                                              │
+│ Languages:    [✓] English  [✓] Spanish  [ ] French  [+ More]                │
+│                                                                              │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                        [Cancel]  [Save Draft]  [Next →]     │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+STEP 2: MEDIA & SCREENSHOTS
+├── Auto-capture screenshots from editor
+├── Record gameplay video
+├── Upload custom promotional images
+├── Generate icon from game assets
+└── AI-assisted description writing
+
+STEP 3: MONETIZATION
+├── Free / Paid / Free with IAP
+├── Set price ($0.99 - $59.99)
+├── Configure IAP items
+├── Set up subscriptions
+└── Regional pricing
+
+STEP 4: DISTRIBUTION
+├── Select target platforms (Android/iOS/Web)
+├── Set minimum requirements
+├── Choose regions
+├── Schedule release date
+└── Beta testing options
+
+STEP 5: REVIEW & SUBMIT
+├── Pre-submission checklist
+├── Automated validation
+├── Submit for review
+├── Track review status
+└── Receive notifications
+
+POST-PUBLISH (In Editor):
+├── Live analytics dashboard
+├── Review management
+├── Push updates
+├── A/B testing
+└── Revenue tracking
+```
+
+### Editor ↔ AI Generation Integration
+
+**AI generation deeply integrated into every editor workflow**:
+
+```
+EDITOR-AI INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+AI ASSISTANT PANEL (Always Available):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ 🤖 NOVA AI ASSISTANT                                      [Settings ⚙️]    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ What would you like to create?                                               │
+│ ┌─────────────────────────────────────────────────────────────────────────┐ │
+│ │ Generate a medieval castle with towers and a moat                       │ │
+│ └─────────────────────────────────────────────────────────────────────────┘ │
+│                                                              [Generate 🚀]  │
+│                                                                              │
+│ QUICK ACTIONS:                                                               │
+│ [🏠 3D Model] [🎨 Texture] [🔊 Sound] [📜 Script] [🎬 Animation] [🌍 Level] │
+│                                                                              │
+│ RECENT GENERATIONS:                                                          │
+│ • Fantasy sword (3D) - 2 min ago                                            │
+│ • Metal texture (PBR) - 15 min ago                                          │
+│ • Enemy patrol script - 1 hour ago                                          │
+│                                                                              │
+│ GENERATION HISTORY:                                                          │
+│ [View All] [Favorites] [Re-generate]                                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+CONTEXT-AWARE AI:
+├── Scene Context
+│   ├── "Generate assets matching current scene style"
+│   ├── "Create enemy appropriate for this level"
+│   ├── "Add ambient sounds for this environment"
+│   └── AI understands scene content and suggests relevant generations
+├── Code Context
+│   ├── "Complete this function"
+│   ├── "Fix this bug"
+│   ├── "Optimize this script"
+│   └── AI reads current code and provides contextual help
+├── Asset Context
+│   ├── "Generate variations of selected asset"
+│   ├── "Create texture for this model"
+│   ├── "Animate this character"
+│   └── AI understands selected assets and offers relevant actions
+└── Project Context
+    ├── "Generate assets in project art style"
+    ├── "Match existing naming conventions"
+    ├── "Follow project code patterns"
+    └── AI learns from entire project
+
+AI IN EVERY EDITOR:
+├── Scene Editor
+│   ├── "Populate this area with trees"
+│   ├── "Generate terrain based on sketch"
+│   ├── "Create interior for this building"
+│   └── "Place props naturally"
+├── Code Editor
+│   ├── Auto-complete with AI
+│   ├── "Write unit tests for this"
+│   ├── "Document this function"
+│   └── "Translate to another language"
+├── Material Editor
+│   ├── "Create material from description"
+│   ├── "Generate texture variations"
+│   ├── "Match reference image style"
+│   └── "Optimize for mobile"
+├── Animation Editor
+│   ├── "Create walk cycle"
+│   ├── "Generate attack animation"
+│   ├── "Smooth this motion"
+│   └── "Retarget to skeleton"
+├── Audio Editor
+│   ├── "Generate sound effect"
+│   ├── "Create ambient loop"
+│   ├── "Compose background music"
+│   └── "Generate voice line"
+└── UI Editor
+    ├── "Design main menu"
+    ├── "Create HUD layout"
+    ├── "Generate button styles"
+    └── "Make responsive layout"
+```
+
+### Asset Store ↔ Game Library Integration
+
+**Assets and games interconnected**:
+
+```
+STORE-LIBRARY INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+ASSET → GAME CONNECTIONS:
+├── Asset Pages Show
+│   ├── "Games using this asset" (with developer permission)
+│   ├── "See it in action" → Links to playable games
+│   ├── Ratings from game developers
+│   └── Usage statistics
+├── Game Pages Show
+│   ├── "Assets used in this game" (public assets only)
+│   ├── Direct links to purchase same assets
+│   ├── "Make a game like this" → Asset bundle
+│   └── Developer's other assets
+└── Cross-Promotion
+    ├── Asset creators can showcase their games
+    ├── Game developers can sell their assets
+    ├── Bundle deals (game + source assets)
+    └── "Inspired by" connections
+
+DEVELOPER JOURNEY:
+├── Phase 1: Player
+│   └── Play games in Library → Get inspired
+├── Phase 2: Learner
+│   └── Buy asset packs → Study how they work
+├── Phase 3: Creator
+│   └── Create game using assets → Publish to Library
+├── Phase 4: Seller
+│   └── Create assets from game → Sell on Store
+└── Phase 5: Mentor
+    └── Create tutorials/templates → Help others
+
+REVENUE ECOSYSTEM:
+├── Play Games → Developers earn
+├── Buy Assets → Creators earn
+├── Sell Assets → You earn
+├── Publish Games → You earn
+└── Platform grows → Everyone benefits
+```
+
+### AI Generation ↔ Asset Store Integration
+
+**AI-generated assets can be sold and shared**:
+
+```
+AI-STORE INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+SELLING AI-GENERATED ASSETS:
+├── Generation → Refinement → Listing
+│   ├── Generate base asset with AI
+│   ├── Refine and polish in editor
+│   ├── Create variations
+│   ├── Package with documentation
+│   └── List on Asset Store
+├── Disclosure Requirements
+│   ├── "AI-Assisted" badge on listings
+│   ├── Disclose AI involvement level
+│   ├── Human refinement percentage
+│   └── Transparency builds trust
+├── Quality Standards
+│   ├── Same quality bar as traditional assets
+│   ├── Must pass automated checks
+│   ├── Human review for first submissions
+│   └── Customer reviews affect reputation
+└── Licensing
+    ├── Clear ownership (creator owns refinements)
+    ├── Commercial use allowed
+    ├── No restrictions on derivative works
+    └── Follows platform standard license
+
+AI-POWERED STORE FEATURES:
+├── Smart Search
+│   ├── "Find a sword like this" [upload image]
+│   ├── Natural language queries
+│   ├── Style matching
+│   └── "Assets that work together"
+├── Recommendations
+│   ├── "Complete your project with..."
+│   ├── "Others who bought X also bought..."
+│   ├── "Trending in your genre"
+│   └── Personalized suggestions
+├── Preview Enhancement
+│   ├── AI-generated usage examples
+│   ├── "See in different lighting"
+│   ├── "Preview in various scenes"
+│   └── Automatic turntable views
+└── Quality Scoring
+    ├── AI evaluates technical quality
+    ├── Topology analysis
+    ├── Texture resolution check
+    └── Performance impact estimate
+```
+
+### AI Generation ↔ Game Library Integration
+
+**AI enhances both game creation and player experience**:
+
+```
+AI-LIBRARY INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+FOR DEVELOPERS (Creating Games):
+├── Pre-Production
+│   ├── "Generate game concept based on trending genres"
+│   ├── "Create mood board from description"
+│   ├── "Estimate development time"
+│   └── "Suggest asset requirements"
+├── Production
+│   ├── Generate all asset types
+│   ├── AI coding assistance
+│   ├── Procedural content generation
+│   └── Automated testing
+├── Publishing
+│   ├── AI-written store descriptions
+│   ├── Auto-generated screenshots
+│   ├── Suggested pricing based on market
+│   └── Optimal release timing
+└── Post-Launch
+    ├── AI-analyzed player feedback
+    ├── Suggested improvements
+    ├── Automated responses to reviews
+    └── Content update recommendations
+
+FOR PLAYERS (Playing Games):
+├── Discovery
+│   ├── Personalized recommendations
+│   ├── "Games like X but with Y"
+│   ├── Mood-based suggestions
+│   └── Friend activity analysis
+├── Gameplay
+│   ├── Dynamic difficulty adjustment
+│   ├── Procedural content in games
+│   ├── AI-powered NPCs
+│   └── Personalized experiences
+├── Accessibility
+│   ├── Auto-generated tutorials
+│   ├── Adaptive controls
+│   ├── Content warnings
+│   └── Language translation
+└── Social
+    ├── Smart matchmaking
+    ├── Toxicity detection
+    ├── Community management
+    └── Content moderation
+```
+
+---
+
+## 🔐 PLATFORM SECURITY & TRUST INTEGRATION
+
+### Unified Security Across All Components
+
+```
+PLATFORM SECURITY ARCHITECTURE:
+═══════════════════════════════════════════════════════════════════════════════
+
+AUTHENTICATION (Single Sign-On):
+├── One account for everything
+│   ├── Editor access
+│   ├── Asset Store purchases
+│   ├── Game Library playing
+│   ├── Developer publishing
+│   └── Creator selling
+├── Security Levels
+│   ├── Basic: Email/password
+│   ├── Enhanced: 2FA (TOTP, SMS)
+│   ├── Premium: Hardware keys (YubiKey)
+│   └── Enterprise: SSO integration
+└── Session Management
+    ├── Secure token handling
+    ├── Device tracking
+    ├── Suspicious activity alerts
+    └── Remote logout
+
+PAYMENT SECURITY:
+├── Asset Store Transactions
+│   ├── PCI-DSS compliant
+│   ├── Encrypted payment data
+│   ├── Fraud detection
+│   └── Chargeback protection
+├── Game Purchases
+│   ├── Secure checkout
+│   ├── Receipt verification
+│   ├── Refund handling
+│   └── Subscription management
+└── Developer Payouts
+    ├── Verified accounts
+    ├── Tax compliance
+    ├── Secure transfers
+    └── Audit trails
+
+CONTENT SECURITY:
+├── Asset Protection
+│   ├── DRM options for premium assets
+│   ├── Watermarking
+│   ├── License enforcement
+│   └── Piracy detection
+├── Game Protection
+│   ├── Build encryption
+│   ├── Anti-tampering
+│   ├── Cheat detection
+│   └── Integrity verification
+└── User Content
+    ├── Moderation pipeline
+    ├── Copyright detection
+    ├── Inappropriate content filtering
+    └── Report handling
+
+DATA PRIVACY:
+├── GDPR Compliance
+│   ├── Data portability
+│   ├── Right to deletion
+│   ├── Consent management
+│   └── Privacy controls
+├── User Data
+│   ├── Minimal collection
+│   ├── Encrypted storage
+│   ├── No selling to third parties
+│   └── Transparent policies
+└── Analytics
+    ├── Anonymized by default
+    ├── Opt-out available
+    ├── On-device when possible
+    └── Aggregate only sharing
+```
+
+---
+
+## 📊 UNIFIED ANALYTICS & INSIGHTS
+
+### Cross-Platform Analytics Dashboard
+
+```
+UNIFIED ANALYTICS:
+═══════════════════════════════════════════════════════════════════════════════
+
+DEVELOPER DASHBOARD:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ MY NOVAFORGE DASHBOARD                                    [Last 30 Days ▼] │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                              │
+│ OVERVIEW                                                                     │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│ Total Earnings: $1,234.56        Games Published: 3                          │
+│ Asset Sales: $456.78             Assets Listed: 12                           │
+│ Game Revenue: $777.78            Total Downloads: 45,678                     │
+│                                                                              │
+│ MY GAMES                                                                     │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│ 📱 Space Adventure       ⭐4.7   12,345 plays   $234.56 revenue   [Manage]  │
+│ 📱 Puzzle Quest          ⭐4.5    8,901 plays   $123.45 revenue   [Manage]  │
+│ 📱 Racing Thunder        ⭐4.8   24,432 plays   $419.77 revenue   [Manage]  │
+│                                                                              │
+│ MY ASSETS                                                                    │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│ 🎨 Fantasy Weapon Pack   ⭐4.9     567 sales    $283.50 revenue   [Manage]  │
+│ 🎨 UI Sound Effects      ⭐4.6     234 sales     $93.60 revenue   [Manage]  │
+│ 🎨 Character Animations  ⭐4.8     123 sales     $79.68 revenue   [Manage]  │
+│                                                                              │
+│ INSIGHTS                                                                     │
+│ ─────────────────────────────────────────────────────────────────────────── │
+│ 📈 Your games are trending in Brazil (+45% plays)                           │
+│ 💡 Users are searching for "sci-fi weapons" - consider creating assets      │
+│ ⭐ "Space Adventure" review: "Amazing game!" - respond?                     │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+ANALYTICS INTEGRATION:
+├── Game Analytics (in Library)
+│   ├── Play sessions, duration, retention
+│   ├── Level completion rates
+│   ├── Monetization metrics
+│   └── Player feedback
+├── Asset Analytics (in Store)
+│   ├── Views, downloads, purchases
+│   ├── Usage in published games
+│   ├── Customer ratings
+│   └── Support requests
+├── Editor Analytics (optional)
+│   ├── Feature usage
+│   ├── Build times
+│   ├── Error rates
+│   └── Performance metrics
+└── Cross-Platform Insights
+    ├── How assets perform in games
+    ├── Which asset buyers become game developers
+    ├── Community trends
+    └── Market opportunities
+```
+
+---
+
+## 🌍 COMMUNITY & SOCIAL INTEGRATION
+
+### Unified Community Across Platform
+
+```
+COMMUNITY INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+PROFILE (Universal):
+├── One profile everywhere
+│   ├── Avatar, username, bio
+│   ├── Developer portfolio
+│   ├── Player stats
+│   ├── Creator showcase
+│   └── Achievements
+├── Reputation System
+│   ├── Developer reputation (game quality)
+│   ├── Creator reputation (asset quality)
+│   ├── Player reputation (community behavior)
+│   └── Combined trust score
+└── Social Connections
+    ├── Follow developers/creators
+    ├── Friends list
+    ├── Teams/studios
+    └── Community groups
+
+ACTIVITY FEED:
+├── Friend Activity
+│   ├── "John published a new game"
+│   ├── "Sarah released an asset pack"
+│   ├── "Mike achieved 100k downloads"
+│   └── "Team XYZ is working on..."
+├── Platform News
+│   ├── Featured games
+│   ├── Trending assets
+│   ├── Platform updates
+│   └── Events & contests
+└── Personalized
+    ├── Updates from followed creators
+    ├── Games you might like
+    ├── Assets for your projects
+    └── Learning resources
+
+COMMUNICATION:
+├── Direct Messages
+│   ├── Developer-to-developer
+│   ├── Customer support for assets
+│   ├── Collaboration invites
+│   └── Business inquiries
+├── Forums/Discussions
+│   ├── General community
+│   ├── Game-specific forums
+│   ├── Asset Q&A
+│   ├── Technical support
+│   └── Showcase gallery
+├── Comments & Reviews
+│   ├── Game reviews
+│   ├── Asset reviews
+│   ├── Tutorial feedback
+│   └── Forum posts
+└── Notifications
+    ├── Cross-platform notifications
+    ├── Email digests (configurable)
+    ├── Push notifications (mobile)
+    └── In-app alerts
+
+COLLABORATION:
+├── Team Projects
+│   ├── Shared project access
+│   ├── Role management
+│   ├── Version control integration
+│   └── Task tracking
+├── Asset Collaboration
+│   ├── Co-creators on assets
+│   ├── Revenue splitting
+│   ├── Attribution
+│   └── Licensing flexibility
+└── Game Collaboration
+    ├── Multi-developer games
+    ├── Publisher relationships
+    ├── Marketing partnerships
+    └── Cross-promotion
+```
+
+---
+
+## 💰 UNIFIED MONETIZATION SYSTEM
+
+### Complete Revenue Integration
+
+```
+MONETIZATION INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+REVENUE STREAMS:
+├── Game Sales (Game Library)
+│   ├── Paid games (one-time purchase)
+│   ├── Free-to-play with IAP
+│   ├── Subscriptions
+│   ├── Ad revenue sharing
+│   └── 100% to developer (no platform cut on base)
+├── Asset Sales (Asset Store)
+│   ├── One-time purchases
+│   ├── Subscription bundles
+│   ├── 95% to creator (5% platform fee)
+│   └── Volume discounts available
+├── Services
+│   ├── Premium templates
+│   ├── Custom asset commissions
+│   ├── Tutorial sales
+│   └── Consulting/support
+└── Platform Services (Optional)
+    ├── Cloud builds (pay per build)
+    ├── Extended storage
+    ├── Priority review
+    └── Marketing boost
+
+UNIFIED WALLET:
+├── Single Balance
+│   ├── All earnings in one place
+│   ├── Game revenue + Asset sales combined
+│   ├── Real-time balance updates
+│   └── Transaction history
+├── Payouts
+│   ├── Multiple withdrawal methods
+│   ├── Scheduled payouts (weekly/monthly)
+│   ├── Minimum threshold ($10)
+│   └── Tax documentation
+├── Spending
+│   ├── Use earnings to buy assets
+│   ├── Pay for platform services
+│   ├── Transfer to bank
+│   └── Gift to other users
+└── Reports
+    ├── Revenue breakdown by source
+    ├── Tax reports
+    ├── Sales analytics
+    └── Forecasting
+
+PRICING TOOLS:
+├── Game Pricing
+│   ├── Market analysis
+│   ├── Competitor pricing
+│   ├── Regional adjustments
+│   └── A/B testing
+├── Asset Pricing
+│   ├── Category benchmarks
+│   ├── Quality-based suggestions
+│   ├── Bundle optimization
+│   └── Sale scheduling
+└── Promotions
+    ├── Platform-wide sales
+    ├── Personal discounts
+    ├── Bundle deals
+    └── Loyalty rewards
+```
+
+---
+
+## 🏭 PRODUCTION-GRADE SYSTEM INTEGRATION
+
+### Enterprise-Level Quality Standards
+
+**Every system in NovaForge is built to AAA enterprise standards** - no shortcuts, no compromises, world-best quality.
+
+```
+QUALITY STANDARDS ACROSS ALL SYSTEMS:
+═══════════════════════════════════════════════════════════════════════════════
+
+CODE QUALITY:
+├── 100% test coverage on critical paths
+├── Zero compiler warnings (treat warnings as errors)
+├── Static analysis passing (clang-tidy, cppcheck)
+├── Memory sanitizer clean (zero leaks, zero UB)
+├── Thread sanitizer clean (zero data races)
+├── Fuzz testing passed (1M+ random inputs)
+└── Code review required for all changes
+
+PERFORMANCE STANDARDS:
+├── 60 FPS minimum on mid-range devices (2019+)
+├── 30 FPS minimum on budget devices (2014-2018)
+├── <16ms frame time guaranteed
+├── <100ms load time for scenes
+├── <1 second hot-reload for all scripts
+├── <50MB base engine size
+└── <10% battery drain per hour
+
+RELIABILITY STANDARDS:
+├── 99.9% uptime for online services
+├── Zero data loss (triple redundancy)
+├── Automatic failover (<30 second recovery)
+├── Graceful degradation under load
+├── Offline functionality preserved
+└── Cross-platform determinism
+
+SECURITY STANDARDS:
+├── Zero known vulnerabilities
+├── Encrypted data at rest and in transit
+├── Regular security audits
+├── Bug bounty program
+├── OWASP compliance
+└── SOC2 / ISO27001 ready
+```
+
+### Complete System Integration Map
+
+```
+NOVAFORGE COMPLETE SYSTEM INTEGRATION:
+═══════════════════════════════════════════════════════════════════════════════
+
+                           ┌─────────────────────────────────────┐
+                           │         USER INTERFACE              │
+                           │  (Mobile App / Web / XR)            │
+                           └──────────────┬──────────────────────┘
+                                          │
+          ┌───────────────────────────────┼───────────────────────────────┐
+          │                               │                               │
+          ▼                               ▼                               ▼
+┌─────────────────────┐       ┌─────────────────────┐       ┌─────────────────────┐
+│   🛠️ EDITOR         │       │   🛒 ASSET STORE    │       │   🎮 GAME LIBRARY   │
+│   (Create)          │◄─────►│   (Buy/Sell)        │◄─────►│   (Play/Publish)    │
+└─────────┬───────────┘       └─────────┬───────────┘       └─────────┬───────────┘
+          │                             │                             │
+          │    ┌────────────────────────┼────────────────────────┐    │
+          │    │                        │                        │    │
+          ▼    ▼                        ▼                        ▼    ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                              CORE SERVICES LAYER                                 │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐        │
+│  │ 🤖 AI        │  │ 👤 User      │  │ 💾 Cloud     │  │ 📊 Analytics │        │
+│  │ Generation   │  │ Accounts     │  │ Storage      │  │ System       │        │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘        │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐        │
+│  │ 💳 Payments  │  │ 📝 Review    │  │ 🔔 Notifi-   │  │ 🌐 CDN       │        │
+│  │ System       │  │ System       │  │ cations      │  │ Delivery     │        │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘        │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐        │
+│  │ 👥 Social    │  │ 🎮 Multi-    │  │ 🔐 Security  │  │ 📱 Push      │        │
+│  │ System       │  │ player       │  │ Layer        │  │ Services     │        │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘        │
+└─────────────────────────────────────────────────────────────────────────────────┘
+                                          │
+                                          ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                              ENGINE CORE                                         │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐        │
+│  │ 🎨 Renderer  │  │ 🔧 Physics   │  │ 🧠 NSECW     │  │ 🔊 Audio     │        │
+│  │ (UCRT)       │  │ (Diff Phys)  │  │ (ECS)        │  │ Engine       │        │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘        │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐        │
+│  │ 📜 Scripting │  │ 🎬 Animation │  │ 🤖 AI/ML     │  │ 🌍 Networking│        │
+│  │ (Universal)  │  │ System       │  │ Runtime      │  │ Stack        │        │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘        │
+└─────────────────────────────────────────────────────────────────────────────────┘
+                                          │
+                                          ▼
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                              PLATFORM LAYER                                      │
+├─────────────────────────────────────────────────────────────────────────────────┤
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐        │
+│  │ 📱 Android   │  │ 🍎 iOS       │  │ 🌐 Web       │  │ 🥽 XR        │        │
+│  │ (Vulkan)     │  │ (Metal)      │  │ (WebGPU)     │  │ (OpenXR)     │        │
+│  └──────────────┘  └──────────────┘  └──────────────┘  └──────────────┘        │
+└─────────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Service Integration Specifications
+
+```
+SERVICE INTEGRATION MATRIX:
+═══════════════════════════════════════════════════════════════════════════════
+
+AI GENERATION SERVICE ↔ ALL SYSTEMS:
+├── Editor Integration
+│   ├── Real-time asset generation in viewport
+│   ├── Code completion and generation
+│   ├── Level/scene generation
+│   ├── Material creation from description
+│   └── Animation synthesis
+├── Asset Store Integration
+│   ├── AI-generated asset listings
+│   ├── Smart search and recommendations
+│   ├── Quality scoring
+│   └── Preview generation
+├── Game Library Integration
+│   ├── Game recommendations
+│   ├── Dynamic content in games
+│   ├── Accessibility features
+│   └── Content moderation
+└── API Endpoints
+    ├── POST /api/ai/generate/model
+    ├── POST /api/ai/generate/texture
+    ├── POST /api/ai/generate/audio
+    ├── POST /api/ai/generate/code
+    ├── POST /api/ai/generate/level
+    └── GET /api/ai/status/{job_id}
+
+USER ACCOUNT SERVICE ↔ ALL SYSTEMS:
+├── Single Sign-On
+│   ├── One account for entire platform
+│   ├── OAuth2 / OpenID Connect
+│   ├── Social login (Google, Apple, etc.)
+│   └── Enterprise SSO support
+├── Profile Management
+│   ├── Developer profile
+│   ├── Creator profile
+│   ├── Player profile
+│   └── Unified reputation
+├── Permissions
+│   ├── Role-based access control
+│   ├── Resource-level permissions
+│   ├── API scopes
+│   └── Team management
+└── API Endpoints
+    ├── GET /api/user/profile
+    ├── PUT /api/user/profile
+    ├── GET /api/user/permissions
+    ├── POST /api/auth/login
+    └── POST /api/auth/refresh
+
+CLOUD STORAGE SERVICE ↔ ALL SYSTEMS:
+├── Project Storage
+│   ├── Version-controlled projects
+│   ├── Automatic backup
+│   ├── Conflict resolution
+│   └── Offline sync
+├── Asset Storage
+│   ├── Original files preserved
+│   ├── Optimized versions cached
+│   ├── CDN distribution
+│   └── Access control
+├── Save Game Storage
+│   ├── Cross-device sync
+│   ├── Version history
+│   ├── Conflict handling
+│   └── Quota management
+└── API Endpoints
+    ├── GET /api/storage/project/{id}
+    ├── PUT /api/storage/project/{id}
+    ├── GET /api/storage/asset/{id}
+    ├── GET /api/storage/save/{game_id}
+    └── PUT /api/storage/save/{game_id}
+
+PAYMENT SERVICE ↔ ALL SYSTEMS:
+├── Transactions
+│   ├── Game purchases
+│   ├── Asset purchases
+│   ├── IAP handling
+│   ├── Subscriptions
+│   └── Refunds
+├── Payouts
+│   ├── Developer earnings
+│   ├── Creator earnings
+│   ├── Tax handling
+│   └── Multiple currencies
+├── Platform Fee (5%)
+│   ├── Automatic calculation
+│   ├── Transparent reporting
+│   ├── No hidden fees
+│   └── Volume discounts available
+└── API Endpoints
+    ├── POST /api/payment/checkout
+    ├── POST /api/payment/process
+    ├── GET /api/payment/history
+    ├── GET /api/payment/earnings
+    └── POST /api/payment/payout
+
+REVIEW SERVICE ↔ ALL SYSTEMS:
+├── Game Review
+│   ├── Automated checks
+│   ├── Human review queue
+│   ├── Appeal process
+│   └── Status tracking
+├── Asset Review
+│   ├── Quality validation
+│   ├── License verification
+│   ├── Content moderation
+│   └── Technical checks
+├── User Content Review
+│   ├── Comments/reviews moderation
+│   ├── User reports
+│   ├── Community guidelines
+│   └── Ban management
+└── API Endpoints
+    ├── POST /api/review/submit/{type}
+    ├── GET /api/review/status/{id}
+    ├── POST /api/review/appeal/{id}
+    └── GET /api/review/queue (admin)
+
+ANALYTICS SERVICE ↔ ALL SYSTEMS:
+├── Editor Analytics
+│   ├── Feature usage
+│   ├── Build metrics
+│   ├── Error tracking
+│   └── Performance data
+├── Game Analytics
+│   ├── Player metrics
+│   ├── Retention data
+│   ├── Revenue tracking
+│   └── A/B test results
+├── Store Analytics
+│   ├── Sales data
+│   ├── Conversion rates
+│   ├── Search analytics
+│   └── Trending items
+└── API Endpoints
+    ├── POST /api/analytics/event
+    ├── GET /api/analytics/dashboard/{type}
+    ├── GET /api/analytics/report/{id}
+    └── GET /api/analytics/realtime
+
+MULTIPLAYER SERVICE ↔ GAME SYSTEMS:
+├── Matchmaking
+│   ├── Skill-based matching
+│   ├── Region-based matching
+│   ├── Party support
+│   └── Custom rules
+├── Game Servers
+│   ├── Dedicated servers
+│   ├── P2P with relay
+│   ├── Hybrid mode
+│   └── Auto-scaling
+├── State Sync
+│   ├── Authoritative server
+│   ├── Client prediction
+│   ├── Rollback netcode
+│   └── Delta compression
+└── API Endpoints
+    ├── POST /api/multiplayer/match
+    ├── GET /api/multiplayer/server/{region}
+    ├── POST /api/multiplayer/create-lobby
+    └── WebSocket /api/multiplayer/connect
+
+NOTIFICATION SERVICE ↔ ALL SYSTEMS:
+├── Push Notifications
+│   ├── Mobile push (FCM/APNS)
+│   ├── Web push
+│   ├── Email notifications
+│   └── In-app notifications
+├── Real-time Updates
+│   ├── WebSocket connections
+│   ├── Server-sent events
+│   ├── Polling fallback
+│   └── Offline queuing
+├── Notification Types
+│   ├── Review status updates
+│   ├── Sale notifications
+│   ├── Friend activity
+│   ├── Platform announcements
+│   └── Game updates
+└── API Endpoints
+    ├── GET /api/notifications
+    ├── PUT /api/notifications/{id}/read
+    ├── PUT /api/notifications/settings
+    └── WebSocket /api/notifications/stream
+```
+
+### Data Flow Integration
+
+```
+PLATFORM DATA FLOWS:
+═══════════════════════════════════════════════════════════════════════════════
+
+GAME DEVELOPMENT → PUBLISHING FLOW:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                              │
+│  [Editor]                                                                    │
+│     │                                                                        │
+│     ├── Create Project ──────────────────────────► Cloud Storage             │
+│     │                                                                        │
+│     ├── Import Assets ◄────────────────────────── Asset Store                │
+│     │                                                                        │
+│     ├── Generate with AI ◄─────────────────────── AI Service                 │
+│     │                                                                        │
+│     ├── Build Game ──────────────────────────────► Build Service             │
+│     │                                                                        │
+│     ├── Test Game ───────────────────────────────► Test Devices              │
+│     │                                                                        │
+│     └── Publish ─────────────────────────────────► Review Service            │
+│                                                         │                    │
+│                                                         ▼                    │
+│                                                   [Game Library]             │
+│                                                         │                    │
+│                                                         ├── Discovery        │
+│                                                         ├── Play             │
+│                                                         ├── Rate/Review      │
+│                                                         └── Analytics        │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+ASSET CREATION → SELLING FLOW:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                              │
+│  [Editor/External Tools]                                                     │
+│     │                                                                        │
+│     ├── Create Asset (3D/Texture/Audio/Script)                               │
+│     │                                                                        │
+│     ├── (Optional) AI Enhancement ◄────────────── AI Service                 │
+│     │                                                                        │
+│     ├── Export to NovaCore Format                                            │
+│     │                                                                        │
+│     └── List on Store ───────────────────────────► Review Service            │
+│                                                         │                    │
+│                                                         ▼                    │
+│                                                   [Asset Store]              │
+│                                                         │                    │
+│                                                         ├── Discovery        │
+│                                                         ├── Purchase         │
+│                                                         ├── Download         │
+│                                                         └── Use in Projects  │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+PLAYER EXPERIENCE FLOW:
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                              │
+│  [Player Opens App]                                                          │
+│     │                                                                        │
+│     ├── Home Tab                                                             │
+│     │     ├── Top Free Games ◄───────────────────── Recommendation Engine    │
+│     │     ├── All Free Games                                                 │
+│     │     ├── Personalized Feed ◄────────────────── AI Service               │
+│     │     └── Friend Activity ◄──────────────────── Social Service           │
+│     │                                                                        │
+│     ├── Play Tab                                                             │
+│     │     ├── Continue Playing ◄─────────────────── Save Service             │
+│     │     ├── Browse Games ◄─────────────────────── Game Library             │
+│     │     ├── Filter (Free/Paid/Category)                                    │
+│     │     └── Play Game ─────────────────────────── Runtime Engine           │
+│     │           ├── Multiplayer ◄────────────────── Multiplayer Service      │
+│     │           ├── Achievements ◄───────────────── Achievement Service      │
+│     │           ├── Leaderboards ◄───────────────── Leaderboard Service      │
+│     │           └── Cloud Save ──────────────────── Cloud Storage            │
+│     │                                                                        │
+│     └── Profile                                                              │
+│           ├── View Stats ◄───────────────────────── Analytics Service        │
+│           ├── Manage Account ◄───────────────────── User Service             │
+│           └── View Earnings ◄────────────────────── Payment Service          │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+REVENUE FLOW (5% Platform Fee):
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                              │
+│  [Transaction Occurs]                                                        │
+│     │                                                                        │
+│     ├── Game Purchase ($9.99)                                                │
+│     │     ├── Platform Fee (5%): $0.50                                       │
+│     │     ├── Payment Processing (~2.9%): $0.29                              │
+│     │     └── Developer Receives: $9.20 (92.1%)                              │
+│     │                                                                        │
+│     ├── Asset Purchase ($4.99)                                               │
+│     │     ├── Platform Fee (5%): $0.25                                       │
+│     │     ├── Payment Processing (~2.9%): $0.14                              │
+│     │     └── Creator Receives: $4.60 (92.2%)                                │
+│     │                                                                        │
+│     ├── In-App Purchase ($1.99)                                              │
+│     │     ├── Platform Fee (5%): $0.10                                       │
+│     │     ├── Payment Processing (~2.9%): $0.06                              │
+│     │     └── Developer Receives: $1.83 (92.0%)                              │
+│     │                                                                        │
+│     └── Free Game (with Ads)                                                 │
+│           ├── Ad Revenue Share: Developer keeps 95%                          │
+│           └── Platform Fee: 5%                                               │
+│                                                                              │
+│  [Payout]                                                                    │
+│     │                                                                        │
+│     ├── Minimum: $10                                                         │
+│     ├── Schedule: Weekly or Monthly                                          │
+│     ├── Methods: Bank Transfer, PayPal, Wise                                 │
+│     └── Tax Documents: Auto-generated 1099/W-8                               │
+│                                                                              │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Configuration Integration
+
+```json
+{
+  "novaforge_platform_config": {
+    "version": "1.0.0",
+    "environment": "production",
+    
+    "services": {
+      "ai_generation": {
+        "endpoint": "https://ai.novaforge.dev/v1",
+        "models": {
+          "3d": "flux-schnell-3d-v2",
+          "texture": "flux-schnell-texture-v2",
+          "audio": "audio-diffusion-v2",
+          "code": "nova-code-v1",
+          "animation": "motion-diffusion-v2"
+        },
+        "rate_limits": {
+          "free_tier": 100,
+          "pro_tier": 1000,
+          "enterprise": "unlimited"
+        }
+      },
+      
+      "user_accounts": {
+        "endpoint": "https://auth.novaforge.dev/v1",
+        "providers": ["email", "google", "apple", "github"],
+        "session_duration": 604800,
+        "mfa_supported": true
+      },
+      
+      "cloud_storage": {
+        "endpoint": "https://storage.novaforge.dev/v1",
+        "regions": ["us-east", "us-west", "eu-west", "asia-east"],
+        "max_project_size": "10GB",
+        "max_asset_size": "2GB"
+      },
+      
+      "payments": {
+        "endpoint": "https://pay.novaforge.dev/v1",
+        "providers": ["stripe", "paypal"],
+        "platform_fee": 0.05,
+        "min_payout": 10.00,
+        "currencies": ["USD", "EUR", "GBP", "JPY", "CNY"]
+      },
+      
+      "review": {
+        "endpoint": "https://review.novaforge.dev/v1",
+        "auto_approve_threshold": 95,
+        "max_review_time": 172800,
+        "appeal_window": 604800
+      },
+      
+      "analytics": {
+        "endpoint": "https://analytics.novaforge.dev/v1",
+        "retention_days": 365,
+        "realtime_enabled": true,
+        "gdpr_compliant": true
+      },
+      
+      "multiplayer": {
+        "endpoint": "https://mp.novaforge.dev/v1",
+        "max_players": 64,
+        "regions": ["na", "eu", "asia", "oceania", "sa"],
+        "tick_rate": 60
+      },
+      
+      "cdn": {
+        "endpoint": "https://cdn.novaforge.dev",
+        "regions": ["global"],
+        "cache_ttl": 86400
+      },
+      
+      "notifications": {
+        "endpoint": "https://notify.novaforge.dev/v1",
+        "push_enabled": true,
+        "email_enabled": true,
+        "websocket_enabled": true
+      }
+    },
+    
+    "features": {
+      "free_content_priority": true,
+      "ai_generation_enabled": true,
+      "multiplayer_enabled": true,
+      "analytics_enabled": true,
+      "cloud_saves_enabled": true,
+      "achievements_enabled": true,
+      "leaderboards_enabled": true
+    },
+    
+    "limits": {
+      "max_games_per_user": "unlimited",
+      "max_assets_per_user": "unlimited",
+      "max_projects_free": 5,
+      "max_projects_pro": "unlimited",
+      "build_queue_free": 3,
+      "build_queue_pro": 10
+    }
+  }
+}
+```
 
 ---
 
