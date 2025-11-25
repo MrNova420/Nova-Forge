@@ -3281,99 +3281,134 @@ NovaCore learns from worldwide usage to improve generation of **ALL content type
 
 #### Anti-Wonky Generation (Quality Control for ALL Content Types)
 
-All learned improvements include **anti-wonky safeguards** for every content category:
+All learned improvements include **anti-wonky safeguards** for every content category. **IMPORTANT**: Instead of automatic rejection, all flagged content goes to **PLATFORM REVIEW** for owner approval/disapproval:
 
 ```json
 {
   "anti_wonky_global": {
+    "review_mode": "platform_review_required",
+    "auto_reject": false,
+    "flag_for_review": true,
+    
     "visual_assets": {
-      "reject_impossible_geometry": true,
-      "reject_broken_topology": true,
-      "reject_extreme_proportions": true,
-      "reject_style_drift": true
+      "flag_impossible_geometry": true,
+      "flag_broken_topology": true,
+      "flag_extreme_proportions": true,
+      "flag_style_drift": true,
+      "action": "send_to_platform_review"
     },
     "animations": {
-      "reject_impossible_poses": true,
-      "reject_foot_sliding": true,
-      "reject_joint_limits_exceeded": true
+      "flag_impossible_poses": true,
+      "flag_foot_sliding": true,
+      "flag_joint_limits_exceeded": true,
+      "action": "send_to_platform_review"
     },
     "physics": {
-      "reject_explosions": true,
-      "reject_tunneling": true,
-      "reject_infinite_bounces": true
+      "flag_explosions": true,
+      "flag_tunneling": true,
+      "flag_infinite_bounces": true,
+      "action": "send_to_platform_review"
     },
     "audio": {
-      "reject_clipping": true,
-      "reject_artifacts": true,
-      "reject_extreme_frequencies": true
+      "flag_clipping": true,
+      "flag_artifacts": true,
+      "flag_extreme_frequencies": true,
+      "action": "send_to_platform_review"
     },
     "terrain": {
-      "reject_floating_terrain": true,
-      "reject_impossible_overhangs": true,
-      "reject_too_steep_for_gameplay": true,
-      "reject_texture_stretching": true
+      "flag_floating_terrain": true,
+      "flag_impossible_overhangs": true,
+      "flag_too_steep_for_gameplay": true,
+      "flag_texture_stretching": true,
+      "action": "send_to_platform_review"
     },
     "worlds_levels": {
-      "reject_uncompletable_levels": true,
-      "reject_impossible_jumps": true,
-      "reject_stuck_points": true,
-      "ensure_spawn_to_exit_path": true
+      "flag_uncompletable_levels": true,
+      "flag_impossible_jumps": true,
+      "flag_stuck_points": true,
+      "ensure_spawn_to_exit_path": true,
+      "action": "send_to_platform_review"
     },
     "models_meshes": {
-      "reject_non_manifold": true,
-      "reject_degenerate_faces": true,
-      "reject_inverted_normals": true,
-      "reject_overlapping_uvs": true
+      "flag_non_manifold": true,
+      "flag_degenerate_faces": true,
+      "flag_inverted_normals": true,
+      "flag_overlapping_uvs": true,
+      "action": "send_to_platform_review"
     },
     "materials": {
-      "reject_unrealistic_pbr": true,
-      "reject_visible_seams": true,
-      "reject_color_banding": true,
-      "enforce_energy_conservation": true
+      "flag_unrealistic_pbr": true,
+      "flag_visible_seams": true,
+      "flag_color_banding": true,
+      "enforce_energy_conservation": true,
+      "action": "send_to_platform_review"
     },
     "lighting": {
-      "reject_light_leaks": true,
-      "reject_shadow_acne": true,
-      "reject_over_exposure": true,
-      "reject_flickering": true
+      "flag_light_leaks": true,
+      "flag_shadow_acne": true,
+      "flag_over_exposure": true,
+      "flag_flickering": true,
+      "action": "send_to_platform_review"
     },
     "ui_interface": {
-      "reject_unreadable_text": true,
-      "reject_tiny_touch_targets": true,
-      "reject_clashing_colors": true,
-      "min_touch_target_px": 44
+      "flag_unreadable_text": true,
+      "flag_tiny_touch_targets": true,
+      "flag_clashing_colors": true,
+      "min_touch_target_px": 44,
+      "action": "send_to_platform_review"
     },
     "characters": {
-      "reject_broken_anatomy": true,
-      "reject_bad_proportions": true,
-      "reject_unsuitable_for_rigging": true,
-      "reject_uncanny_faces": true
+      "flag_broken_anatomy": true,
+      "flag_bad_proportions": true,
+      "flag_unsuitable_for_rigging": true,
+      "flag_uncanny_faces": true,
+      "action": "send_to_platform_review"
     },
     "water_fluids": {
-      "reject_physics_instability": true,
-      "reject_visual_artifacts": true,
-      "performance_budget_ms": 2.0
+      "flag_physics_instability": true,
+      "flag_visual_artifacts": true,
+      "performance_budget_ms": 2.0,
+      "action": "send_to_platform_review"
     },
     "foliage": {
-      "reject_floating_vegetation": true,
-      "reject_scale_inconsistency": true,
-      "enforce_lod_quality": true
+      "flag_floating_vegetation": true,
+      "flag_scale_inconsistency": true,
+      "enforce_lod_quality": true,
+      "action": "send_to_platform_review"
     },
     "destruction": {
-      "reject_physics_explosions": true,
-      "reject_unrealistic_fragments": true,
-      "performance_budget_ms": 1.0
+      "flag_physics_explosions": true,
+      "flag_unrealistic_fragments": true,
+      "performance_budget_ms": 1.0,
+      "action": "send_to_platform_review"
     },
     "cinematics": {
-      "reject_jump_cuts_unintended": true,
-      "reject_bad_composition": true,
-      "reject_audio_desync": true
+      "flag_jump_cuts_unintended": true,
+      "flag_bad_composition": true,
+      "flag_audio_desync": true,
+      "action": "send_to_platform_review"
+    },
+    "content_moderation": {
+      "flag_inappropriate_content": true,
+      "flag_potential_copyright": true,
+      "flag_brand_safety_concerns": true,
+      "flag_age_restricted_content": true,
+      "action": "send_to_platform_review",
+      "user_cannot_use_until_approved": true
     },
     "quality_threshold": 95,
-    "auto_reject_below_threshold": true
+    "below_threshold_action": "send_to_platform_review",
+    "auto_reject": false
   }
 }
 ```
+
+**Platform Review Workflow:**
+1. Generation is created but **NOT available to user**
+2. Flagged content goes to **Platform Review Queue**
+3. Platform owner reviews and decides: **Approve** or **Disapprove**
+4. If **Approved**: Content becomes available for user to use
+5. If **Disapproved**: Content is removed, user notified of rejection reason
 
 #### Complete Training Guide Reference
 
@@ -4674,7 +4709,7 @@ NovaCore includes comprehensive AI governance and tamper-proof security to ensur
 │  │  • Hard-coded output boundaries (models cannot exceed defined parameters)       │    │
 │  │  • Output validation gates (all generations pass through quality checks)        │    │
 │  │  • Rate limiting (max generations per second/minute/hour)                       │    │
-│  │  • Content filtering (automatic rejection of inappropriate content)             │    │
+│  │  • Content moderation (flagged content requires PLATFORM REVIEW before use)     │    │
 │  │  • Style enforcement (generations must match approved style guides)             │    │
 │  └─────────────────────────────────────────────────────────────────────────────────┘    │
 │                                                                                          │
