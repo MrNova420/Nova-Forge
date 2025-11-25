@@ -1,10 +1,20 @@
 # NovaCore Engine: Ultimate Hybrid World-Best Custom Game Engine - "Complete Blueprint"
 
+> **Platform**: NovaForge | **Engine**: NovaCore | **Company**: WeNova Interactive
+
+---
+
+## ⚠️ WORK IN PROGRESS - ACTIVE DEVELOPMENT ⚠️
+
+> **This document is under active development.** All features, specifications, pricing, and information are subject to change. Nothing is final or official yet. NovaForge is being built with non-stop improvements, more features, and additional content being added continuously. This blueprint represents our vision and roadmap - actual implementation may evolve as development progresses.
+
+---
+
 > **November 2025 - NovaForge v2: Expanded with 2025 Research**
 
 Merged blueprint now **2× more detailed**: Proven C++23 mobile AAA (Genshin/Zenless fidelity on $150 phones) + revolutionary NEXUS (neural-symbolic, continual RT, differentiable physics, zero-asset diffusion). 
 
-**Added Systems**: Deep differentiable physics impl (PhysiOpt/Disney-DeepMind inspired), basic systems (input/serialization), QoL (hot-reload/undo/profiler), in-between (scripting/VFX/audio proc), advanced (64-player net, XR passthrough, self-optimizing pipelines). 
+**Added Systems**: Deep differentiable physics impl (PhysiOpt/Disney-DeepMind inspired), basic systems (input/serialization), QoL (hot-reload/undo/profiler), in-between (scripting/VFX/audio proc), advanced (10,000-player net, XR passthrough, self-optimizing pipelines). 
 
 **Performance**: 150FPS high-end, 60FPS mid, 40FPS low (80 feel via frame gen). 
 
@@ -4477,17 +4487,18 @@ End User Experience:
 **Free Tier** (70% of users):
 - ✅ Full editor features (no limitations)
 - ✅ Build and publish unlimited games
-- ✅ Zero-Asset Diffusion AI generation
+- ✅ Zero-Asset Diffusion AI generation (5-25 uses/day)
 - ✅ Traditional asset import (100+ formats)
 - ✅ Community support (forums, Discord)
 - ✅ Cloud storage: 1GB
-- ⚠️ Revenue limit: $100,000/year per developer
+- ✅ 5 projects
+- ✅ Keep 85% of sales (15% platform fee)
 - ⚠️ NovaCore splash screen required (3 seconds)
 - ⚠️ "Made with NovaCore" watermark
 
 **Pro Tier** ($50/month or $500/year - 25% of users):
 - ✅ All Free features
-- ✅ Unlimited revenue (no cap)
+- ✅ Unlimited AI generation
 - ✅ No splash screen or watermark
 - ✅ Priority support (24-hour response)
 - ✅ Cloud storage: 100GB
@@ -4495,6 +4506,7 @@ End User Experience:
 - ✅ White-label runtime (your branding)
 - ✅ Early access to new features
 - ✅ Dedicated Discord channel
+- ✅ Unlimited projects
 
 **Enterprise Tier** (Custom pricing - 5% of users):
 - ✅ All Pro features
@@ -4587,7 +4599,7 @@ End User Experience:
 - Free tier: 70,000 users (0 revenue, audience building)
 - Pro tier: 25,000 users × $50/month = $1.25M/month = $15M/year
 - Enterprise tier: 5,000 users × $200/month avg = $1M/month = $12M/year
-- Asset store: 5% commission on $5M sales = $500K/year
+- Asset store: 15% commission on $5M sales = $750K/year
 - **Total Year 1**: $27.5M revenue
 
 **Market Position Goals**:
@@ -11135,7 +11147,7 @@ GUI Features:
 | **Audio** | Mono, low-bitrate | Stereo, Opus decode | Spatial HRTF | NPU reverb, diffusion synth | Zero-CPU acoustics |
 | **AI/Proc** | Manual assets only | Manual assets, basic presets | Optional cloud gen | On-device 1-2B models, 5MB seeds | Prompt→level editable |
 | **Editor** | Basic touch UI | Touch ImGui | Touch + voice | XR holographic, hands/voice | First spatial-primary |
-| **Net/Multi** | 2-player local | 4-player P2P | 16-player GGRS | 64-player neural predict | Lagless on 4G |
+| **Net/Multi** | 2-player local | 4-player P2P | 16-player GGRS | 10,000-player neural predict | Lagless on 4G |
 | **Publishing** | Export APK | Export APK | One-click cloud build | 5MB seeds instant distribute | Roblox-scale AAA |
 
 ### Device Examples by Tier
@@ -11255,17 +11267,17 @@ GUI Features:
 ### Phase 4: Advanced (Months 22-27)
 
 **Deliverables**:
-- XR editor (Vision Pro/Quest)
-- 64-player networking (GGRS + neural)
+- 10,000-player networking (GGRS + neural)
 - Self-optimizing pipelines
-- Holographic editing
+- Advanced rendering features
+- Platform optimizations (Android/iOS)
 
 **LOC**: 250,000
 
 **Milestones**:
-- Spatial editing functional
-- 64-player stress test passing
+- 10,000-player stress test passing
 - +50% FPS via self-optimization
+- Android/iOS builds fully optimized
 
 ### Phase 5: Polish (Months 28-32)
 
@@ -11296,6 +11308,23 @@ GUI Features:
 - 5MB seed distribution working
 - Cloud builds functional
 - 1000+ games published
+
+### Phase 7: XR/VR Features (Post-Launch, After iOS Completion)
+
+**Deliverables**:
+- XR editor (Vision Pro/Quest)
+- Holographic editing
+- Spatial editing interface
+- VR/AR passthrough support
+
+**LOC**: 150,000
+
+**Milestones**:
+- Spatial editing functional
+- Vision Pro native support
+- Quest 3 compatibility
+
+**Note**: XR/VR features are developed AFTER core platform (Android, iOS, Web) is complete and stable.
 
 ### Post-Launch
 
@@ -11958,8 +11987,8 @@ This allows Space-Plug-style universes that never stop evolving.
 **LOC**: 250,000 (increased for comprehensive features)
 
 **Milestones**:
-- ✅ 64-player matches stable with <50ms latency on good connections
-- ✅ 64-player matches playable with <100ms latency on poor connections
+- ✅ 10,000-player matches stable with <50ms latency on good connections
+- ✅ 10,000-player matches playable with <100ms latency on poor connections
 - ✅ P2P fallback working seamlessly for 2-8 players
 - ✅ Cloud offload reducing mobile CPU load by 30%
 - ✅ 99.9% uptime for dedicated servers
@@ -12728,7 +12757,7 @@ The brain and behavior of your game world.
 **LOC**: 250,000
 
 **Milestones**:
-- 64-player matches stable
+- 10,000-player matches stable
 - Netcode feeling lagless on 4G
 - Anti-cheat catching exploits
 
@@ -14806,7 +14835,7 @@ PROFILE TAB:
 ├── Stats (games made, hours played)
 ├── My games (published)
 ├── My assets (selling)
-├── Earnings (95% of all revenue)
+├── Earnings (85% of all revenue)
 ├── Settings
 └── Help & support
 ```
@@ -15040,8 +15069,8 @@ INTEGRATED DEVELOPMENT WORKFLOW:
    └── Sell successful assets on Store
 
 8. MONETIZATION
-   └── Game revenue (100% yours or with IAP)
-   └── Asset sales (95% yours)
+   └── Game revenue (85% yours - fully customizable pricing, free or paid)
+   └── Asset sales (85% yours)
    └── Earn while others use your work
 ```
 
@@ -15650,15 +15679,15 @@ MONETIZATION INTEGRATION:
 
 REVENUE STREAMS:
 ├── Game Sales (Game Library)
-│   ├── Paid games (one-time purchase)
+│   ├── Paid games (one-time purchase) - Fully customizable pricing
 │   ├── Free-to-play with IAP
 │   ├── Subscriptions
-│   ├── Ad revenue sharing
-│   └── 100% to developer (no platform cut on base)
+│   ├── Optional Ads Creator Program (player-controlled)
+│   └── 85% to developer (15% platform fee)
 ├── Asset Sales (Asset Store)
 │   ├── One-time purchases
 │   ├── Subscription bundles
-│   ├── 95% to creator (5% platform fee)
+│   ├── 85% to creator (15% platform fee)
 │   └── Volume discounts available
 ├── Services
 │   ├── Premium templates
@@ -15709,6 +15738,45 @@ PRICING TOOLS:
     ├── Personal discounts
     ├── Bundle deals
     └── Loyalty rewards
+
+OPTIONAL ADS CREATOR PROGRAM:
+═══════════════════════════════════════════════════════════════════════════════
+
+PHILOSOPHY: Ads are 100% OPTIONAL and PLAYER-CONTROLLED. No forced ads ever.
+
+HOW IT WORKS:
+├── For Creators:
+│   ├── Opt-in program - creators choose to enable ads in their games
+│   ├── Earn additional revenue from players who choose to support
+│   ├── 85% of ad revenue goes to creator (15% platform fee)
+│   └── Full control over ad placement and frequency options
+│
+├── For Players:
+│   ├── When launching a game with Ads Creator Program enabled:
+│   │   ┌─────────────────────────────────────────────────────────────────┐
+│   │   │              SUPPORT THIS CREATOR?                              │
+│   │   │                                                                 │
+│   │   │  Watch a short ad to support [Creator Name]                     │
+│   │   │                                                                 │
+│   │   │  ┌─────────────────┐    ┌─────────────────┐                    │
+│   │   │  │   WATCH AD      │    │   SKIP & PLAY   │                    │
+│   │   │  │  (Support)      │    │   (No ad)       │                    │
+│   │   │  └─────────────────┘    └─────────────────┘                    │
+│   │   │                                                                 │
+│   │   └─────────────────────────────────────────────────────────────────┘
+│   │
+│   ├── Players have FULL CONTROL - they choose whether to watch or skip
+│   ├── No ads play automatically - always requires player consent
+│   ├── Skip option is always available and prominent
+│   └── Choice is remembered (can be changed in settings)
+│
+└── Key Principles:
+    ├── ✅ Ads are NEVER forced on players
+    ├── ✅ Players CHOOSE to support creators they love
+    ├── ✅ Creators get additional revenue stream
+    ├── ✅ Transparent and ethical monetization
+    ├── ✅ Respects player experience and choice
+    └── ✅ No intrusive or disruptive advertising
 ```
 
 ---
@@ -15911,7 +15979,7 @@ PAYMENT SERVICE ↔ ALL SYSTEMS:
 │   ├── Creator earnings
 │   ├── Tax handling
 │   └── Multiple currencies
-├── Platform Fee (5%)
+├── Platform Fee (15%)
 │   ├── Automatic calculation
 │   ├── Transparent reporting
 │   ├── No hidden fees
@@ -16097,29 +16165,30 @@ PLAYER EXPERIENCE FLOW:
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
 
-REVENUE FLOW (5% Platform Fee):
+REVENUE FLOW (15% Platform Fee):
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                                                                              │
 │  [Transaction Occurs]                                                        │
 │     │                                                                        │
 │     ├── Game Purchase ($9.99)                                                │
-│     │     ├── Platform Fee (5%): $0.50                                       │
+│     │     ├── Platform Fee (15%): $1.50                                      │
 │     │     ├── Payment Processing (~2.9%): $0.29                              │
-│     │     └── Developer Receives: $9.20 (92.1%)                              │
+│     │     └── Developer Receives: $8.20 (82.1%)                              │
 │     │                                                                        │
 │     ├── Asset Purchase ($4.99)                                               │
-│     │     ├── Platform Fee (5%): $0.25                                       │
+│     │     ├── Platform Fee (15%): $0.75                                      │
 │     │     ├── Payment Processing (~2.9%): $0.14                              │
-│     │     └── Creator Receives: $4.60 (92.2%)                                │
+│     │     └── Creator Receives: $4.10 (82.2%)                                │
 │     │                                                                        │
 │     ├── In-App Purchase ($1.99)                                              │
-│     │     ├── Platform Fee (5%): $0.10                                       │
+│     │     ├── Platform Fee (15%): $0.30                                      │
 │     │     ├── Payment Processing (~2.9%): $0.06                              │
-│     │     └── Developer Receives: $1.83 (92.0%)                              │
+│     │     └── Developer Receives: $1.63 (81.9%)                              │
 │     │                                                                        │
-│     └── Free Game (with Ads)                                                 │
-│           ├── Ad Revenue Share: Developer keeps 95%                          │
-│           └── Platform Fee: 5%                                               │
+│     └── Free Game (with Optional Ads Creator Program)                        │
+│           ├── Ad Revenue Share: Developer keeps 85%                          │
+│           ├── Platform Fee: 15%                                              │
+│           └── Note: Ads are OPTIONAL - Players choose to support creators    │
 │                                                                              │
 │  [Payout]                                                                    │
 │     │                                                                        │
@@ -16173,7 +16242,7 @@ REVENUE FLOW (5% Platform Fee):
       "payments": {
         "endpoint": "https://pay.novaforge.dev/v1",
         "providers": ["stripe", "paypal"],
-        "platform_fee": 0.05,
+        "platform_fee": 0.15,
         "min_payout": 10.00,
         "currencies": ["USD", "EUR", "GBP", "JPY", "CNY"]
       },
@@ -16194,7 +16263,7 @@ REVENUE FLOW (5% Platform Fee):
       
       "multiplayer": {
         "endpoint": "https://mp.novaforge.dev/v1",
-        "max_players": 64,
+        "max_players": 10000,
         "regions": ["na", "eu", "asia", "oceania", "sa"],
         "tick_rate": 60
       },

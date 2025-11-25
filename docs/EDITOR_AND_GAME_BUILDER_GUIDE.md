@@ -6,6 +6,12 @@
 
 ---
 
+## ⚠️ WORK IN PROGRESS - ACTIVE DEVELOPMENT ⚠️
+
+> **This documentation is under active development.** All features, specifications, and information are subject to change. NovaForge is being continuously improved with new features and content being added regularly.
+
+---
+
 ## 🚨 CRITICAL: PRODUCTION-GRADE DEVELOPMENT ENVIRONMENT
 
 **NovaCore Editor** is a **complete, industry-grade Integrated Development Environment (IDE)** designed to compete with and exceed the capabilities of Unity Editor, Unreal Editor, and Godot Editor. This is **NOT** a basic tool—it is a world-class, enterprise-level, AAA-quality production environment.

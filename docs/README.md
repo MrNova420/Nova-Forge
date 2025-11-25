@@ -5,6 +5,12 @@
 
 ---
 
+## ⚠️ WORK IN PROGRESS - ACTIVE DEVELOPMENT ⚠️
+
+> **This documentation is under active development.** All features, specifications, and information are subject to change. NovaForge is being continuously improved with new features and content being added regularly.
+
+---
+
 ## 📚 Documentation Overview
 
 This folder contains supporting documentation for the NovaCore Engine and NovaForge Platform. **The main comprehensive blueprint is in the repository root.**

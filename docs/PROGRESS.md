@@ -9,6 +9,12 @@
 
 ---
 
+## ⚠️ WORK IN PROGRESS - ACTIVE DEVELOPMENT ⚠️
+
+> **This progress tracker is for a project under active development.** All timelines, features, and milestones are subject to change. NovaForge is being continuously improved with new features and content being added regularly.
+
+---
+
 ## 📊 Overall Progress - Aggressive 1-3 Month Timeline
 
 **Development Model**: Hyper-aggressive indie approach with AI-assisted coding, parallel phase execution, and extensive automation.
@@ -84,7 +90,7 @@
 - Differentiable XPBD physics learning
 - Neural asset generation (prompt→3D in 8s)
 - 5K NPCs with believable AI
-- Basic 64-player networking
+- Basic 10,000-player networking
 
 ### Week 5-8: Advanced Features Sprint (Days 29-56)
 **Target**: 2,600K LOC | **Status**: ⏸️ Not Started

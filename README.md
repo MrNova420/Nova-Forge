@@ -2,6 +2,10 @@
 
 <div align="center">
 
+> ⚠️ **WORK IN PROGRESS** ⚠️
+> 
+> NovaForge is currently **in active development**. All features, pricing, and information in this document are subject to change. Nothing is final or official yet. We're continuously adding new features, improvements, and content. Stay tuned for updates!
+
 # 🎮 MAKE GAMES. PLAY GAMES. GET PAID.
 
 ### *All from your phone. Yes, really.*
@@ -36,7 +40,7 @@ That's NovaForge.
 | **Built-in Asset Store** | ✅ | ⚠️ Separate | ⚠️ Separate | ❌ |
 | **XR Holographic Editor** | ✅ | ❌ | ❌ | ❌ |
 | **20+ Script Languages** | ✅ | ❌ 1-2 | ❌ 1-2 | ❌ 1-2 |
-| **5% Fee (No Royalties)** | ✅ | ❌ Royalties | ❌ 5%+Royalties | ✅ Free |
+| **15% Fee (No Royalties)** | ✅ | ❌ Royalties | ❌ 5%+Royalties | ✅ Free |
 | **Works Offline** | ✅ Single-player games | ⚠️ Limited | ⚠️ Limited | ✅ |
 | **Bluetooth KB/Mouse** | ✅ Full Support | ⚠️ Limited | ⚠️ Limited | ⚠️ Limited |
 
@@ -144,11 +148,11 @@ All in one app:
 ├── 🛠️ Build your game
 ├── 📤 One-click publish
 ├── 🎮 Players find it in our library
-├── 💰 You get paid (95%!)
+├── 💰 You get paid (85%!)
 └── 📊 See real-time analytics
 
 No App Store fees. No Google Play fees. No Steam fees.
-Just 5% to NovaForge. That's IT.
+Just 15% to NovaForge. That's IT.
 ```
 
 ---
@@ -163,7 +167,7 @@ Just 5% to NovaForge. That's IT.
 - ✅ Audio engine with 3D sound
 - ✅ UI/UX builder
 - ✅ Input handling (touch, controller, Bluetooth keyboard & mouse)
-- ✅ Multiplayer (up to 64 players!)
+- ✅ Multiplayer (up to 10,000 players!)
 - ✅ Achievements & leaderboards
 - ✅ Cloud saves
 - ✅ Localization (30+ languages)
@@ -186,7 +190,7 @@ Just 5% to NovaForge. That's IT.
 |------|-----|------------------|
 | **Make Games** | Full game engine on your phone | No $3,000 PC needed |
 | **Play Games** | Browse and play games | Made by creators worldwide |
-| **Sell Stuff** | Assets, games, templates | Keep 95% of everything |
+| **Sell Stuff** | Assets, games, templates | Keep 85% of everything |
 | **AI Magic** | "Make me a dragon" → 🐉 | 4 seconds. Done. |
 
 ---
@@ -341,24 +345,26 @@ BUILD → REVIEW (auto) → LIVE
 
 ### 💵 The NovaForge Promise
 
-**You keep 95%. We take 5%. That's it.**
+**You keep 85%. We take 15%. Full pricing control is yours.**
 
 No royalties. No hidden fees. No "oh but also..."
+
+**Fully Customizable Pricing**: Release your games for FREE or set any price you want. You decide how to monetize your creations.
 
 ```
 YOUR GAME SELLS FOR $9.99:
 
   $9.99  Game Price
-- $0.50  Platform Fee (5%)
+- $1.50  Platform Fee (15%)
 - $0.29  Payment Processing (~3%)
 ────────
-= $9.20  YOU GET (92%!)
+= $8.20  YOU GET (82%!)
 
 Compare to other platforms:
 - Apple App Store: 70% (they take 30%!)
 - Google Play: 70% (same deal)
 - Steam: 70% (yep, 30% again)
-- NovaForge: 92%+ 🎉
+- NovaForge: 82%+ 🎉
 ```
 
 ### 🛒 Sell More Than Games
@@ -370,25 +376,6 @@ Compare to other platforms:
 - Code/Scripts
 - Templates
 - Complete game sources
-
-```
-REAL CREATOR EARNINGS:
-
-🎨 Sarah's "Fantasy UI Pack"
-   Sales: 1,247
-   Revenue: $6,235
-   She keeps: $5,923.25
-
-🔊 Mike's "Retro Sound FX"
-   Sales: 3,891
-   Revenue: $7,782
-   He keeps: $7,392.90
-
-🎮 Alex's "Puzzle Template"
-   Sales: 523
-   Revenue: $7,845
-   They keep: $7,452.75
-```
 
 ### 📊 Know Your Numbers
 
@@ -404,7 +391,7 @@ Real-time analytics for everything:
 ## 🆓 The FREE Stuff (Because We're Nice)
 
 ### Free for Players:
-- ✅ Unlimited free games
+- ✅ Unlimited free games by creators and NovaForge
 - ✅ Cloud saves
 - ✅ Achievements
 - ✅ Leaderboards
@@ -413,17 +400,17 @@ Real-time analytics for everything:
 
 ### Free for Creators:
 - ✅ Full game engine
-- ✅ AI generation (100 uses/month)
+- ✅ AI generation (5-25 uses/day)
 - ✅ 5 projects
 - ✅ Publish unlimited games
-- ✅ Keep 95% of sales
+- ✅ Keep 85% of sales
 - ✅ All tutorials & docs
 
 ### Free Forever:
 - ✅ No trial period
 - ✅ No credit card required
 - ✅ No "upgrade to unlock"
-- ✅ No ads (unless YOU add them)
+- ✅ Optional Ads Creator Program - Players choose whether to support creators by watching ads
 
 ---
 
@@ -464,7 +451,7 @@ Real-time analytics for everything:
 
 ### Networking
 
-- **64 players** supported
+- **10,000 players** supported
 - **Rollback netcode** (no lag feel)
 - **Works on 4G** (not just WiFi)
 
@@ -474,35 +461,24 @@ Real-time analytics for everything:
 
 ## 🌍 The Community
 
-### 👥 Who Uses NovaForge?
+### 👥 Who Will Use NovaForge?
 
 ```
-👦 KIDS (10-17)
-   "I made my first game in a weekend!"
+👦 KIDS & BEGINNERS
+   Create your first game on your phone!
    
 👨‍💻 HOBBYISTS
-   "Finally, I can make games on my commute"
+   Make games anywhere - on your commute, at home
    
 👩‍🎨 ARTISTS  
-   "I sell my 3D models and make $500/month"
+   Sell your 3D models and creative assets
    
 🎮 INDIE DEVS
-   "Shipped 3 games this year, all from my iPad"
+   Ship games from your mobile device
    
 🏢 STUDIOS
-   "Our whole team collaborates in real-time"
+   Collaborate with your team in real-time
 ```
-
-### 🏆 Success Stories
-
-> **"Made $10K in my first month"**  
-> *- GameDev_Sarah, 23, made a puzzle game*
-
-> **"My son learned to code at 12"**  
-> *- ProudDad_Mike, his kid made 4 games*
-
-> **"Quit my job, now I make games full-time"**  
-> *- IndieAlex, 28, 15 published games*
 
 ---
 
@@ -537,7 +513,7 @@ No credit card needed
 ## ❓ FAQ (Frequently Asked Questions)
 
 ### "Is this actually free?"
-Yes. Make games, play games, publish games - all free. We make money when you make money (5% of sales).
+Yes. Make games, play games, publish games - all free. We make money when you make money (15% of sales).
 
 ### "Can I really make games on my phone?"
 Yes. Full game engine. Not a toy version. Real games that real people play.

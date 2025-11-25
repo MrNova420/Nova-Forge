@@ -6,6 +6,12 @@
 
 ---
 
+## ⚠️ WORK IN PROGRESS - ACTIVE DEVELOPMENT ⚠️
+
+> **This documentation is under active development.** All features, specifications, and information are subject to change. NovaForge is being continuously improved with new features and content being added regularly.
+
+---
+
 ## 🚨 CRITICAL: TRAINING AUTHORITY & CONTROL
 
 ### ⚠️ WHO CAN TRAIN THE ENGINE - ABSOLUTE RULES ⚠️
