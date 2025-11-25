@@ -7,8 +7,8 @@
 ### *All from your phone. Yes, really.*
 
 [![Download](https://img.shields.io/badge/Download-FREE-brightgreen?style=for-the-badge&logo=google-play)](https://novaforge.dev)
-[![Games](https://img.shields.io/badge/Games-10,000+-blue?style=for-the-badge)](https://novaforge.dev/play)
-[![Creators](https://img.shields.io/badge/Creators-100K+-purple?style=for-the-badge)](https://novaforge.dev/community)
+[![Platform](https://img.shields.io/badge/Platform-Coming%20Soon-blue?style=for-the-badge)](https://novaforge.dev)
+[![Status](https://img.shields.io/badge/Status-In%20Development-purple?style=for-the-badge)](https://novaforge.dev/community)
 
 ---
 
@@ -37,7 +37,8 @@ That's NovaForge.
 | **XR Holographic Editor** | ✅ | ❌ | ❌ | ❌ |
 | **20+ Script Languages** | ✅ | ❌ 1-2 | ❌ 1-2 | ❌ 1-2 |
 | **5% Fee (No Royalties)** | ✅ | ❌ Royalties | ❌ 5%+Royalties | ✅ Free |
-| **Works Offline** | ✅ 100% | ⚠️ Limited | ⚠️ Limited | ✅ |
+| **Works Offline** | ✅ Single-player games | ⚠️ Limited | ⚠️ Limited | ✅ |
+| **Bluetooth KB/Mouse** | ✅ Full Support | ⚠️ Limited | ⚠️ Limited | ⚠️ Limited |
 
 ### 🧠 AI That Actually Helps
 
@@ -161,13 +162,14 @@ Just 5% to NovaForge. That's IT.
 - ✅ Animation system
 - ✅ Audio engine with 3D sound
 - ✅ UI/UX builder
-- ✅ Input handling (touch, controller, keyboard)
+- ✅ Input handling (touch, controller, Bluetooth keyboard & mouse)
 - ✅ Multiplayer (up to 64 players!)
 - ✅ Achievements & leaderboards
 - ✅ Cloud saves
 - ✅ Localization (30+ languages)
 - ✅ Analytics
 - ✅ Version control (Git built-in)
+- ✅ Bluetooth keyboard & mouse support (full desktop experience on mobile!)
 
 ### Plus Stuff Others Charge Extra For:
 - ✅ Pro lighting (included FREE)
@@ -183,7 +185,7 @@ Just 5% to NovaForge. That's IT.
 | What | How | Why It's Awesome |
 |------|-----|------------------|
 | **Make Games** | Full game engine on your phone | No $3,000 PC needed |
-| **Play Games** | Thousands of free games | Made by people like you |
+| **Play Games** | Browse and play games | Made by creators worldwide |
 | **Sell Stuff** | Assets, games, templates | Keep 95% of everything |
 | **AI Magic** | "Make me a dragon" → 🐉 | 4 seconds. Done. |
 
@@ -200,8 +202,8 @@ Just 5% to NovaForge. That's IT.
 │   │             │  │             │  │             │            │
 │   │   🛠️ MAKE   │  │   🎮 PLAY   │  │   💰 EARN   │            │
 │   │             │  │             │  │             │            │
-│   │  Build your │  │  Play 10K+  │  │  Sell games │            │
-│   │  dream game │  │  free games │  │  & assets   │            │
+│   │  Build your │  │  Browse and │  │  Sell games │            │
+│   │  dream game │  │  play games │  │  & assets   │            │
 │   │             │  │             │  │             │            │
 │   └─────────────┘  └─────────────┘  └─────────────┘            │
 │                                                                 │
@@ -212,30 +214,32 @@ Just 5% to NovaForge. That's IT.
 
 ## 🎮 FOR PLAYERS: Your New Favorite Gaming App
 
-### 🆓 Thousands of FREE Games
+### 🆓 FREE Games Library
 
-Not "free with a catch." Actually free.
+Not "free with a catch." Actually free games from creators worldwide.
 
 ```
-🔥 TOP FREE GAMES RIGHT NOW:
+🎮 GAME LIBRARY FEATURES:
 
-1. 🚀 Space Odyssey          ⭐ 4.9  |  500K+ plays
-2. 🧩 Puzzle Dimension       ⭐ 4.8  |  350K+ plays  
-3. 🏎️ Turbo Racing          ⭐ 4.9  |  420K+ plays
-4. ⚔️ Fantasy Quest          ⭐ 4.7  |  280K+ plays
-5. 🎯 Arcade Madness         ⭐ 4.8  |  310K+ plays
+📂 CATEGORIES:
+├── 🆓 Free Games - Completely free to play
+├── ⭐ Featured - Staff picks and highlights  
+├── 🆕 New Releases - Fresh from creators
+├── 📈 Trending - What's popular right now
+└── 🎯 By Genre - Action, Puzzle, RPG, Racing, etc.
 
-All FREE. No ads required. No IAP walls.
+💡 All games are made by real creators using NovaForge!
 ```
 
 ### 🎯 Find Your Perfect Game
 
 **Smart Filters That Actually Work:**
 - 🆓 **FREE** - Show me only free games
-- ⭐ **Top Rated** - 4.5+ stars only
-- 📱 **Works Offline** - For airplane mode
-- 🎮 **Controller Support** - Bluetooth controller? Yes!
-- 👥 **Multiplayer** - Play with friends
+- ⭐ **Top Rated** - Highest rated games
+- 📱 **Works Offline** - Single-player games for airplane mode (multiplayer requires internet)
+- 🎮 **Controller Support** - Bluetooth controller supported
+- ⌨️ **Keyboard & Mouse** - Full Bluetooth KB/Mouse support
+- 👥 **Multiplayer** - Play with friends online
 
 ### ☁️ Your Saves, Everywhere
 
