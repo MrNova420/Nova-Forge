@@ -419,18 +419,31 @@ co_await scheduler.whenAll();
 
 ```cpp
 // Example: Compile-time sine/cosine lookup table using Taylor series
+constexpr float PI = 3.14159265358979323846f;
+
 constexpr float degToRad(float deg) {
-    return deg * 3.14159265358979323846f / 180.0f;
+    return deg * PI / 180.0f;
+}
+
+// Range reduction to [-π, π] for accuracy
+constexpr float normalizeAngle(float x) {
+    // Reduce to [-2π, 2π] then to [-π, π]
+    while (x > PI) x -= 2.0f * PI;
+    while (x < -PI) x += 2.0f * PI;
+    return x;
 }
 
 constexpr float sin_taylor(float x) {
     // Taylor series expansion for sin(x) around 0
-    // sin(x) ≈ x - x³/6 + x⁵/120 - x⁷/5040
+    // sin(x) ≈ x - x³/6 + x⁵/120 - x⁷/5040 + x⁹/362880
+    // Note: Accurate within [-π, π], use normalizeAngle for larger values
+    x = normalizeAngle(x);
     float x2 = x * x;
     float x3 = x2 * x;
     float x5 = x3 * x2;
     float x7 = x5 * x2;
-    return x - x3 / 6.0f + x5 / 120.0f - x7 / 5040.0f;
+    float x9 = x7 * x2;
+    return x - x3 / 6.0f + x5 / 120.0f - x7 / 5040.0f + x9 / 362880.0f;
 }
 
 constexpr std::array<float, 360> SINE_TABLE = []() constexpr {
@@ -553,9 +566,12 @@ void matrixMultiplyNEON(float* result, const float* a, const float* b) {
         a_row = vld1q_f32(&a[i * 4]);
         
         for (int j = 0; j < 4; ++j) {
-            // Properly load column elements into NEON vector
-            float b_col_data[4] = {b[j], b[j + 4], b[j + 8], b[j + 12]};
-            b_col = vld1q_f32(b_col_data);
+            // Build column vector using lane insertion (optimal NEON approach)
+            b_col = vdupq_n_f32(0.0f);
+            b_col = vsetq_lane_f32(b[j],     b_col, 0);
+            b_col = vsetq_lane_f32(b[j + 4], b_col, 1);
+            b_col = vsetq_lane_f32(b[j + 8], b_col, 2);
+            b_col = vsetq_lane_f32(b[j + 12], b_col, 3);
             sum = vmulq_f32(a_row, b_col);
             result[i * 4 + j] = vaddvq_f32(sum);
         }
@@ -2450,9 +2466,15 @@ set(CMAKE_TOOLCHAIN_FILE ${ANDROID_NDK}/build/cmake/android.toolchain.cmake)
 # Vulkan
 find_package(Vulkan REQUIRED)
 
-# ARM NEON optimization (only for 32-bit ARM, not needed for arm64)
+# ARM NEON optimization
+# Note: NEON is always available on arm64 (AArch64) but intrinsics still beneficial
+# For armeabi-v7a (32-bit ARM), explicit flags are required
 if(ANDROID_ABI STREQUAL "armeabi-v7a")
+    # 32-bit ARM requires explicit NEON flags
     add_compile_options(-mfpu=neon -mfloat-abi=softfp)
+elseif(ANDROID_ABI STREQUAL "arm64-v8a")
+    # 64-bit ARM has NEON by default, enable optimizations
+    add_compile_options(-O3 -ftree-vectorize)
 endif()
 ```
 
