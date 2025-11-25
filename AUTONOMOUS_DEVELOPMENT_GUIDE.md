@@ -4,6 +4,7 @@
 > **Document Version**: 1.0 | **Last Updated**: 2025-11-25  
 > **Purpose**: **THE SINGLE REFERENCE DOCUMENT** for starting and continuing full autonomous development
 
+Note that Nova Core The Engine Is also gonna be relased as a sepreste project as a standalone engine after the engine is fully built so ill want to copy/transfer it to another project easily
 ---
 
 ## ⚠️ THIS IS YOUR STARTING POINT ⚠️
