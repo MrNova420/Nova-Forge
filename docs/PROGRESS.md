@@ -220,7 +220,7 @@ When development begins:
    - Begin core ENGINE systems implementation
    - **Focus on ENGINE - NO platform features yet**
 
-3. **Track progress in this document**
+4. **Track progress in this document**
    - Update task checkboxes
    - Log completed work
    - Note any blockers or issues
