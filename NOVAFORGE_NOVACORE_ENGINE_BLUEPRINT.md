@@ -48,14 +48,23 @@
 
 ### Development Timeline
 
+**🎯 ENGINE-FIRST DEVELOPMENT APPROACH**
+
+> **⚠️ CRITICAL: The NovaCore game engine MUST be fully developed and functional BEFORE building the full NovaForge platform features. The engine is the foundation - platform features (game library, publishing, asset store) are built ON TOP of the completed engine.**
+
+**Development Priority Order**:
+1. **🔧 NovaCore Engine** (Months 1-2) - Core engine systems FIRST
+2. **📱 Basic Platform** (Month 3) - Minimal platform for engine testing/distribution
+3. **🚀 Full Platform** (Post-Launch) - Complete platform features after engine is stable
+
 **🎯 3 Months to First Release**, then non-stop development:
 
 | Month | Focus | Goal |
 |-------|-------|------|
-| **Month 1** | Foundation & Core | Build system, entity system, basic rendering |
-| **Month 2** | Rendering & Editor | PBR graphics, physics, mobile editor |
-| **Month 3** | Platform & Launch | Scripting, game library, publishing, **LAUNCH** |
-| **Post-Launch** | Continuous | Updates, patches, new features, improvements |
+| **Month 1** | **ENGINE: Foundation & Core** | Build system, entity system, basic rendering - ENGINE FOCUS |
+| **Month 2** | **ENGINE: Rendering & Physics** | PBR graphics, physics, mobile editor - ENGINE FOCUS |
+| **Month 3** | **ENGINE + Basic Platform** | Complete engine with scripting, audio, input + minimal game library for testing |
+| **Post-Launch** | **Full Platform Development** | Game library, publishing, asset store, advanced features - AFTER ENGINE IS COMPLETE |
 
 ### Business Model Summary
 
@@ -81,9 +90,19 @@ This blueprint is designed for development readiness. It includes proven C++23 m
 
 **Performance Targets**: 150FPS high-end, 60FPS mid, 40FPS low (80 feel via frame gen). 
 
+**🔴 CRITICAL DEVELOPMENT PRIORITY - ENGINE FIRST 🔴**
+
+> **The NovaCore game engine is the FOUNDATION of everything. It MUST be fully developed and functional BEFORE building the complete NovaForge platform. The platform is built ON TOP of the engine - not alongside it.**
+
+**Development Sequence**:
+1. **ENGINE FIRST** (Months 1-2): Build the complete NovaCore game engine
+2. **BASIC PLATFORM** (Month 3): Minimal platform wrapper for engine testing/distribution
+3. **FULL PLATFORM** (Post-Launch): Complete platform features after engine is stable
+
 **Development Timeline**:
-- **First Release**: 3 months (Android focus)
-- **Post-Release**: Non-stop development, improvements, updates, patches
+- **Months 1-2**: NovaCore engine development (Android focus) - **ENGINE PRIORITY**
+- **Month 3**: Engine completion + basic platform for first release
+- **Post-Release**: Full platform features, improvements, updates, patches
 - **First Release LOC**: ~350,000
 - **Full Vision LOC**: ~4,800,000 (through continuous development)
 
@@ -103,7 +122,11 @@ This blueprint is designed for development readiness. It includes proven C++23 m
 
 **🔴 READ THIS SECTION BEFORE STARTING ANY WORK - THIS IS MANDATORY 🔴**
 
-**THIS IS THE SINGLE SOURCE OF TRUTH. REFERENCE THIS DOCUMENT AT THE START OF EVERY DEVELOPMENT SESSION.**
+> **📖 MASTER REFERENCE DOCUMENT:** [`AUTONOMOUS_DEVELOPMENT_GUIDE.md`](AUTONOMOUS_DEVELOPMENT_GUIDE.md)
+> 
+> For a consolidated, easy-to-reference guide for autonomous development, see the Autonomous Development Guide. It contains all rules, workflows, and checklists needed to start and continue development.
+
+**THIS BLUEPRINT IS THE COMPLETE TECHNICAL SPECIFICATION. REFERENCE IT DURING IMPLEMENTATION.**
 
 ---
 
@@ -11408,11 +11431,51 @@ GUI Features:
 
 ---
 
+### 🔴 ENGINE-FIRST DEVELOPMENT MANDATE 🔴
+
+> **⚠️ CRITICAL: The NovaCore game engine MUST be fully developed and functional BEFORE building the complete NovaForge platform. The engine is the foundation upon which the entire platform is built.**
+
+**Why Engine-First?**
+1. **Foundation First**: The game engine is the core technology - all platform features depend on it
+2. **Quality Assurance**: A complete, tested engine ensures platform stability
+3. **Development Efficiency**: Building platform features on an incomplete engine leads to rework
+4. **User Experience**: Users need a fully functional engine to create games before platform features matter
+
+**Development Priority Hierarchy**:
+```
+PRIORITY 1 (HIGHEST): NovaCore Engine Development
+├── Core Systems (memory, math, logging)
+├── Entity-Component System
+├── Rendering Pipeline (Vulkan/Metal)
+├── Physics Engine
+├── Scripting System
+├── Audio System
+├── Input System
+├── Mobile Editor
+└── ALL engine features must be COMPLETE before platform
+
+PRIORITY 2 (MEDIUM): Basic Platform (for engine testing/distribution)
+├── Minimal game library
+├── Basic user accounts
+├── Simple project export
+
+PRIORITY 3 (AFTER ENGINE COMPLETE): Full Platform Features
+├── Complete game library
+├── Publishing workflow
+├── Asset store
+├── Payment processing
+├── Analytics dashboard
+├── Cloud services
+└── All platform features built AFTER engine is stable
+```
+
+---
+
 ### 📋 PROJECT OVERVIEW
 
 **Project**:
 - **Platform**: NovaForge (mobile-first game development app)
-- **Engine**: NovaCore 
+- **Engine**: NovaCore (DEVELOPED FIRST - this is the foundation)
 - **Company**: WeNova Interactive (operating as Kayden Shawn Massengill)
 
 **Team & Resources**:
@@ -11421,8 +11484,9 @@ GUI Features:
 - **Tools**: ChatGPT, Grok, GitHub Copilot, CMake, Android NDK, Xcode, Git
 
 **Timeline**:
-- **First Release**: 3 months (Android-focused MVP)
-- **Post-Release**: Non-stop development, improvements, updates, patches
+- **Months 1-2**: NovaCore engine development (ENGINE FOCUS)
+- **Month 3**: Engine completion + basic platform for first release
+- **Post-Release**: Full platform features, improvements, updates, patches
 
 **Quality Standard**:
 - ✅ Production-grade code quality
@@ -11431,6 +11495,16 @@ GUI Features:
 - ✅ AAA-quality user experience
 
 ---
+
+### 🎯 DEVELOPMENT ORDER (STRICT - ENGINE FIRST)
+
+Development follows this EXACT order. **Complete the engine BEFORE building full platform features.**
+
+| Priority | Component | Status | When | Notes |
+|----------|-----------|--------|------|-------|
+| **1st** | **NovaCore Engine** | 🎯 PRIMARY | Months 1-2 | ENGINE MUST BE COMPLETE FIRST |
+| **2nd** | **Basic Platform** | ⏳ After Engine | Month 3 | Minimal platform for testing/release |
+| **3rd** | **Full Platform** | ⏳ Post-Release | Months 4+ | After engine is stable and tested |
 
 ### 🎯 PLATFORM DEVELOPMENT ORDER (STRICT)
 
@@ -11451,11 +11525,15 @@ Development follows this EXACT order. Do NOT skip ahead to later platforms.
 
 ---
 
-### 📅 3-MONTH FIRST RELEASE ROADMAP (ANDROID FOCUS)
+### 📅 3-MONTH FIRST RELEASE ROADMAP (ENGINE-FIRST APPROACH)
+
+> **⚠️ IMPORTANT**: Months 1-2 focus on ENGINE development. Platform features are minimal in Month 3 and expanded post-release.
 
 ---
 
-#### MONTH 1: FOUNDATION & CORE (Android Primary)
+#### MONTH 1: ENGINE FOUNDATION & CORE (Android Primary)
+
+> **Focus: Building the NovaCore engine foundation - NO platform features yet**
 
 **Week 1: Project Setup & Build System**
 
@@ -11501,7 +11579,7 @@ Development follows this EXACT order. Do NOT skip ahead to later platforms.
 | Create shader compilation pipeline | Critical | 8 | [ ] |
 | Render "Hello Triangle" on Android | Critical | 8 | [ ] |
 
-**Month 1 Deliverables**:
+**Month 1 Deliverables** (ENGINE FOUNDATION):
 - ✅ Working Android build system
 - ✅ Core memory and math systems
 - ✅ Entity-component system handling 100K+ entities
@@ -11511,7 +11589,9 @@ Development follows this EXACT order. Do NOT skip ahead to later platforms.
 
 ---
 
-#### MONTH 2: RENDERING & EDITOR (Android Primary)
+#### MONTH 2: ENGINE RENDERING & PHYSICS (Android Primary)
+
+> **Focus: Building the NovaCore engine's rendering and physics systems - ENGINE DEVELOPMENT CONTINUES**
 
 **Week 5: Graphics Pipeline**
 
@@ -11557,7 +11637,7 @@ Development follows this EXACT order. Do NOT skip ahead to later platforms.
 | Implement viewport rendering | Critical | 8 | [ ] |
 | Add touch-based scene navigation | Critical | 8 | [ ] |
 
-**Month 2 Deliverables**:
+**Month 2 Deliverables** (ENGINE RENDERING & PHYSICS):
 - ✅ Full PBR rendering pipeline
 - ✅ Physics simulation with Jolt
 - ✅ Basic mobile editor with scene editing
@@ -11565,11 +11645,15 @@ Development follows this EXACT order. Do NOT skip ahead to later platforms.
 
 **Month 2 LOC Target**: ~120,000
 
+> **✅ By end of Month 2, the NovaCore ENGINE should be substantially complete. Month 3 adds final engine features (scripting, audio, input) plus minimal platform for release.**
+
 ---
 
-#### MONTH 3: PLATFORM & LAUNCH (Android First Release)
+#### MONTH 3: ENGINE COMPLETION + BASIC PLATFORM (Android First Release)
 
-**Week 9: Scripting System**
+> **Focus: Complete the remaining ENGINE features first, then add minimal platform features for first release. Full platform features come POST-RELEASE.**
+
+**Week 9: ENGINE - Scripting System**
 
 | Task | Priority | Est. Hours | Status |
 |------|----------|------------|--------|
@@ -11580,7 +11664,7 @@ Development follows this EXACT order. Do NOT skip ahead to later platforms.
 | Add script error handling | High | 4 | [ ] |
 | Create basic visual scripting nodes | Medium | 12 | [ ] |
 
-**Week 10: Audio & Input**
+**Week 10: ENGINE - Audio & Input**
 
 | Task | Priority | Est. Hours | Status |
 |------|----------|------------|--------|
@@ -11591,18 +11675,22 @@ Development follows this EXACT order. Do NOT skip ahead to later platforms.
 | Build touch input system | Critical | 8 | [ ] |
 | Add gamepad/controller support | High | 8 | [ ] |
 
-**Week 11: Game Library & Publishing**
+> **✅ By end of Week 10, the NovaCore ENGINE is COMPLETE. Weeks 11-12 add minimal platform features for first release.**
+
+**Week 11: BASIC PLATFORM - Game Library & Publishing (Minimal)**
+
+> **Note**: This is a MINIMAL platform implementation for first release. Full platform features come POST-RELEASE.
 
 | Task | Priority | Est. Hours | Status |
 |------|----------|------------|--------|
-| Design game library UI | Critical | 8 | [ ] |
-| Implement game browsing (by creator) | Critical | 8 | [ ] |
+| Design basic game library UI | Critical | 8 | [ ] |
+| Implement simple game browsing | Critical | 8 | [ ] |
 | Create game download system | Critical | 8 | [ ] |
 | Build game launching | Critical | 8 | [ ] |
-| Implement publishing workflow (creator publishes to NovaForge) | Critical | 12 | [ ] |
+| Implement basic publishing workflow | Critical | 12 | [ ] |
 | Add project export (APK generation) | Critical | 12 | [ ] |
 
-**Week 12: Launch Preparation**
+**Week 12: BASIC PLATFORM - Launch Preparation**
 
 | Task | Priority | Est. Hours | Status |
 |------|----------|------------|--------|
@@ -11615,12 +11703,16 @@ Development follows this EXACT order. Do NOT skip ahead to later platforms.
 | 🚀 **SUBMIT TO GOOGLE PLAY** | Critical | 4 | [ ] |
 
 **Month 3 Deliverables**:
+
+**ENGINE (Complete)**:
 - ✅ Lua scripting with API bindings
 - ✅ Audio system (effects + music)
 - ✅ Touch and controller input
-- ✅ Game library (browse/download/play games published by creators on NovaForge)
-- ✅ Publishing workflow (creators publish their games to NovaForge)
-- ✅ User accounts
+
+**BASIC PLATFORM (Minimal for release)**:
+- ✅ Basic game library (browse/download/play)
+- ✅ Basic publishing workflow
+- ✅ Basic user accounts
 - ✅ 🎉 **ANDROID FIRST RELEASE ON GOOGLE PLAY**
 
 **Month 3 LOC Target**: ~150,000
@@ -11632,23 +11724,49 @@ Development follows this EXACT order. Do NOT skip ahead to later platforms.
 **Total Development Time**: 3 months
 **Total LOC**: ~350,000
 **Platform**: Android (Google Play)
-**Features**:
-- Mobile game editor
-- 3D rendering with PBR
-- Physics simulation
-- Lua scripting
-- Game library
-- Basic publishing
+
+**Engine Features (COMPLETE)**:
+- ✅ Mobile game editor
+- ✅ 3D rendering with PBR
+- ✅ Physics simulation (Jolt)
+- ✅ Lua scripting
+- ✅ Audio system
+- ✅ Input system (touch, gamepad)
+- ✅ Entity-Component System
+
+**Platform Features (MINIMAL - expanded post-release)**:
+- ✅ Basic game library
+- ✅ Basic publishing
+- ✅ Basic user accounts
 
 ---
 
 ### 🔄 POST-RELEASE DEVELOPMENT SCHEDULE
 
-After the Android first release, development continues with:
+After the Android first release, development continues with **FULL PLATFORM FEATURES**:
+
+> **Note**: The NovaCore engine is now COMPLETE and stable. Post-release focuses on:
+> 1. Porting the engine to other platforms (iOS, Web, XR/VR)
+> 2. Expanding the FULL platform features (game library, asset store, payments, etc.)
+> 3. Adding advanced engine features (AI generation, advanced networking, etc.)
 
 ---
 
-#### POST-RELEASE UPDATE 1: iOS Platform (Months 4-5)
+#### POST-RELEASE UPDATE 1: Full Platform Features + iOS (Months 4-6)
+
+**Full Platform Features** (building on basic platform from first release):
+
+| Feature | Priority | Status |
+|---------|----------|--------|
+| Complete game library with full features | Critical | [ ] |
+| Complete publishing workflow | Critical | [ ] |
+| Asset store integration | High | [ ] |
+| Payment processing (15% platform fee) | Critical | [ ] |
+| Analytics dashboard | High | [ ] |
+| Creator dashboard | High | [ ] |
+| Cloud services infrastructure | High | [ ] |
+
+**iOS Platform Port**:
 
 | Task | Priority | Status |
 |------|----------|--------|
