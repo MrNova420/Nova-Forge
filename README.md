@@ -7,7 +7,7 @@
 
 [![License](https://img.shields.io/badge/License-Proprietary-red.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/Platform-Android%20%7C%20iOS%20%7C%20Web-blue.svg)](#platform-targets)
-[![Status](https://img.shields.io/badge/Status-Phase%200%20Complete-green.svg)](PROGRESS.md)
+[![Status](https://img.shields.io/badge/Status-Phase%200%20Complete-green.svg)](docs/PROGRESS.md)
 
 ---
 
@@ -110,7 +110,7 @@ NovaCore continuously learns to improve **every aspect** of the engine:
 - **Opt-Out Available**: Users can disable contribution completely
 - **GDPR/CCPA Compliant**: Meets strictest global privacy standards
 
-📚 **Complete Guide**: See [SELF_LEARNING_AND_TRAINING_GUIDE.md](SELF_LEARNING_AND_TRAINING_GUIDE.md) for full documentation.
+📚 **Complete Guide**: See [docs/SELF_LEARNING_AND_TRAINING_GUIDE.md](docs/SELF_LEARNING_AND_TRAINING_GUIDE.md) for full documentation.
 
 ---
 
@@ -194,7 +194,7 @@ For situations when owner/team is unavailable:
 - **Auto-Deny**: Quality <50, spam, duplicates (daily limit: 500)
 - **Never Auto**: Inappropriate, copyright, age-restricted, first-time users
 
-📚 **Complete Documentation**: See [NOVACORE_COMPLETE_DOCUMENTATION.md](NOVACORE_COMPLETE_DOCUMENTATION.md) for all details.
+📚 **Complete Documentation**: See [docs/NOVACORE_COMPLETE_DOCUMENTATION.md](docs/NOVACORE_COMPLETE_DOCUMENTATION.md) for all details.
 
 ---
 
@@ -495,7 +495,7 @@ For situations when owner/team is unavailable:
 | **Week 5-8: Features Sprint** | Days 29-56 | 2.6M | All advanced systems (Phases 12-42 parallel clusters) |
 | **Week 9-12: Polish Sprint** | Days 57-90 | 1.0M | Production, testing, ecosystem (Phases 43-50) |
 
-**Current Status**: Phase 0 Complete - Beginning aggressive implementation - [View Progress →](PROGRESS.md)
+**Current Status**: Phase 0 Complete - Beginning aggressive implementation - [View Progress →](docs/PROGRESS.md)
 
 **Why 1-3 Months is Achievable**:
 - 🤖 **ChatGPT + Grok** for planning, architecture, problem-solving (10-50× design speed)
@@ -1462,7 +1462,7 @@ Result:         Maximum team efficiency + clear role separation + AAA output
 | Document | Description |
 |----------|-------------|
 | [**NOVAFORGE_NOVACORE_ENGINE_BLUEPRINT.md**](NOVAFORGE_NOVACORE_ENGINE_BLUEPRINT.md) | Complete technical specification (4.8M LOC, 1-3 month aggressive roadmap, 50 phases) |
-| [**PROGRESS.md**](PROGRESS.md) | Real-time development tracking, phase completion, metrics |
+| [**docs/PROGRESS.md**](docs/PROGRESS.md) | Real-time development tracking, phase completion, metrics |
 | [**LICENSE**](LICENSE) | Proprietary license (WeNova Interactive) |
 
 ---
@@ -1630,6 +1630,6 @@ The technology is now (barely) possible. The blueprint is complete.
 
 **Built with ❤️ by WeNova Interactive**
 
-[⭐ Star this repo](https://github.com/MrNova420/Nova-Engine) | [📖 Read the Blueprint](NOVAFORGE_NOVACORE_ENGINE_BLUEPRINT.md) | [📊 Track Progress](PROGRESS.md)
+[⭐ Star this repo](https://github.com/MrNova420/Nova-Engine) | [📖 Read the Blueprint](NOVAFORGE_NOVACORE_ENGINE_BLUEPRINT.md) | [📊 Track Progress](docs/PROGRESS.md)
 
 </div>
