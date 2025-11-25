@@ -3819,6 +3819,46 @@ Reject if: <90% quality, retrain with more/better data
 - ❌ Third-party services
 - ❌ Any system that bypasses manual approval
 
+#### Learning From All Sources
+
+NovaCore continuously learns from **all usage sources** to improve the engine:
+
+```
+LEARNING SOURCES:
+├── 🎮 Gameplay Sessions (Players playing games)
+│   ├── Performance metrics (FPS, frame times, memory)
+│   ├── Network quality (latency, Wi-Fi, cellular)
+│   ├── Graphics effectiveness (quality vs performance)
+│   ├── Gameplay quality (input lag, physics, AI)
+│   └── Device behavior (thermal, battery, stability)
+│
+├── 📱 Published Games (Released on app stores)
+│   ├── Cross-game performance patterns
+│   ├── Genre-specific optimizations
+│   ├── Real-world stability data
+│   ├── Feature effectiveness in production
+│   └── Long-term reliability metrics
+│
+├── 🛠️ Developer Editing (Using NovaCore editor)
+│   ├── Tool usage patterns
+│   ├── Asset generation quality feedback
+│   ├── Workflow optimization opportunities
+│   └── Editor performance metrics
+│
+└── 📊 Quality Feedback (User ratings/reports)
+    ├── Generation quality ratings
+    ├── Feature satisfaction scores
+    └── Bug/issue reports
+
+ALL SYSTEMS IMPROVE:
+├── 🎨 Graphics: Rendering, LOD, texture streaming, shaders
+├── ⚡ Performance: FPS, memory, battery, thermal, loading
+├── 🌐 Network: Wi-Fi, cellular, latency, bandwidth, stability
+├── 🎮 Gameplay: Input, physics, AI, animations, collision
+├── 🔊 Audio: Spatial, mixing, voice, music
+└── 🎬 Generation: LoRA, textures, animations, VFX, sounds
+```
+
 #### Complete Training Guide
 
 For comprehensive training documentation covering all content types (LoRA, sounds, skyboxes, VFX, animations, physics, AI behavior), see:
@@ -3829,6 +3869,10 @@ This guide includes:
 - Step-by-step training workflows for all content types
 - Engine owner training process
 - How to commit training to the main engine
+- **Learning from gameplay sessions** (real players)
+- **Learning from published games** (released titles)
+- **Network & connectivity improvements** (Wi-Fi, cellular, latency)
+- **Performance optimization learning** (FPS, memory, battery)
 - Strategic training patterns (Style-Consistent Infinite Content, Live-Service Optimization, Budget-Tiered Assets, Cross-Platform Optimization)
 - Anti-wonky generation quality control
 - Privacy-first worldwide learning system
@@ -4325,6 +4369,40 @@ The Master Control Dashboard is **completely invisible** to all users:
 
 NovaCore's Auto-Learning System continuously improves the platform by learning from worldwide user activity—with complete owner control and approval at every stage.
 
+### Learning Sources
+
+NovaCore learns from **all usage sources** worldwide:
+
+```
+LEARNING FROM GAMEPLAY SESSIONS (Players Playing Games):
+├── 📊 Performance Metrics: FPS, frame times, memory usage, thermals
+├── 🌐 Network Quality: Wi-Fi, cellular, latency, packet loss, stability
+├── 🎨 Graphics Effectiveness: Quality vs performance, LOD, streaming
+├── 🎮 Gameplay Quality: Input lag, physics, AI response, animations
+└── 🔋 Device Behavior: Battery drain, thermal throttling, stability
+
+LEARNING FROM PUBLISHED GAMES (Released on App Stores):
+├── 📈 Cross-Game Patterns: What works across different games/genres
+├── 🎯 Genre Optimizations: Best settings per game type
+├── ⚡ Production Stability: Real-world reliability data
+├── 🔧 Feature Effectiveness: Which features perform best
+└── 📊 Long-Term Metrics: Performance over months of gameplay
+
+LEARNING FROM DEVELOPER EDITING (Using NovaCore Editor):
+├── 🛠️ Tool Usage Patterns: Which features are most used
+├── 🎨 Asset Quality Feedback: Generation ratings
+├── 📋 Workflow Optimization: Common action sequences
+└── ⚡ Editor Performance: Responsiveness metrics
+
+EVERYTHING IMPROVES:
+├── 🎨 Graphics: Rendering, LOD, textures, shaders, ray tracing
+├── ⚡ Performance: FPS stability, memory, battery, loading
+├── 🌐 Network: Wi-Fi, cellular, latency, bandwidth, stability
+├── 🎮 Gameplay: Input, physics, AI, animations, collision
+├── 🔊 Audio: Spatial, mixing, voice, music quality
+└── 🎬 Generation: All 20 content categories
+```
+
 ### Data Flow
 
 ```
@@ -4383,6 +4461,21 @@ User Activity (Opted-In, Consented)
 | 18 | Foliage | Vegetation data | Natural distribution |
 | 19 | Destruction | Debris patterns | Satisfying breakage |
 | 20 | Cinematics | Camera work | Engaging sequences |
+
+### Additional Performance Categories (Learned from Gameplay/Published Games)
+
+| Category | Learning Source | Improvements |
+|----------|-----------------|--------------|
+| **FPS Optimization** | Gameplay frame data | Optimal settings per device |
+| **Memory Efficiency** | Usage patterns | Reduced memory footprint |
+| **Battery Life** | Power consumption | Longer play sessions |
+| **Network Latency** | Connection metrics | Lower ping, better routing |
+| **Wi-Fi Performance** | Wi-Fi quality data | Better Wi-Fi handling |
+| **Cellular Performance** | 4G/5G metrics | Optimized mobile data |
+| **Loading Speed** | Load time data | Faster loading |
+| **Thermal Management** | Temperature data | Better heat handling |
+| **Stability** | Crash/error data | Fewer crashes |
+| **Graphics Quality** | Quality settings data | Better presets |
 
 ### Owner Control Panel
 
