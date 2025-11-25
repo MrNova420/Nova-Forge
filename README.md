@@ -38,9 +38,9 @@ That's NovaForge.
 | **Self-Learning Engine** | ✅ | ❌ | ❌ | ❌ |
 | **Built-in Game Store** | ✅ | ❌ | ❌ | ❌ |
 | **Built-in Asset Store** | ✅ | ⚠️ Separate | ⚠️ Separate | ❌ |
-| **XR Holographic Editor** | ✅ | ❌ | ❌ | ❌ |
+| **XR Holographic Editor** | ✅ (Post-Launch) | ❌ | ❌ | ❌ |
 | **20+ Script Languages** | ✅ | ❌ 1-2 | ❌ 1-2 | ❌ 1-2 |
-| **15% Fee (No Royalties)** | ✅ | ❌ Royalties | ❌ 5%+Royalties | ✅ Free |
+| **Platform Fee** | 15% | Varies + Royalties | 5% + Royalties | Free (No Fee) |
 | **Works Offline** | ✅ Single-player games | ⚠️ Limited | ⚠️ Limited | ✅ |
 | **Bluetooth KB/Mouse** | ✅ Full Support | ⚠️ Limited | ⚠️ Limited | ⚠️ Limited |
 
@@ -418,7 +418,39 @@ Real-time analytics for everything:
 - ✅ No trial period
 - ✅ No credit card required
 - ✅ No "upgrade to unlock"
-- ✅ Optional Ads Creator Program - Players choose whether to support creators by watching ads
+- ✅ Optional Ads Creator Program (see below)
+
+### 📺 Optional Ads Creator Program
+
+**How it works when you launch a game:**
+
+```
+1. Tap game to launch
+        ↓
+2. BLACK SCREEN POPUP (before anything loads):
+   ┌────────────────────────────────┐
+   │   SUPPORT THIS CREATOR?        │
+   │                                │
+   │   Watch a short ad to support  │
+   │   [Creator Name]               │
+   │                                │
+   │   [YES, WATCH]  [NO, SKIP]     │
+   └────────────────────────────────┘
+        ↓
+3. If YES → Watch ad → Continue
+   If NO  → Skip ad → Continue
+        ↓
+4. NovaCore Splash (3 sec)
+        ↓
+5. Game starts!
+```
+
+**Key points:**
+- 🎮 Players ALWAYS choose (YES or NO)
+- ❌ Ads NEVER play automatically
+- ✅ NO is always available
+- 💰 Creators earn when players choose YES
+- 🎯 100% player-controlled, never forced
 
 ---
 

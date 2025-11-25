@@ -16352,34 +16352,78 @@ OPTIONAL ADS CREATOR PROGRAM:
 
 PHILOSOPHY: Ads are 100% OPTIONAL and PLAYER-CONTROLLED. No forced ads ever.
 
+GAME LAUNCH SEQUENCE (with Ads Creator Program enabled):
+───────────────────────────────────────────────────────────────────────────────
+
+STEP 1: Player taps game to launch
+        ↓
+STEP 2: BLACK SCREEN with Ad Choice Popup (BEFORE splash screen)
+        ┌─────────────────────────────────────────────────────────────────┐
+        │                                                                 │
+        │         ╔═══════════════════════════════════════════╗          │
+        │         ║                                           ║          │
+        │         ║      🎮 SUPPORT THIS CREATOR? 🎮          ║          │
+        │         ║                                           ║          │
+        │         ║   Watch a short ad to support             ║          │
+        │         ║   [Creator Name]                          ║          │
+        │         ║                                           ║          │
+        │         ║   Your support helps creators make        ║          │
+        │         ║   more great games!                       ║          │
+        │         ║                                           ║          │
+        │         ║   ┌─────────────┐  ┌─────────────┐       ║          │
+        │         ║   │   ✓ YES    │  │   ✗ NO     │       ║          │
+        │         ║   │ WATCH AD   │  │ SKIP AD    │       ║          │
+        │         ║   │ (Support)  │  │ (Play Now) │       ║          │
+        │         ║   └─────────────┘  └─────────────┘       ║          │
+        │         ║                                           ║          │
+        │         ╚═══════════════════════════════════════════╝          │
+        │                                                                 │
+        └─────────────────────────────────────────────────────────────────┘
+        ↓
+STEP 3: If YES → Play ad → Continue to Step 4
+        If NO  → Skip directly to Step 4
+        ↓
+STEP 4: NovaCore Engine Splash Screen (3 seconds, Free Tier)
+        ┌─────────────────────────────────────────────────────────────────┐
+        │                                                                 │
+        │                    ⚡ NOVACORE ENGINE ⚡                        │
+        │                                                                 │
+        │                   Powered by NovaForge                          │
+        │                                                                 │
+        └─────────────────────────────────────────────────────────────────┘
+        ↓
+STEP 5: Game Title Screen
+        ┌─────────────────────────────────────────────────────────────────┐
+        │                                                                 │
+        │                    🎮 [GAME TITLE] 🎮                           │
+        │                                                                 │
+        │                 A NovaForge Game                                │
+        │                 by [Creator Name]                               │
+        │                                                                 │
+        │                    [ PLAY ]                                     │
+        │                                                                 │
+        └─────────────────────────────────────────────────────────────────┘
+        ↓
+STEP 6: Game starts playing
+
 HOW IT WORKS:
 ├── For Creators:
 │   ├── Opt-in program - creators choose to enable ads in their games
 │   ├── Earn additional revenue from players who choose to support
 │   ├── 85% of ad revenue goes to creator (15% platform fee)
-│   └── Full control over ad placement and frequency options
+│   └── Full control over whether to enable this feature
 │
 ├── For Players:
-│   ├── When launching a game with Ads Creator Program enabled:
-│   │   ┌─────────────────────────────────────────────────────────────────┐
-│   │   │              SUPPORT THIS CREATOR?                              │
-│   │   │                                                                 │
-│   │   │  Watch a short ad to support [Creator Name]                     │
-│   │   │                                                                 │
-│   │   │  ┌─────────────────┐    ┌─────────────────┐                    │
-│   │   │  │   WATCH AD      │    │   SKIP & PLAY   │                    │
-│   │   │  │  (Support)      │    │   (No ad)       │                    │
-│   │   │  └─────────────────┘    └─────────────────┘                    │
-│   │   │                                                                 │
-│   │   └─────────────────────────────────────────────────────────────────┘
-│   │
-│   ├── Players have FULL CONTROL - they choose whether to watch or skip
+│   ├── Ad choice popup appears BEFORE game loads (on black screen)
+│   ├── Players have FULL CONTROL - they choose YES or NO
+│   ├── NO is always available and just as prominent as YES
 │   ├── No ads play automatically - always requires player consent
-│   ├── Skip option is always available and prominent
-│   └── Choice is remembered (can be changed in settings)
+│   ├── Choice can be changed anytime in settings
+│   └── No penalty for choosing NO - game works exactly the same
 │
 └── Key Principles:
     ├── ✅ Ads are NEVER forced on players
+    ├── ✅ Ad choice happens BEFORE game loads (black screen popup)
     ├── ✅ Players CHOOSE to support creators they love
     ├── ✅ Creators get additional revenue stream
     ├── ✅ Transparent and ethical monetization
