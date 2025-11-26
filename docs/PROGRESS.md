@@ -32,13 +32,13 @@
 | Phase | Status | Progress | Notes |
 |-------|--------|----------|-------|
 | **Planning** | ✅ Complete | 100% | Blueprint and documentation ready |
-| **Month 1: ENGINE Foundation** | 🟢 IN PROGRESS | 35% | Build system ✅, Core types ✅, Math ✅, Memory ✅ |
+| **Month 1: ENGINE Foundation** | 🟢 IN PROGRESS | 55% | Build system ✅, Core types ✅, Math ✅, Memory ✅, ECS ✅ |
 | **Month 2: ENGINE Rendering & Physics** | ⏸️ Not Started | 0% | Graphics, physics, mobile editor |
 | **Month 3: ENGINE Completion + Basic Platform** | ⏸️ Not Started | 0% | Scripting, audio, input + minimal platform |
 | **Post-Release: Full Platform** | ⏸️ Waiting | 0% | Complete platform features AFTER engine is stable |
 
-**Code Written**: ~7,000+ LOC  
-**Tests Written**: 24 tests (100% passing)  
+**Code Written**: ~10,000+ LOC  
+**Tests Written**: 51 tests (100% passing)  
 **First Release Target**: ~350,000 LOC
 
 ---
@@ -190,6 +190,51 @@
   - Timestamp formatting
 - [x] **14 tests passing** for logging module
 
+### Week 3: Entity-Component-Worker System ✅ COMPLETE
+
+#### ECS Core (nova/core/ecs/)
+- [x] **entity.hpp** - Entity identification and management
+  - Entity class with 64-bit ID (32-bit index + 24-bit generation + 8-bit flags)
+  - EntityRecord for metadata storage
+  - EntityManager with thread-safe creation/destruction
+  - Entity locking to prevent destruction
+  - O(1) entity operations
+  - Entity recycling with generation tracking
+- [x] **component.hpp** - Component system
+  - ComponentId type for unique component identification
+  - ComponentInfo metadata (size, alignment, constructors, destructors)
+  - ComponentType<T> compile-time type traits
+  - ComponentMask bitset for archetype signatures (256 component types)
+  - ComponentRegistry for runtime type information
+  - Support for trivial and non-trivial components
+- [x] **archetype.hpp** - Archetype-based storage
+  - Chunk class for 16KB cache-efficient storage
+  - Archetype class managing component arrays
+  - ArchetypeManager for archetype creation/lookup
+  - Structure-of-Arrays (SoA) layout for cache efficiency
+  - O(1) component access
+- [x] **world.hpp** - World container
+  - Entity creation with components
+  - Component add/remove/get operations
+  - Entity queries (each, eachWithEntity)
+  - Frame management (beginFrame, endFrame)
+  - Deferred entity destruction
+- [x] **query.hpp** - Query system
+  - QueryDescriptor for archetype matching
+  - QueryResult for iteration
+  - Query<Components...> type-safe builder
+  - QueryCache for repeated queries
+- [x] **system.hpp** - System scheduling
+  - System base class with lifecycle methods
+  - SystemPhase enum (PreUpdate, Update, PostUpdate, PreRender, Render, PostRender)
+  - LambdaSystem for quick prototyping
+  - SystemGroup for organization
+  - SystemScheduler with phase-based execution
+- [x] **ecs.hpp** - Main include header
+  - Version information
+  - Configuration constants
+- [x] **13 tests passing** for ECS module
+
 ---
 
 ## 🧪 TEST COVERAGE
@@ -199,7 +244,8 @@
 | Core Types | 16 | ✅ All Passing |
 | Memory System | 8 | ✅ All Passing |
 | Logging & Profiling | 14 | ✅ All Passing |
-| **Total** | **38** | **100% Passing** |
+| ECS (Entity-Component-Worker) | 13 | ✅ All Passing |
+| **Total** | **51** | **100% Passing** |
 
 ---
 
@@ -234,10 +280,18 @@ Nova-Forge/
 │   │   ├── linear_allocator.hpp      # Bump allocator
 │   │   ├── pool_allocator.hpp        # Pool allocator
 │   │   └── stack_allocator.hpp       # Stack allocator
-│   └── logging/
-│       ├── logging.hpp               # Main logging include
-│       ├── logger.hpp                # Logger and sinks
-│       └── profiler.hpp              # Profiling and timing
+│   ├── logging/
+│   │   ├── logging.hpp               # Main logging include
+│   │   ├── logger.hpp                # Logger and sinks
+│   │   └── profiler.hpp              # Profiling and timing
+│   └── ecs/
+│       ├── ecs.hpp                   # Main ECS include
+│       ├── entity.hpp                # Entity + EntityManager
+│       ├── component.hpp             # Component system
+│       ├── archetype.hpp             # Archetype storage
+│       ├── world.hpp                 # World container
+│       ├── query.hpp                 # Query system
+│       └── system.hpp                # System scheduling
 ├── src/nova/core/
 │   ├── CMakeLists.txt                # Core module build
 │   ├── types/
@@ -249,22 +303,15 @@ Nova-Forge/
 │   └── nova/core/
 │       ├── test_types.cpp            # Type tests (16 tests)
 │       ├── test_memory.cpp           # Memory tests (8 tests)
-│       └── test_logging.cpp          # Logging tests (14 tests)
+│       ├── test_logging.cpp          # Logging tests (14 tests)
+│       └── test_ecs.cpp              # ECS tests (13 tests)
 └── tools/
     └── CMakeLists.txt                # Tools placeholder
 ```
 
 ---
 
-## 🎯 NEXT STEPS (Week 3-4)
-
-### Week 3: Entity System
-- [ ] Entity ID system (using existing EntityId type)
-- [ ] Entity manager
-- [ ] Component storage (SoA layout)
-- [ ] Archetype management
-- [ ] Entity queries
-- [ ] Worker scheduling (ECW pattern)
+## 🎯 NEXT STEPS (Week 4)
 
 ### Week 4: Rendering Foundation
 - [ ] Vulkan initialization

@@ -438,6 +438,22 @@ namespace literals {
     return hash;
 }
 
+/// @brief Runtime string hash (FNV-1a)
+/// @param str Null-terminated string
+/// @return 64-bit hash value
+[[nodiscard]] inline u64 runtimeHash(const char* str) noexcept {
+    constexpr u64 FNV_OFFSET_BASIS = 14695981039346656037ULL;
+    constexpr u64 FNV_PRIME = 1099511628211ULL;
+    
+    u64 hash = FNV_OFFSET_BASIS;
+    while (*str) {
+        hash ^= static_cast<u64>(*str++);
+        hash *= FNV_PRIME;
+    }
+    
+    return hash;
+}
+
 /// @brief Align value up to given alignment
 /// @param value Value to align
 /// @param alignment Alignment (must be power of 2)
