@@ -28,6 +28,7 @@ FetchContent_MakeAvailable(Catch2)
 set(NOVA_TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_types.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_memory.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_logging.cpp
 )
 
 # All test sources

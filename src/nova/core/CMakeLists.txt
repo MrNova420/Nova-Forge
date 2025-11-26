@@ -24,40 +24,43 @@ set(NOVA_CORE_TYPES_HEADERS
 
 # Memory module
 set(NOVA_CORE_MEMORY_SOURCES
-    # ${CMAKE_CURRENT_SOURCE_DIR}/memory/allocator.cpp
-    # ${CMAKE_CURRENT_SOURCE_DIR}/memory/tlsf_allocator.cpp
+    # Header-only for now
 )
 
 set(NOVA_CORE_MEMORY_HEADERS
-    # ${NOVA_INCLUDE_DIR}/nova/core/memory/allocator.hpp
-    # ${NOVA_INCLUDE_DIR}/nova/core/memory/tlsf_allocator.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/memory/memory.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/memory/allocator.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/memory/linear_allocator.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/memory/pool_allocator.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/memory/stack_allocator.hpp
 )
 
 # Math module
 set(NOVA_CORE_MATH_SOURCES
-    # ${CMAKE_CURRENT_SOURCE_DIR}/math/vec2.cpp
-    # ${CMAKE_CURRENT_SOURCE_DIR}/math/vec3.cpp
-    # ${CMAKE_CURRENT_SOURCE_DIR}/math/vec4.cpp
-    # ${CMAKE_CURRENT_SOURCE_DIR}/math/mat4.cpp
-    # ${CMAKE_CURRENT_SOURCE_DIR}/math/quat.cpp
+    # Header-only for now
 )
 
 set(NOVA_CORE_MATH_HEADERS
-    # ${NOVA_INCLUDE_DIR}/nova/core/math/math.hpp
-    # ${NOVA_INCLUDE_DIR}/nova/core/math/vec2.hpp
-    # ${NOVA_INCLUDE_DIR}/nova/core/math/vec3.hpp
-    # ${NOVA_INCLUDE_DIR}/nova/core/math/vec4.hpp
-    # ${NOVA_INCLUDE_DIR}/nova/core/math/mat4.hpp
-    # ${NOVA_INCLUDE_DIR}/nova/core/math/quat.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/math/math.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/math/math_common.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/math/vec2.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/math/vec3.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/math/vec4.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/math/mat3.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/math/mat4.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/math/quat.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/math/transform.hpp
 )
 
 # Logging module
 set(NOVA_CORE_LOGGING_SOURCES
-    # ${CMAKE_CURRENT_SOURCE_DIR}/logging/logger.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/logging/logger.cpp
 )
 
 set(NOVA_CORE_LOGGING_HEADERS
-    # ${NOVA_INCLUDE_DIR}/nova/core/logging/logger.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/logging/logging.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/logging/logger.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/logging/profiler.hpp
 )
 
 # Platform module

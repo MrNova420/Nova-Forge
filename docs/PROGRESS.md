@@ -165,6 +165,31 @@
   - fillMemory, compareMemory
 - [x] **8 tests passing** for memory module
 
+#### Logging & Profiling System (nova/core/logging/) ✅ COMPLETE
+- [x] **logging.hpp** - Main logging include
+- [x] **logger.hpp** - Logger system
+  - LogLevel enum (Trace, Debug, Info, Warning, Error, Fatal, Off)
+  - LogCategory enum (Core, Memory, Render, Physics, Audio, etc.)
+  - LogMessage struct with timestamp, source location
+  - LogSink interface for output destinations
+  - ConsoleSink with colored output
+  - Logger singleton with level/category filtering
+  - Thread-safe logging
+  - Compile-time level filtering in release builds
+  - NOVA_LOG_* macros
+- [x] **profiler.hpp** - Profiling system
+  - ScopedZone for profiling regions
+  - Timer class for manual timing
+  - FrameTimer for FPS tracking
+  - ZoneColor for visual profiling
+  - NOVA_PROFILE_* macros
+  - Tracy profiler integration ready
+- [x] **logger.cpp** - Logger implementation
+  - ANSI colored console output
+  - Thread-safe sink management
+  - Timestamp formatting
+- [x] **14 tests passing** for logging module
+
 ---
 
 ## 🧪 TEST COVERAGE
@@ -173,7 +198,8 @@
 |--------|-------|--------|
 | Core Types | 16 | ✅ All Passing |
 | Memory System | 8 | ✅ All Passing |
-| **Total** | **24** | **100% Passing** |
+| Logging & Profiling | 14 | ✅ All Passing |
+| **Total** | **38** | **100% Passing** |
 
 ---
 
@@ -202,21 +228,28 @@ Nova-Forge/
 │   │   ├── mat4.hpp                  # 4x4 matrix
 │   │   ├── quat.hpp                  # Quaternion
 │   │   └── transform.hpp             # Transform
-│   └── memory/
-│       ├── memory.hpp                # Main memory include
-│       ├── allocator.hpp             # Allocator interface
-│       ├── linear_allocator.hpp      # Bump allocator
-│       ├── pool_allocator.hpp        # Pool allocator
-│       └── stack_allocator.hpp       # Stack allocator
+│   ├── memory/
+│   │   ├── memory.hpp                # Main memory include
+│   │   ├── allocator.hpp             # Allocator interface
+│   │   ├── linear_allocator.hpp      # Bump allocator
+│   │   ├── pool_allocator.hpp        # Pool allocator
+│   │   └── stack_allocator.hpp       # Stack allocator
+│   └── logging/
+│       ├── logging.hpp               # Main logging include
+│       ├── logger.hpp                # Logger and sinks
+│       └── profiler.hpp              # Profiling and timing
 ├── src/nova/core/
 │   ├── CMakeLists.txt                # Core module build
-│   └── types/
-│       └── types.cpp                 # Type implementations
+│   ├── types/
+│   │   └── types.cpp                 # Type implementations
+│   └── logging/
+│       └── logger.cpp                # Logger implementation
 ├── tests/
 │   ├── CMakeLists.txt                # Test configuration
 │   └── nova/core/
 │       ├── test_types.cpp            # Type tests (16 tests)
-│       └── test_memory.cpp           # Memory tests (8 tests)
+│       ├── test_memory.cpp           # Memory tests (8 tests)
+│       └── test_logging.cpp          # Logging tests (14 tests)
 └── tools/
     └── CMakeLists.txt                # Tools placeholder
 ```
