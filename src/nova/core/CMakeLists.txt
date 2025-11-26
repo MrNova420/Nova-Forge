@@ -63,6 +63,40 @@ set(NOVA_CORE_LOGGING_HEADERS
     ${NOVA_INCLUDE_DIR}/nova/core/logging/profiler.hpp
 )
 
+# ECS module
+set(NOVA_CORE_ECS_SOURCES
+    # Header-only for now
+)
+
+set(NOVA_CORE_ECS_HEADERS
+    ${NOVA_INCLUDE_DIR}/nova/core/ecs/ecs.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/ecs/entity.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/ecs/component.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/ecs/archetype.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/ecs/world.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/ecs/query.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/ecs/system.hpp
+)
+
+# Render module
+set(NOVA_CORE_RENDER_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/render_device.cpp
+)
+
+set(NOVA_CORE_RENDER_HEADERS
+    ${NOVA_INCLUDE_DIR}/nova/core/render/render.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/render_types.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/render_device.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/render_context.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/render_pass.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/render_pipeline.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/command_buffer.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/swap_chain.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/buffer.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/texture.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/shader.hpp
+)
+
 # Platform module
 set(NOVA_CORE_PLATFORM_SOURCES
     # ${CMAKE_CURRENT_SOURCE_DIR}/platform/platform.cpp
@@ -89,6 +123,8 @@ set(NOVA_CORE_SOURCES
     ${NOVA_CORE_MEMORY_SOURCES}
     ${NOVA_CORE_MATH_SOURCES}
     ${NOVA_CORE_LOGGING_SOURCES}
+    ${NOVA_CORE_ECS_SOURCES}
+    ${NOVA_CORE_RENDER_SOURCES}
     ${NOVA_CORE_PLATFORM_SOURCES}
     ${NOVA_CORE_CONTAINERS_SOURCES}
 )
@@ -98,6 +134,8 @@ set(NOVA_CORE_HEADERS
     ${NOVA_CORE_MEMORY_HEADERS}
     ${NOVA_CORE_MATH_HEADERS}
     ${NOVA_CORE_LOGGING_HEADERS}
+    ${NOVA_CORE_ECS_HEADERS}
+    ${NOVA_CORE_RENDER_HEADERS}
     ${NOVA_CORE_PLATFORM_HEADERS}
     ${NOVA_CORE_CONTAINERS_HEADERS}
 )
