@@ -33,11 +33,11 @@
 |-------|--------|----------|-------|
 | **Planning** | ✅ Complete | 100% | Blueprint and documentation ready |
 | **Month 1: ENGINE Foundation** | ✅ Complete | 100% | Build system ✅, Types ✅, Math ✅, Memory ✅, ECS ✅, Render ✅ |
-| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 50% | Nova GraphicsCore™ Vulkan impl in progress |
+| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 55% | Nova GraphicsCore™ Vulkan impl in progress |
 | **Month 3: ENGINE Completion + Basic Platform** | ⏸️ Not Started | 0% | Scripting, audio, input + minimal platform |
 | **Post-Release: Full Platform** | ⏸️ Waiting | 0% | Complete platform features AFTER engine is stable |
 
-**Code Written**: ~28,000+ LOC  
+**Code Written**: ~32,000+ LOC  
 **Tests Written**: 51 tests (48 passing, 3 pre-existing timing issues)  
 **First Release Target**: ~350,000 LOC
 
@@ -421,6 +421,25 @@
     - addTexture() - Add texture to array, return index
     - removeTexture() - Remove texture from array
     - GPU-driven texture indexing for massive texture arrays
+
+- [x] **vulkan_buffer.hpp/cpp** - Nova GraphicsCore™ Vulkan Buffer System
+  - VulkanBuffer class for GPU buffer management
+    - create() - Static factory with automatic memory allocation
+    - map(), unmap() - CPU memory access
+    - flush(), invalidate() - Memory synchronization
+    - upload(), download() - Data transfer helpers
+    - Factory presets: vertex(), index(), uniform(), storage(), staging()
+  - VulkanMemoryAllocator class
+    - allocateBufferMemory() - Buffer memory allocation
+    - allocateImageMemory() - Image memory allocation
+    - findMemoryType() - Memory type selection
+    - freeMemory() - Deallocation
+  - VulkanStagingManager class
+    - copyToBuffer() - Efficient GPU buffer uploads
+    - copyToImage() - Efficient texture uploads
+    - flush() - Submit pending transfers
+    - Automatic staging buffer pooling
+  - MemoryUsage enum: GpuOnly, CpuOnly, CpuToGpu, GpuToCpu, Auto
 
 ---
 
