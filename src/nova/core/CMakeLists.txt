@@ -97,6 +97,18 @@ set(NOVA_CORE_RENDER_HEADERS
     ${NOVA_INCLUDE_DIR}/nova/core/render/shader.hpp
 )
 
+# Nova GraphicsCore™ - Vulkan backend
+set(NOVA_CORE_VULKAN_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_loader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_device.cpp
+)
+
+set(NOVA_CORE_VULKAN_HEADERS
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_types.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_loader.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_device.hpp
+)
+
 # Platform module
 set(NOVA_CORE_PLATFORM_SOURCES
     # ${CMAKE_CURRENT_SOURCE_DIR}/platform/platform.cpp
@@ -125,6 +137,7 @@ set(NOVA_CORE_SOURCES
     ${NOVA_CORE_LOGGING_SOURCES}
     ${NOVA_CORE_ECS_SOURCES}
     ${NOVA_CORE_RENDER_SOURCES}
+    ${NOVA_CORE_VULKAN_SOURCES}
     ${NOVA_CORE_PLATFORM_SOURCES}
     ${NOVA_CORE_CONTAINERS_SOURCES}
 )
@@ -136,6 +149,7 @@ set(NOVA_CORE_HEADERS
     ${NOVA_CORE_LOGGING_HEADERS}
     ${NOVA_CORE_ECS_HEADERS}
     ${NOVA_CORE_RENDER_HEADERS}
+    ${NOVA_CORE_VULKAN_HEADERS}
     ${NOVA_CORE_PLATFORM_HEADERS}
     ${NOVA_CORE_CONTAINERS_HEADERS}
 )
@@ -197,6 +211,7 @@ if(NOVA_PLATFORM_ANDROID)
         PRIVATE
             log          # Android logging
             android      # Android native activity
+            dl           # Dynamic loading for Vulkan
     )
 elseif(NOVA_PLATFORM_IOS)
     # iOS-specific configuration
@@ -204,6 +219,14 @@ elseif(NOVA_PLATFORM_IOS)
 elseif(NOVA_PLATFORM_WEB)
     # Web-specific configuration
     # (handled by Emscripten settings)
+elseif(UNIX)
+    # Linux/Unix - need dl for dynamic library loading
+    target_link_libraries(nova_core
+        PRIVATE
+            dl           # Dynamic loading for Vulkan
+    )
+elseif(WIN32)
+    # Windows - no extra libraries needed (uses LoadLibrary)
 endif()
 
 # =============================================================================
