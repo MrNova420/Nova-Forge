@@ -470,16 +470,18 @@ template<typename T>
 /// @brief Get next power of two >= value
 /// @param value Input value
 /// @return Next power of two
+/// @note Early return for 0 is required to prevent underflow in (value - 1)
 [[nodiscard]] constexpr u32 nextPowerOfTwo(u32 value) noexcept {
-    if (value == 0) return 1;
+    if (value == 0) return 1;  // Prevents underflow in (value - 1)
     return static_cast<u32>(1) << (32 - std::countl_zero(value - 1));
 }
 
 /// @brief Get next power of two >= value (64-bit)
 /// @param value Input value
 /// @return Next power of two
+/// @note Early return for 0 is required to prevent underflow in (value - 1)
 [[nodiscard]] constexpr u64 nextPowerOfTwo(u64 value) noexcept {
-    if (value == 0) return 1;
+    if (value == 0) return 1;  // Prevents underflow in (value - 1)
     return static_cast<u64>(1) << (64 - std::countl_zero(value - 1));
 }
 

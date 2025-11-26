@@ -18,7 +18,9 @@
 
 namespace nova::math {
 
-/// @brief Unit quaternion for 3D rotations (w, x, y, z format)
+/// Threshold for switching from slerp to nlerp to avoid numerical instability
+/// when quaternions are nearly identical (dot product > 0.9995)
+inline constexpr f32 SLERP_THRESHOLD = 0.9995f;
 /// @note Stored as [x, y, z, w] internally for SIMD alignment with Vec4
 struct alignas(16) Quat {
     f32 x, y, z, w;
@@ -401,7 +403,7 @@ struct alignas(16) Quat {
         }
         
         // If quaternions are very close, use nlerp to avoid division issues
-        if (d > 0.9995f) {
+        if (d > SLERP_THRESHOLD) {
             return nlerp(target, t);
         }
         

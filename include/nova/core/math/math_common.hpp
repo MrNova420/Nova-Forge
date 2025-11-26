@@ -213,8 +213,9 @@ template<typename T>
 #if NOVA_SIMD_NEON
 
 /// Load 4 floats into NEON register
+/// @note Assumes 16-byte aligned data (Vec4 is alignas(16))
 [[nodiscard]] NOVA_FORCE_INLINE float32x4_t simdLoad4(const f32* ptr) noexcept {
-    return vld1q_f32(ptr);
+    return vld1q_f32(ptr);  // ARM NEON handles both aligned/unaligned
 }
 
 /// Store NEON register to 4 floats
@@ -233,8 +234,9 @@ NOVA_FORCE_INLINE void simdStore4(f32* ptr, float32x4_t v) noexcept {
 #elif NOVA_SIMD_AVX2
 
 /// Load 4 floats into AVX register
+/// @note Uses unaligned load for flexibility; Vec4 is 16-byte aligned
 [[nodiscard]] NOVA_FORCE_INLINE __m128 simdLoad4(const f32* ptr) noexcept {
-    return _mm_loadu_ps(ptr);
+    return _mm_loadu_ps(ptr);  // Unaligned for general use
 }
 
 /// Store AVX register to 4 floats
