@@ -1,0 +1,107 @@
+# =============================================================================
+# NovaCore Engine - Git Ignore Configuration
+# =============================================================================
+
+# Build directories
+build/
+build-*/
+out/
+cmake-build-*/
+
+# CodeQL build artifacts
+_codeql_build_dir/
+_codeql_detected_source_root
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.cproject
+.settings/
+*.user
+*.sublime-*
+
+# Compiled files
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+*.out
+
+# CMake generated
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!cmake/*.cmake
+compile_commands.json
+
+# Dependencies (managed by CMake FetchContent)
+_deps/
+
+# Test outputs
+Testing/
+CTestTestfile.cmake
+
+# Debug files
+*.dSYM/
+*.pdb
+*.ilk
+
+# Package files
+*.zip
+*.tar.gz
+*.rar
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+tmp/
+temp/
+
+# Coverage
+*.gcov
+*.gcda
+*.gcno
+coverage/
+
+# Profiling
+*.prof
+*.profraw
+*.profdata
+
+# Android specific
+*.apk
+*.aab
+.gradle/
+local.properties
+*.keystore
+
+# iOS specific
+*.ipa
+*.xcworkspace
+xcuserdata/
+DerivedData/
+
+# Documentation
+docs/_build/
+doxygen/
+
+# Editor backup files
+*~
+\#*\#
+.\#*
