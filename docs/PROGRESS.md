@@ -33,11 +33,11 @@
 |-------|--------|----------|-------|
 | **Planning** | ✅ Complete | 100% | Blueprint and documentation ready |
 | **Month 1: ENGINE Foundation** | ✅ Complete | 100% | Build system ✅, Types ✅, Math ✅, Memory ✅, ECS ✅, Render ✅ |
-| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 55% | Nova GraphicsCore™ Vulkan impl in progress |
+| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 60% | Nova GraphicsCore™ Vulkan impl in progress |
 | **Month 3: ENGINE Completion + Basic Platform** | ⏸️ Not Started | 0% | Scripting, audio, input + minimal platform |
 | **Post-Release: Full Platform** | ⏸️ Waiting | 0% | Complete platform features AFTER engine is stable |
 
-**Code Written**: ~32,000+ LOC  
+**Code Written**: ~36,000+ LOC  
 **Tests Written**: 51 tests (48 passing, 3 pre-existing timing issues)  
 **First Release Target**: ~350,000 LOC
 
@@ -440,6 +440,22 @@
     - flush() - Submit pending transfers
     - Automatic staging buffer pooling
   - MemoryUsage enum: GpuOnly, CpuOnly, CpuToGpu, GpuToCpu, Auto
+
+- [x] **vulkan_shader.hpp/cpp** - Nova GraphicsCore™ Vulkan Shader System
+  - VulkanShaderModule class for shader module management
+    - create() - Create from SPIR-V descriptor
+    - createFromBytes() - Create from raw SPIR-V data
+    - getStageInfo() - Get pipeline shader stage info
+    - SPIR-V magic number validation
+  - VulkanShaderProgram class for multi-stage programs
+    - createGraphics() - Create vertex + fragment program
+    - createCompute() - Create compute program
+    - getStageInfos() - Get all stage infos for pipeline
+  - BuiltinShaders namespace with pre-compiled SPIR-V
+    - getTriangleVertexShader() - Basic triangle vertex shader
+    - getTriangleFragmentShader() - Basic color fragment shader
+    - getFullscreenVertexShader() - Fullscreen quad without vertex input
+    - getTextureFragmentShader() - Texture sampling shader
 
 ---
 

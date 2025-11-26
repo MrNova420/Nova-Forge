@@ -106,6 +106,7 @@ set(NOVA_CORE_VULKAN_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_pipeline.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_descriptor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_buffer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_shader.cpp
 )
 
 set(NOVA_CORE_VULKAN_HEADERS
@@ -117,6 +118,7 @@ set(NOVA_CORE_VULKAN_HEADERS
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_pipeline.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_descriptor.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_buffer.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_shader.hpp
 )
 
 # Platform module
