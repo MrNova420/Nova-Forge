@@ -33,11 +33,11 @@
 |-------|--------|----------|-------|
 | **Planning** | ✅ Complete | 100% | Blueprint and documentation ready |
 | **Month 1: ENGINE Foundation** | ✅ Complete | 100% | Build system ✅, Types ✅, Math ✅, Memory ✅, ECS ✅, Render ✅ |
-| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 60% | Nova GraphicsCore™ Vulkan impl in progress |
+| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 65% | Nova GraphicsCore™ Vulkan impl + Hello Triangle demo |
 | **Month 3: ENGINE Completion + Basic Platform** | ⏸️ Not Started | 0% | Scripting, audio, input + minimal platform |
 | **Post-Release: Full Platform** | ⏸️ Waiting | 0% | Complete platform features AFTER engine is stable |
 
-**Code Written**: ~36,000+ LOC  
+**Code Written**: ~40,000+ LOC  
 **Tests Written**: 51 tests (48 passing, 3 pre-existing timing issues)  
 **First Release Target**: ~350,000 LOC
 
@@ -456,6 +456,37 @@
     - getTriangleFragmentShader() - Basic color fragment shader
     - getFullscreenVertexShader() - Fullscreen quad without vertex input
     - getTextureFragmentShader() - Texture sampling shader
+
+- [x] **vulkan_texture.hpp/cpp** - Nova GraphicsCore™ Vulkan Texture System
+  - VulkanTexture class for GPU texture management
+    - create() - Static factory with automatic memory allocation
+    - createFromImage() - Wrap existing VkImage (swap chain, etc.)
+    - upload() - Upload texture data from CPU memory
+    - generateMipmaps() - Mipmap generation via blitting
+    - transitionLayout() - Image layout transitions
+    - Factory presets: texture2D(), depthTexture(), renderTarget(), cubemap()
+  - VulkanSampler class for texture sampling configuration
+    - create() - Create sampler from descriptor
+    - Presets: linear(), nearest(), shadow(), clampToEdge()
+    - Anisotropic filtering, mipmap modes, address modes
+  - VulkanTextureView class for shader texture access
+    - create() - Create custom view
+    - createDefault() - Default view matching texture
+  - TextureUtils namespace
+    - calculateMipLevels() - Compute mip count from dimensions
+    - getMipLevelDimensions() - Get dimensions for mip level
+    - isDepthFormat(), hasStencil(), isCompressedFormat() - Format queries
+    - getImageAspect() - VkImageAspectFlags from format
+
+- [x] **Hello Triangle Demo** - Nova GraphicsCore™ First Visual Output
+  - samples/hello_triangle/hello_triangle.cpp (~700 LOC)
+  - Complete rendering pipeline demonstration:
+    - Vulkan device initialization with validation
+    - Offscreen render target creation
+    - Vertex buffer with interleaved position + color
+    - Graphics pipeline creation with built-in shaders
+    - Per-frame rendering with animated background
+    - Proper resource cleanup
 
 ---
 
