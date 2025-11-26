@@ -8,6 +8,10 @@ build-*/
 out/
 cmake-build-*/
 
+# CodeQL build artifacts
+_codeql_build_dir/
+_codeql_detected_source_root
+
 # IDE files
 .idea/
 .vscode/
