@@ -33,11 +33,11 @@
 |-------|--------|----------|-------|
 | **Planning** | ✅ Complete | 100% | Blueprint and documentation ready |
 | **Month 1: ENGINE Foundation** | ✅ Complete | 100% | Build system ✅, Types ✅, Math ✅, Memory ✅, ECS ✅, Render ✅ |
-| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 65% | Nova GraphicsCore™ Vulkan impl + Hello Triangle demo |
+| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 80% | Nova GraphicsCore™ complete, Physics System complete |
 | **Month 3: ENGINE Completion + Basic Platform** | ⏸️ Not Started | 0% | Scripting, audio, input + minimal platform |
 | **Post-Release: Full Platform** | ⏸️ Waiting | 0% | Complete platform features AFTER engine is stable |
 
-**Code Written**: ~40,000+ LOC  
+**Code Written**: ~55,000+ LOC  
 **Tests Written**: 51 tests (48 passing, 3 pre-existing timing issues)  
 **First Release Target**: ~350,000 LOC
 
@@ -487,6 +487,70 @@
     - Graphics pipeline creation with built-in shaders
     - Per-frame rendering with animated background
     - Proper resource cleanup
+
+### Week 7: NovaCore Physics System ✅ COMPLETE
+
+- [x] **physics_types.hpp** - Physics System Core Types (~600 LOC)
+  - Physical constants (gravity, epsilon, timestep)
+  - MotionType enum: Static, Kinematic, Dynamic
+  - MotionQuality enum: Discrete, LinearCast
+  - CollisionLayer and CollisionMask types (16 layers)
+  - ShapeType enum: Sphere, Box, Capsule, Cylinder, ConvexHull, etc.
+  - PhysicsMaterial struct with presets (rubber, ice, metal, wood, bouncyBall)
+  - MassProperties struct with factory methods (sphere, box, capsule)
+  - AABB struct with overlap/contain tests
+  - BoundingSphere struct
+  - Ray and RaycastHit structs
+  - ContactPoint and ContactManifold structs
+  - PhysicsWorldConfig with presets (default, mobileOptimized, highQuality)
+  - BodyState and BodyFlags
+
+- [x] **collision_shape.hpp/cpp** - Collision Shape System (~1,200 LOC)
+  - CollisionShape base class with:
+    - getType(), getLocalBounds(), getWorldBounds()
+    - calculateMassProperties(), getSupport() for GJK
+    - raycast() for shape intersection
+  - SphereShape - radius-based collision
+  - BoxShape - half-extents with 8 corners
+  - CapsuleShape - cylinder with hemispherical caps
+  - CylinderShape - finite height cylinder
+  - PlaneShape - infinite half-space
+  - ConvexHullShape - arbitrary convex polyhedron
+  - CompoundShape - multiple sub-shapes
+  - ShapeFactory namespace with creation helpers
+
+- [x] **rigid_body.hpp/cpp** - Rigid Body Dynamics (~800 LOC)
+  - RigidBodyDesc with factory methods (staticBody, dynamicBody, kinematicBody, sensorBody)
+  - RigidBody class:
+    - Transform management (position, orientation, transform matrix)
+    - Velocity control (linear, angular, velocity at point)
+    - Force/impulse application (applyForce, applyImpulse, applyTorque)
+    - Mass properties (mass, inverseMass, inertia, center of mass)
+    - Damping (linear, angular)
+    - Motion type control
+    - Collision (shape, layer, mask, sensor)
+    - Material properties
+    - Sleep state management
+    - Integration methods (integrateVelocities, integratePositions)
+    - State interpolation for rendering
+
+- [x] **physics_world.hpp/cpp** - Physics Simulation (~2,500 LOC)
+  - PhysicsWorld class:
+    - step() with fixed timestep accumulator
+    - Body management (createBody, destroyBody, getBody)
+    - Raycasting (raycast, raycastAll)
+    - Shape queries (queryPoint, queryAABB, querySphere, queryShape)
+    - Collision callbacks (begin, end, persist, trigger enter/exit)
+    - Configuration (gravity, timestep)
+    - Statistics tracking
+    - Debug drawing support
+  - BroadPhase interface with implementations:
+    - BruteForceBroadPhase (O(n²), good for < 100 bodies)
+    - BVHBroadPhase (O(n log n), tree-based)
+  - NarrowPhase interface:
+    - GJKNarrowPhase (GJK + EPA algorithms)
+  - ConstraintSolver interface:
+    - SequentialImpulseSolver (velocity + position solving)
 
 ---
 

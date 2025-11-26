@@ -123,6 +123,21 @@ set(NOVA_CORE_VULKAN_HEADERS
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_texture.hpp
 )
 
+# NovaCore Physics System - Week 7
+set(NOVA_CORE_PHYSICS_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/physics/collision_shape.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/physics/rigid_body.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/physics/physics_world.cpp
+)
+
+set(NOVA_CORE_PHYSICS_HEADERS
+    ${NOVA_INCLUDE_DIR}/nova/core/physics/physics.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/physics/physics_types.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/physics/collision_shape.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/physics/rigid_body.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/physics/physics_world.hpp
+)
+
 # Platform module
 set(NOVA_CORE_PLATFORM_SOURCES
     # ${CMAKE_CURRENT_SOURCE_DIR}/platform/platform.cpp
@@ -152,6 +167,7 @@ set(NOVA_CORE_SOURCES
     ${NOVA_CORE_ECS_SOURCES}
     ${NOVA_CORE_RENDER_SOURCES}
     ${NOVA_CORE_VULKAN_SOURCES}
+    ${NOVA_CORE_PHYSICS_SOURCES}
     ${NOVA_CORE_PLATFORM_SOURCES}
     ${NOVA_CORE_CONTAINERS_SOURCES}
 )
@@ -164,6 +180,7 @@ set(NOVA_CORE_HEADERS
     ${NOVA_CORE_ECS_HEADERS}
     ${NOVA_CORE_RENDER_HEADERS}
     ${NOVA_CORE_VULKAN_HEADERS}
+    ${NOVA_CORE_PHYSICS_HEADERS}
     ${NOVA_CORE_PLATFORM_HEADERS}
     ${NOVA_CORE_CONTAINERS_HEADERS}
 )
