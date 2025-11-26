@@ -33,11 +33,11 @@
 |-------|--------|----------|-------|
 | **Planning** | ✅ Complete | 100% | Blueprint and documentation ready |
 | **Month 1: ENGINE Foundation** | ✅ Complete | 100% | Build system ✅, Types ✅, Math ✅, Memory ✅, ECS ✅, Render ✅ |
-| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 35% | Nova GraphicsCore™ Vulkan impl in progress |
+| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 45% | Nova GraphicsCore™ Vulkan impl in progress |
 | **Month 3: ENGINE Completion + Basic Platform** | ⏸️ Not Started | 0% | Scripting, audio, input + minimal platform |
 | **Post-Release: Full Platform** | ⏸️ Waiting | 0% | Complete platform features AFTER engine is stable |
 
-**Code Written**: ~20,000+ LOC  
+**Code Written**: ~25,000+ LOC  
 **Tests Written**: 51 tests (48 passing, 3 pre-existing timing issues)  
 **First Release Target**: ~350,000 LOC
 
@@ -311,7 +311,7 @@
 - [x] **vulkan_types.hpp** - Vulkan type definitions and utilities
   - Platform-specific Vulkan header configuration
   - VulkanInstanceFunctions struct (40+ function pointers)
-  - VulkanDeviceFunctions struct (90+ function pointers)
+  - VulkanDeviceFunctions struct (100+ function pointers)
   - toVkFormat() - Texture format conversion (45+ formats)
   - toVkTopology() - Primitive topology conversion
   - toVkBlendFactor(), toVkBlendOp() - Blend state conversion
@@ -320,6 +320,7 @@
   - toVkFilter(), toVkMipmapMode(), toVkAddressMode() - Sampler state
   - vkResultToString() - Error code to string conversion
   - Configuration constants for max frames in flight, descriptor sets, etc.
+  - Debug Utils extension function pointers
 
 - [x] **vulkan_loader.hpp/cpp** - Dynamic Vulkan Function Loader
   - Cross-platform library loading (Windows/Linux/Android/macOS)
@@ -365,6 +366,38 @@
   - present() - Present rendered frame
   - resize() - Handle window resize
   - Complete SwapChain interface implementation
+
+- [x] **vulkan_command_buffer.hpp/cpp** - Nova GraphicsCore™ Vulkan Command Buffer
+  - VulkanCommandBuffer::create() - Static factory
+  - begin(), end(), reset() - Recording control
+  - beginRenderPass(), endRenderPass(), nextSubpass() - Render pass commands
+  - bindPipeline() - Pipeline state binding
+  - setViewport(), setViewports() - Dynamic viewport state
+  - setScissor(), setScissors() - Dynamic scissor state
+  - setBlendConstants(), setDepthBounds(), setStencilReference() - Dynamic state
+  - setLineWidth() - Line width state
+  - draw(), drawIndexed() - Draw commands
+  - drawIndirect(), drawIndexedIndirect() - Indirect draw commands
+  - dispatch(), dispatchIndirect() - Compute dispatch commands
+  - copyBuffer(), copyTexture() - Transfer commands
+  - pipelineBarrier() - Synchronization barriers
+  - beginDebugLabel(), endDebugLabel(), insertDebugLabel() - Debug markers
+  - toVkStageFlags(), toVkAccessFlags(), toVkImageLayout() - Conversion utilities
+  - Complete CommandBuffer interface implementation
+
+- [x] **vulkan_pipeline.hpp/cpp** - Nova GraphicsCore™ Vulkan Pipeline
+  - VulkanGraphicsPipeline class for graphics pipelines
+    - createLayout() - Pipeline layout creation
+    - createPipeline() - Full graphics pipeline creation
+    - Vertex input, input assembly, viewport, rasterizer states
+    - Depth/stencil, color blend, dynamic states
+    - toVkVertexFormat(), toVkPrimitiveTopology() - Conversion utilities
+  - VulkanComputePipeline class for compute pipelines
+    - createLayout() - Pipeline layout creation  
+    - createPipeline() - Compute pipeline creation
+  - VulkanPipelineCache class for pipeline caching
+    - getData() - Retrieve cache data for saving
+    - Pipeline compilation acceleration
 
 ---
 

@@ -375,6 +375,10 @@ Result<void> VulkanLoader::loadDeviceFunctions(
     NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdBindPipeline, getDeviceProcAddr);
     NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdSetViewport, getDeviceProcAddr);
     NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdSetScissor, getDeviceProcAddr);
+    NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdSetBlendConstants, getDeviceProcAddr);
+    NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdSetDepthBounds, getDeviceProcAddr);
+    NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdSetStencilReference, getDeviceProcAddr);
+    NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdSetLineWidth, getDeviceProcAddr);
     NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdBindVertexBuffers, getDeviceProcAddr);
     NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdBindIndexBuffer, getDeviceProcAddr);
     NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdBindDescriptorSets, getDeviceProcAddr);
@@ -460,6 +464,11 @@ Result<void> VulkanLoader::loadDeviceFunctions(
         funcs.vkQueueSubmit2 = reinterpret_cast<PFN_vkQueueSubmit2>(
             getDeviceProcAddr(device, "vkQueueSubmit2KHR"));
     }
+    
+    // Debug Utils extension (optional)
+    NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdBeginDebugUtilsLabelEXT, getDeviceProcAddr);
+    NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdEndDebugUtilsLabelEXT, getDeviceProcAddr);
+    NOVA_LOAD_DEVICE_FUNC(funcs, vkCmdInsertDebugUtilsLabelEXT, getDeviceProcAddr);
     
     // Verify essential functions were loaded
     if (!funcs.vkDestroyDevice || 

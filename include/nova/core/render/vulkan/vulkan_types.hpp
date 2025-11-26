@@ -193,6 +193,10 @@ struct VulkanDeviceFunctions {
     PFN_vkCmdBindPipeline vkCmdBindPipeline = nullptr;
     PFN_vkCmdSetViewport vkCmdSetViewport = nullptr;
     PFN_vkCmdSetScissor vkCmdSetScissor = nullptr;
+    PFN_vkCmdSetBlendConstants vkCmdSetBlendConstants = nullptr;
+    PFN_vkCmdSetDepthBounds vkCmdSetDepthBounds = nullptr;
+    PFN_vkCmdSetStencilReference vkCmdSetStencilReference = nullptr;
+    PFN_vkCmdSetLineWidth vkCmdSetLineWidth = nullptr;
     PFN_vkCmdBindVertexBuffers vkCmdBindVertexBuffers = nullptr;
     PFN_vkCmdBindIndexBuffer vkCmdBindIndexBuffer = nullptr;
     PFN_vkCmdBindDescriptorSets vkCmdBindDescriptorSets = nullptr;
@@ -244,6 +248,11 @@ struct VulkanDeviceFunctions {
     // Core 1.3 / KHR Synchronization2
     PFN_vkCmdPipelineBarrier2 vkCmdPipelineBarrier2 = nullptr;
     PFN_vkQueueSubmit2 vkQueueSubmit2 = nullptr;
+    
+    // Debug Utils extension
+    PFN_vkCmdBeginDebugUtilsLabelEXT vkCmdBeginDebugUtilsLabelEXT = nullptr;
+    PFN_vkCmdEndDebugUtilsLabelEXT vkCmdEndDebugUtilsLabelEXT = nullptr;
+    PFN_vkCmdInsertDebugUtilsLabelEXT vkCmdInsertDebugUtilsLabelEXT = nullptr;
 };
 
 // ============================================================================
