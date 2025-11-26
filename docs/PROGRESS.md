@@ -33,11 +33,11 @@
 |-------|--------|----------|-------|
 | **Planning** | ✅ Complete | 100% | Blueprint and documentation ready |
 | **Month 1: ENGINE Foundation** | ✅ Complete | 100% | Build system ✅, Types ✅, Math ✅, Memory ✅, ECS ✅, Render ✅ |
-| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 25% | Nova GraphicsCore™ Vulkan impl in progress |
+| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 35% | Nova GraphicsCore™ Vulkan impl in progress |
 | **Month 3: ENGINE Completion + Basic Platform** | ⏸️ Not Started | 0% | Scripting, audio, input + minimal platform |
 | **Post-Release: Full Platform** | ⏸️ Waiting | 0% | Complete platform features AFTER engine is stable |
 
-**Code Written**: ~18,000+ LOC  
+**Code Written**: ~20,000+ LOC  
 **Tests Written**: 51 tests (48 passing, 3 pre-existing timing issues)  
 **First Release Target**: ~350,000 LOC
 
@@ -348,6 +348,24 @@
   - Debug callback for validation messages
   - Complete RenderDevice interface implementation
 
+- [x] **vulkan_swap_chain.hpp/cpp** - Nova GraphicsCore™ Vulkan Swap Chain
+  - SwapChainSupportDetails for surface capability queries
+  - SwapChainFrame struct for per-image resources
+  - VulkanSwapChain::create() - Static factory
+  - querySwapChainSupport() - Surface capability detection
+  - chooseSwapSurfaceFormat() - Format selection with HDR support
+  - chooseSwapPresentMode() - VSync mode mapping
+  - chooseSwapExtent() - Swap extent calculation
+  - createSwapChain() - Vulkan swap chain creation
+  - createImageViews() - Image view creation for each frame
+  - createRenderPass() - Basic render pass for presentation
+  - createFramebuffers() - Framebuffer per swap chain image
+  - cleanup() - Resource destruction
+  - acquireNextImage() - Frame acquisition with timeout
+  - present() - Present rendered frame
+  - resize() - Handle window resize
+  - Complete SwapChain interface implementation
+
 ---
 
 ## 🧪 TEST COVERAGE
@@ -464,8 +482,14 @@ Nova-Forge/
   - Per-frame synchronization objects (fences, semaphores)
   - Command pool management
   - Quality tier detection based on device capabilities
-- [ ] Vulkan swap chain implementation
-- [ ] Vulkan render pass and framebuffer
+- [x] Vulkan swap chain implementation (vulkan_swap_chain.hpp/cpp)
+  - Surface format selection (SRGB, HDR support)
+  - Present mode selection (FIFO, Mailbox, Immediate)
+  - Triple buffering support
+  - Image view creation
+  - Framebuffer creation
+  - Basic render pass creation
+  - Resize/recreation handling
 - [ ] Vulkan command buffer recording
 - [ ] Vulkan pipeline creation
 - [ ] Vulkan descriptor sets

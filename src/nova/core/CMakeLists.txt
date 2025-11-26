@@ -101,12 +101,14 @@ set(NOVA_CORE_RENDER_HEADERS
 set(NOVA_CORE_VULKAN_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_loader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_device.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_swap_chain.cpp
 )
 
 set(NOVA_CORE_VULKAN_HEADERS
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_types.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_loader.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_device.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_swap_chain.hpp
 )
 
 # Platform module

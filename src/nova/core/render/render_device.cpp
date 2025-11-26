@@ -13,6 +13,9 @@
 #include "nova/core/render/render_pass.hpp"
 #include "nova/core/render/render_pipeline.hpp"
 
+// Include Vulkan backend
+#include "nova/core/render/vulkan/vulkan_device.hpp"
+
 namespace nova::render {
 
 // ============================================================================
@@ -154,9 +157,20 @@ Result<std::unique_ptr<RenderDevice>> createRenderDevice(const DeviceDesc& desc)
     
     // Create device based on backend
     switch (backend) {
-        case GraphicsBackend::Vulkan:
-            // TODO: Implement Vulkan device
-            return std::unexpected(errors::notSupported("Vulkan backend not yet implemented"));
+        case GraphicsBackend::Vulkan: {
+            // Try to create Vulkan device
+            auto result = vulkan::VulkanDevice::create(desc);
+            if (result) {
+                return std::move(*result);
+            }
+            // Vulkan failed, fall through to software renderer
+            // (only in non-strict mode)
+            if (desc.preferredBackend == GraphicsBackend::Vulkan) {
+                return std::unexpected(result.error());
+            }
+            // Fall through to software
+            [[fallthrough]];
+        }
             
         case GraphicsBackend::Metal:
             // TODO: Implement Metal device
