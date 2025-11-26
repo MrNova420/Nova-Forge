@@ -625,9 +625,9 @@ bool ConvexHullShape::raycast(const Ray& ray, RaycastHit& hit) const {
     hit.point = ray.getPoint(hit.distance);
     
     // Approximate normal
-    if (near == t1.x) hit.normal = ray.direction.x < 0 ? Vec3::right() : Vec3(-1, 0, 0);
+    if (near == t1.x) hit.normal = ray.direction.x < 0 ? Vec3::right() : Vec3::left();
     else if (near == t1.y) hit.normal = ray.direction.y < 0 ? Vec3::up() : Vec3::down();
-    else hit.normal = ray.direction.z < 0 ? Vec3::forward() : Vec3(0, 0, -1);
+    else hit.normal = ray.direction.z < 0 ? Vec3::back() : Vec3::forward();
     
     return true;
 }

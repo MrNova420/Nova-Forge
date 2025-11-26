@@ -8,8 +8,43 @@
 #include "nova/core/physics/physics_world.hpp"
 #include <chrono>
 #include <algorithm>
+#include <limits>
 
 namespace nova::physics {
+
+// Helper for safe ray-AABB intersection that handles zero direction components
+static bool rayIntersectsAABB(const Ray& ray, const AABB& bounds, f32& outNear, f32& outFar) {
+    outNear = 0.0f;
+    outFar = ray.maxDistance;
+    
+    for (int i = 0; i < 3; i++) {
+        f32 origin = (i == 0) ? ray.origin.x : (i == 1) ? ray.origin.y : ray.origin.z;
+        f32 dir = (i == 0) ? ray.direction.x : (i == 1) ? ray.direction.y : ray.direction.z;
+        f32 minVal = (i == 0) ? bounds.min.x : (i == 1) ? bounds.min.y : bounds.min.z;
+        f32 maxVal = (i == 0) ? bounds.max.x : (i == 1) ? bounds.max.y : bounds.max.z;
+        
+        if (std::abs(dir) < PHYSICS_EPSILON) {
+            // Ray is parallel to slab - check if origin is within slab
+            if (origin < minVal || origin > maxVal) {
+                return false;
+            }
+        } else {
+            f32 t1 = (minVal - origin) / dir;
+            f32 t2 = (maxVal - origin) / dir;
+            
+            if (t1 > t2) std::swap(t1, t2);
+            
+            outNear = std::max(outNear, t1);
+            outFar = std::min(outFar, t2);
+            
+            if (outNear > outFar || outFar < 0.0f) {
+                return false;
+            }
+        }
+    }
+    
+    return outNear <= outFar && outFar >= 0.0f && outNear <= ray.maxDistance;
+}
 
 // =============================================================================
 // PhysicsWorld Implementation
@@ -552,17 +587,8 @@ void BruteForceBroadPhase::queryRay(const Ray& ray, std::vector<BodyId>& outBodi
     outBodies.clear();
     
     for (const auto& entry : m_entries) {
-        // Simple ray-AABB intersection test
-        Vec3 tmin = (entry.bounds.min - ray.origin) / ray.direction;
-        Vec3 tmax = (entry.bounds.max - ray.origin) / ray.direction;
-        
-        Vec3 t1 = Vec3(std::min(tmin.x, tmax.x), std::min(tmin.y, tmax.y), std::min(tmin.z, tmax.z));
-        Vec3 t2 = Vec3(std::max(tmin.x, tmax.x), std::max(tmin.y, tmax.y), std::max(tmin.z, tmax.z));
-        
-        f32 near = std::max({t1.x, t1.y, t1.z});
-        f32 far = std::min({t2.x, t2.y, t2.z});
-        
-        if (near <= far && far >= 0.0f && near <= ray.maxDistance) {
+        f32 near, far;
+        if (rayIntersectsAABB(ray, entry.bounds, near, far)) {
             outBodies.push_back(entry.id);
         }
     }
@@ -800,17 +826,9 @@ void BVHBroadPhase::queryRay(const Ray& ray, std::vector<BodyId>& outBodies) {
         
         const AABB& bounds = m_nodes[index].bounds;
         
-        // Ray-AABB test
-        Vec3 tmin = (bounds.min - ray.origin) / ray.direction;
-        Vec3 tmax = (bounds.max - ray.origin) / ray.direction;
-        
-        Vec3 t1 = Vec3(std::min(tmin.x, tmax.x), std::min(tmin.y, tmax.y), std::min(tmin.z, tmax.z));
-        Vec3 t2 = Vec3(std::max(tmin.x, tmax.x), std::max(tmin.y, tmax.y), std::max(tmin.z, tmax.z));
-        
-        f32 near = std::max({t1.x, t1.y, t1.z});
-        f32 far = std::min({t2.x, t2.y, t2.z});
-        
-        if (near > far || far < 0.0f || near > ray.maxDistance) continue;
+        // Safe ray-AABB test
+        f32 near, far;
+        if (!rayIntersectsAABB(ray, bounds, near, far)) continue;
         
         if (m_nodes[index].isLeaf()) {
             outBodies.push_back(m_nodes[index].bodyId);
