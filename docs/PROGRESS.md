@@ -33,11 +33,11 @@
 |-------|--------|----------|-------|
 | **Planning** | ✅ Complete | 100% | Blueprint and documentation ready |
 | **Month 1: ENGINE Foundation** | ✅ Complete | 100% | Build system ✅, Types ✅, Math ✅, Memory ✅, ECS ✅, Render ✅ |
-| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 45% | Nova GraphicsCore™ Vulkan impl in progress |
+| **Month 2: ENGINE Rendering & Physics** | 🟢 IN PROGRESS | 50% | Nova GraphicsCore™ Vulkan impl in progress |
 | **Month 3: ENGINE Completion + Basic Platform** | ⏸️ Not Started | 0% | Scripting, audio, input + minimal platform |
 | **Post-Release: Full Platform** | ⏸️ Waiting | 0% | Complete platform features AFTER engine is stable |
 
-**Code Written**: ~25,000+ LOC  
+**Code Written**: ~28,000+ LOC  
 **Tests Written**: 51 tests (48 passing, 3 pre-existing timing issues)  
 **First Release Target**: ~350,000 LOC
 
@@ -399,6 +399,29 @@
     - getData() - Retrieve cache data for saving
     - Pipeline compilation acceleration
 
+- [x] **vulkan_descriptor.hpp/cpp** - Nova GraphicsCore™ Vulkan Descriptor System
+  - DescriptorType enum (11 types: sampler, combined image, storage, etc.)
+  - ShaderStage flags for visibility control
+  - DescriptorBinding struct with factory methods
+  - VulkanDescriptorSetLayout class
+    - create() - Create layout from bindings
+    - Factory presets: material(), perObject(), perFrame()
+  - VulkanDescriptorPool class
+    - create() - Create pool with configurable sizes
+    - allocateSets() - Allocate descriptor sets
+    - freeSets() - Free individual sets (optional)
+    - reset() - Reset entire pool
+    - Factory presets: general(), perFrame()
+  - VulkanDescriptorWriter class (fluent API)
+    - writeBuffer() / writeBuffers() - Buffer descriptor updates
+    - writeImage() / writeImages() - Image descriptor updates
+    - update() - Execute pending writes
+  - VulkanBindlessDescriptor class (optional, requires VK_EXT_descriptor_indexing)
+    - create() - Create bindless texture array manager
+    - addTexture() - Add texture to array, return index
+    - removeTexture() - Remove texture from array
+    - GPU-driven texture indexing for massive texture arrays
+
 ---
 
 ## 🧪 TEST COVERAGE
@@ -523,9 +546,23 @@ Nova-Forge/
   - Framebuffer creation
   - Basic render pass creation
   - Resize/recreation handling
-- [ ] Vulkan command buffer recording
-- [ ] Vulkan pipeline creation
-- [ ] Vulkan descriptor sets
+- [x] Vulkan command buffer recording (vulkan_command_buffer.hpp/cpp)
+  - Complete CommandBuffer interface implementation
+  - Recording control (begin, end, reset)
+  - Render pass commands
+  - Dynamic state (viewport, scissor, blend, depth, stencil)
+  - Draw commands (direct, indexed, indirect)
+  - Compute dispatch and transfer commands
+  - Debug markers for GPU profiling
+- [x] Vulkan pipeline creation (vulkan_pipeline.hpp/cpp)
+  - VulkanGraphicsPipeline - Full graphics pipeline
+  - VulkanComputePipeline - Compute pipeline
+  - VulkanPipelineCache - Pipeline caching
+- [x] Vulkan descriptor sets (vulkan_descriptor.hpp/cpp)
+  - VulkanDescriptorSetLayout - Layout creation
+  - VulkanDescriptorPool - Pool management
+  - VulkanDescriptorWriter - Fluent update API
+  - VulkanBindlessDescriptor - GPU-driven texture indexing
 - [ ] "Hello Triangle" demo
 
 ### Week 7: Physics Integration

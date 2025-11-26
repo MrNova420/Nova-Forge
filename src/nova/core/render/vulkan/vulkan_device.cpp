@@ -954,6 +954,20 @@ void VulkanDevice::waitIdle() {
     }
 }
 
+void VulkanDevice::setDebugName(VkObjectType objectType, u64 object, const std::string& name) {
+    if (!m_validationEnabled || !m_instanceFuncs.vkSetDebugUtilsObjectNameEXT) {
+        return;
+    }
+    
+    VkDebugUtilsObjectNameInfoEXT nameInfo{};
+    nameInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_OBJECT_NAME_INFO_EXT;
+    nameInfo.objectType = objectType;
+    nameInfo.objectHandle = object;
+    nameInfo.pObjectName = name.c_str();
+    
+    m_instanceFuncs.vkSetDebugUtilsObjectNameEXT(m_device, &nameInfo);
+}
+
 // ============================================================================
 // Device Enumeration Helper
 // ============================================================================

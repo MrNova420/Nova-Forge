@@ -155,6 +155,15 @@ public:
     [[nodiscard]] const VulkanInstanceFunctions& getInstanceFuncs() const noexcept { return m_instanceFuncs; }
     [[nodiscard]] const VulkanDeviceFunctions& getDeviceFuncs() const noexcept { return m_deviceFuncs; }
     [[nodiscard]] u32 getApiVersion() const noexcept { return m_apiVersion; }
+    [[nodiscard]] bool isValidationEnabled() const noexcept { return m_validationEnabled; }
+    
+    /**
+     * @brief Set a debug name for a Vulkan object
+     * @param objectType Vulkan object type
+     * @param object Object handle
+     * @param name Debug name
+     */
+    void setDebugName(VkObjectType objectType, u64 object, const std::string& name);
     
 private:
     VulkanDevice() = default;
