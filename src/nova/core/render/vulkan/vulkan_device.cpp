@@ -18,6 +18,7 @@
 #include <algorithm>
 #include <cstring>
 #include <set>
+#include <cstdio>
 
 namespace nova::render::vulkan {
 
@@ -817,12 +818,26 @@ VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDevice::debugCallback(
     const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
     void* pUserData)
 {
-    // TODO: Integrate with NovaCore logging system
-    // For now, just ignore (validation errors will still be caught by the driver)
-    (void)messageSeverity;
-    (void)messageType;
-    (void)pCallbackData;
     (void)pUserData;
+    
+    // Determine severity prefix
+    const char* severityStr = "INFO";
+    if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
+        severityStr = "ERROR";
+    } else if (messageSeverity & VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+        severityStr = "WARNING";
+    }
+    
+    // Determine type prefix
+    const char* typeStr = "General";
+    if (messageType & VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT) {
+        typeStr = "Validation";
+    } else if (messageType & VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT) {
+        typeStr = "Performance";
+    }
+    
+    // Log to stderr for now (TODO: integrate with NovaCore Logger)
+    std::fprintf(stderr, "[Vulkan %s/%s] %s\n", severityStr, typeStr, pCallbackData->pMessage);
     
     return VK_FALSE;
 }
@@ -972,7 +987,12 @@ std::vector<PhysicalDeviceInfo> enumerateVulkanDevices() {
     VulkanInstanceFunctions funcs;
     auto funcResult = VulkanLoader::loadInstanceFunctions(instance, funcs);
     if (!funcResult) {
-        funcs.vkDestroyInstance(instance, nullptr);
+        // Use loader's vkGetInstanceProcAddr to get destroy function directly
+        auto destroyInstance = reinterpret_cast<PFN_vkDestroyInstance>(
+            VulkanLoader::vkGetInstanceProcAddr(instance, "vkDestroyInstance"));
+        if (destroyInstance) {
+            destroyInstance(instance, nullptr);
+        }
         return devices;
     }
     
