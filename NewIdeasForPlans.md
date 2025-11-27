@@ -1,4 +1,4 @@
-New Ideas For Plans 
+New Ideas to add to whats already been done and to be added as just more features and more stuff For the Plans and blueprints
 
 
 
