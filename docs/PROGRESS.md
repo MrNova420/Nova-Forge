@@ -42,12 +42,12 @@
 
 | Metric | Value |
 |--------|-------|
-| **Total LOC** | **72,000+** |
-| **Source Files (.cpp + .hpp)** | ~66,000 LOC |
-| **Test Files (.cpp)** | ~5,300 LOC |
-| **Total Files** | 141 files |
-| **Tests** | 158 test cases |
-| **Assertions** | 11,599 |
+| **Total LOC** | **72,500+** |
+| **Source Files (.cpp + .hpp)** | ~66,500 LOC |
+| **Test Files (.cpp)** | ~6,000 LOC |
+| **Total Files** | 144 files |
+| **Tests** | 178 test cases |
+| **Assertions** | 11,740 |
 | **Test Status** | ✅ ALL PASSING |
 
 *Note: LOC excludes build artifacts, dependencies (Catch2), and .git*
@@ -1380,29 +1380,33 @@ After Android first release (Engine is COMPLETE and stable):
 
 ## 📝 RECENT UPDATES
 
-### 2025-11-27 (Continued Session) 🟢 IK SOLVER TEST COVERAGE
+### 2025-11-27 (Latest Session) 🟢 COMPREHENSIVE TEST EXPANSION
+
+**New Test Files Added**:
+- ✅ test_script.cpp - Script system type tests (7 test cases)
+- ✅ test_resource.cpp - Resource system type tests (7 test cases)
+- ✅ test_input.cpp - Input system type tests (6 test cases)
+- ✅ Total: 178 test cases, 11,740 assertions - ALL PASSING
+
+**Namespace Fixes**:
+- ✅ Fixed `nova::core` → `nova` namespace in script_types.hpp
+- ✅ Fixed `nova::core` → `nova` namespace in input_types.hpp
+- ✅ Fixed `nova::core` → `nova` namespace in resource_types.hpp
+- ✅ Fixed `nova::core` → `nova` namespace in platform_types.hpp
+- ✅ Added `nova::literals` namespace for memory size suffixes
+- ✅ Fixed std::hash template type reference
+
+### 2025-11-27 (Earlier Session) 🟢 IK SOLVER TEST COVERAGE
 
 **Comprehensive IK Solver Tests Added**:
-- ✅ Added 5 new test cases for IK solvers (158 total tests, 11,599 assertions)
+- ✅ Added 5 new test cases for IK solvers
 - ✅ CCD (Cyclic Coordinate Descent) solver tests
-  - 3-bone arm chain configuration
-  - Solver parameter validation
-  - IK target setup
 - ✅ Jacobian Transpose solver tests
-  - 5-bone spine chain configuration
-  - Multi-joint IK setup
-  - Target position handling
 - ✅ Full Body IK solver tests
-  - Humanoid skeleton configuration (pelvis, spine, chest, head)
-  - Balance-aware solving setup
-  - Multi-bone chain verification
 - ✅ IKChain parameter tests
-  - Default value validation
-  - IKTarget configuration
-  - Pole vector setup
 - ✅ IKSolverType enum verification (all 6 solver types)
 
-### 2025-11-27 (Current Session) 🟢 PLACEHOLDER ELIMINATION & IK ENHANCEMENT
+### 2025-11-27 (Earlier Session) 🟢 PLACEHOLDER ELIMINATION & IK ENHANCEMENT
 
 **Comprehensive Placeholder Audit & Elimination**:
 - ✅ Audited entire codebase for placeholders, stubs, and incomplete implementations

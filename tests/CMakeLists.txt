@@ -37,6 +37,9 @@ set(NOVA_TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_particle.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_physics.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_audio.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_script.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_resource.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_input.cpp
 )
 
 # API tests
