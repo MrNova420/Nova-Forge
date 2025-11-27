@@ -38,6 +38,17 @@
     #define NOVA_SIMD_WASM 1
 #endif
 
+// =============================================================================
+// Force Inline Macro
+// =============================================================================
+#if defined(_MSC_VER)
+    #define NOVA_FORCE_INLINE __forceinline
+#elif defined(__GNUC__) || defined(__clang__)
+    #define NOVA_FORCE_INLINE __attribute__((always_inline)) inline
+#else
+    #define NOVA_FORCE_INLINE inline
+#endif
+
 namespace nova::math {
 
 // =============================================================================
@@ -171,22 +182,22 @@ template<typename T>
 }
 
 /// Approximate floating-point equality
-[[nodiscard]] inline bool nearEqual(f32 a, f32 b, f32 epsilon = F32_EPSILON * 100.0f) noexcept {
+[[nodiscard]] inline bool nearEqual(f32 a, f32 b, f32 epsilon = limits::F32_EPSILON * 100.0f) noexcept {
     return std::abs(a - b) <= epsilon * std::max(1.0f, std::max(std::abs(a), std::abs(b)));
 }
 
 /// Approximate floating-point equality (double)
-[[nodiscard]] inline bool nearEqual(f64 a, f64 b, f64 epsilon = F64_EPSILON * 100.0) noexcept {
+[[nodiscard]] inline bool nearEqual(f64 a, f64 b, f64 epsilon = limits::F64_EPSILON * 100.0) noexcept {
     return std::abs(a - b) <= epsilon * std::max(1.0, std::max(std::abs(a), std::abs(b)));
 }
 
 /// Check if value is approximately zero
-[[nodiscard]] inline bool nearZero(f32 value, f32 epsilon = F32_EPSILON * 100.0f) noexcept {
+[[nodiscard]] inline bool nearZero(f32 value, f32 epsilon = limits::F32_EPSILON * 100.0f) noexcept {
     return std::abs(value) <= epsilon;
 }
 
 /// Check if value is approximately zero (double)
-[[nodiscard]] inline bool nearZero(f64 value, f64 epsilon = F64_EPSILON * 100.0) noexcept {
+[[nodiscard]] inline bool nearZero(f64 value, f64 epsilon = limits::F64_EPSILON * 100.0) noexcept {
     return std::abs(value) <= epsilon;
 }
 
@@ -197,7 +208,7 @@ template<typename T>
 }
 
 /// Safe divide (returns 0 if divisor is near zero)
-[[nodiscard]] inline f32 safeDivide(f32 a, f32 b, f32 epsilon = F32_EPSILON) noexcept {
+[[nodiscard]] inline f32 safeDivide(f32 a, f32 b, f32 epsilon = limits::F32_EPSILON) noexcept {
     return std::abs(b) > epsilon ? a / b : 0.0f;
 }
 

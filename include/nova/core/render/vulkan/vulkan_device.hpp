@@ -158,6 +158,21 @@ public:
     [[nodiscard]] bool isValidationEnabled() const noexcept { return m_validationEnabled; }
     
     /**
+     * @brief Get the graphics command pool for a specific frame
+     * @param frameIndex Frame index (0 to MAX_FRAMES_IN_FLIGHT-1)
+     * @return Graphics command pool for the frame
+     */
+    [[nodiscard]] VkCommandPool getGraphicsCommandPool(u32 frameIndex = 0) const noexcept { 
+        return m_graphicsCommandPools[frameIndex % MAX_FRAMES_IN_FLIGHT]; 
+    }
+    
+    /**
+     * @brief Get the transfer command pool (shared across frames)
+     * @return Transfer command pool
+     */
+    [[nodiscard]] VkCommandPool getTransferCommandPool() const noexcept { return m_transferCommandPool; }
+    
+    /**
      * @brief Set a debug name for a Vulkan object
      * @param objectType Vulkan object type
      * @param object Object handle

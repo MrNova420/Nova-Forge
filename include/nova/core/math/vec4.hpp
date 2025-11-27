@@ -238,12 +238,12 @@ struct alignas(16) Vec4 {
     }
     
     /// Check if vector is approximately zero
-    [[nodiscard]] bool isNearZero(f32 epsilon = F32_EPSILON * 100.0f) const noexcept {
+    [[nodiscard]] bool isNearZero(f32 epsilon = limits::F32_EPSILON * 100.0f) const noexcept {
         return lengthSquared() <= epsilon * epsilon;
     }
     
     /// Check if approximately equal to another vector
-    [[nodiscard]] bool isNearEqual(const Vec4& other, f32 epsilon = F32_EPSILON * 100.0f) const noexcept {
+    [[nodiscard]] bool isNearEqual(const Vec4& other, f32 epsilon = limits::F32_EPSILON * 100.0f) const noexcept {
         return nearEqual(x, other.x, epsilon) && 
                nearEqual(y, other.y, epsilon) && 
                nearEqual(z, other.z, epsilon) &&
@@ -316,7 +316,7 @@ struct alignas(16) Vec4 {
     
     /// Perspective divide (divide xyz by w)
     [[nodiscard]] Vec3 perspectiveDivide() const noexcept {
-        if (std::abs(w) > F32_EPSILON) {
+        if (std::abs(w) > limits::F32_EPSILON) {
             f32 invW = 1.0f / w;
             return Vec3(x * invW, y * invW, z * invW);
         }

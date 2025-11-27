@@ -294,7 +294,7 @@ struct MassProperties {
      * @return Mass properties
      */
     static MassProperties sphere(f32 radius, f32 density) {
-        f32 volume = (4.0f / 3.0f) * PI * radius * radius * radius;
+        f32 volume = (4.0f / 3.0f) * PI_F32 * radius * radius * radius;
         f32 m = volume * density;
         f32 i = (2.0f / 5.0f) * m * radius * radius;
         
@@ -341,8 +341,8 @@ struct MassProperties {
      */
     static MassProperties capsule(f32 radius, f32 height, f32 density) {
         // Cylinder volume + 2 hemisphere volumes
-        f32 cylVolume = PI * radius * radius * height;
-        f32 sphereVolume = (4.0f / 3.0f) * PI * radius * radius * radius;
+        f32 cylVolume = PI_F32 * radius * radius * height;
+        f32 sphereVolume = (4.0f / 3.0f) * PI_F32 * radius * radius * radius;
         f32 volume = cylVolume + sphereVolume;
         f32 m = volume * density;
         

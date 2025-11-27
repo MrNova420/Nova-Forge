@@ -20,11 +20,17 @@
 #include <vector>
 #include <string>
 
-namespace nova::render {
-
+namespace nova::render::vulkan {
 // Forward declarations
 class VulkanDevice;
 class VulkanCommandBuffer;
+}
+
+namespace nova::render {
+
+// Bring in vulkan types for convenience
+using vulkan::VulkanDevice;
+using vulkan::VulkanCommandBuffer;
 
 /**
  * @brief Vulkan texture wrapper with automatic memory management

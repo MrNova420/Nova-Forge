@@ -380,7 +380,7 @@ inline Mat4 Mat4::inverse() const noexcept {
     
     f32 det = b00 * b11 - b01 * b10 + b02 * b09 + b03 * b08 - b04 * b07 + b05 * b06;
     
-    if (std::abs(det) < F32_EPSILON) {
+    if (std::abs(det) < limits::F32_EPSILON) {
         return Mat4::identity();
     }
     

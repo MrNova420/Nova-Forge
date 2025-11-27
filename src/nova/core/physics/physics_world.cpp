@@ -1152,6 +1152,8 @@ void SequentialImpulseSolver::solveVelocityConstraint(RigidBody* bodyA, RigidBod
                                                        const Vec3& normal, f32 friction) {
     Vec3 rA = contact.position - bodyA->getWorldCenterOfMass();
     Vec3 rB = contact.position - bodyB->getWorldCenterOfMass();
+    (void)rA; // TODO: Use for angular impulse
+    (void)rB; // TODO: Use for angular impulse
     
     // Relative velocity at contact point
     Vec3 relVel = bodyB->getVelocityAtPoint(contact.position) -
@@ -1211,8 +1213,7 @@ void SequentialImpulseSolver::solveVelocityConstraint(RigidBody* bodyA, RigidBod
 void SequentialImpulseSolver::solvePositions(std::vector<RigidBody*>& bodies,
                                               std::vector<ContactManifold>& contacts,
                                               f32 deltaTime) {
-    constexpr f32 SLOP = 0.01f;
-    constexpr f32 BAUMGARTE = 0.2f;
+    (void)deltaTime; // Unused but part of interface
     
     for (u32 iter = 0; iter < m_positionIterations; iter++) {
         for (auto& contact : contacts) {

@@ -16,6 +16,7 @@
 namespace nova::editor {
 
 namespace fs = std::filesystem;
+using nova::math::radians;
 
 // ============================================================================
 // Singleton Instance
@@ -112,7 +113,8 @@ void EditorContext::update(f32 deltaTime) {
     
     // Update world if playing
     if (m_state == EditorState::Playing && m_world) {
-        m_world->update(deltaTime);
+        m_world->beginFrame(deltaTime);
+        m_world->endFrame();
     }
 }
 
@@ -710,7 +712,10 @@ void EditorContext::step() {
     
     // Simulate one frame
     if (m_world) {
-        m_world->update(1.0f / 60.0f);
+        // Use beginFrame/endFrame instead of update
+        constexpr f32 FIXED_DELTA_TIME = 1.0f / 60.0f;
+        m_world->beginFrame(FIXED_DELTA_TIME);
+        m_world->endFrame();
     }
 }
 
@@ -795,8 +800,8 @@ ecs::Entity EditorContext::createEntity(const std::string& name) {
     // Record undo command for entity creation
     auto cmd = std::make_unique<CreateEntityCommand>(name);
     cmd->execute();
-    m_undoStack.push(std::move(cmd));
-    m_redoStack = {};
+    m_undoStack.push_back(std::move(cmd));
+    m_redoStack.clear();
     
     return entity;
 }

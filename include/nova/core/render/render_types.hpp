@@ -125,9 +125,13 @@ enum class TextureFormat : u16 {
     RG32_FLOAT,
     RGBA16_FLOAT,
     RGBA16_UNORM,
+    RGBA16_UINT,
+    RGBA16_SINT,
     
     // 128-bit formats
     RGBA32_FLOAT,
+    RGBA32_UINT,
+    RGBA32_SINT,
     
     // Depth/stencil formats
     D16_UNORM,

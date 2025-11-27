@@ -102,7 +102,7 @@ bool SphereShape::raycast(const Ray& ray, RaycastHit& hit) const {
 }
 
 f32 SphereShape::getVolume() const {
-    return (4.0f / 3.0f) * PI * m_radius * m_radius * m_radius;
+    return (4.0f / 3.0f) * PI_F32 * m_radius * m_radius * m_radius;
 }
 
 // =============================================================================
@@ -340,8 +340,8 @@ bool CapsuleShape::sphereRaycast(const Vec3& center, f32 radius, const Ray& ray,
 }
 
 f32 CapsuleShape::getVolume() const {
-    f32 cylVolume = PI * m_radius * m_radius * m_height;
-    f32 sphereVolume = (4.0f / 3.0f) * PI * m_radius * m_radius * m_radius;
+    f32 cylVolume = PI_F32 * m_radius * m_radius * m_height;
+    f32 sphereVolume = (4.0f / 3.0f) * PI_F32 * m_radius * m_radius * m_radius;
     return cylVolume + sphereVolume;
 }
 
@@ -360,7 +360,7 @@ AABB CylinderShape::getLocalBounds() const {
 }
 
 MassProperties CylinderShape::calculateMassProperties(f32 density) const {
-    f32 volume = PI * m_radius * m_radius * m_height;
+    f32 volume = PI_F32 * m_radius * m_radius * m_height;
     f32 mass = volume * density;
     
     f32 iy = 0.5f * mass * m_radius * m_radius;
@@ -464,7 +464,7 @@ bool CylinderShape::raycast(const Ray& ray, RaycastHit& hit) const {
 }
 
 f32 CylinderShape::getVolume() const {
-    return PI * m_radius * m_radius * m_height;
+    return PI_F32 * m_radius * m_radius * m_height;
 }
 
 // =============================================================================
@@ -568,8 +568,6 @@ AABB ConvexHullShape::getLocalBounds() const {
 }
 
 MassProperties ConvexHullShape::calculateMassProperties(f32 density) const {
-    f32 mass = m_volume * density;
-    
     // Approximate using bounding box
     Vec3 extents = m_localBounds.getExtents();
     return MassProperties::box(extents, density);
