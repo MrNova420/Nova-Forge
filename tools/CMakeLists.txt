@@ -7,11 +7,20 @@
 # Build tools, asset converters, and development utilities
 # =============================================================================
 
-# Placeholder - tools will be added as development progresses
-message(STATUS "NovaCore Tools: Configuration placeholder")
+message(STATUS "NovaCore Tools: Configuring build tools")
 
-# Future tools:
-# - Asset converter/importer
-# - Shader compiler
-# - Texture compressor
-# - Build tools
+# =============================================================================
+# Asset Converter Tool
+# =============================================================================
+# Converts various asset formats to NovaCore optimized formats
+
+# Note: Tool sources will be added when asset pipeline is ready
+# The tools directory structure is prepared for future development:
+# - tools/asset_converter/  - Asset format conversion utilities
+# - tools/shader_compiler/  - Cross-platform shader compilation
+# - tools/texture_packer/   - Texture atlas and compression tools
+# - tools/model_optimizer/  - Mesh optimization and LOD generation
+# - tools/build_system/     - Project build and packaging tools
+
+# Current status: Tools infrastructure ready, implementations will be added
+# when corresponding engine systems are complete and stable

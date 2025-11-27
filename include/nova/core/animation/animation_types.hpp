@@ -470,9 +470,10 @@ struct IKChain {
     IKTarget target;
     
     // Solver parameters
-    i32 maxIterations = 10;     ///< Max solver iterations
-    f32 tolerance = 0.001f;     ///< Position tolerance for convergence
-    f32 weight = 1.0f;          ///< IK weight (0 = FK only, 1 = full IK)
+    i32 maxIterations = 10;         ///< Max solver iterations
+    f32 tolerance = 0.001f;         ///< Position tolerance for convergence
+    f32 weight = 1.0f;              ///< IK weight (0 = FK only, 1 = full IK)
+    f32 maxAnglePerJoint = 0.5f;    ///< Maximum angle change per joint per iteration (radians)
     
     // Pole vector for orientation (e.g., knee/elbow direction)
     Vec3 poleVector{0.0f, 0.0f, 1.0f};

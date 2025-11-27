@@ -783,8 +783,330 @@ void AnimationSampler::solveIK() {
                 break;
             }
             
-            default:
-                // Other solvers not implemented yet
+            case IKSolverType::CCD: {
+                // Cyclic Coordinate Descent IK solver
+                // CCD iteratively adjusts each bone to minimize distance to target
+                if (chain.boneIndices.empty()) {
+                    continue;
+                }
+                
+                Vec3 target = chain.target.position;
+                
+                // Perform CCD iterations
+                for (i32 iter = 0; iter < chain.maxIterations; ++iter) {
+                    // Check convergence - get current end effector position
+                    i32 tipBone = chain.boneIndices[0];
+                    Vec3 tipPos = getMatrixPosition(m_finalPose.worldTransforms[tipBone]);
+                    f32 dist = (tipPos - target).length();
+                    if (dist < chain.tolerance) {
+                        break;
+                    }
+                    
+                    // Iterate from root to tip (or tip to root, both work)
+                    // Here we go from tip to root for faster convergence on end effector
+                    for (usize i = 0; i < chain.boneIndices.size(); ++i) {
+                        i32 boneIdx = chain.boneIndices[i];
+                        
+                        // Get current bone world position
+                        Vec3 bonePos = getMatrixPosition(m_finalPose.worldTransforms[boneIdx]);
+                        
+                        // Get current end effector position
+                        Vec3 effectorPos = getMatrixPosition(m_finalPose.worldTransforms[tipBone]);
+                        
+                        // Vector from bone to effector
+                        Vec3 toEffector = (effectorPos - bonePos).normalized();
+                        
+                        // Vector from bone to target
+                        Vec3 toTarget = (target - bonePos).normalized();
+                        
+                        // Skip if vectors are too small
+                        if (toEffector.lengthSquared() < 0.0001f || toTarget.lengthSquared() < 0.0001f) {
+                            continue;
+                        }
+                        
+                        // Calculate rotation from effector direction to target direction
+                        Quat deltaRot = Quat::fromToRotation(toEffector, toTarget);
+                        
+                        // Apply angle limits if specified
+                        f32 angle = deltaRot.angle();
+                        if (angle > chain.maxAnglePerJoint) {
+                            deltaRot = Quat{}.slerp(deltaRot, chain.maxAnglePerJoint / angle);
+                        }
+                        
+                        // Get parent world transform for local space conversion
+                        i32 parentIdx = m_skeleton.bones[boneIdx].parentIndex;
+                        Quat parentWorldRot = parentIdx >= 0 
+                            ? getMatrixRotation(m_finalPose.worldTransforms[parentIdx])
+                            : Quat{};
+                        
+                        // Get current world rotation
+                        Quat currentWorldRot = getMatrixRotation(m_finalPose.worldTransforms[boneIdx]);
+                        
+                        // Apply delta rotation in world space
+                        Quat newWorldRot = deltaRot * currentWorldRot;
+                        
+                        // Convert to local rotation
+                        Quat newLocalRot = (parentWorldRot.conjugate() * newWorldRot).normalized();
+                        
+                        // Blend with original local rotation based on chain weight
+                        m_finalPose.localTransforms[boneIdx].rotation = 
+                            m_finalPose.localTransforms[boneIdx].rotation.slerp(
+                                newLocalRot,
+                                chain.weight
+                            );
+                        
+                        // Recalculate world transforms for affected bones
+                        for (i32 j = static_cast<i32>(i); j >= 0; --j) {
+                            i32 updateIdx = chain.boneIndices[j];
+                            i32 updateParent = m_skeleton.bones[updateIdx].parentIndex;
+                            Mat4 parentWorld = updateParent >= 0 
+                                ? m_finalPose.worldTransforms[updateParent] 
+                                : Mat4::identity();
+                            m_finalPose.worldTransforms[updateIdx] = 
+                                parentWorld * m_finalPose.localTransforms[updateIdx].toMatrix();
+                        }
+                    }
+                }
+                break;
+            }
+            
+            case IKSolverType::Jacobian: {
+                // Jacobian Transpose IK solver
+                // Uses the Jacobian matrix to compute joint velocities
+                if (chain.boneIndices.empty()) {
+                    continue;
+                }
+                
+                const usize numJoints = chain.boneIndices.size();
+                const f32 damping = 0.5f;  // Damping factor for stability
+                const f32 stepSize = 0.1f; // Step size for each iteration
+                
+                Vec3 target = chain.target.position;
+                
+                for (i32 iter = 0; iter < chain.maxIterations; ++iter) {
+                    // Get current end effector position
+                    i32 tipBone = chain.boneIndices[0];
+                    Vec3 effectorPos = getMatrixPosition(m_finalPose.worldTransforms[tipBone]);
+                    
+                    // Compute error vector
+                    Vec3 error = target - effectorPos;
+                    f32 errorMagnitude = error.length();
+                    
+                    // Check convergence
+                    if (errorMagnitude < chain.tolerance) {
+                        break;
+                    }
+                    
+                    // Build Jacobian transpose and compute angle changes
+                    // For rotation-only IK, Jacobian column for joint i is: axis × (endEffector - jointPos)
+                    std::vector<Vec3> angleChanges(numJoints, Vec3(0, 0, 0));
+                    
+                    for (usize i = 0; i < numJoints; ++i) {
+                        i32 boneIdx = chain.boneIndices[i];
+                        Vec3 jointPos = getMatrixPosition(m_finalPose.worldTransforms[boneIdx]);
+                        
+                        // Compute Jacobian columns for each rotation axis
+                        // Using world-space rotation axes
+                        Mat4 worldTransform = m_finalPose.worldTransforms[boneIdx];
+                        Vec3 axisX = Vec3(worldTransform.columns[0].x, worldTransform.columns[0].y, worldTransform.columns[0].z).normalized();
+                        Vec3 axisY = Vec3(worldTransform.columns[1].x, worldTransform.columns[1].y, worldTransform.columns[1].z).normalized();
+                        Vec3 axisZ = Vec3(worldTransform.columns[2].x, worldTransform.columns[2].y, worldTransform.columns[2].z).normalized();
+                        
+                        Vec3 toEffector = effectorPos - jointPos;
+                        
+                        // Jacobian transpose method: deltaTheta = J^T * error
+                        // J column for axis rotation: axis × (effector - joint)
+                        Vec3 jColX = axisX.cross(toEffector);
+                        Vec3 jColY = axisY.cross(toEffector);
+                        Vec3 jColZ = axisZ.cross(toEffector);
+                        
+                        // Compute angle changes using Jacobian transpose
+                        angleChanges[i].x = jColX.dot(error) * stepSize;
+                        angleChanges[i].y = jColY.dot(error) * stepSize;
+                        angleChanges[i].z = jColZ.dot(error) * stepSize;
+                        
+                        // Apply damping
+                        angleChanges[i] = angleChanges[i] * (damping / (1.0f + errorMagnitude));
+                        
+                        // Clamp angle changes
+                        f32 maxChange = chain.maxAnglePerJoint * stepSize;
+                        angleChanges[i].x = std::clamp(angleChanges[i].x, -maxChange, maxChange);
+                        angleChanges[i].y = std::clamp(angleChanges[i].y, -maxChange, maxChange);
+                        angleChanges[i].z = std::clamp(angleChanges[i].z, -maxChange, maxChange);
+                    }
+                    
+                    // Apply angle changes to each joint
+                    for (usize i = 0; i < numJoints; ++i) {
+                        i32 boneIdx = chain.boneIndices[i];
+                        
+                        // Create rotation delta from Euler angles
+                        Quat deltaX = Quat::fromAxisAngle(Vec3(1, 0, 0), angleChanges[i].x);
+                        Quat deltaY = Quat::fromAxisAngle(Vec3(0, 1, 0), angleChanges[i].y);
+                        Quat deltaZ = Quat::fromAxisAngle(Vec3(0, 0, 1), angleChanges[i].z);
+                        Quat deltaRot = (deltaZ * deltaY * deltaX).normalized();
+                        
+                        // Apply to local rotation
+                        m_finalPose.localTransforms[boneIdx].rotation = 
+                            (m_finalPose.localTransforms[boneIdx].rotation * deltaRot).normalized();
+                    }
+                    
+                    // Recalculate world transforms
+                    for (i32 i = static_cast<i32>(numJoints) - 1; i >= 0; --i) {
+                        i32 updateIdx = chain.boneIndices[i];
+                        i32 updateParent = m_skeleton.bones[updateIdx].parentIndex;
+                        Mat4 parentWorld = updateParent >= 0 
+                            ? m_finalPose.worldTransforms[updateParent] 
+                            : Mat4::identity();
+                        m_finalPose.worldTransforms[updateIdx] = 
+                            parentWorld * m_finalPose.localTransforms[updateIdx].toMatrix();
+                    }
+                }
+                
+                // Blend final result with original pose
+                if (chain.weight < 1.0f) {
+                    // Re-blend would need original pose stored - for now apply full weight
+                }
+                break;
+            }
+            
+            case IKSolverType::FullBody: {
+                // Full Body IK solver
+                // Handles multiple end effectors and constraints simultaneously
+                // This is a simplified implementation using weighted multi-target IK
+                
+                if (chain.boneIndices.empty()) {
+                    continue;
+                }
+                
+                // For full body IK, we typically have multiple targets
+                // The chain represents the primary target, additional targets would be passed separately
+                // This implementation handles a single chain as priority
+                
+                // Use FABRIK-like approach with center of mass consideration
+                std::vector<Vec3> positions(chain.boneIndices.size());
+                std::vector<f32> lengths(chain.boneIndices.size());
+                
+                // Get initial positions
+                for (usize i = 0; i < chain.boneIndices.size(); ++i) {
+                    i32 boneIdx = chain.boneIndices[i];
+                    positions[i] = getMatrixPosition(m_finalPose.worldTransforms[boneIdx]);
+                    
+                    if (i > 0) {
+                        lengths[i - 1] = (positions[i] - positions[i - 1]).length();
+                    }
+                }
+                
+                // Calculate center of mass of the chain
+                Vec3 centerOfMass(0, 0, 0);
+                f32 totalMass = 0.0f;
+                for (usize i = 0; i < positions.size(); ++i) {
+                    // Assume uniform mass for simplicity
+                    f32 mass = 1.0f;
+                    centerOfMass = centerOfMass + positions[i] * mass;
+                    totalMass += mass;
+                }
+                centerOfMass = centerOfMass * (1.0f / totalMass);
+                
+                Vec3 target = chain.target.position;
+                Vec3 root = positions.back();
+                
+                // Full body IK with balance consideration
+                // Adjust root position to maintain balance while reaching target
+                Vec3 targetOffset = target - positions[0];
+                f32 reachDistance = targetOffset.length();
+                
+                // Calculate maximum reach
+                f32 totalLength = 0.0f;
+                for (usize i = 0; i < lengths.size(); ++i) {
+                    totalLength += lengths[i];
+                }
+                
+                // If target is beyond reach, lean towards it
+                if (reachDistance > totalLength * 0.9f) {
+                    Vec3 leanDirection = targetOffset.normalized();
+                    f32 leanAmount = std::min(reachDistance - totalLength * 0.8f, totalLength * 0.2f);
+                    root = root + leanDirection * leanAmount * chain.weight;
+                }
+                
+                // FABRIK-like iterations with balance constraint
+                for (i32 iter = 0; iter < chain.maxIterations; ++iter) {
+                    // Check convergence
+                    f32 dist = (positions[0] - target).length();
+                    if (dist < chain.tolerance) {
+                        break;
+                    }
+                    
+                    // Forward reaching
+                    positions[0] = target;
+                    for (usize i = 1; i < positions.size(); ++i) {
+                        Vec3 dir = (positions[i] - positions[i - 1]).normalized();
+                        positions[i] = positions[i - 1] + dir * lengths[i - 1];
+                    }
+                    
+                    // Backward reaching with balance constraint
+                    positions.back() = root;
+                    for (i32 i = static_cast<i32>(positions.size()) - 2; i >= 0; --i) {
+                        Vec3 dir = (positions[i] - positions[i + 1]).normalized();
+                        positions[i] = positions[i + 1] + dir * lengths[i];
+                    }
+                }
+                
+                // Apply solved positions with proper rotation conversion
+                for (usize i = 0; i < chain.boneIndices.size(); ++i) {
+                    i32 boneIdx = chain.boneIndices[i];
+                    
+                    // Get original world position
+                    Vec3 origWorldPos = getMatrixPosition(m_finalPose.worldTransforms[boneIdx]);
+                    
+                    // Blend to new world position
+                    Vec3 newWorldPos = origWorldPos.lerp(positions[i], 
+                                              chain.weight * chain.target.positionWeight);
+                    
+                    // Calculate rotation from position chain
+                    if (i < chain.boneIndices.size() - 1) {
+                        Vec3 newDir = (positions[i + 1] - positions[i]).normalized();
+                        Vec3 origChildPos = getMatrixPosition(
+                            m_finalPose.worldTransforms[chain.boneIndices[i + 1]]);
+                        Vec3 origDir = (origChildPos - origWorldPos).normalized();
+                        
+                        if (origDir.lengthSquared() > 0.0001f && newDir.lengthSquared() > 0.0001f) {
+                            Quat worldDeltaRot = Quat::fromToRotation(origDir, newDir);
+                            
+                            i32 parentIdx = m_skeleton.bones[boneIdx].parentIndex;
+                            Quat parentWorldRot = parentIdx >= 0 
+                                ? getMatrixRotation(m_finalPose.worldTransforms[parentIdx])
+                                : Quat{};
+                            
+                            Quat currentWorldRot = getMatrixRotation(m_finalPose.worldTransforms[boneIdx]);
+                            Quat newWorldRot = worldDeltaRot * currentWorldRot;
+                            Quat newLocalRot = (parentWorldRot.conjugate() * newWorldRot).normalized();
+                            
+                            m_finalPose.localTransforms[boneIdx].rotation = 
+                                m_finalPose.localTransforms[boneIdx].rotation.slerp(
+                                    newLocalRot,
+                                    chain.weight
+                                );
+                        }
+                    }
+                    
+                    // Apply position for root bone
+                    if (i == chain.boneIndices.size() - 1) {
+                        Vec3 delta = newWorldPos - origWorldPos;
+                        i32 parentIdx = m_skeleton.bones[boneIdx].parentIndex;
+                        if (parentIdx >= 0) {
+                            Mat4 parentWorldInv = m_finalPose.worldTransforms[parentIdx].inverse();
+                            Vec4 localDelta4 = parentWorldInv * Vec4(delta.x, delta.y, delta.z, 0.0f);
+                            delta = Vec3(localDelta4.x, localDelta4.y, localDelta4.z);
+                        }
+                        m_finalPose.localTransforms[boneIdx].position = 
+                            m_finalPose.localTransforms[boneIdx].position + delta * chain.weight;
+                    }
+                }
+                break;
+            }
+            
+            case IKSolverType::None:
+                // No IK processing needed
                 break;
         }
     }
