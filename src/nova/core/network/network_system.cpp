@@ -16,7 +16,7 @@
 #include <random>
 #include <cstdint>
 
-// Platform-specific socket headers
+// Platform-specific socket headers and closeSocket function
 #if defined(_WIN32)
     #include <winsock2.h>
     #include <ws2tcpip.h>
@@ -24,6 +24,8 @@
     using socket_t = SOCKET;
     #define INVALID_SOCKET_VALUE INVALID_SOCKET
     #define SOCKET_ERROR_VALUE SOCKET_ERROR
+    // Windows uses closesocket
+    inline int closeSocket(socket_t sock) { return ::closesocket(sock); }
 #else
     #include <sys/socket.h>
     #include <netinet/in.h>
@@ -35,12 +37,8 @@
     using socket_t = int;
     #define INVALID_SOCKET_VALUE (-1)
     #define SOCKET_ERROR_VALUE (-1)
-    // Use ::close to avoid conflict with class method
+    // Unix/Linux uses close - use :: to avoid conflict with class method
     inline int closeSocket(socket_t sock) { return ::close(sock); }
-#endif
-
-#if defined(_WIN32)
-    inline int closeSocket(socket_t sock) { return closeSocket(sock); }
 #endif
 
 namespace nova::network {
