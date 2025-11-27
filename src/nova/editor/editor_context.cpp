@@ -792,7 +792,11 @@ ecs::Entity EditorContext::createEntity(const std::string& name) {
     auto entity = m_world->createEntity();
     // Note: Would add name component
     
-    executeCommand<CreateEntityCommand>(name);
+    // Record undo command for entity creation
+    auto cmd = std::make_unique<CreateEntityCommand>(name);
+    cmd->execute();
+    m_undoStack.push(std::move(cmd));
+    m_redoStack = {};
     
     return entity;
 }

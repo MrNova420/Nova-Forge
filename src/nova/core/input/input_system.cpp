@@ -1061,8 +1061,11 @@ GestureData GestureRecognizer::detectTap(const std::vector<TouchPoint>& touches)
     
     // Check for double tap
     f32 currentTime = touches[0].timestamp;
+    Vec2 posDiff = touches[0].position - m_lastTapPosition;
+    f32 distSq = posDiff.x * posDiff.x + posDiff.y * posDiff.y;
+    f32 thresholdSq = InputConfig::TOUCH_DRAG_THRESHOLD * InputConfig::TOUCH_DRAG_THRESHOLD;
     if (currentTime - m_lastTapTime < InputConfig::TOUCH_DOUBLE_TAP_INTERVAL &&
-        (touches[0].position - m_lastTapPosition).length() < InputConfig::TOUCH_DRAG_THRESHOLD) {
+        distSq < thresholdSq) {
         result.type = GestureType::DoubleTap;
     }
     

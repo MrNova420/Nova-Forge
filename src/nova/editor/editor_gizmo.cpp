@@ -410,7 +410,8 @@ GizmoState RotationGizmo::update(const EditorCamera& camera,
         // Apply snapping
         if (m_snapSettings.rotationSnap) {
             Vec3 euler = rotation.toEuler();
-            euler = applySnap(euler, radians(m_snapSettings.rotationSnapValue));
+            constexpr f32 degToRad = 3.14159265358979323846f / 180.0f;
+            euler = applySnap(euler, m_snapSettings.rotationSnapValue * degToRad);
             rotation = Quat::fromEuler(euler);
             state.snappedRotation = euler;
         }

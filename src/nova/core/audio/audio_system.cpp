@@ -786,7 +786,8 @@ void AudioSystem::update3DAudio() {
         
         // Calculate pan based on relative position
         Vec3 toSource = source.position - listener.position;
-        Vec3 right = listener.right();
+        // Calculate right vector from forward and up (cross product)
+        Vec3 right = listener.forward.cross(listener.up).normalized();
         f32 pan = toSource.normalized().dot(right);
         
         // Apply to instance

@@ -246,7 +246,8 @@ std::string Application::getSpecialFolderPath(SpecialFolder folder) const {
     
     PWSTR wpath;
     if (SHGetKnownFolderPath(folderId, 0, nullptr, &wpath) == S_OK) {
-        wcstombs(path, wpath, MAX_PATH);
+        size_t convertedChars = 0;
+        wcstombs_s(&convertedChars, path, MAX_PATH, wpath, _TRUNCATE);
         CoTaskMemFree(wpath);
         return std::string(path);
     }
