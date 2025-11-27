@@ -845,10 +845,19 @@ Vec3 ParticleEmitter::getEmissionDirection() {
         f32 ry = randomFloat(-1.0f, 1.0f);
         f32 rz = randomFloat(-1.0f, 1.0f);
         
-        dir = dir.lerp(Vec3(rx, ry, rz).normalized(), shape.randomDirectionAmount);
+        Vec3 randDir(rx, ry, rz);
+        f32 randLen = randDir.length();
+        if (randLen > 0.0001f) {
+            dir = dir.lerp(randDir / randLen, shape.randomDirectionAmount);
+        }
     }
     
-    return dir.normalized();
+    // Ensure valid normalized direction
+    f32 len = dir.length();
+    if (len > 0.0001f) {
+        return dir / len;
+    }
+    return Vec3(0.0f, 1.0f, 0.0f); // Fallback to up direction
 }
 
 u32 ParticleEmitter::nextRandom() {

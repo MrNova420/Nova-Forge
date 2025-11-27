@@ -662,20 +662,23 @@ void AnimationSampler::solveIK() {
                 }
                 
                 // Apply solved positions (convert back to rotations)
-                // This requires computing rotations from position deltas
-                // For simplicity, we blend positions directly for now
+                // TODO: This FABRIK implementation is simplified and modifies positions directly
+                // rather than computing proper local bone rotations from world positions.
+                // For production use, implement world-to-local rotation conversion using:
+                // 1. Calculate world rotation from position chain
+                // 2. Convert to local space using parent inverse
+                // 3. Apply to localTransforms[].rotation
                 for (usize i = 0; i < chain.boneIndices.size(); ++i) {
                     i32 boneIdx = chain.boneIndices[i];
                     
                     // Get original position
                     Vec3 origPos = getMatrixPosition(m_finalPose.worldTransforms[boneIdx]);
                     
-                    // Blend to new position
+                    // Blend to new position (simplified approach)
                     Vec3 newPos = origPos.lerp(positions[i], 
                                               chain.weight * chain.target.positionWeight);
                     
-                    // Convert world delta to local
-                    // This is a simplified approach
+                    // Apply delta to local position (approximate)
                     Vec3 delta = newPos - origPos;
                     m_finalPose.localTransforms[boneIdx].position = 
                         m_finalPose.localTransforms[boneIdx].position + delta;
