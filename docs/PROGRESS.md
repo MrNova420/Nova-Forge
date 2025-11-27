@@ -42,12 +42,12 @@
 
 | Metric | Value |
 |--------|-------|
-| **Total LOC** | **71,688** |
-| **Source Files (.cpp + .hpp)** | ~65,839 LOC |
-| **Test Files (.cpp)** | ~5,149 LOC |
+| **Total LOC** | **72,000+** |
+| **Source Files (.cpp + .hpp)** | ~66,000 LOC |
+| **Test Files (.cpp)** | ~5,300 LOC |
 | **Total Files** | 141 files |
-| **Tests** | 153 test cases |
-| **Assertions** | 11,573 |
+| **Tests** | 158 test cases |
+| **Assertions** | 11,599 |
 | **Test Status** | ✅ ALL PASSING |
 
 *Note: LOC excludes build artifacts, dependencies (Catch2), and .git*
@@ -1379,6 +1379,28 @@ After Android first release (Engine is COMPLETE and stable):
 ---
 
 ## 📝 RECENT UPDATES
+
+### 2025-11-27 (Continued Session) 🟢 IK SOLVER TEST COVERAGE
+
+**Comprehensive IK Solver Tests Added**:
+- ✅ Added 5 new test cases for IK solvers (158 total tests, 11,599 assertions)
+- ✅ CCD (Cyclic Coordinate Descent) solver tests
+  - 3-bone arm chain configuration
+  - Solver parameter validation
+  - IK target setup
+- ✅ Jacobian Transpose solver tests
+  - 5-bone spine chain configuration
+  - Multi-joint IK setup
+  - Target position handling
+- ✅ Full Body IK solver tests
+  - Humanoid skeleton configuration (pelvis, spine, chest, head)
+  - Balance-aware solving setup
+  - Multi-bone chain verification
+- ✅ IKChain parameter tests
+  - Default value validation
+  - IKTarget configuration
+  - Pole vector setup
+- ✅ IKSolverType enum verification (all 6 solver types)
 
 ### 2025-11-27 (Current Session) 🟢 PLACEHOLDER ELIMINATION & IK ENHANCEMENT
 
