@@ -42,12 +42,12 @@
 
 | Metric | Value |
 |--------|-------|
-| **Total LOC** | **70,847** |
-| **Source Files (.cpp)** | 35,375 LOC |
-| **Header Files (.hpp)** | 35,472 LOC |
-| **Total Files** | 139 files |
-| **Tests** | 139 test cases |
-| **Assertions** | 11,453 |
+| **Total LOC** | **~71,000** |
+| **Source Files (.cpp)** | ~35,500 LOC |
+| **Header Files (.hpp)** | ~35,500 LOC |
+| **Total Files** | ~140 files |
+| **Tests** | 153 test cases |
+| **Assertions** | 11,573 |
 | **Test Status** | ✅ ALL PASSING |
 
 ### LOC by Module (Verified)
@@ -72,9 +72,9 @@
 | Platform | 2,214 | ✅ |
 | Editor | 5,276 | ✅ |
 | API System | 8,762 | ✅ |
-| Tests | 4,777 | ✅ |
+| Tests | 4,981 | ✅ |
 | Samples | 691 | ✅ |
-| **TOTAL** | **70,847** | ✅ |
+| **TOTAL** | **~71,000** | ✅ |
 
 ---
 
@@ -1070,9 +1070,11 @@
 | Network System | 10 | ✅ All Passing |
 | UI System | 10 | ✅ All Passing |
 | Particle System | 10 | ✅ All Passing |
-| **Total** | **139** | **100% Passing** |
+| Physics System | 6 | ✅ All Passing |
+| Audio System | 8 | ✅ All Passing |
+| **Total** | **153** | **100% Passing** |
 
-**Total Assertions**: 11,453
+**Total Assertions**: 11,573
 
 ---
 

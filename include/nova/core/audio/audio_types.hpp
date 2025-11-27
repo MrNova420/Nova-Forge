@@ -25,8 +25,8 @@
 
 namespace nova::audio {
 
-using namespace nova::core;
-using namespace nova::core::math;
+using namespace nova;
+using namespace nova::math;
 
 // ============================================================================
 // Configuration Constants
