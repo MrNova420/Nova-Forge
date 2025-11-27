@@ -32,6 +32,9 @@ set(NOVA_TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_ecs.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_math.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_animation.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_network.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_ui.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_particle.cpp
 )
 
 # API tests
