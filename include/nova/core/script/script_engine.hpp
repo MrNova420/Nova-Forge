@@ -552,6 +552,24 @@ private:
     // Debugging
     bool m_debuggerEnabled = false;
     std::unique_ptr<ScriptDebugger> m_debugger;
+    bool m_isPaused = false;
+    
+    enum class StepMode { None, Over, Into, Out, Continue };
+    StepMode m_stepMode = StepMode::None;
+    usize m_targetStackDepth = 0;
+    
+    struct Breakpoint {
+        std::string file;
+        u32 line = 0;
+        bool enabled = true;
+        u64 id = 0;
+        std::string condition;
+    };
+    std::vector<Breakpoint> m_breakpoints;
+    u64 m_nextBreakpointId = 1;
+    
+    std::vector<ScriptLocation> m_callStack;
+    std::vector<std::unordered_map<std::string, ScriptValue>> m_localScopes;
     
     // Error handling
     ScriptError m_lastError;

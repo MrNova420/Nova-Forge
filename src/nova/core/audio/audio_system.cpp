@@ -188,10 +188,74 @@ std::shared_ptr<AudioClip> AudioSystem::loadClip(const std::string& path, LoadMo
         if (file.read(reinterpret_cast<char*>(clip->data.data()), size)) {
             clip->isLoaded = true;
             
-            // Note: Would decode header to get format, duration, etc.
-            clip->format = AudioFormat::stereo44100();
-            clip->sampleCount = 44100 * 2;  // Placeholder
-            clip->duration = 1.0f;  // Placeholder
+            // Parse audio header based on codec
+            if (clip->codec == AudioCodec::WAV && clip->data.size() >= 44) {
+                // Parse WAV header (RIFF format)
+                // RIFF header: "RIFF" (4) + file size (4) + "WAVE" (4)
+                // fmt chunk: "fmt " (4) + chunk size (4) + audio format (2) + channels (2)
+                //            + sample rate (4) + byte rate (4) + block align (2) + bits per sample (2)
+                // data chunk: "data" (4) + data size (4) + audio data
+                
+                const u8* data = clip->data.data();
+                
+                // Verify RIFF header
+                if (data[0] == 'R' && data[1] == 'I' && data[2] == 'F' && data[3] == 'F' &&
+                    data[8] == 'W' && data[9] == 'A' && data[10] == 'V' && data[11] == 'E') {
+                    
+                    // Find fmt chunk (usually at offset 12)
+                    usize offset = 12;
+                    while (offset + 8 < clip->data.size()) {
+                        u32 chunkId = *reinterpret_cast<const u32*>(data + offset);
+                        u32 chunkSize = *reinterpret_cast<const u32*>(data + offset + 4);
+                        
+                        // "fmt " chunk (0x20746d66 in little-endian)
+                        if (chunkId == 0x20746d66) {
+                            u16 audioFormat = *reinterpret_cast<const u16*>(data + offset + 8);
+                            u16 numChannels = *reinterpret_cast<const u16*>(data + offset + 10);
+                            u32 sampleRate = *reinterpret_cast<const u32*>(data + offset + 12);
+                            // u32 byteRate = *reinterpret_cast<const u32*>(data + offset + 16);
+                            // u16 blockAlign = *reinterpret_cast<const u16*>(data + offset + 20);
+                            u16 bitsPerSample = *reinterpret_cast<const u16*>(data + offset + 22);
+                            
+                            // Set format
+                            clip->format.sampleRate = sampleRate;
+                            clip->format.channels = numChannels;
+                            clip->format.bitsPerSample = bitsPerSample;
+                            clip->format.isPlanar = false;
+                            clip->format.isFloat = (audioFormat == 3); // IEEE float format
+                            
+                            offset += 8 + chunkSize;
+                        }
+                        // "data" chunk (0x61746164 in little-endian)
+                        else if (chunkId == 0x61746164) {
+                            // Calculate sample count and duration
+                            u32 dataSize = chunkSize;
+                            u32 bytesPerSample = clip->format.bitsPerSample / 8;
+                            u32 bytesPerFrame = bytesPerSample * clip->format.channels;
+                            
+                            if (bytesPerFrame > 0) {
+                                clip->sampleCount = dataSize / bytesPerFrame;
+                                clip->duration = static_cast<f32>(clip->sampleCount) / 
+                                               static_cast<f32>(clip->format.sampleRate);
+                            }
+                            break;
+                        }
+                        else {
+                            // Skip unknown chunk
+                            offset += 8 + chunkSize;
+                            // Ensure even alignment
+                            if (chunkSize % 2 != 0) offset++;
+                        }
+                    }
+                }
+            }
+            else {
+                // For non-WAV formats, use reasonable defaults
+                // In a full implementation, we would use codec-specific decoders
+                clip->format = AudioFormat::stereo44100();
+                clip->sampleCount = 0;
+                clip->duration = 0.0f;
+            }
         }
     }
     
