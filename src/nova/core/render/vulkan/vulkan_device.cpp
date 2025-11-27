@@ -9,6 +9,7 @@
  */
 
 #include "nova/core/render/vulkan/vulkan_device.hpp"
+#include "nova/core/render/vulkan/vulkan_pipeline.hpp"
 #include "nova/core/render/buffer.hpp"
 #include "nova/core/render/texture.hpp"
 #include "nova/core/render/shader.hpp"
@@ -21,6 +22,45 @@
 #include <cstdio>
 
 namespace nova::render::vulkan {
+
+// ============================================================================
+// Helper Functions
+// ============================================================================
+
+/// Convert VertexFormat to VkFormat
+[[nodiscard]] static VkFormat vertexFormatToVkFormat(VertexFormat format) noexcept {
+    switch (format) {
+        case VertexFormat::Float:        return VK_FORMAT_R32_SFLOAT;
+        case VertexFormat::Float2:       return VK_FORMAT_R32G32_SFLOAT;
+        case VertexFormat::Float3:       return VK_FORMAT_R32G32B32_SFLOAT;
+        case VertexFormat::Float4:       return VK_FORMAT_R32G32B32A32_SFLOAT;
+        case VertexFormat::Int:          return VK_FORMAT_R32_SINT;
+        case VertexFormat::Int2:         return VK_FORMAT_R32G32_SINT;
+        case VertexFormat::Int3:         return VK_FORMAT_R32G32B32_SINT;
+        case VertexFormat::Int4:         return VK_FORMAT_R32G32B32A32_SINT;
+        case VertexFormat::UInt:         return VK_FORMAT_R32_UINT;
+        case VertexFormat::UInt2:        return VK_FORMAT_R32G32_UINT;
+        case VertexFormat::UInt3:        return VK_FORMAT_R32G32B32_UINT;
+        case VertexFormat::UInt4:        return VK_FORMAT_R32G32B32A32_UINT;
+        case VertexFormat::Half2:        return VK_FORMAT_R16G16_SFLOAT;
+        case VertexFormat::Half4:        return VK_FORMAT_R16G16B16A16_SFLOAT;
+        case VertexFormat::UByte4:       return VK_FORMAT_R8G8B8A8_UINT;
+        case VertexFormat::UByte4Norm:   return VK_FORMAT_R8G8B8A8_UNORM;
+        case VertexFormat::SByte4:       return VK_FORMAT_R8G8B8A8_SINT;
+        case VertexFormat::SByte4Norm:   return VK_FORMAT_R8G8B8A8_SNORM;
+        case VertexFormat::UShort2:      return VK_FORMAT_R16G16_UINT;
+        case VertexFormat::UShort2Norm:  return VK_FORMAT_R16G16_UNORM;
+        case VertexFormat::UShort4:      return VK_FORMAT_R16G16B16A16_UINT;
+        case VertexFormat::UShort4Norm:  return VK_FORMAT_R16G16B16A16_UNORM;
+        case VertexFormat::Short2:       return VK_FORMAT_R16G16_SINT;
+        case VertexFormat::Short2Norm:   return VK_FORMAT_R16G16_SNORM;
+        case VertexFormat::Short4:       return VK_FORMAT_R16G16B16A16_SINT;
+        case VertexFormat::Short4Norm:   return VK_FORMAT_R16G16B16A16_SNORM;
+        case VertexFormat::UInt1010102Norm: return VK_FORMAT_A2B10G10R10_UNORM_PACK32;
+        case VertexFormat::Int1010102Norm:  return VK_FORMAT_A2B10G10R10_SNORM_PACK32;
+        default:                         return VK_FORMAT_R32G32B32_SFLOAT;
+    }
+}
 
 // ============================================================================
 // Static Factory
@@ -1274,7 +1314,7 @@ PipelineHandle VulkanDevice::createGraphicsPipeline(const GraphicsPipelineDesc& 
         attrDesc.location = attr.location;
         attrDesc.binding = attr.binding;
         attrDesc.offset = attr.offset;
-        attrDesc.format = toVkFormat(static_cast<TextureFormat>(0));  // Would convert from attr.format
+        attrDesc.format = vertexFormatToVkFormat(attr.format);
         attributeDescs.push_back(attrDesc);
     }
     

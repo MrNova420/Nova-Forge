@@ -621,6 +621,27 @@ math::Vec2 InputApi::getTouchPosition(u32 index) const noexcept {
 // SceneApi Implementation - Full Implementation with Entity Management
 // =============================================================================
 
+// Default lighting constants for new scenes
+namespace {
+    // Default ambient light - slight blue tint for natural outdoor scenes
+    constexpr f32 DEFAULT_AMBIENT_R = 0.1f;
+    constexpr f32 DEFAULT_AMBIENT_G = 0.1f;
+    constexpr f32 DEFAULT_AMBIENT_B = 0.15f;
+    
+    // Default sun direction - diagonal from above-left-front
+    constexpr f32 DEFAULT_SUN_DIR_X = -0.5f;
+    constexpr f32 DEFAULT_SUN_DIR_Y = -1.0f;
+    constexpr f32 DEFAULT_SUN_DIR_Z = -0.3f;
+    
+    // Default sun color - warm daylight
+    constexpr f32 DEFAULT_SUN_COLOR_R = 1.0f;
+    constexpr f32 DEFAULT_SUN_COLOR_G = 0.95f;
+    constexpr f32 DEFAULT_SUN_COLOR_B = 0.9f;
+    
+    // Default sun intensity
+    constexpr f32 DEFAULT_SUN_INTENSITY = 1.0f;
+}
+
 struct SceneApi::Impl {
     std::string currentSceneName;
     std::string scenePath;  // Full path to scene file
@@ -802,10 +823,10 @@ ApiResult SceneApi::loadScene(std::string_view path) {
     // For now, we initialize with default scene settings
     
     // Set default lighting for a new/loaded scene
-    m_impl->metadata.ambientColor = Vec3{0.1f, 0.1f, 0.15f};  // Slight blue ambient
-    m_impl->metadata.sunDirection = Vec3{-0.5f, -1.0f, -0.3f}.normalized();
-    m_impl->metadata.sunColor = Vec3{1.0f, 0.95f, 0.9f};  // Warm sunlight
-    m_impl->metadata.sunIntensity = 1.0f;
+    m_impl->metadata.ambientColor = Vec3{DEFAULT_AMBIENT_R, DEFAULT_AMBIENT_G, DEFAULT_AMBIENT_B};
+    m_impl->metadata.sunDirection = Vec3{DEFAULT_SUN_DIR_X, DEFAULT_SUN_DIR_Y, DEFAULT_SUN_DIR_Z}.normalized();
+    m_impl->metadata.sunColor = Vec3{DEFAULT_SUN_COLOR_R, DEFAULT_SUN_COLOR_G, DEFAULT_SUN_COLOR_B};
+    m_impl->metadata.sunIntensity = DEFAULT_SUN_INTENSITY;
     
     m_impl->isDirty = false;
     m_impl->isLoaded = true;
@@ -836,11 +857,11 @@ void SceneApi::createScene(std::string_view name) {
     m_impl->metadata.createdTimestamp = static_cast<u64>(nowMs);
     m_impl->metadata.modifiedTimestamp = m_impl->metadata.createdTimestamp;
     
-    // Set default lighting
-    m_impl->metadata.ambientColor = Vec3{0.1f, 0.1f, 0.15f};
-    m_impl->metadata.sunDirection = Vec3{-0.5f, -1.0f, -0.3f}.normalized();
-    m_impl->metadata.sunColor = Vec3{1.0f, 0.95f, 0.9f};
-    m_impl->metadata.sunIntensity = 1.0f;
+    // Set default lighting using named constants
+    m_impl->metadata.ambientColor = Vec3{DEFAULT_AMBIENT_R, DEFAULT_AMBIENT_G, DEFAULT_AMBIENT_B};
+    m_impl->metadata.sunDirection = Vec3{DEFAULT_SUN_DIR_X, DEFAULT_SUN_DIR_Y, DEFAULT_SUN_DIR_Z}.normalized();
+    m_impl->metadata.sunColor = Vec3{DEFAULT_SUN_COLOR_R, DEFAULT_SUN_COLOR_G, DEFAULT_SUN_COLOR_B};
+    m_impl->metadata.sunIntensity = DEFAULT_SUN_INTENSITY;
     
     m_impl->isLoaded = true;
 }
