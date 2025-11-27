@@ -326,6 +326,9 @@ endif()
 # Core module (foundation)
 add_subdirectory(src/nova/core)
 
+# API module (unified platform and engine API)
+add_subdirectory(src/nova/api)
+
 # Entity-Component-Worker system
 # add_subdirectory(src/nova/ecw)
 

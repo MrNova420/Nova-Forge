@@ -33,9 +33,15 @@ set(NOVA_TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_math.cpp
 )
 
+# API tests
+set(NOVA_TEST_API_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/api/test_api.cpp
+)
+
 # All test sources
 set(NOVA_TEST_SOURCES
     ${NOVA_TEST_CORE_SOURCES}
+    ${NOVA_TEST_API_SOURCES}
 )
 
 # =============================================================================
@@ -48,6 +54,7 @@ add_executable(nova_tests
 target_link_libraries(nova_tests
     PRIVATE
         nova_core
+        nova_api
         Catch2::Catch2WithMain
 )
 
