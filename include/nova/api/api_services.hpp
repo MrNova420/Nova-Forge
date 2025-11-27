@@ -91,6 +91,7 @@ struct PurchaseResult {
     std::string transactionId;
     std::string receipt;
     std::string errorMessage;
+    ApiTimestamp purchaseTime;
 };
 
 /**
