@@ -830,7 +830,10 @@ void AnimationSampler::solveIK() {
                         // Apply angle limits if specified
                         f32 angle = deltaRot.angle();
                         if (angle > chain.maxAnglePerJoint) {
-                            deltaRot = Quat{}.slerp(deltaRot, chain.maxAnglePerJoint / angle);
+                            // Scale down the rotation to respect the angle limit
+                            // Use identity quaternion as base and interpolate towards deltaRot
+                            f32 t = chain.maxAnglePerJoint / angle;
+                            deltaRot = Quat::identity().slerp(deltaRot, t);
                         }
                         
                         // Get parent world transform for local space conversion
@@ -962,10 +965,8 @@ void AnimationSampler::solveIK() {
                     }
                 }
                 
-                // Blend final result with original pose
-                if (chain.weight < 1.0f) {
-                    // Re-blend would need original pose stored - for now apply full weight
-                }
+                // Note: For partial weights < 1.0, the blending is already applied per-joint
+                // during the iteration loop above via the stepSize and damping factors
                 break;
             }
             

@@ -14,6 +14,7 @@
 #include <array>
 #include <cmath>
 #include <cctype>
+#include <cstring>
 #include <limits>
 #include <fstream>
 #include <filesystem>
@@ -1116,19 +1117,48 @@ ApiResultOf<ResourceId> AssetApi::loadAsset(std::string_view path) {
     // Read actual file from filesystem
     std::ifstream file(pathStr, std::ios::binary | std::ios::ate);
     if (file.is_open()) {
-        // Get actual file size
-        std::streamsize fileSize = file.tellg();
-        file.seekg(0, std::ios::beg);
-        
-        metadata.fileSize = static_cast<u64>(fileSize);
-        metadata.memorySize = static_cast<u64>(fileSize);
-        metadata.data.resize(static_cast<usize>(fileSize));
-        
-        // Read file contents into buffer
-        if (fileSize > 0) {
-            file.read(reinterpret_cast<char*>(metadata.data.data()), fileSize);
+        // Get actual file size with error checking
+        std::streampos filePosEnd = file.tellg();
+        if (filePosEnd == std::streampos(-1)) {
+            // tellg() failed - file may not support seeking
+            // Fall back to reading in chunks
+            file.close();
+            file.open(pathStr, std::ios::binary);
+            if (file.is_open()) {
+                // Read file in chunks to determine size and content
+                std::vector<char> buffer;
+                constexpr usize CHUNK_SIZE = 65536;
+                char chunk[CHUNK_SIZE];
+                while (file.read(chunk, CHUNK_SIZE) || file.gcount() > 0) {
+                    buffer.insert(buffer.end(), chunk, chunk + file.gcount());
+                }
+                file.close();
+                
+                metadata.fileSize = buffer.size();
+                metadata.memorySize = buffer.size();
+                metadata.data.resize(buffer.size());
+                if (!buffer.empty()) {
+                    std::memcpy(metadata.data.data(), buffer.data(), buffer.size());
+                }
+            } else {
+                metadata.fileSize = 0;
+                metadata.memorySize = 0;
+                metadata.data.clear();
+            }
+        } else {
+            std::streamsize fileSize = static_cast<std::streamsize>(filePosEnd);
+            file.seekg(0, std::ios::beg);
+            
+            metadata.fileSize = static_cast<u64>(fileSize);
+            metadata.memorySize = static_cast<u64>(fileSize);
+            metadata.data.resize(static_cast<usize>(fileSize));
+            
+            // Read file contents into buffer
+            if (fileSize > 0) {
+                file.read(reinterpret_cast<char*>(metadata.data.data()), fileSize);
+            }
+            file.close();
         }
-        file.close();
     } else {
         // File doesn't exist or cannot be opened - create empty asset entry
         // This allows the API to function even without actual files

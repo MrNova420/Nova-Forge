@@ -915,10 +915,11 @@ void Image::setSource(const std::string& source) {
     }
     
     // Try to read image dimensions from file header
+    // Read 26 bytes to cover BMP header which needs bytes 18-25 for dimensions
     std::ifstream file(source, std::ios::binary);
     if (file.is_open()) {
-        u8 header[24];
-        file.read(reinterpret_cast<char*>(header), 24);
+        u8 header[26];
+        file.read(reinterpret_cast<char*>(header), 26);
         std::streamsize bytesRead = file.gcount();
         file.close();
         
@@ -973,22 +974,17 @@ void Image::setSource(const std::string& source) {
                 }
             }
             // BMP: Check for BMP signature
-            else if (header[0] == 'B' && header[1] == 'M' && bytesRead >= 22) {
+            else if (header[0] == 'B' && header[1] == 'M' && bytesRead >= 26) {
                 // Width at offset 18-21, Height at offset 22-25 (little endian)
+                // All bytes are already in the header buffer
                 i32 width = static_cast<i32>(header[18]) | 
                            (static_cast<i32>(header[19]) << 8) |
                            (static_cast<i32>(header[20]) << 16) | 
                            (static_cast<i32>(header[21]) << 24);
-                // Read more for height
-                std::ifstream bmpFile(source, std::ios::binary);
-                bmpFile.seekg(22);
-                u8 heightBytes[4];
-                bmpFile.read(reinterpret_cast<char*>(heightBytes), 4);
-                bmpFile.close();
-                i32 height = static_cast<i32>(heightBytes[0]) | 
-                            (static_cast<i32>(heightBytes[1]) << 8) |
-                            (static_cast<i32>(heightBytes[2]) << 16) | 
-                            (static_cast<i32>(heightBytes[3]) << 24);
+                i32 height = static_cast<i32>(header[22]) | 
+                            (static_cast<i32>(header[23]) << 8) |
+                            (static_cast<i32>(header[24]) << 16) | 
+                            (static_cast<i32>(header[25]) << 24);
                 // Height can be negative for top-down BMP
                 m_naturalSize = Vec2(static_cast<f32>(width), static_cast<f32>(std::abs(height)));
             }
