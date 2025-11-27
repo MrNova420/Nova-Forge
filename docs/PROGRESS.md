@@ -42,13 +42,15 @@
 
 | Metric | Value |
 |--------|-------|
-| **Total LOC** | **~71,000** |
-| **Source Files (.cpp)** | ~35,500 LOC |
-| **Header Files (.hpp)** | ~35,500 LOC |
+| **Total LOC** | **72,420** |
+| **Source Files (.cpp)** | ~36,000 LOC |
+| **Header Files (.hpp)** | ~36,000 LOC |
 | **Total Files** | ~140 files |
 | **Tests** | 153 test cases |
 | **Assertions** | 11,573 |
 | **Test Status** | ✅ ALL PASSING |
+
+*Note: LOC excludes build artifacts, dependencies (Catch2), and .git*
 
 ### LOC by Module (Verified)
 
