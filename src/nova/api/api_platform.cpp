@@ -35,6 +35,15 @@ namespace {
 // PlatformApi Implementation - Full In-Depth Implementation
 // =============================================================================
 
+// Constants for data validation
+namespace {
+    constexpr usize HASH_PREFIX_LENGTH = 32;           // Use first 32 chars of hash for file names
+    constexpr usize MAX_STRING_LENGTH = 10000;         // Max length for string deserialization
+    constexpr usize MAX_CLOUD_DATA_SIZE = 10 * 1024 * 1024;  // 10MB per cloud data entry
+    constexpr usize MAX_TOTAL_CLOUD_SIZE = 100 * 1024 * 1024; // 100MB total cloud storage
+    constexpr usize MAX_COLLECTION_SIZE = 10000;       // Max items in collections
+}
+
 struct PlatformApi::Impl {
     // Authentication state
     bool authenticated = false;
@@ -113,7 +122,7 @@ struct PlatformApi::Impl {
         if (it == users.end()) return;
         
         const auto& data = it->second;
-        std::string filepath = dataPath + "users/" + hashToHex(security::Crypto::sha256(email)).substr(0, 16) + ".dat";
+        std::string filepath = dataPath + "users/" + hashToHex(security::Crypto::sha256(email)).substr(0, HASH_PREFIX_LENGTH) + ".dat";
         
         std::ofstream file(filepath, std::ios::binary);
         if (!file) return;
@@ -171,7 +180,7 @@ struct PlatformApi::Impl {
     bool loadUserData(const std::string& email) {
         std::lock_guard<std::mutex> lock(dataMutex);
         
-        std::string filepath = dataPath + "users/" + hashToHex(security::Crypto::sha256(email)).substr(0, 16) + ".dat";
+        std::string filepath = dataPath + "users/" + hashToHex(security::Crypto::sha256(email)).substr(0, HASH_PREFIX_LENGTH) + ".dat";
         std::ifstream file(filepath, std::ios::binary);
         if (!file) return false;
         
@@ -180,7 +189,7 @@ struct PlatformApi::Impl {
         auto readString = [&file]() -> std::string {
             u32 len;
             file.read(reinterpret_cast<char*>(&len), sizeof(len));
-            if (len > 10000) return ""; // Sanity check
+            if (len > MAX_STRING_LENGTH) return ""; // Sanity check
             std::string s(len, '\0');
             file.read(s.data(), len);
             return s;
@@ -198,7 +207,7 @@ struct PlatformApi::Impl {
         // Read friends
         u32 friendCount;
         file.read(reinterpret_cast<char*>(&friendCount), sizeof(friendCount));
-        for (u32 i = 0; i < friendCount && i < 10000; ++i) {
+        for (u32 i = 0; i < friendCount && i < MAX_COLLECTION_SIZE; ++i) {
             UserId f;
             f.id = readString();
             data.friends.insert(f);
@@ -207,11 +216,11 @@ struct PlatformApi::Impl {
         // Read cloud data
         u32 cloudCount;
         file.read(reinterpret_cast<char*>(&cloudCount), sizeof(cloudCount));
-        for (u32 i = 0; i < cloudCount && i < 10000; ++i) {
+        for (u32 i = 0; i < cloudCount && i < MAX_COLLECTION_SIZE; ++i) {
             std::string key = readString();
             u32 dataLen;
             file.read(reinterpret_cast<char*>(&dataLen), sizeof(dataLen));
-            if (dataLen > 10000000) break; // 10MB limit
+            if (dataLen > MAX_CLOUD_DATA_SIZE) break; // 10MB limit
             std::vector<u8> value(dataLen);
             file.read(reinterpret_cast<char*>(value.data()), dataLen);
             data.cloudData[key] = std::move(value);
@@ -220,7 +229,7 @@ struct PlatformApi::Impl {
         // Read scores
         u32 scoreCount;
         file.read(reinterpret_cast<char*>(&scoreCount), sizeof(scoreCount));
-        for (u32 i = 0; i < scoreCount && i < 10000; ++i) {
+        for (u32 i = 0; i < scoreCount && i < MAX_COLLECTION_SIZE; ++i) {
             std::string leaderboardId = readString();
             i64 score;
             file.read(reinterpret_cast<char*>(&score), sizeof(score));
@@ -230,7 +239,7 @@ struct PlatformApi::Impl {
         // Read achievements
         u32 achievementCount;
         file.read(reinterpret_cast<char*>(&achievementCount), sizeof(achievementCount));
-        for (u32 i = 0; i < achievementCount && i < 10000; ++i) {
+        for (u32 i = 0; i < achievementCount && i < MAX_COLLECTION_SIZE; ++i) {
             data.unlockedAchievements.insert(readString());
         }
         
@@ -354,7 +363,7 @@ ApiResultOf<AuthResult> PlatformApi::authenticate(const AuthCredentials& credent
                 result.userId = userIt->second.profile.userId;
             } else {
                 // Create new user
-                result.userId.id = "user_" + hashToHex(security::Crypto::sha256(credentials.email)).substr(0, 16);
+                result.userId.id = "user_" + hashToHex(security::Crypto::sha256(credentials.email)).substr(0, HASH_PREFIX_LENGTH);
                 
                 Impl::UserData userData;
                 userData.profile.userId = result.userId;
@@ -386,7 +395,7 @@ ApiResultOf<AuthResult> PlatformApi::authenticate(const AuthCredentials& credent
             
             // Create/find user by phone
             std::string phoneKey = "phone_" + credentials.phoneNumber;
-            result.userId.id = "phone_" + hashToHex(security::Crypto::sha256(credentials.phoneNumber)).substr(0, 16);
+            result.userId.id = "phone_" + hashToHex(security::Crypto::sha256(credentials.phoneNumber)).substr(0, HASH_PREFIX_LENGTH);
             
             auto userIt = m_impl->users.find(phoneKey);
             if (userIt == m_impl->users.end()) {
@@ -436,7 +445,7 @@ ApiResultOf<AuthResult> PlatformApi::authenticate(const AuthCredentials& credent
                 default: provider = "oauth"; break;
             }
             
-            result.userId.id = provider + "_" + hashToHex(security::Crypto::sha256(credentials.token)).substr(0, 16);
+            result.userId.id = provider + "_" + hashToHex(security::Crypto::sha256(credentials.token)).substr(0, HASH_PREFIX_LENGTH);
             
             std::string oauthKey = provider + "_" + credentials.token.substr(0, 32);
             auto userIt = m_impl->users.find(oauthKey);
@@ -466,7 +475,7 @@ ApiResultOf<AuthResult> PlatformApi::authenticate(const AuthCredentials& credent
                     "Device ID is required"));
             }
             
-            result.userId.id = "device_" + hashToHex(security::Crypto::sha256(credentials.token)).substr(0, 16);
+            result.userId.id = "device_" + hashToHex(security::Crypto::sha256(credentials.token)).substr(0, HASH_PREFIX_LENGTH);
             
             std::string deviceKey = "device_" + credentials.token.substr(0, 32);
             auto userIt = m_impl->users.find(deviceKey);
@@ -496,7 +505,7 @@ ApiResultOf<AuthResult> PlatformApi::authenticate(const AuthCredentials& credent
             }
             
             // Validate custom token format
-            result.userId.id = "custom_" + hashToHex(security::Crypto::sha256(credentials.token)).substr(0, 16);
+            result.userId.id = "custom_" + hashToHex(security::Crypto::sha256(credentials.token)).substr(0, HASH_PREFIX_LENGTH);
             
             std::string customKey = "custom_" + credentials.token.substr(0, 32);
             auto userIt = m_impl->users.find(customKey);
@@ -1293,7 +1302,7 @@ ApiResult PlatformApi::cloudSave(std::string_view key, const std::vector<u8>& da
     }
     totalSize += data.size();
     
-    if (totalSize > 100 * 1024 * 1024) {
+    if (totalSize > MAX_TOTAL_CLOUD_SIZE) {
         return std::unexpected(makeApiError(
             ApiErrorCode::StorageQuotaExceeded,
             "Cloud storage quota exceeded (max 100MB)"));

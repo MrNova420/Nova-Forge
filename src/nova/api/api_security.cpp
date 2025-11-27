@@ -234,21 +234,33 @@ bool Crypto::verifyPassword(std::string_view password, const std::string& salted
     // Expect 32 hex chars (16 bytes salt) + 64 hex chars (32 bytes hash)
     if (saltedHash.length() != 96) return false;
     
-    // Decode salt
-    std::vector<u8> salt(16);
-    for (size_t i = 0; i < 16; ++i) {
-        std::string byteStr = saltedHash.substr(i * 2, 2);
-        salt[i] = static_cast<u8>(std::stoul(byteStr, nullptr, 16));
+    // Validate that all characters are valid hex
+    for (char c : saltedHash) {
+        if (!std::isxdigit(static_cast<unsigned char>(c))) {
+            return false;
+        }
     }
     
-    // Decode hash
-    std::vector<u8> hash(32);
-    for (size_t i = 0; i < 32; ++i) {
-        std::string byteStr = saltedHash.substr(32 + i * 2, 2);
-        hash[i] = static_cast<u8>(std::stoul(byteStr, nullptr, 16));
+    try {
+        // Decode salt
+        std::vector<u8> salt(16);
+        for (size_t i = 0; i < 16; ++i) {
+            std::string byteStr = saltedHash.substr(i * 2, 2);
+            salt[i] = static_cast<u8>(std::stoul(byteStr, nullptr, 16));
+        }
+        
+        // Decode hash
+        std::vector<u8> hash(32);
+        for (size_t i = 0; i < 32; ++i) {
+            std::string byteStr = saltedHash.substr(32 + i * 2, 2);
+            hash[i] = static_cast<u8>(std::stoul(byteStr, nullptr, 16));
+        }
+        
+        return verifyPassword(password, hash, salt);
+    } catch (const std::exception&) {
+        // Parsing failed - invalid hash format
+        return false;
     }
-    
-    return verifyPassword(password, hash, salt);
 }
 
 HashResult Crypto::hmacSha256(const std::vector<u8>& key, const std::vector<u8>& data) {
