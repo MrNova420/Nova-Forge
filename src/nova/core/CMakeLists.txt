@@ -81,6 +81,7 @@ set(NOVA_CORE_ECS_HEADERS
 # Render module
 set(NOVA_CORE_RENDER_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/render/render_device.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/render_graph.cpp
 )
 
 set(NOVA_CORE_RENDER_HEADERS
@@ -90,11 +91,14 @@ set(NOVA_CORE_RENDER_HEADERS
     ${NOVA_INCLUDE_DIR}/nova/core/render/render_context.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/render_pass.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/render_pipeline.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/render_graph.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/command_buffer.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/swap_chain.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/buffer.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/texture.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/shader.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/lighting.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/material.hpp
 )
 
 # Nova GraphicsCore™ - Vulkan backend

@@ -286,7 +286,27 @@
   - Material class property tests
   - MaterialInstance override tests
   - MaterialLibrary singleton tests
-- Test suite now: **313 test cases** with **12,594 assertions** - ALL PASSING ✅
+- **Render Graph System** (~800 LOC in render_graph.hpp, ~500 LOC in render_graph.cpp):
+  - RGResourceHandle for type-safe resource tracking
+  - RGTextureDesc and RGBufferDesc for transient resource description
+  - RGPassType enum (Graphics, Compute, Transfer, Present, AsyncCompute, RayTracing)
+  - RGPassFlags for pass behavior (NoCulling, AsyncCapable, ForceSerial, SideEffects)
+  - RenderGraphBuilder for pass configuration
+  - RenderGraphContext for pass execution
+  - Automatic dependency tracking between passes
+  - Topological sort for execution order
+  - Pass culling for unused outputs
+  - Resource lifetime tracking for memory aliasing
+  - GBufferSetup, ShadowMapSetup, PostProcessSetup helpers
+  - GraphViz DOT export for debugging
+- **Comprehensive Render Graph Tests** (~700 LOC in test_render_graph.cpp):
+  - Resource handle and type tests
+  - Texture/buffer description factory tests
+  - Pass type and flags tests
+  - Graph compilation and execution tests
+  - Dependency tracking tests
+  - Helper setup tests (GBuffer, Shadow, PostProcess)
+- Test suite now: **357 test cases** with **12,764 assertions** - ALL PASSING ✅
 - Continuing Phase 1: Core Rendering following 12-year roadmap
 
 ---
