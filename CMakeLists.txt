@@ -351,7 +351,7 @@ add_subdirectory(src/nova/core)
 # add_subdirectory(src/nova/asset)
 
 # Editor (mobile-first)
-# add_subdirectory(src/nova/editor)
+add_subdirectory(src/nova/editor)
 
 # Networking
 # add_subdirectory(src/nova/net)
