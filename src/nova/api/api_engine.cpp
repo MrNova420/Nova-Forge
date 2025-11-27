@@ -13,6 +13,8 @@
 #include <map>
 #include <array>
 #include <cmath>
+#include <cctype>
+#include <limits>
 
 namespace nova::api {
 
@@ -573,7 +575,8 @@ struct SceneApi::Impl {
     void markDirty() {
         isDirty = true;
         metadata.modifiedTimestamp = static_cast<u64>(
-            std::chrono::system_clock::now().time_since_epoch().count());
+            std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::system_clock::now().time_since_epoch()).count());
     }
     
     // Helper to remove entity from parent's children list
@@ -832,10 +835,9 @@ struct AssetApi::Impl {
         if (lastDot == std::string::npos) return "unknown";
         
         std::string ext = path.substr(lastDot + 1);
-        // Convert to lowercase
-        for (char& c : ext) {
-            if (c >= 'A' && c <= 'Z') c += 32;
-        }
+        // Convert to lowercase using std::tolower for locale-safety
+        std::transform(ext.begin(), ext.end(), ext.begin(),
+            [](unsigned char c) { return std::tolower(c); });
         
         // Texture formats
         if (ext == "png" || ext == "jpg" || ext == "jpeg" || ext == "bmp" || 
@@ -892,17 +894,18 @@ struct AssetApi::Impl {
         return name;
     }
     
-    // Update timestamp
+    // Update timestamp (returns milliseconds since epoch)
     u64 getCurrentTimestamp() const {
         return static_cast<u64>(
-            std::chrono::system_clock::now().time_since_epoch().count());
+            std::chrono::duration_cast<std::chrono::milliseconds>(
+                std::chrono::system_clock::now().time_since_epoch()).count());
     }
     
     // Evict least recently used assets if cache is full
     void evictIfNeeded() {
         while (currentCacheSize > maxCacheSize && !assets.empty()) {
             // Find LRU asset
-            u64 oldestTime = ~0ULL;
+            u64 oldestTime = std::numeric_limits<u64>::max();
             u64 oldestId = 0;
             
             for (const auto& [id, asset] : assets) {
