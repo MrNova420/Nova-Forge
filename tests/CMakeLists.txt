@@ -44,6 +44,8 @@ set(NOVA_TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_lighting.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_material.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_render_graph.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_mesh_lod.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_shadow_system.cpp
 )
 
 # Editor tests
