@@ -97,6 +97,47 @@ set(NOVA_CORE_RENDER_HEADERS
     ${NOVA_INCLUDE_DIR}/nova/core/render/shader.hpp
 )
 
+# Nova GraphicsCore™ - Vulkan backend
+set(NOVA_CORE_VULKAN_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_loader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_device.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_swap_chain.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_command_buffer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_pipeline.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_descriptor.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_buffer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_shader.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_texture.cpp
+)
+
+set(NOVA_CORE_VULKAN_HEADERS
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_types.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_loader.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_device.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_swap_chain.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_command_buffer.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_pipeline.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_descriptor.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_buffer.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_shader.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_texture.hpp
+)
+
+# NovaCore Physics System - Week 7
+set(NOVA_CORE_PHYSICS_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/physics/collision_shape.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/physics/rigid_body.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/physics/physics_world.cpp
+)
+
+set(NOVA_CORE_PHYSICS_HEADERS
+    ${NOVA_INCLUDE_DIR}/nova/core/physics/physics.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/physics/physics_types.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/physics/collision_shape.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/physics/rigid_body.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/physics/physics_world.hpp
+)
+
 # Platform module
 set(NOVA_CORE_PLATFORM_SOURCES
     # ${CMAKE_CURRENT_SOURCE_DIR}/platform/platform.cpp
@@ -125,6 +166,8 @@ set(NOVA_CORE_SOURCES
     ${NOVA_CORE_LOGGING_SOURCES}
     ${NOVA_CORE_ECS_SOURCES}
     ${NOVA_CORE_RENDER_SOURCES}
+    ${NOVA_CORE_VULKAN_SOURCES}
+    ${NOVA_CORE_PHYSICS_SOURCES}
     ${NOVA_CORE_PLATFORM_SOURCES}
     ${NOVA_CORE_CONTAINERS_SOURCES}
 )
@@ -136,6 +179,8 @@ set(NOVA_CORE_HEADERS
     ${NOVA_CORE_LOGGING_HEADERS}
     ${NOVA_CORE_ECS_HEADERS}
     ${NOVA_CORE_RENDER_HEADERS}
+    ${NOVA_CORE_VULKAN_HEADERS}
+    ${NOVA_CORE_PHYSICS_HEADERS}
     ${NOVA_CORE_PLATFORM_HEADERS}
     ${NOVA_CORE_CONTAINERS_HEADERS}
 )
@@ -197,6 +242,7 @@ if(NOVA_PLATFORM_ANDROID)
         PRIVATE
             log          # Android logging
             android      # Android native activity
+            dl           # Dynamic loading for Vulkan
     )
 elseif(NOVA_PLATFORM_IOS)
     # iOS-specific configuration
@@ -204,6 +250,14 @@ elseif(NOVA_PLATFORM_IOS)
 elseif(NOVA_PLATFORM_WEB)
     # Web-specific configuration
     # (handled by Emscripten settings)
+elseif(UNIX)
+    # Linux/Unix - need dl for dynamic library loading
+    target_link_libraries(nova_core
+        PRIVATE
+            dl           # Dynamic loading for Vulkan
+    )
+elseif(WIN32)
+    # Windows - no extra libraries needed (uses LoadLibrary)
 endif()
 
 # =============================================================================

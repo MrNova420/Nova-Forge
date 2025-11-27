@@ -351,7 +351,7 @@ add_subdirectory(src/nova/core)
 # add_subdirectory(src/nova/asset)
 
 # Editor (mobile-first)
-# add_subdirectory(src/nova/editor)
+add_subdirectory(src/nova/editor)
 
 # Networking
 # add_subdirectory(src/nova/net)
@@ -362,6 +362,13 @@ add_subdirectory(src/nova/core)
 if(NOVA_BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
+endif()
+
+# =============================================================================
+# Samples
+# =============================================================================
+if(NOVA_BUILD_SAMPLES)
+    add_subdirectory(samples)
 endif()
 
 # =============================================================================

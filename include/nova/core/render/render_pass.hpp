@@ -163,11 +163,16 @@ enum class PipelineStage : u32 {
     BottomOfPipe = 1 << 13,
     Host = 1 << 14,
     AllGraphics = 1 << 15,
-    AllCommands = 1 << 16
+    AllCommands = 1 << 16,
+    None = 0
 };
 
 inline PipelineStage operator|(PipelineStage a, PipelineStage b) {
     return static_cast<PipelineStage>(static_cast<u32>(a) | static_cast<u32>(b));
+}
+
+inline PipelineStage operator&(PipelineStage a, PipelineStage b) {
+    return static_cast<PipelineStage>(static_cast<u32>(a) & static_cast<u32>(b));
 }
 
 /**
@@ -196,6 +201,10 @@ enum class Access : u32 {
 
 inline Access operator|(Access a, Access b) {
     return static_cast<Access>(static_cast<u32>(a) | static_cast<u32>(b));
+}
+
+inline Access operator&(Access a, Access b) {
+    return static_cast<Access>(static_cast<u32>(a) & static_cast<u32>(b));
 }
 
 /**
