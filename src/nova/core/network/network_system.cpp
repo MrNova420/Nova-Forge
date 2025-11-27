@@ -286,10 +286,17 @@ Result<usize> NetworkSocket::receiveFrom(NetworkEndpoint& endpoint,
             return static_cast<usize>(0);  // No data available
         }
 #else
-        // Note: On some systems EAGAIN == EWOULDBLOCK, but we check both for portability
+        // EAGAIN and EWOULDBLOCK may be same value on some systems
+        // Checking EAGAIN covers both cases on Linux (where they're equal)
+        // Using explicit check to avoid compiler warning about identical expressions
         if (errno == EAGAIN) {
             return static_cast<usize>(0);  // No data available
         }
+#if EAGAIN != EWOULDBLOCK
+        if (errno == EWOULDBLOCK) {
+            return static_cast<usize>(0);  // No data available
+        }
+#endif
 #endif
         return std::unexpected(errors::io("Failed to receive data"));
     }

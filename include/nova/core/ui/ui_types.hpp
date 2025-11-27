@@ -72,6 +72,12 @@ constexpr f32 DEFAULT_LINE_HEIGHT = 1.4f;
 /// Default animation duration in seconds
 constexpr f32 DEFAULT_ANIMATION_DURATION = 0.3f;
 
+/// Default text input minimum width in pixels
+constexpr f32 DEFAULT_TEXT_INPUT_MIN_WIDTH = 200.0f;
+
+/// Default multiline text input line count
+constexpr u32 DEFAULT_MULTILINE_LINE_COUNT = 3;
+
 /// Touch slop for determining drag vs tap (in pixels)
 constexpr f32 TOUCH_SLOP = 8.0f;
 

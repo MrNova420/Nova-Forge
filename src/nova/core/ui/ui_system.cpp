@@ -1013,14 +1013,13 @@ void TextInput::onBlur(const FocusEvent& event) {
 
 Vec2 TextInput::measureContent(f32 /*availableWidth*/, f32 /*availableHeight*/) {
     f32 fontSize = m_style.text.fontSize;
-    f32 minWidth = 200.0f;
     f32 height = fontSize * m_style.text.lineHeight;
     
     if (m_multiline) {
-        height *= 3;  // 3 lines minimum
+        height *= static_cast<f32>(DEFAULT_MULTILINE_LINE_COUNT);
     }
     
-    return Vec2(minWidth, height);
+    return Vec2(DEFAULT_TEXT_INPUT_MIN_WIDTH, height);
 }
 
 // ============================================================================
