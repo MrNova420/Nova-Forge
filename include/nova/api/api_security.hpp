@@ -357,6 +357,13 @@ public:
         const std::vector<u8>& salt);
     
     /**
+     * @brief Hash password with auto-generated salt (salt is prepended to result)
+     * @param password Password to hash
+     * @return Salt + Hash combined
+     */
+    [[nodiscard]] static std::string hashPassword(std::string_view password);
+    
+    /**
      * @brief Verify password against hash
      * @param password Password to verify
      * @param hash Expected hash
@@ -367,6 +374,16 @@ public:
         std::string_view password,
         const std::vector<u8>& hash,
         const std::vector<u8>& salt);
+    
+    /**
+     * @brief Verify password against combined salt+hash string
+     * @param password Password to verify
+     * @param saltedHash Combined salt and hash from hashPassword(password)
+     * @return true if password matches
+     */
+    [[nodiscard]] static bool verifyPassword(
+        std::string_view password,
+        const std::string& saltedHash);
     
     /**
      * @brief Compute HMAC-SHA256
@@ -814,6 +831,13 @@ public:
      * @return true if valid
      */
     [[nodiscard]] static bool isValidEmail(std::string_view email);
+    
+    /**
+     * @brief Check if password meets minimum requirements
+     * @param password Password to check
+     * @return true if password is valid
+     */
+    [[nodiscard]] static bool isValidPassword(std::string_view password);
     
     /**
      * @brief Validate password strength

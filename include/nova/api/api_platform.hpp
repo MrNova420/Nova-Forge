@@ -23,12 +23,15 @@ namespace nova::api {
  */
 enum class AuthMethod : u8 {
     EmailPassword,      ///< Email and password
+    PhoneNumber,        ///< Phone number authentication
     Google,             ///< Google OAuth
     Apple,              ///< Apple Sign In
     Facebook,           ///< Facebook Login
     Twitter,            ///< Twitter OAuth
     Discord,            ///< Discord OAuth
     GitHub,             ///< GitHub OAuth
+    GameCenter,         ///< Apple Game Center
+    PlayGames,          ///< Google Play Games
     Guest,              ///< Anonymous guest account
     DeviceId,           ///< Device-based authentication
     CustomToken         ///< Custom authentication token
@@ -41,7 +44,8 @@ struct AuthCredentials {
     AuthMethod method = AuthMethod::Guest;
     std::string email;
     std::string password;
-    std::string token;
+    std::string token;           // OAuth token or custom token
+    std::string phoneNumber;
     std::string providerId;
     
     /// Create guest credentials
@@ -62,12 +66,28 @@ struct AuthCredentials {
         return creds;
     }
     
+    /// Create phone number credentials
+    [[nodiscard]] static AuthCredentials phone(std::string_view phoneNumber) {
+        AuthCredentials creds;
+        creds.method = AuthMethod::PhoneNumber;
+        creds.phoneNumber = std::string(phoneNumber);
+        return creds;
+    }
+    
     /// Create OAuth token credentials
     [[nodiscard]] static AuthCredentials oauthToken(
         AuthMethod method, 
         std::string_view token) {
         AuthCredentials creds;
         creds.method = method;
+        creds.token = std::string(token);
+        return creds;
+    }
+    
+    /// Create custom token credentials
+    [[nodiscard]] static AuthCredentials customToken(std::string_view token) {
+        AuthCredentials creds;
+        creds.method = AuthMethod::CustomToken;
         creds.token = std::string(token);
         return creds;
     }
@@ -244,6 +264,7 @@ public:
     struct LeaderboardEntry {
         u32 rank;
         UserId userId;
+        std::string username;
         std::string displayName;
         i64 score;
         ApiTimestamp timestamp;
@@ -291,8 +312,10 @@ public:
         std::string name;
         std::string description;
         std::string iconUrl;
-        u32 points;
-        bool isUnlocked;
+        i32 points;
+        bool isUnlocked = false;
+        bool isHidden = false;
+        f32 progress = 0.0f;
         ApiTimestamp unlockedAt;
     };
     

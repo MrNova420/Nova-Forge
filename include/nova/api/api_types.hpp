@@ -267,6 +267,7 @@ struct UserId {
     [[nodiscard]] bool isValid() const noexcept { return !id.empty(); }
     [[nodiscard]] bool operator==(const UserId& other) const noexcept { return id == other.id; }
     [[nodiscard]] bool operator!=(const UserId& other) const noexcept { return id != other.id; }
+    [[nodiscard]] bool operator<(const UserId& other) const noexcept { return id < other.id; }
     
     [[nodiscard]] static UserId invalid() { return UserId{""}; }
 };
@@ -280,10 +281,11 @@ struct UserProfile {
     std::string displayName;
     std::string email;
     std::string avatarUrl;
+    std::string bio;
     ApiTimestamp createdAt;
     ApiTimestamp lastLoginAt;
-    bool isVerified;
-    bool isPremium;
+    bool isVerified = false;
+    bool isPremium = false;
 };
 
 // =============================================================================
@@ -327,6 +329,7 @@ enum class ApiErrorCode : u32 {
     InvalidCredentials = 103,
     AccountLocked = 104,
     AccountSuspended = 105,
+    TokenExpired = 106,
     
     // Network errors (200-299)
     NetworkUnavailable = 200,
@@ -339,6 +342,8 @@ enum class ApiErrorCode : u32 {
     ResourceLoadFailed = 301,
     ResourceInvalid = 302,
     ResourceAccessDenied = 303,
+    NotFound = 304,
+    AlreadyExists = 305,
     
     // Operation errors (400-499)
     OperationFailed = 400,
@@ -346,11 +351,14 @@ enum class ApiErrorCode : u32 {
     OperationTimeout = 402,
     InvalidParameter = 403,
     InvalidState = 404,
+    InvalidInput = 405,
+    Forbidden = 406,
     
     // Platform errors (500-599)
     PlatformError = 500,
     FeatureNotSupported = 501,
     PermissionDenied = 502,
+    StorageQuotaExceeded = 503,
     
     // Internal errors (900-999)
     InternalError = 900,

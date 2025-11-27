@@ -13,6 +13,8 @@
 #include <cstring>
 #include <map>
 #include <mutex>
+#include <sstream>
+#include <iomanip>
 
 namespace nova::api::security {
 
@@ -200,6 +202,53 @@ std::vector<u8> Crypto::hashPassword(std::string_view password, const std::vecto
 bool Crypto::verifyPassword(std::string_view password, const std::vector<u8>& hash, const std::vector<u8>& salt) {
     auto computed = hashPassword(password, salt);
     return constantTimeCompare(computed, hash);
+}
+
+std::string Crypto::hashPassword(std::string_view password) {
+    // Generate random salt (16 bytes)
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<int> dis(0, 255);
+    
+    std::vector<u8> salt(16);
+    for (auto& byte : salt) {
+        byte = static_cast<u8>(dis(gen));
+    }
+    
+    // Hash with PBKDF2
+    auto hash = hashPassword(password, salt);
+    
+    // Encode as hex: salt (32 hex chars) + hash (64 hex chars)
+    std::ostringstream oss;
+    oss << std::hex << std::setfill('0');
+    for (u8 byte : salt) {
+        oss << std::setw(2) << static_cast<int>(byte);
+    }
+    for (u8 byte : hash) {
+        oss << std::setw(2) << static_cast<int>(byte);
+    }
+    return oss.str();
+}
+
+bool Crypto::verifyPassword(std::string_view password, const std::string& saltedHash) {
+    // Expect 32 hex chars (16 bytes salt) + 64 hex chars (32 bytes hash)
+    if (saltedHash.length() != 96) return false;
+    
+    // Decode salt
+    std::vector<u8> salt(16);
+    for (size_t i = 0; i < 16; ++i) {
+        std::string byteStr = saltedHash.substr(i * 2, 2);
+        salt[i] = static_cast<u8>(std::stoul(byteStr, nullptr, 16));
+    }
+    
+    // Decode hash
+    std::vector<u8> hash(32);
+    for (size_t i = 0; i < 32; ++i) {
+        std::string byteStr = saltedHash.substr(32 + i * 2, 2);
+        hash[i] = static_cast<u8>(std::stoul(byteStr, nullptr, 16));
+    }
+    
+    return verifyPassword(password, hash, salt);
 }
 
 HashResult Crypto::hmacSha256(const std::vector<u8>& key, const std::vector<u8>& data) {
@@ -1170,6 +1219,11 @@ bool InputValidator::isValidEmail(std::string_view email) {
     if (dot == std::string_view::npos || dot == at + 1 || dot == email.size() - 1) return false;
     
     return true;
+}
+
+bool InputValidator::isValidPassword(std::string_view password) {
+    auto validation = validatePassword(password);
+    return validation.valid && validation.strength >= 60;
 }
 
 InputValidator::PasswordValidation InputValidator::validatePassword(std::string_view password) {
