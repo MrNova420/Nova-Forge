@@ -17,6 +17,7 @@
 #include "nova/core/render/render_device.hpp"
 #include <vector>
 #include <array>
+#include <unordered_map>
 
 namespace nova::render::vulkan {
 
@@ -284,6 +285,85 @@ private:
     
     // Resource ID tracking
     u64 m_nextResourceId = 1;
+    
+    // ==========================================================================
+    // Resource Storage
+    // ==========================================================================
+    
+    // Buffer resources
+    struct BufferResource {
+        VkBuffer buffer = VK_NULL_HANDLE;
+        VkDeviceMemory memory = VK_NULL_HANDLE;
+        VkDeviceSize size = 0;
+        BufferUsage usage = BufferUsage::None;
+        MemoryUsage memoryUsage = MemoryUsage::GPUOnly;
+        void* mappedPtr = nullptr;
+        bool persistentlyMapped = false;
+    };
+    std::unordered_map<u64, BufferResource> m_buffers;
+    
+    // Texture resources
+    struct TextureResource {
+        VkImage image = VK_NULL_HANDLE;
+        VkDeviceMemory memory = VK_NULL_HANDLE;
+        VkImageView view = VK_NULL_HANDLE;
+        VkFormat format = VK_FORMAT_UNDEFINED;
+        u32 width = 0;
+        u32 height = 0;
+        u32 depth = 1;
+        u32 mipLevels = 1;
+        u32 arrayLayers = 1;
+        TextureType texType = TextureType::Texture2D;
+    };
+    std::unordered_map<u64, TextureResource> m_textures;
+    
+    // Sampler resources
+    struct SamplerResource {
+        VkSampler sampler = VK_NULL_HANDLE;
+    };
+    std::unordered_map<u64, SamplerResource> m_samplers;
+    
+    // Shader resources
+    struct ShaderResource {
+        VkShaderModule module = VK_NULL_HANDLE;
+        ShaderStage stage = ShaderStage::Vertex;
+        std::string entryPoint = "main";
+    };
+    std::unordered_map<u64, ShaderResource> m_shaders;
+    
+    // Pipeline resources
+    struct PipelineResource {
+        VkPipeline pipeline = VK_NULL_HANDLE;
+        VkPipelineLayout layout = VK_NULL_HANDLE;
+        VkPipelineBindPoint bindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+    };
+    std::unordered_map<u64, PipelineResource> m_pipelines;
+    
+    // Render pass resources
+    struct RenderPassResource {
+        VkRenderPass renderPass = VK_NULL_HANDLE;
+        u32 colorAttachmentCount = 0;
+        bool hasDepthStencil = false;
+    };
+    std::unordered_map<u64, RenderPassResource> m_renderPasses;
+    
+    // Framebuffer resources
+    struct FramebufferResource {
+        VkFramebuffer framebuffer = VK_NULL_HANDLE;
+        u32 width = 0;
+        u32 height = 0;
+        RenderPassHandle renderPass;
+    };
+    std::unordered_map<u64, FramebufferResource> m_framebuffers;
+    
+    // Descriptor set layout cache
+    struct DescriptorSetLayoutResource {
+        VkDescriptorSetLayout layout = VK_NULL_HANDLE;
+    };
+    std::unordered_map<u64, DescriptorSetLayoutResource> m_descriptorSetLayouts;
+    
+    // Memory allocation helper
+    u32 findMemoryType(u32 typeFilter, VkMemoryPropertyFlags properties) const;
 };
 
 /**

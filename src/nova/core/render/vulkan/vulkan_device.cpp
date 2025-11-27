@@ -843,68 +843,872 @@ VKAPI_ATTR VkBool32 VKAPI_CALL VulkanDevice::debugCallback(
 }
 
 // ============================================================================
-// Resource Creation (Stubs - to be implemented)
+// Memory Type Finder
 // ============================================================================
 
-BufferHandle VulkanDevice::createBuffer(const BufferDesc&) {
-    // TODO: Implement buffer creation
-    return BufferHandle(m_nextResourceId++);
-}
-
-TextureHandle VulkanDevice::createTexture(const TextureDesc&) {
-    // TODO: Implement texture creation
-    return TextureHandle(m_nextResourceId++);
-}
-
-SamplerHandle VulkanDevice::createSampler(const SamplerDesc&) {
-    // TODO: Implement sampler creation
-    return SamplerHandle(m_nextResourceId++);
-}
-
-ShaderHandle VulkanDevice::createShader(const ShaderDesc&) {
-    // TODO: Implement shader creation
-    return ShaderHandle(m_nextResourceId++);
-}
-
-PipelineHandle VulkanDevice::createGraphicsPipeline(const GraphicsPipelineDesc&) {
-    // TODO: Implement pipeline creation
-    return PipelineHandle(m_nextResourceId++);
-}
-
-PipelineHandle VulkanDevice::createComputePipeline(const ComputePipelineDesc&) {
-    // TODO: Implement pipeline creation
-    return PipelineHandle(m_nextResourceId++);
-}
-
-RenderPassHandle VulkanDevice::createRenderPass(const RenderPassDesc&) {
-    // TODO: Implement render pass creation
-    return RenderPassHandle(m_nextResourceId++);
-}
-
-FramebufferHandle VulkanDevice::createFramebuffer(const FramebufferDesc&) {
-    // TODO: Implement framebuffer creation
-    return FramebufferHandle(m_nextResourceId++);
+u32 VulkanDevice::findMemoryType(u32 typeFilter, VkMemoryPropertyFlags properties) const {
+    VkPhysicalDeviceMemoryProperties memProperties;
+    vkGetPhysicalDeviceMemoryProperties(m_physicalDevice, &memProperties);
+    
+    for (u32 i = 0; i < memProperties.memoryTypeCount; ++i) {
+        if ((typeFilter & (1 << i)) && 
+            (memProperties.memoryTypes[i].propertyFlags & properties) == properties) {
+            return i;
+        }
+    }
+    
+    // Fallback: try to find any suitable memory type
+    for (u32 i = 0; i < memProperties.memoryTypeCount; ++i) {
+        if (typeFilter & (1 << i)) {
+            return i;
+        }
+    }
+    
+    return UINT32_MAX;
 }
 
 // ============================================================================
-// Resource Destruction (Stubs)
+// Buffer Creation - Full Implementation
 // ============================================================================
 
-void VulkanDevice::destroyBuffer(BufferHandle) { /* TODO */ }
-void VulkanDevice::destroyTexture(TextureHandle) { /* TODO */ }
-void VulkanDevice::destroySampler(SamplerHandle) { /* TODO */ }
-void VulkanDevice::destroyShader(ShaderHandle) { /* TODO */ }
-void VulkanDevice::destroyPipeline(PipelineHandle) { /* TODO */ }
-void VulkanDevice::destroyRenderPass(RenderPassHandle) { /* TODO */ }
-void VulkanDevice::destroyFramebuffer(FramebufferHandle) { /* TODO */ }
+BufferHandle VulkanDevice::createBuffer(const BufferDesc& desc) {
+    BufferResource resource;
+    resource.size = desc.size;
+    resource.usage = desc.usage;
+    resource.memoryUsage = desc.memoryUsage;
+    
+    // Build Vulkan usage flags from NovaCore usage
+    VkBufferUsageFlags vkUsage = 0;
+    
+    if (hasFlag(desc.usage, BufferUsage::Vertex)) {
+        vkUsage |= VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+    }
+    if (hasFlag(desc.usage, BufferUsage::Index)) {
+        vkUsage |= VK_BUFFER_USAGE_INDEX_BUFFER_BIT;
+    }
+    if (hasFlag(desc.usage, BufferUsage::Uniform)) {
+        vkUsage |= VK_BUFFER_USAGE_UNIFORM_BUFFER_BIT;
+    }
+    if (hasFlag(desc.usage, BufferUsage::Storage)) {
+        vkUsage |= VK_BUFFER_USAGE_STORAGE_BUFFER_BIT;
+    }
+    if (hasFlag(desc.usage, BufferUsage::Indirect)) {
+        vkUsage |= VK_BUFFER_USAGE_INDIRECT_BUFFER_BIT;
+    }
+    if (hasFlag(desc.usage, BufferUsage::TransferSrc)) {
+        vkUsage |= VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+    }
+    if (hasFlag(desc.usage, BufferUsage::TransferDst)) {
+        vkUsage |= VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+    }
+    
+    // Create buffer
+    VkBufferCreateInfo bufferInfo{};
+    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    bufferInfo.size = desc.size;
+    bufferInfo.usage = vkUsage;
+    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    
+    if (m_deviceFuncs.vkCreateBuffer(m_device, &bufferInfo, nullptr, &resource.buffer) != VK_SUCCESS) {
+        return BufferHandle::invalid();
+    }
+    
+    // Get memory requirements
+    VkMemoryRequirements memRequirements;
+    m_deviceFuncs.vkGetBufferMemoryRequirements(m_device, resource.buffer, &memRequirements);
+    
+    // Determine memory properties based on usage
+    VkMemoryPropertyFlags memProperties = 0;
+    switch (desc.memoryUsage) {
+        case MemoryUsage::GpuOnly:
+            memProperties = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+            break;
+        case MemoryUsage::CpuOnly:
+            memProperties = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+            break;
+        case MemoryUsage::CpuToGpu:
+            memProperties = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+            resource.persistentlyMapped = true;
+            break;
+        case MemoryUsage::GpuToCpu:
+            memProperties = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT;
+            break;
+    }
+    
+    // Allocate memory
+    VkMemoryAllocateInfo allocInfo{};
+    allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    allocInfo.allocationSize = memRequirements.size;
+    allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, memProperties);
+    
+    if (allocInfo.memoryTypeIndex == UINT32_MAX) {
+        m_deviceFuncs.vkDestroyBuffer(m_device, resource.buffer, nullptr);
+        return BufferHandle::invalid();
+    }
+    
+    if (m_deviceFuncs.vkAllocateMemory(m_device, &allocInfo, nullptr, &resource.memory) != VK_SUCCESS) {
+        m_deviceFuncs.vkDestroyBuffer(m_device, resource.buffer, nullptr);
+        return BufferHandle::invalid();
+    }
+    
+    // Bind memory to buffer
+    m_deviceFuncs.vkBindBufferMemory(m_device, resource.buffer, resource.memory, 0);
+    
+    // Persistently map if requested
+    if (resource.persistentlyMapped) {
+        m_deviceFuncs.vkMapMemory(m_device, resource.memory, 0, desc.size, 0, &resource.mappedPtr);
+    }
+    
+    // Upload initial data if provided
+    if (desc.initialData && desc.size > 0) {
+        void* mappedData = resource.mappedPtr;
+        if (!mappedData) {
+            m_deviceFuncs.vkMapMemory(m_device, resource.memory, 0, desc.size, 0, &mappedData);
+        }
+        if (mappedData) {
+            std::memcpy(mappedData, desc.initialData, desc.size);
+            if (!resource.persistentlyMapped) {
+                m_deviceFuncs.vkUnmapMemory(m_device, resource.memory);
+            }
+        }
+    }
+    
+    u64 id = m_nextResourceId++;
+    m_buffers[id] = resource;
+    
+    m_frameStats.buffersCreated++;
+    m_frameStats.bufferMemoryUsed += desc.size;
+    
+    return BufferHandle(id);
+}
 
 // ============================================================================
-// Buffer Operations (Stubs)
+// Texture Creation - Full Implementation
 // ============================================================================
 
-void* VulkanDevice::mapBuffer(BufferHandle) { return nullptr; }
-void VulkanDevice::unmapBuffer(BufferHandle) { /* TODO */ }
-void VulkanDevice::updateBuffer(BufferHandle, const void*, usize, usize) { /* TODO */ }
+TextureHandle VulkanDevice::createTexture(const TextureDesc& desc) {
+    TextureResource resource;
+    resource.width = desc.width;
+    resource.height = desc.height;
+    resource.depth = desc.depth;
+    resource.mipLevels = desc.mipLevels;
+    resource.arrayLayers = desc.arrayLayers;
+    resource.type = desc.type;
+    
+    // Convert format
+    resource.format = toVkFormat(desc.format);
+    if (resource.format == VK_FORMAT_UNDEFINED) {
+        return TextureHandle::invalid();
+    }
+    
+    // Determine image type
+    VkImageType imageType = VK_IMAGE_TYPE_2D;
+    VkImageViewType viewType = VK_IMAGE_VIEW_TYPE_2D;
+    
+    switch (desc.type) {
+        case TextureType::Texture1D:
+            imageType = VK_IMAGE_TYPE_1D;
+            viewType = VK_IMAGE_VIEW_TYPE_1D;
+            break;
+        case TextureType::Texture2D:
+            imageType = VK_IMAGE_TYPE_2D;
+            viewType = desc.arrayLayers > 1 ? VK_IMAGE_VIEW_TYPE_2D_ARRAY : VK_IMAGE_VIEW_TYPE_2D;
+            break;
+        case TextureType::Texture3D:
+            imageType = VK_IMAGE_TYPE_3D;
+            viewType = VK_IMAGE_VIEW_TYPE_3D;
+            break;
+        case TextureType::TextureCube:
+            imageType = VK_IMAGE_TYPE_2D;
+            viewType = desc.arrayLayers > 6 ? VK_IMAGE_VIEW_TYPE_CUBE_ARRAY : VK_IMAGE_VIEW_TYPE_CUBE;
+            break;
+    }
+    
+    // Build usage flags
+    VkImageUsageFlags vkUsage = 0;
+    if (hasFlag(desc.usage, TextureUsage::Sampled)) {
+        vkUsage |= VK_IMAGE_USAGE_SAMPLED_BIT;
+    }
+    if (hasFlag(desc.usage, TextureUsage::Storage)) {
+        vkUsage |= VK_IMAGE_USAGE_STORAGE_BIT;
+    }
+    if (hasFlag(desc.usage, TextureUsage::RenderTarget)) {
+        vkUsage |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    }
+    if (hasFlag(desc.usage, TextureUsage::DepthStencil)) {
+        vkUsage |= VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
+    }
+    if (hasFlag(desc.usage, TextureUsage::TransferSrc)) {
+        vkUsage |= VK_IMAGE_USAGE_TRANSFER_SRC_BIT;
+    }
+    if (hasFlag(desc.usage, TextureUsage::TransferDst)) {
+        vkUsage |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+    }
+    
+    // Create image
+    VkImageCreateInfo imageInfo{};
+    imageInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+    imageInfo.imageType = imageType;
+    imageInfo.extent.width = desc.width;
+    imageInfo.extent.height = desc.height;
+    imageInfo.extent.depth = desc.depth;
+    imageInfo.mipLevels = desc.mipLevels;
+    imageInfo.arrayLayers = desc.arrayLayers;
+    imageInfo.format = resource.format;
+    imageInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
+    imageInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    imageInfo.usage = vkUsage;
+    imageInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    imageInfo.samples = static_cast<VkSampleCountFlagBits>(desc.samples);
+    
+    if (desc.type == TextureType::TextureCube) {
+        imageInfo.flags |= VK_IMAGE_CREATE_CUBE_COMPATIBLE_BIT;
+    }
+    
+    if (m_deviceFuncs.vkCreateImage(m_device, &imageInfo, nullptr, &resource.image) != VK_SUCCESS) {
+        return TextureHandle::invalid();
+    }
+    
+    // Get memory requirements
+    VkMemoryRequirements memRequirements;
+    m_deviceFuncs.vkGetImageMemoryRequirements(m_device, resource.image, &memRequirements);
+    
+    // Allocate memory (GPU-only for textures)
+    VkMemoryAllocateInfo allocInfo{};
+    allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+    allocInfo.allocationSize = memRequirements.size;
+    allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits, VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT);
+    
+    if (allocInfo.memoryTypeIndex == UINT32_MAX || 
+        m_deviceFuncs.vkAllocateMemory(m_device, &allocInfo, nullptr, &resource.memory) != VK_SUCCESS) {
+        m_deviceFuncs.vkDestroyImage(m_device, resource.image, nullptr);
+        return TextureHandle::invalid();
+    }
+    
+    m_deviceFuncs.vkBindImageMemory(m_device, resource.image, resource.memory, 0);
+    
+    // Create image view
+    VkImageViewCreateInfo viewInfo{};
+    viewInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+    viewInfo.image = resource.image;
+    viewInfo.viewType = viewType;
+    viewInfo.format = resource.format;
+    viewInfo.subresourceRange.aspectMask = hasFlag(desc.usage, TextureUsage::DepthStencil) 
+        ? VK_IMAGE_ASPECT_DEPTH_BIT : VK_IMAGE_ASPECT_COLOR_BIT;
+    viewInfo.subresourceRange.baseMipLevel = 0;
+    viewInfo.subresourceRange.levelCount = desc.mipLevels;
+    viewInfo.subresourceRange.baseArrayLayer = 0;
+    viewInfo.subresourceRange.layerCount = desc.arrayLayers;
+    
+    if (m_deviceFuncs.vkCreateImageView(m_device, &viewInfo, nullptr, &resource.view) != VK_SUCCESS) {
+        m_deviceFuncs.vkFreeMemory(m_device, resource.memory, nullptr);
+        m_deviceFuncs.vkDestroyImage(m_device, resource.image, nullptr);
+        return TextureHandle::invalid();
+    }
+    
+    u64 id = m_nextResourceId++;
+    m_textures[id] = resource;
+    
+    m_frameStats.texturesCreated++;
+    m_frameStats.textureMemoryUsed += memRequirements.size;
+    
+    return TextureHandle(id);
+}
+
+// ============================================================================
+// Sampler Creation - Full Implementation
+// ============================================================================
+
+SamplerHandle VulkanDevice::createSampler(const SamplerDesc& desc) {
+    SamplerResource resource;
+    
+    auto toVkFilter = [](FilterMode mode) -> VkFilter {
+        switch (mode) {
+            case FilterMode::Nearest: return VK_FILTER_NEAREST;
+            case FilterMode::Linear: return VK_FILTER_LINEAR;
+            default: return VK_FILTER_LINEAR;
+        }
+    };
+    
+    auto toVkMipmapMode = [](FilterMode mode) -> VkSamplerMipmapMode {
+        switch (mode) {
+            case FilterMode::Nearest: return VK_SAMPLER_MIPMAP_MODE_NEAREST;
+            case FilterMode::Linear: return VK_SAMPLER_MIPMAP_MODE_LINEAR;
+            default: return VK_SAMPLER_MIPMAP_MODE_LINEAR;
+        }
+    };
+    
+    auto toVkAddressMode = [](WrapMode mode) -> VkSamplerAddressMode {
+        switch (mode) {
+            case WrapMode::Repeat: return VK_SAMPLER_ADDRESS_MODE_REPEAT;
+            case WrapMode::MirroredRepeat: return VK_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT;
+            case WrapMode::ClampToEdge: return VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_EDGE;
+            case WrapMode::ClampToBorder: return VK_SAMPLER_ADDRESS_MODE_CLAMP_TO_BORDER;
+            default: return VK_SAMPLER_ADDRESS_MODE_REPEAT;
+        }
+    };
+    
+    VkSamplerCreateInfo samplerInfo{};
+    samplerInfo.sType = VK_STRUCTURE_TYPE_SAMPLER_CREATE_INFO;
+    samplerInfo.magFilter = toVkFilter(desc.magFilter);
+    samplerInfo.minFilter = toVkFilter(desc.minFilter);
+    samplerInfo.mipmapMode = toVkMipmapMode(desc.mipFilter);
+    samplerInfo.addressModeU = toVkAddressMode(desc.wrapU);
+    samplerInfo.addressModeV = toVkAddressMode(desc.wrapV);
+    samplerInfo.addressModeW = toVkAddressMode(desc.wrapW);
+    samplerInfo.mipLodBias = desc.mipLodBias;
+    samplerInfo.anisotropyEnable = desc.maxAnisotropy > 1.0f ? VK_TRUE : VK_FALSE;
+    samplerInfo.maxAnisotropy = desc.maxAnisotropy;
+    samplerInfo.compareEnable = desc.compareEnable ? VK_TRUE : VK_FALSE;
+    samplerInfo.compareOp = toVkCompareOp(desc.compareOp);
+    samplerInfo.minLod = desc.minLod;
+    samplerInfo.maxLod = desc.maxLod;
+    samplerInfo.borderColor = VK_BORDER_COLOR_FLOAT_TRANSPARENT_BLACK;
+    samplerInfo.unnormalizedCoordinates = VK_FALSE;
+    
+    if (m_deviceFuncs.vkCreateSampler(m_device, &samplerInfo, nullptr, &resource.sampler) != VK_SUCCESS) {
+        return SamplerHandle::invalid();
+    }
+    
+    u64 id = m_nextResourceId++;
+    m_samplers[id] = resource;
+    
+    return SamplerHandle(id);
+}
+
+// ============================================================================
+// Shader Creation - Full Implementation
+// ============================================================================
+
+ShaderHandle VulkanDevice::createShader(const ShaderDesc& desc) {
+    ShaderResource resource;
+    resource.stage = desc.stage;
+    resource.entryPoint = desc.entryPoint.empty() ? "main" : std::string(desc.entryPoint);
+    
+    // Shader code must be SPIR-V
+    if (desc.codeSize == 0 || !desc.code) {
+        return ShaderHandle::invalid();
+    }
+    
+    // SPIR-V must be aligned to 4 bytes
+    if (desc.codeSize % 4 != 0) {
+        return ShaderHandle::invalid();
+    }
+    
+    VkShaderModuleCreateInfo createInfo{};
+    createInfo.sType = VK_STRUCTURE_TYPE_SHADER_MODULE_CREATE_INFO;
+    createInfo.codeSize = desc.codeSize;
+    createInfo.pCode = reinterpret_cast<const u32*>(desc.code);
+    
+    if (m_deviceFuncs.vkCreateShaderModule(m_device, &createInfo, nullptr, &resource.module) != VK_SUCCESS) {
+        return ShaderHandle::invalid();
+    }
+    
+    u64 id = m_nextResourceId++;
+    m_shaders[id] = resource;
+    
+    return ShaderHandle(id);
+}
+
+// ============================================================================
+// Pipeline Creation - Full Implementation
+// ============================================================================
+
+PipelineHandle VulkanDevice::createGraphicsPipeline(const GraphicsPipelineDesc& desc) {
+    PipelineResource resource;
+    resource.bindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+    
+    // Shader stages
+    std::vector<VkPipelineShaderStageCreateInfo> shaderStages;
+    
+    auto addShaderStage = [&](ShaderHandle handle, VkShaderStageFlagBits stage) {
+        auto it = m_shaders.find(handle.id());
+        if (it != m_shaders.end()) {
+            VkPipelineShaderStageCreateInfo stageInfo{};
+            stageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+            stageInfo.stage = stage;
+            stageInfo.module = it->second.module;
+            stageInfo.pName = it->second.entryPoint.c_str();
+            shaderStages.push_back(stageInfo);
+        }
+    };
+    
+    if (desc.vertexShader.isValid()) {
+        addShaderStage(desc.vertexShader, VK_SHADER_STAGE_VERTEX_BIT);
+    }
+    if (desc.fragmentShader.isValid()) {
+        addShaderStage(desc.fragmentShader, VK_SHADER_STAGE_FRAGMENT_BIT);
+    }
+    if (desc.geometryShader.isValid()) {
+        addShaderStage(desc.geometryShader, VK_SHADER_STAGE_GEOMETRY_BIT);
+    }
+    if (desc.tessControlShader.isValid()) {
+        addShaderStage(desc.tessControlShader, VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT);
+    }
+    if (desc.tessEvalShader.isValid()) {
+        addShaderStage(desc.tessEvalShader, VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT);
+    }
+    
+    // Vertex input state
+    std::vector<VkVertexInputBindingDescription> bindingDescs;
+    std::vector<VkVertexInputAttributeDescription> attributeDescs;
+    
+    for (const auto& binding : desc.vertexBindings) {
+        VkVertexInputBindingDescription bindingDesc{};
+        bindingDesc.binding = binding.binding;
+        bindingDesc.stride = binding.stride;
+        bindingDesc.inputRate = binding.perInstance ? VK_VERTEX_INPUT_RATE_INSTANCE : VK_VERTEX_INPUT_RATE_VERTEX;
+        bindingDescs.push_back(bindingDesc);
+    }
+    
+    for (const auto& attr : desc.vertexAttributes) {
+        VkVertexInputAttributeDescription attrDesc{};
+        attrDesc.location = attr.location;
+        attrDesc.binding = attr.binding;
+        attrDesc.format = toVkFormat(attr.format);
+        attrDesc.offset = attr.offset;
+        attributeDescs.push_back(attrDesc);
+    }
+    
+    VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
+    vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+    vertexInputInfo.vertexBindingDescriptionCount = static_cast<u32>(bindingDescs.size());
+    vertexInputInfo.pVertexBindingDescriptions = bindingDescs.data();
+    vertexInputInfo.vertexAttributeDescriptionCount = static_cast<u32>(attributeDescs.size());
+    vertexInputInfo.pVertexAttributeDescriptions = attributeDescs.data();
+    
+    // Input assembly
+    VkPipelineInputAssemblyStateCreateInfo inputAssembly{};
+    inputAssembly.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+    inputAssembly.topology = toVkPrimitiveTopology(desc.primitiveTopology);
+    inputAssembly.primitiveRestartEnable = desc.primitiveRestartEnable ? VK_TRUE : VK_FALSE;
+    
+    // Viewport and scissor (dynamic)
+    VkPipelineViewportStateCreateInfo viewportState{};
+    viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+    viewportState.viewportCount = 1;
+    viewportState.scissorCount = 1;
+    
+    // Rasterization
+    VkPipelineRasterizationStateCreateInfo rasterizer{};
+    rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+    rasterizer.depthClampEnable = desc.rasterState.depthClampEnable ? VK_TRUE : VK_FALSE;
+    rasterizer.rasterizerDiscardEnable = VK_FALSE;
+    rasterizer.polygonMode = toVkPolygonMode(desc.rasterState.fillMode);
+    rasterizer.cullMode = toVkCullMode(desc.rasterState.cullMode);
+    rasterizer.frontFace = desc.rasterState.frontFaceCCW ? VK_FRONT_FACE_COUNTER_CLOCKWISE : VK_FRONT_FACE_CLOCKWISE;
+    rasterizer.depthBiasEnable = desc.rasterState.depthBiasEnable ? VK_TRUE : VK_FALSE;
+    rasterizer.depthBiasConstantFactor = desc.rasterState.depthBiasConstant;
+    rasterizer.depthBiasSlopeFactor = desc.rasterState.depthBiasSlope;
+    rasterizer.lineWidth = 1.0f;
+    
+    // Multisampling
+    VkPipelineMultisampleStateCreateInfo multisampling{};
+    multisampling.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+    multisampling.sampleShadingEnable = VK_FALSE;
+    multisampling.rasterizationSamples = static_cast<VkSampleCountFlagBits>(desc.sampleCount);
+    
+    // Depth stencil
+    VkPipelineDepthStencilStateCreateInfo depthStencil{};
+    depthStencil.sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+    depthStencil.depthTestEnable = desc.depthStencilState.depthTestEnable ? VK_TRUE : VK_FALSE;
+    depthStencil.depthWriteEnable = desc.depthStencilState.depthWriteEnable ? VK_TRUE : VK_FALSE;
+    depthStencil.depthCompareOp = toVkCompareOp(desc.depthStencilState.depthCompareOp);
+    depthStencil.depthBoundsTestEnable = VK_FALSE;
+    depthStencil.stencilTestEnable = desc.depthStencilState.stencilTestEnable ? VK_TRUE : VK_FALSE;
+    
+    // Color blending
+    std::vector<VkPipelineColorBlendAttachmentState> colorBlendAttachments;
+    for (const auto& attachment : desc.colorAttachments) {
+        VkPipelineColorBlendAttachmentState blendAttachment{};
+        blendAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | 
+                                        VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+        blendAttachment.blendEnable = attachment.blendEnable ? VK_TRUE : VK_FALSE;
+        blendAttachment.srcColorBlendFactor = toVkBlendFactor(attachment.srcColorBlendFactor);
+        blendAttachment.dstColorBlendFactor = toVkBlendFactor(attachment.dstColorBlendFactor);
+        blendAttachment.colorBlendOp = toVkBlendOp(attachment.colorBlendOp);
+        blendAttachment.srcAlphaBlendFactor = toVkBlendFactor(attachment.srcAlphaBlendFactor);
+        blendAttachment.dstAlphaBlendFactor = toVkBlendFactor(attachment.dstAlphaBlendFactor);
+        blendAttachment.alphaBlendOp = toVkBlendOp(attachment.alphaBlendOp);
+        colorBlendAttachments.push_back(blendAttachment);
+    }
+    
+    if (colorBlendAttachments.empty()) {
+        // Default attachment
+        VkPipelineColorBlendAttachmentState defaultAttachment{};
+        defaultAttachment.colorWriteMask = VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | 
+                                          VK_COLOR_COMPONENT_B_BIT | VK_COLOR_COMPONENT_A_BIT;
+        defaultAttachment.blendEnable = VK_FALSE;
+        colorBlendAttachments.push_back(defaultAttachment);
+    }
+    
+    VkPipelineColorBlendStateCreateInfo colorBlending{};
+    colorBlending.sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+    colorBlending.logicOpEnable = VK_FALSE;
+    colorBlending.attachmentCount = static_cast<u32>(colorBlendAttachments.size());
+    colorBlending.pAttachments = colorBlendAttachments.data();
+    
+    // Dynamic states
+    std::vector<VkDynamicState> dynamicStates = {
+        VK_DYNAMIC_STATE_VIEWPORT,
+        VK_DYNAMIC_STATE_SCISSOR
+    };
+    
+    VkPipelineDynamicStateCreateInfo dynamicState{};
+    dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+    dynamicState.dynamicStateCount = static_cast<u32>(dynamicStates.size());
+    dynamicState.pDynamicStates = dynamicStates.data();
+    
+    // Pipeline layout
+    VkPipelineLayoutCreateInfo layoutInfo{};
+    layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    
+    if (m_deviceFuncs.vkCreatePipelineLayout(m_device, &layoutInfo, nullptr, &resource.layout) != VK_SUCCESS) {
+        return PipelineHandle::invalid();
+    }
+    
+    // Look up render pass
+    VkRenderPass vkRenderPass = VK_NULL_HANDLE;
+    auto rpIt = m_renderPasses.find(desc.renderPass.id());
+    if (rpIt != m_renderPasses.end()) {
+        vkRenderPass = rpIt->second.renderPass;
+    }
+    
+    // Create pipeline
+    VkGraphicsPipelineCreateInfo pipelineInfo{};
+    pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
+    pipelineInfo.stageCount = static_cast<u32>(shaderStages.size());
+    pipelineInfo.pStages = shaderStages.data();
+    pipelineInfo.pVertexInputState = &vertexInputInfo;
+    pipelineInfo.pInputAssemblyState = &inputAssembly;
+    pipelineInfo.pViewportState = &viewportState;
+    pipelineInfo.pRasterizationState = &rasterizer;
+    pipelineInfo.pMultisampleState = &multisampling;
+    pipelineInfo.pDepthStencilState = &depthStencil;
+    pipelineInfo.pColorBlendState = &colorBlending;
+    pipelineInfo.pDynamicState = &dynamicState;
+    pipelineInfo.layout = resource.layout;
+    pipelineInfo.renderPass = vkRenderPass;
+    pipelineInfo.subpass = 0;
+    
+    if (m_deviceFuncs.vkCreateGraphicsPipelines(m_device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &resource.pipeline) != VK_SUCCESS) {
+        m_deviceFuncs.vkDestroyPipelineLayout(m_device, resource.layout, nullptr);
+        return PipelineHandle::invalid();
+    }
+    
+    u64 id = m_nextResourceId++;
+    m_pipelines[id] = resource;
+    
+    m_frameStats.pipelinesCreated++;
+    
+    return PipelineHandle(id);
+}
+
+PipelineHandle VulkanDevice::createComputePipeline(const ComputePipelineDesc& desc) {
+    PipelineResource resource;
+    resource.bindPoint = VK_PIPELINE_BIND_POINT_COMPUTE;
+    
+    // Get compute shader
+    auto shaderIt = m_shaders.find(desc.computeShader.id());
+    if (shaderIt == m_shaders.end()) {
+        return PipelineHandle::invalid();
+    }
+    
+    VkPipelineShaderStageCreateInfo stageInfo{};
+    stageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+    stageInfo.stage = VK_SHADER_STAGE_COMPUTE_BIT;
+    stageInfo.module = shaderIt->second.module;
+    stageInfo.pName = shaderIt->second.entryPoint.c_str();
+    
+    // Pipeline layout
+    VkPipelineLayoutCreateInfo layoutInfo{};
+    layoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    
+    if (m_deviceFuncs.vkCreatePipelineLayout(m_device, &layoutInfo, nullptr, &resource.layout) != VK_SUCCESS) {
+        return PipelineHandle::invalid();
+    }
+    
+    // Create compute pipeline
+    VkComputePipelineCreateInfo pipelineInfo{};
+    pipelineInfo.sType = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO;
+    pipelineInfo.stage = stageInfo;
+    pipelineInfo.layout = resource.layout;
+    
+    if (m_deviceFuncs.vkCreateComputePipelines(m_device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &resource.pipeline) != VK_SUCCESS) {
+        m_deviceFuncs.vkDestroyPipelineLayout(m_device, resource.layout, nullptr);
+        return PipelineHandle::invalid();
+    }
+    
+    u64 id = m_nextResourceId++;
+    m_pipelines[id] = resource;
+    
+    m_frameStats.pipelinesCreated++;
+    
+    return PipelineHandle(id);
+}
+
+// ============================================================================
+// Render Pass Creation - Full Implementation
+// ============================================================================
+
+RenderPassHandle VulkanDevice::createRenderPass(const RenderPassDesc& desc) {
+    RenderPassResource resource;
+    resource.colorAttachmentCount = static_cast<u32>(desc.colorAttachments.size());
+    resource.hasDepthStencil = desc.depthStencilAttachment.format != TextureFormat::Unknown;
+    
+    std::vector<VkAttachmentDescription> attachments;
+    std::vector<VkAttachmentReference> colorRefs;
+    VkAttachmentReference depthRef{};
+    
+    // Color attachments
+    for (u32 i = 0; i < desc.colorAttachments.size(); ++i) {
+        const auto& colorAttach = desc.colorAttachments[i];
+        
+        VkAttachmentDescription attachment{};
+        attachment.format = toVkFormat(colorAttach.format);
+        attachment.samples = static_cast<VkSampleCountFlagBits>(colorAttach.samples);
+        attachment.loadOp = toVkLoadOp(colorAttach.loadOp);
+        attachment.storeOp = toVkStoreOp(colorAttach.storeOp);
+        attachment.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
+        attachment.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
+        attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        attachment.finalLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        attachments.push_back(attachment);
+        
+        VkAttachmentReference ref{};
+        ref.attachment = i;
+        ref.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        colorRefs.push_back(ref);
+    }
+    
+    // Depth attachment
+    if (resource.hasDepthStencil) {
+        VkAttachmentDescription attachment{};
+        attachment.format = toVkFormat(desc.depthStencilAttachment.format);
+        attachment.samples = static_cast<VkSampleCountFlagBits>(desc.depthStencilAttachment.samples);
+        attachment.loadOp = toVkLoadOp(desc.depthStencilAttachment.depthLoadOp);
+        attachment.storeOp = toVkStoreOp(desc.depthStencilAttachment.depthStoreOp);
+        attachment.stencilLoadOp = toVkLoadOp(desc.depthStencilAttachment.stencilLoadOp);
+        attachment.stencilStoreOp = toVkStoreOp(desc.depthStencilAttachment.stencilStoreOp);
+        attachment.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        attachment.finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+        attachments.push_back(attachment);
+        
+        depthRef.attachment = static_cast<u32>(attachments.size() - 1);
+        depthRef.layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+    }
+    
+    // Subpass
+    VkSubpassDescription subpass{};
+    subpass.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+    subpass.colorAttachmentCount = static_cast<u32>(colorRefs.size());
+    subpass.pColorAttachments = colorRefs.data();
+    subpass.pDepthStencilAttachment = resource.hasDepthStencil ? &depthRef : nullptr;
+    
+    // Subpass dependencies
+    VkSubpassDependency dependency{};
+    dependency.srcSubpass = VK_SUBPASS_EXTERNAL;
+    dependency.dstSubpass = 0;
+    dependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+    dependency.srcAccessMask = 0;
+    dependency.dstStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT | VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT;
+    dependency.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+    
+    // Create render pass
+    VkRenderPassCreateInfo renderPassInfo{};
+    renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO;
+    renderPassInfo.attachmentCount = static_cast<u32>(attachments.size());
+    renderPassInfo.pAttachments = attachments.data();
+    renderPassInfo.subpassCount = 1;
+    renderPassInfo.pSubpasses = &subpass;
+    renderPassInfo.dependencyCount = 1;
+    renderPassInfo.pDependencies = &dependency;
+    
+    if (m_deviceFuncs.vkCreateRenderPass(m_device, &renderPassInfo, nullptr, &resource.renderPass) != VK_SUCCESS) {
+        return RenderPassHandle::invalid();
+    }
+    
+    u64 id = m_nextResourceId++;
+    m_renderPasses[id] = resource;
+    
+    return RenderPassHandle(id);
+}
+
+// ============================================================================
+// Framebuffer Creation - Full Implementation
+// ============================================================================
+
+FramebufferHandle VulkanDevice::createFramebuffer(const FramebufferDesc& desc) {
+    FramebufferResource resource;
+    resource.width = desc.width;
+    resource.height = desc.height;
+    resource.renderPass = desc.renderPass;
+    
+    // Get render pass
+    auto rpIt = m_renderPasses.find(desc.renderPass.id());
+    if (rpIt == m_renderPasses.end()) {
+        return FramebufferHandle::invalid();
+    }
+    
+    // Collect image views
+    std::vector<VkImageView> attachments;
+    
+    for (const auto& texHandle : desc.colorAttachments) {
+        auto texIt = m_textures.find(texHandle.id());
+        if (texIt != m_textures.end()) {
+            attachments.push_back(texIt->second.view);
+        }
+    }
+    
+    if (desc.depthStencilAttachment.isValid()) {
+        auto texIt = m_textures.find(desc.depthStencilAttachment.id());
+        if (texIt != m_textures.end()) {
+            attachments.push_back(texIt->second.view);
+        }
+    }
+    
+    VkFramebufferCreateInfo framebufferInfo{};
+    framebufferInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+    framebufferInfo.renderPass = rpIt->second.renderPass;
+    framebufferInfo.attachmentCount = static_cast<u32>(attachments.size());
+    framebufferInfo.pAttachments = attachments.data();
+    framebufferInfo.width = desc.width;
+    framebufferInfo.height = desc.height;
+    framebufferInfo.layers = 1;
+    
+    if (m_deviceFuncs.vkCreateFramebuffer(m_device, &framebufferInfo, nullptr, &resource.framebuffer) != VK_SUCCESS) {
+        return FramebufferHandle::invalid();
+    }
+    
+    u64 id = m_nextResourceId++;
+    m_framebuffers[id] = resource;
+    
+    return FramebufferHandle(id);
+}
+
+// ============================================================================
+// Resource Destruction - Full Implementation
+// ============================================================================
+
+void VulkanDevice::destroyBuffer(BufferHandle handle) {
+    auto it = m_buffers.find(handle.id());
+    if (it != m_buffers.end()) {
+        if (it->second.mappedPtr) {
+            m_deviceFuncs.vkUnmapMemory(m_device, it->second.memory);
+        }
+        m_deviceFuncs.vkDestroyBuffer(m_device, it->second.buffer, nullptr);
+        m_deviceFuncs.vkFreeMemory(m_device, it->second.memory, nullptr);
+        m_frameStats.bufferMemoryUsed -= it->second.size;
+        m_buffers.erase(it);
+    }
+}
+
+void VulkanDevice::destroyTexture(TextureHandle handle) {
+    auto it = m_textures.find(handle.id());
+    if (it != m_textures.end()) {
+        m_deviceFuncs.vkDestroyImageView(m_device, it->second.view, nullptr);
+        m_deviceFuncs.vkDestroyImage(m_device, it->second.image, nullptr);
+        m_deviceFuncs.vkFreeMemory(m_device, it->second.memory, nullptr);
+        m_textures.erase(it);
+    }
+}
+
+void VulkanDevice::destroySampler(SamplerHandle handle) {
+    auto it = m_samplers.find(handle.id());
+    if (it != m_samplers.end()) {
+        m_deviceFuncs.vkDestroySampler(m_device, it->second.sampler, nullptr);
+        m_samplers.erase(it);
+    }
+}
+
+void VulkanDevice::destroyShader(ShaderHandle handle) {
+    auto it = m_shaders.find(handle.id());
+    if (it != m_shaders.end()) {
+        m_deviceFuncs.vkDestroyShaderModule(m_device, it->second.module, nullptr);
+        m_shaders.erase(it);
+    }
+}
+
+void VulkanDevice::destroyPipeline(PipelineHandle handle) {
+    auto it = m_pipelines.find(handle.id());
+    if (it != m_pipelines.end()) {
+        m_deviceFuncs.vkDestroyPipeline(m_device, it->second.pipeline, nullptr);
+        m_deviceFuncs.vkDestroyPipelineLayout(m_device, it->second.layout, nullptr);
+        m_pipelines.erase(it);
+    }
+}
+
+void VulkanDevice::destroyRenderPass(RenderPassHandle handle) {
+    auto it = m_renderPasses.find(handle.id());
+    if (it != m_renderPasses.end()) {
+        m_deviceFuncs.vkDestroyRenderPass(m_device, it->second.renderPass, nullptr);
+        m_renderPasses.erase(it);
+    }
+}
+
+void VulkanDevice::destroyFramebuffer(FramebufferHandle handle) {
+    auto it = m_framebuffers.find(handle.id());
+    if (it != m_framebuffers.end()) {
+        m_deviceFuncs.vkDestroyFramebuffer(m_device, it->second.framebuffer, nullptr);
+        m_framebuffers.erase(it);
+    }
+}
+
+// ============================================================================
+// Buffer Operations - Full Implementation
+// ============================================================================
+
+void* VulkanDevice::mapBuffer(BufferHandle handle) {
+    auto it = m_buffers.find(handle.id());
+    if (it == m_buffers.end()) {
+        return nullptr;
+    }
+    
+    // Return persistent mapping if available
+    if (it->second.mappedPtr) {
+        return it->second.mappedPtr;
+    }
+    
+    // Map memory
+    void* data = nullptr;
+    if (m_deviceFuncs.vkMapMemory(m_device, it->second.memory, 0, it->second.size, 0, &data) != VK_SUCCESS) {
+        return nullptr;
+    }
+    
+    return data;
+}
+
+void VulkanDevice::unmapBuffer(BufferHandle handle) {
+    auto it = m_buffers.find(handle.id());
+    if (it != m_buffers.end() && !it->second.persistentlyMapped) {
+        m_deviceFuncs.vkUnmapMemory(m_device, it->second.memory);
+    }
+}
+
+void VulkanDevice::updateBuffer(BufferHandle handle, const void* data, usize size, usize offset) {
+    auto it = m_buffers.find(handle.id());
+    if (it == m_buffers.end() || !data || size == 0) {
+        return;
+    }
+    
+    void* mappedData = it->second.mappedPtr;
+    bool needsUnmap = false;
+    
+    if (!mappedData) {
+        if (m_deviceFuncs.vkMapMemory(m_device, it->second.memory, offset, size, 0, &mappedData) != VK_SUCCESS) {
+            return;
+        }
+        needsUnmap = true;
+    } else {
+        mappedData = static_cast<u8*>(mappedData) + offset;
+    }
+    
+    std::memcpy(mappedData, data, size);
+    
+    if (needsUnmap) {
+        m_deviceFuncs.vkUnmapMemory(m_device, it->second.memory);
+    }
+}
 
 // ============================================================================
 // Texture Operations (Stubs)
