@@ -48,6 +48,11 @@ set(NOVA_TEST_EDITOR_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/editor/test_editor.cpp
 )
 
+# Platform tests
+set(NOVA_TEST_PLATFORM_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/platform/test_platform.cpp
+)
+
 # API tests
 set(NOVA_TEST_API_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/api/test_api.cpp
@@ -57,6 +62,7 @@ set(NOVA_TEST_API_SOURCES
 set(NOVA_TEST_SOURCES
     ${NOVA_TEST_CORE_SOURCES}
     ${NOVA_TEST_EDITOR_SOURCES}
+    ${NOVA_TEST_PLATFORM_SOURCES}
     ${NOVA_TEST_API_SOURCES}
 )
 

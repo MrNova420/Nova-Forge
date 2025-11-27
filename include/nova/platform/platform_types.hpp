@@ -206,9 +206,12 @@ struct DisplayMode {
 struct MonitorInfo {
     std::string name;
     u32 index = 0;
-    Vec2i position;           // Position in virtual desktop
-    Vec2i size;               // Physical size in pixels
-    Vec2i workArea;           // Work area (excluding taskbar)
+    i32 positionX = 0;        // X position in virtual desktop
+    i32 positionY = 0;        // Y position in virtual desktop
+    u32 sizeX = 0;            // Physical width in pixels
+    u32 sizeY = 0;            // Physical height in pixels
+    u32 workAreaX = 0;        // Work area width (excluding taskbar)
+    u32 workAreaY = 0;        // Work area height (excluding taskbar)
     f32 dpi = 96.0f;
     f32 scale = 1.0f;         // UI scale factor
     bool isPrimary = false;
