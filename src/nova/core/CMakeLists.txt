@@ -140,6 +140,17 @@ set(NOVA_CORE_PHYSICS_HEADERS
     ${NOVA_INCLUDE_DIR}/nova/core/physics/physics_world.hpp
 )
 
+# NovaCore Animation System
+set(NOVA_CORE_ANIMATION_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/animation/animation_system.cpp
+)
+
+set(NOVA_CORE_ANIMATION_HEADERS
+    ${NOVA_INCLUDE_DIR}/nova/core/animation/animation.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/animation/animation_types.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/animation/animation_system.hpp
+)
+
 # Platform module
 set(NOVA_CORE_PLATFORM_SOURCES
     # ${CMAKE_CURRENT_SOURCE_DIR}/platform/platform.cpp
@@ -170,6 +181,7 @@ set(NOVA_CORE_SOURCES
     ${NOVA_CORE_RENDER_SOURCES}
     ${NOVA_CORE_VULKAN_SOURCES}
     ${NOVA_CORE_PHYSICS_SOURCES}
+    ${NOVA_CORE_ANIMATION_SOURCES}
     ${NOVA_CORE_PLATFORM_SOURCES}
     ${NOVA_CORE_CONTAINERS_SOURCES}
 )
@@ -183,6 +195,7 @@ set(NOVA_CORE_HEADERS
     ${NOVA_CORE_RENDER_HEADERS}
     ${NOVA_CORE_VULKAN_HEADERS}
     ${NOVA_CORE_PHYSICS_HEADERS}
+    ${NOVA_CORE_ANIMATION_HEADERS}
     ${NOVA_CORE_PLATFORM_HEADERS}
     ${NOVA_CORE_CONTAINERS_HEADERS}
 )
