@@ -12,10 +12,15 @@
 #include "nova/core/render/texture.hpp"
 #include "nova/core/render/render_pass.hpp"
 #include "nova/core/render/render_pipeline.hpp"
+#include "nova/core/logging/logging.hpp"
 
 // Include Vulkan backend
 #include "nova/core/render/vulkan/vulkan_device.hpp"
 #include "nova/core/render/vulkan/vulkan_loader.hpp"
+
+#include <sstream>
+
+using namespace nova::logging;
 
 namespace nova::render {
 
@@ -227,22 +232,173 @@ std::vector<PhysicalDeviceInfo> enumeratePhysicalDevices(GraphicsBackend backend
     
     switch (backend) {
         case GraphicsBackend::Vulkan: {
-            // Enumerate Vulkan physical devices
+            // Enumerate Vulkan physical devices using full instance enumeration
             if (!vulkan::VulkanLoader::isAvailable()) {
                 break;
             }
             
-            // Get instance for enumeration (would need a temporary instance)
-            // In full implementation, this would use VulkanLoader to enumerate devices
+            // Create a temporary instance for device enumeration
+            VkApplicationInfo appInfo{};
+            appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
+            appInfo.pApplicationName = "NovaCore Device Enumerator";
+            appInfo.applicationVersion = VK_MAKE_VERSION(1, 0, 0);
+            appInfo.pEngineName = "NovaCore";
+            appInfo.engineVersion = VK_MAKE_VERSION(0, 1, 0);
+            appInfo.apiVersion = vulkan::VulkanLoader::getMaxSupportedVersion();
             
-            // Add a placeholder entry indicating Vulkan is available
-            PhysicalDeviceInfo vulkanDevice;
-            vulkanDevice.name = "Vulkan Device";
-            vulkanDevice.vendorName = "Unknown";
-            vulkanDevice.deviceType = PhysicalDeviceInfo::DeviceType::DiscreteGPU;
-            vulkanDevice.recommendedTier = QualityTier::High;
-            // Feature support would be populated from actual device query
-            devices.push_back(vulkanDevice);
+            VkInstanceCreateInfo createInfo{};
+            createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
+            createInfo.pApplicationInfo = &appInfo;
+            createInfo.enabledLayerCount = 0;
+            createInfo.enabledExtensionCount = 0;
+            
+            VkInstance tempInstance = VK_NULL_HANDLE;
+            VkResult result = vulkan::VulkanLoader::vkCreateInstance(&createInfo, nullptr, &tempInstance);
+            if (result != VK_SUCCESS || tempInstance == VK_NULL_HANDLE) {
+                NOVA_LOG_WARN(LogCategory::Render, "Failed to create temporary Vulkan instance for enumeration");
+                break;
+            }
+            
+            // Load instance functions
+            vulkan::VulkanInstanceFunctions instFuncs{};
+            auto loadResult = vulkan::VulkanLoader::loadInstanceFunctions(tempInstance, instFuncs);
+            if (!loadResult) {
+                instFuncs.vkDestroyInstance(tempInstance, nullptr);
+                break;
+            }
+            
+            // Enumerate physical devices
+            u32 deviceCount = 0;
+            instFuncs.vkEnumeratePhysicalDevices(tempInstance, &deviceCount, nullptr);
+            
+            if (deviceCount > 0) {
+                std::vector<VkPhysicalDevice> physicalDevices(deviceCount);
+                instFuncs.vkEnumeratePhysicalDevices(tempInstance, &deviceCount, physicalDevices.data());
+                
+                for (const VkPhysicalDevice& physDevice : physicalDevices) {
+                    VkPhysicalDeviceProperties props{};
+                    instFuncs.vkGetPhysicalDeviceProperties(physDevice, &props);
+                    
+                    VkPhysicalDeviceFeatures features{};
+                    instFuncs.vkGetPhysicalDeviceFeatures(physDevice, &features);
+                    
+                    VkPhysicalDeviceMemoryProperties memProps{};
+                    instFuncs.vkGetPhysicalDeviceMemoryProperties(physDevice, &memProps);
+                    
+                    PhysicalDeviceInfo deviceInfo;
+                    deviceInfo.name = props.deviceName;
+                    
+                    // Determine vendor name from vendor ID
+                    switch (props.vendorID) {
+                        case 0x1002: deviceInfo.vendorName = "AMD"; break;
+                        case 0x10DE: deviceInfo.vendorName = "NVIDIA"; break;
+                        case 0x8086: deviceInfo.vendorName = "Intel"; break;
+                        case 0x13B5: deviceInfo.vendorName = "ARM"; break;
+                        case 0x5143: deviceInfo.vendorName = "Qualcomm"; break;
+                        case 0x1010: deviceInfo.vendorName = "ImgTec"; break;
+                        case 0x106B: deviceInfo.vendorName = "Apple"; break;
+                        default: deviceInfo.vendorName = "Unknown"; break;
+                    }
+                    
+                    // Map device type
+                    switch (props.deviceType) {
+                        case VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU:
+                            deviceInfo.deviceType = PhysicalDeviceInfo::DeviceType::DiscreteGPU;
+                            break;
+                        case VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU:
+                            deviceInfo.deviceType = PhysicalDeviceInfo::DeviceType::IntegratedGPU;
+                            break;
+                        case VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU:
+                            deviceInfo.deviceType = PhysicalDeviceInfo::DeviceType::VirtualGPU;
+                            break;
+                        case VK_PHYSICAL_DEVICE_TYPE_CPU:
+                            deviceInfo.deviceType = PhysicalDeviceInfo::DeviceType::CPU;
+                            break;
+                        default:
+                            deviceInfo.deviceType = PhysicalDeviceInfo::DeviceType::Unknown;
+                            break;
+                    }
+                    
+                    // Calculate total device memory
+                    u64 totalMemory = 0;
+                    for (u32 i = 0; i < memProps.memoryHeapCount; ++i) {
+                        if (memProps.memoryHeaps[i].flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT) {
+                            totalMemory += memProps.memoryHeaps[i].size;
+                        }
+                    }
+                    deviceInfo.limits.totalDeviceMemory = totalMemory;
+                    
+                    // Format driver version as string
+                    {
+                        u32 dv = props.driverVersion;
+                        std::ostringstream oss;
+                        oss << ((dv >> 22) & 0x3FF) << "." << ((dv >> 12) & 0x3FF) << "." << (dv & 0xFFF);
+                        deviceInfo.driverVersion = oss.str();
+                    }
+                    
+                    // Format API version as string
+                    {
+                        u32 av = props.apiVersion;
+                        std::ostringstream oss;
+                        oss << VK_VERSION_MAJOR(av) << "." << VK_VERSION_MINOR(av) << "." << VK_VERSION_PATCH(av);
+                        deviceInfo.apiVersion = oss.str();
+                    }
+                    
+                    deviceInfo.vendorId = props.vendorID;
+                    deviceInfo.deviceId = props.deviceID;
+                    
+                    // Populate limits from device properties
+                    deviceInfo.limits.maxTextureSize2D = props.limits.maxImageDimension2D;
+                    deviceInfo.limits.maxTextureSize3D = props.limits.maxImageDimension3D;
+                    deviceInfo.limits.maxTextureSizeCube = props.limits.maxImageDimensionCube;
+                    deviceInfo.limits.maxTextureArrayLayers = props.limits.maxImageArrayLayers;
+                    deviceInfo.limits.maxUniformBufferSize = props.limits.maxUniformBufferRange;
+                    deviceInfo.limits.maxStorageBufferSize = props.limits.maxStorageBufferRange;
+                    deviceInfo.limits.maxVertexInputAttributes = props.limits.maxVertexInputAttributes;
+                    deviceInfo.limits.maxVertexInputBindings = props.limits.maxVertexInputBindings;
+                    deviceInfo.limits.maxColorAttachments = props.limits.maxColorAttachments;
+                    deviceInfo.limits.maxComputeWorkGroupSize[0] = props.limits.maxComputeWorkGroupSize[0];
+                    deviceInfo.limits.maxComputeWorkGroupSize[1] = props.limits.maxComputeWorkGroupSize[1];
+                    deviceInfo.limits.maxComputeWorkGroupSize[2] = props.limits.maxComputeWorkGroupSize[2];
+                    deviceInfo.limits.maxComputeWorkGroupInvocations = props.limits.maxComputeWorkGroupInvocations;
+                    deviceInfo.limits.maxBoundDescriptorSets = props.limits.maxBoundDescriptorSets;
+                    deviceInfo.limits.maxSamplers = props.limits.maxPerStageDescriptorSamplers;
+                    deviceInfo.limits.maxAnisotropy = props.limits.maxSamplerAnisotropy;
+                    
+                    // Populate features from device features (matching DeviceFeatures struct)
+                    deviceInfo.features.geometryShader = features.geometryShader;
+                    deviceInfo.features.tessellationShader = features.tessellationShader;
+                    deviceInfo.features.computeShader = true; // Always available in Vulkan
+                    deviceInfo.features.multiDrawIndirect = features.multiDrawIndirect;
+                    deviceInfo.features.fillModeNonSolid = features.fillModeNonSolid;
+                    deviceInfo.features.wideLines = features.wideLines;
+                    deviceInfo.features.depthClamp = features.depthClamp;
+                    deviceInfo.features.textureCompressionBC = features.textureCompressionBC;
+                    deviceInfo.features.textureCompressionETC2 = features.textureCompressionETC2;
+                    deviceInfo.features.textureCompressionASTC = features.textureCompressionASTC_LDR;
+                    deviceInfo.features.samplerAnisotropy = features.samplerAnisotropy;
+                    deviceInfo.features.independentBlend = features.independentBlend;
+                    deviceInfo.features.dualSrcBlend = features.dualSrcBlend;
+                    
+                    // Determine recommended quality tier based on capabilities
+                    if (props.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU && totalMemory > 4ULL * 1024 * 1024 * 1024) {
+                        deviceInfo.recommendedTier = QualityTier::Ultra;
+                    } else if (totalMemory > 2ULL * 1024 * 1024 * 1024) {
+                        deviceInfo.recommendedTier = QualityTier::High;
+                    } else if (totalMemory > 1ULL * 1024 * 1024 * 1024) {
+                        deviceInfo.recommendedTier = QualityTier::Standard;
+                    } else if (totalMemory > 512ULL * 1024 * 1024) {
+                        deviceInfo.recommendedTier = QualityTier::Basic;
+                    } else {
+                        deviceInfo.recommendedTier = QualityTier::Minimal;
+                    }
+                    
+                    devices.push_back(deviceInfo);
+                }
+            }
+            
+            // Cleanup temporary instance
+            instFuncs.vkDestroyInstance(tempInstance, nullptr);
             break;
         }
         
