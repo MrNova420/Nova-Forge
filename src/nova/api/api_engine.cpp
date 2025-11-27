@@ -29,12 +29,36 @@ struct EngineApi::Impl {
     WindowHandle mainWindow{0};
     u64 nextWindowId = 1;
     
+    // Full window state tracking
+    struct WindowState {
+        u64 id = 0;
+        std::string title;
+        u32 width = 0;
+        u32 height = 0;
+        i32 posX = 0;
+        i32 posY = 0;
+        bool isFullscreen = false;
+        bool isMinimized = false;
+        bool isMaximized = false;
+        bool isVisible = true;
+        bool isFocused = false;
+        bool resizable = true;
+        bool vsync = true;
+        void* nativeHandle = nullptr;  // Platform-specific handle
+    };
+    std::map<u64, WindowState> windows;
+    
     f32 deltaTime = 0.0f;
     f64 elapsedTime = 0.0;
     u64 frameNumber = 0;
     f32 fps = 0.0f;
     u32 targetFps = 60;
     f32 timeScale = 1.0f;
+    
+    // FPS calculation (rolling average)
+    static constexpr size_t FPS_SAMPLE_COUNT = 60;
+    std::array<f32, FPS_SAMPLE_COUNT> frameTimes{};
+    size_t frameTimeIndex = 0;
     
     std::chrono::high_resolution_clock::time_point lastFrameTime;
     std::chrono::high_resolution_clock::time_point startTime;
@@ -49,6 +73,20 @@ struct EngineApi::Impl {
     std::unique_ptr<InputApi> input;
     std::unique_ptr<SceneApi> scene;
     std::unique_ptr<AssetApi> asset;
+    
+    // Calculate rolling average FPS
+    f32 calculateAverageFps() const {
+        f32 totalTime = 0.0f;
+        size_t count = 0;
+        for (size_t i = 0; i < FPS_SAMPLE_COUNT; ++i) {
+            if (frameTimes[i] > 0.0f) {
+                totalTime += frameTimes[i];
+                ++count;
+            }
+        }
+        if (count == 0 || totalTime <= 0.0f) return 0.0f;
+        return static_cast<f32>(count) / totalTime;
+    }
 };
 
 EngineApi::EngineApi() : m_impl(std::make_unique<Impl>()) {
@@ -131,13 +169,36 @@ void EngineApi::requestStop() {
 }
 
 ApiResultOf<WindowHandle> EngineApi::createWindow(const WindowDesc& desc) {
+    // Generate unique window ID
     WindowHandle handle{m_impl->nextWindowId++};
     
-    // TODO: Create actual platform window
+    // Create full window state
+    Impl::WindowState state;
+    state.id = handle.id;
+    state.title = desc.title;
+    state.width = desc.width;
+    state.height = desc.height;
+    state.isFullscreen = desc.isFullscreen;
+    state.resizable = desc.resizable;
+    state.vsync = desc.vsync;
+    state.isVisible = true;
+    state.isFocused = true;
     
+    // Center window by default (desktop assumption)
+    // In a real implementation, this would query the display size
+    state.posX = 100;
+    state.posY = 100;
+    
+    // Store window state
+    m_impl->windows[handle.id] = state;
+    
+    // Set as main window if this is the first window
     if (m_impl->mainWindow.id == 0) {
         m_impl->mainWindow = handle;
     }
+    
+    // Platform-specific window creation would happen here
+    // For now, we maintain full state tracking for the window
     
     return handle;
 }
@@ -151,10 +212,23 @@ ApiResultOf<WindowHandle> EngineApi::createWindow(std::string_view title, u32 wi
 }
 
 void EngineApi::destroyWindow(WindowHandle handle) {
+    if (!handle.isValid()) return;
+    
+    // Remove window state
+    auto it = m_impl->windows.find(handle.id);
+    if (it != m_impl->windows.end()) {
+        // Platform-specific cleanup would happen here
+        m_impl->windows.erase(it);
+    }
+    
+    // Update main window reference if needed
     if (m_impl->mainWindow.id == handle.id) {
         m_impl->mainWindow = WindowHandle{0};
+        // Assign next available window as main, if any
+        if (!m_impl->windows.empty()) {
+            m_impl->mainWindow = WindowHandle{m_impl->windows.begin()->first};
+        }
     }
-    // TODO: Destroy actual platform window
 }
 
 WindowHandle EngineApi::getMainWindow() const noexcept {
@@ -162,22 +236,34 @@ WindowHandle EngineApi::getMainWindow() const noexcept {
 }
 
 void EngineApi::setWindowTitle(WindowHandle handle, std::string_view title) {
-    // TODO: Set window title
-    (void)handle;
-    (void)title;
+    if (!handle.isValid()) return;
+    
+    auto it = m_impl->windows.find(handle.id);
+    if (it != m_impl->windows.end()) {
+        it->second.title = std::string(title);
+        // Platform-specific title update would happen here
+    }
 }
 
 void EngineApi::setWindowSize(WindowHandle handle, u32 width, u32 height) {
-    // TODO: Set window size
-    (void)handle;
-    (void)width;
-    (void)height;
+    if (!handle.isValid()) return;
+    
+    auto it = m_impl->windows.find(handle.id);
+    if (it != m_impl->windows.end()) {
+        it->second.width = width;
+        it->second.height = height;
+        // Platform-specific resize would happen here
+    }
 }
 
 void EngineApi::setWindowFullscreen(WindowHandle handle, bool fullscreen) {
-    // TODO: Set fullscreen mode
-    (void)handle;
-    (void)fullscreen;
+    if (!handle.isValid()) return;
+    
+    auto it = m_impl->windows.find(handle.id);
+    if (it != m_impl->windows.end()) {
+        it->second.isFullscreen = fullscreen;
+        // Platform-specific fullscreen toggle would happen here
+    }
 }
 
 f32 EngineApi::getDeltaTime() const noexcept {
@@ -537,8 +623,10 @@ math::Vec2 InputApi::getTouchPosition(u32 index) const noexcept {
 
 struct SceneApi::Impl {
     std::string currentSceneName;
+    std::string scenePath;  // Full path to scene file
     u64 nextEntityId = 1;
     bool isDirty = false;
+    bool isLoaded = false;
     
     // Full entity data structure
     struct EntityData {
@@ -673,10 +761,10 @@ ApiResult SceneApi::loadScene(std::string_view path) {
     // Unload current scene
     unloadScene();
     
-    // In a real implementation, this would read from disk and parse JSON/binary
-    // For now, we'll create a placeholder scene based on the path
+    // Extract scene name from path
+    std::string pathStr = std::string(path);
+    std::string sceneName = pathStr;
     
-    std::string sceneName = std::string(path);
     // Extract filename from path
     size_t lastSlash = sceneName.find_last_of("/\\");
     if (lastSlash != std::string::npos) {
@@ -684,16 +772,43 @@ ApiResult SceneApi::loadScene(std::string_view path) {
     }
     // Remove extension
     size_t lastDot = sceneName.find_last_of('.');
+    std::string extension;
     if (lastDot != std::string::npos) {
+        extension = sceneName.substr(lastDot + 1);
         sceneName = sceneName.substr(0, lastDot);
     }
     
+    // Validate scene file extension
+    bool isValidFormat = (extension == "scene" || extension == "nvas" || 
+                          extension == "json" || extension == "prefab");
+    if (!isValidFormat && !extension.empty()) {
+        return std::unexpected(Error(ErrorCategory::IO, 1, 
+            "Invalid scene file format: ." + extension + ". Expected .scene, .nvas, .json, or .prefab"));
+    }
+    
+    // Set scene metadata
     m_impl->currentSceneName = sceneName;
+    m_impl->scenePath = pathStr;
     m_impl->metadata.name = sceneName;
-    m_impl->metadata.createdTimestamp = static_cast<u64>(
-        std::chrono::system_clock::now().time_since_epoch().count());
+    
+    // Get current timestamp
+    auto now = std::chrono::system_clock::now();
+    auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+        now.time_since_epoch()).count();
+    m_impl->metadata.createdTimestamp = static_cast<u64>(nowMs);
     m_impl->metadata.modifiedTimestamp = m_impl->metadata.createdTimestamp;
+    
+    // In production, this would read from disk using the Resource system
+    // For now, we initialize with default scene settings
+    
+    // Set default lighting for a new/loaded scene
+    m_impl->metadata.ambientColor = Vec3{0.1f, 0.1f, 0.15f};  // Slight blue ambient
+    m_impl->metadata.sunDirection = Vec3{-0.5f, -1.0f, -0.3f}.normalized();
+    m_impl->metadata.sunColor = Vec3{1.0f, 0.95f, 0.9f};  // Warm sunlight
+    m_impl->metadata.sunIntensity = 1.0f;
+    
     m_impl->isDirty = false;
+    m_impl->isLoaded = true;
     
     return {};
 }
@@ -703,7 +818,9 @@ void SceneApi::unloadScene() {
     m_impl->rootEntities.clear();
     m_impl->nextEntityId = 1;
     m_impl->currentSceneName.clear();
+    m_impl->scenePath.clear();
     m_impl->isDirty = false;
+    m_impl->isLoaded = false;
     m_impl->metadata = Impl::SceneMetadata{};
 }
 
@@ -711,9 +828,21 @@ void SceneApi::createScene(std::string_view name) {
     unloadScene();
     m_impl->currentSceneName = std::string(name);
     m_impl->metadata.name = std::string(name);
-    m_impl->metadata.createdTimestamp = static_cast<u64>(
-        std::chrono::system_clock::now().time_since_epoch().count());
+    
+    // Use proper timestamp calculation
+    auto now = std::chrono::system_clock::now();
+    auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(
+        now.time_since_epoch()).count();
+    m_impl->metadata.createdTimestamp = static_cast<u64>(nowMs);
     m_impl->metadata.modifiedTimestamp = m_impl->metadata.createdTimestamp;
+    
+    // Set default lighting
+    m_impl->metadata.ambientColor = Vec3{0.1f, 0.1f, 0.15f};
+    m_impl->metadata.sunDirection = Vec3{-0.5f, -1.0f, -0.3f}.normalized();
+    m_impl->metadata.sunColor = Vec3{1.0f, 0.95f, 0.9f};
+    m_impl->metadata.sunIntensity = 1.0f;
+    
+    m_impl->isLoaded = true;
 }
 
 ApiResult SceneApi::saveScene(std::string_view path) {

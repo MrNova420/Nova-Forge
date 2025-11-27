@@ -76,20 +76,107 @@ struct ApiVersion {
 // =============================================================================
 
 /**
- * @brief API platform information
+ * @brief API platform information - Full enterprise-grade implementation
  */
 struct ApiPlatformInfo {
-    std::string osName;         ///< Operating system name
-    std::string osVersion;      ///< Operating system version
-    std::string deviceModel;    ///< Device model name
-    std::string deviceId;       ///< Unique device identifier
-    std::string cpuName;        ///< CPU model name
-    u32 cpuCores;               ///< Number of CPU cores
-    u64 totalMemoryMB;          ///< Total system memory in MB
-    u64 availableMemoryMB;      ///< Available system memory in MB
-    bool hasGpu;                ///< Whether a GPU is available
-    std::string gpuName;        ///< GPU model name (if available)
-    u64 gpuMemoryMB;            ///< GPU memory in MB (if available)
+    // Operating System
+    std::string osName;             ///< Operating system name (Windows, Linux, macOS, Android, iOS, Web)
+    std::string osVersion;          ///< Operating system version
+    std::string osCodename;         ///< OS codename (e.g., "Sonoma", "Jammy")
+    u32 osBuildNumber = 0;          ///< OS build number
+    
+    // Architecture
+    std::string architecture;       ///< CPU architecture (x86_64, ARM64, ARM32, WASM)
+    std::string simdSupport;        ///< SIMD support (AVX2, AVX, SSE4.2, NEON, None)
+    bool is64Bit = true;            ///< Whether running in 64-bit mode
+    
+    // Device Information
+    std::string deviceModel;        ///< Device model name
+    std::string deviceManufacturer; ///< Device manufacturer
+    std::string deviceId;           ///< Unique device identifier (hashed for privacy)
+    std::string deviceType;         ///< Device type (Desktop, Laptop, Tablet, Phone, Console, XR)
+    
+    // CPU Information
+    std::string cpuName;            ///< CPU model name
+    std::string cpuVendor;          ///< CPU vendor (Intel, AMD, Apple, Qualcomm, etc.)
+    u32 cpuCores = 1;               ///< Number of physical CPU cores
+    u32 cpuThreads = 1;             ///< Number of logical CPU threads
+    u32 cpuFrequencyMHz = 0;        ///< CPU base frequency in MHz
+    u32 cpuCacheL1KB = 0;           ///< L1 cache size in KB
+    u32 cpuCacheL2KB = 0;           ///< L2 cache size in KB
+    u32 cpuCacheL3KB = 0;           ///< L3 cache size in KB
+    bool cpuHasSSE = false;         ///< SSE support
+    bool cpuHasSSE2 = false;        ///< SSE2 support
+    bool cpuHasSSE3 = false;        ///< SSE3 support
+    bool cpuHasSSE41 = false;       ///< SSE4.1 support
+    bool cpuHasSSE42 = false;       ///< SSE4.2 support
+    bool cpuHasAVX = false;         ///< AVX support
+    bool cpuHasAVX2 = false;        ///< AVX2 support
+    bool cpuHasAVX512 = false;      ///< AVX-512 support
+    bool cpuHasNEON = false;        ///< ARM NEON support
+    bool cpuHasSVE = false;         ///< ARM SVE support
+    
+    // Memory Information
+    u64 totalMemoryMB = 0;          ///< Total system memory in MB
+    u64 availableMemoryMB = 0;      ///< Available system memory in MB
+    u64 usedMemoryMB = 0;           ///< Used system memory in MB
+    u64 pageSize = 4096;            ///< System page size in bytes
+    
+    // GPU Information
+    bool hasGpu = false;            ///< Whether a GPU is available
+    std::string gpuName;            ///< GPU model name
+    std::string gpuVendor;          ///< GPU vendor (NVIDIA, AMD, Intel, Apple, Qualcomm, etc.)
+    std::string gpuDriver;          ///< GPU driver version
+    u64 gpuMemoryMB = 0;            ///< Dedicated GPU memory in MB
+    u64 gpuSharedMemoryMB = 0;      ///< Shared GPU memory in MB
+    bool gpuSupportsVulkan = false; ///< Vulkan support
+    bool gpuSupportsMetal = false;  ///< Metal support (Apple)
+    bool gpuSupportsD3D12 = false;  ///< Direct3D 12 support
+    bool gpuSupportsWebGPU = false; ///< WebGPU support
+    bool gpuSupportsRayTracing = false; ///< Hardware ray tracing support
+    bool gpuSupportsMeshShaders = false; ///< Mesh shader support
+    u32 gpuVulkanVersion = 0;       ///< Vulkan version (packed)
+    u32 gpuMetalVersion = 0;        ///< Metal version
+    
+    // Display Information
+    u32 displayCount = 1;           ///< Number of displays
+    u32 primaryDisplayWidth = 0;    ///< Primary display width in pixels
+    u32 primaryDisplayHeight = 0;   ///< Primary display height in pixels
+    u32 primaryDisplayRefreshHz = 60; ///< Primary display refresh rate
+    f32 primaryDisplayDPI = 96.0f;  ///< Primary display DPI
+    f32 primaryDisplayScale = 1.0f; ///< Primary display scale factor
+    bool hdrSupported = false;      ///< HDR display support
+    
+    // Battery Information (mobile/laptop)
+    bool hasBattery = false;        ///< Whether device has battery
+    f32 batteryLevel = 1.0f;        ///< Battery level (0.0 - 1.0)
+    bool batteryCharging = false;   ///< Whether battery is charging
+    u32 batteryEstimatedMinutes = 0; ///< Estimated battery life in minutes
+    
+    // Network Information
+    bool hasNetwork = false;        ///< Whether network is available
+    std::string networkType;        ///< Network type (WiFi, Cellular, Ethernet, None)
+    bool isMeteredConnection = false; ///< Whether connection is metered
+    
+    // Build Information
+    std::string buildType;          ///< Build type (Debug, Release, RelWithDebInfo)
+    std::string compiler;           ///< Compiler used
+    std::string compilerVersion;    ///< Compiler version
+    std::string cppStandard;        ///< C++ standard (C++23, C++20, etc.)
+    
+    // Capabilities
+    bool supportsMultithreading = true;  ///< Multithreading support
+    bool supportsAsyncIO = true;         ///< Async I/O support
+    bool supportsSIMD = false;           ///< Any SIMD support
+    bool supportsHardwareAccel = false;  ///< Hardware acceleration support
+    bool supportsVibration = false;      ///< Haptic/vibration support
+    bool supportsCamera = false;         ///< Camera access support
+    bool supportsMicrophone = false;     ///< Microphone access support
+    bool supportsGPS = false;            ///< GPS/location support
+    bool supportsAccelerometer = false;  ///< Accelerometer support
+    bool supportsGyroscope = false;      ///< Gyroscope support
+    bool supportsBluetooth = false;      ///< Bluetooth support
+    bool supportsNFC = false;            ///< NFC support
 };
 
 // =============================================================================

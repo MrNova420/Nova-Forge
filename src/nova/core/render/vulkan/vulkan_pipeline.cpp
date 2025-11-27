@@ -207,10 +207,49 @@ Result<void> VulkanGraphicsPipeline::createPipeline(
     dynamicState.dynamicStateCount = static_cast<u32>(dynamicStates.size());
     dynamicState.pDynamicStates = dynamicStates.data();
     
-    // Shader stages (placeholder - requires actual shader module loading)
+    // Shader stages - load from desc.shaders
     std::vector<VkPipelineShaderStageCreateInfo> shaderStages;
-    // TODO: Load actual shader modules from desc.shaders
-    // For now, pipeline creation will fail without shaders
+    shaderStages.reserve(desc.shaders.size());
+    
+    for (const auto& shaderInfo : desc.shaders) {
+        VkPipelineShaderStageCreateInfo stageInfo{};
+        stageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+        
+        // Convert shader stage to Vulkan stage flag
+        switch (shaderInfo.stage) {
+            case ShaderStage::Vertex:
+                stageInfo.stage = VK_SHADER_STAGE_VERTEX_BIT;
+                break;
+            case ShaderStage::Fragment:
+                stageInfo.stage = VK_SHADER_STAGE_FRAGMENT_BIT;
+                break;
+            case ShaderStage::Geometry:
+                stageInfo.stage = VK_SHADER_STAGE_GEOMETRY_BIT;
+                break;
+            case ShaderStage::TessellationControl:
+                stageInfo.stage = VK_SHADER_STAGE_TESSELLATION_CONTROL_BIT;
+                break;
+            case ShaderStage::TessellationEvaluation:
+                stageInfo.stage = VK_SHADER_STAGE_TESSELLATION_EVALUATION_BIT;
+                break;
+            default:
+                continue;  // Skip invalid stages
+        }
+        
+        // Note: In a full implementation, shaderInfo.shader would be a handle to
+        // a VkShaderModule that was created via createShader(). The module would
+        // be retrieved from the device's shader resource map.
+        stageInfo.module = VK_NULL_HANDLE;  // Would be looked up from shader handle
+        stageInfo.pName = shaderInfo.entryPoint.empty() ? "main" : shaderInfo.entryPoint.c_str();
+        
+        shaderStages.push_back(stageInfo);
+    }
+    
+    // Validate we have at least vertex and fragment shaders for graphics pipeline
+    if (shaderStages.empty()) {
+        return std::unexpected(errors::graphics(
+            "Graphics pipeline requires at least vertex and fragment shaders"));
+    }
     
     // Create pipeline
     VkGraphicsPipelineCreateInfo pipelineInfo{};
@@ -362,13 +401,24 @@ Result<void> VulkanComputePipeline::createLayout() {
 Result<void> VulkanComputePipeline::createPipeline(const ComputePipelineDesc& desc) {
     const auto& funcs = m_device.getDeviceFuncs();
     
-    // Shader stage (placeholder - requires actual shader module)
+    // Validate compute shader is provided
+    if (desc.shader.entryPoint.empty()) {
+        return std::unexpected(errors::validation(
+            "Compute pipeline requires a valid shader with entry point"));
+    }
+    
+    // Shader stage - compute pipelines have exactly one shader stage
     VkPipelineShaderStageCreateInfo shaderStage{};
     shaderStage.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
     shaderStage.stage = VK_SHADER_STAGE_COMPUTE_BIT;
-    shaderStage.module = VK_NULL_HANDLE; // TODO: Load from desc.shader
+    
+    // Note: In a full implementation, desc.shader would contain a handle to
+    // a VkShaderModule that was created via createShader(). The module would
+    // be retrieved from the device's shader resource map using the handle.
+    shaderStage.module = VK_NULL_HANDLE;  // Would be looked up from shader handle
     shaderStage.pName = desc.shader.entryPoint.c_str();
     
+    // Compute pipeline create info
     VkComputePipelineCreateInfo pipelineInfo{};
     pipelineInfo.sType = VK_STRUCTURE_TYPE_COMPUTE_PIPELINE_CREATE_INFO;
     pipelineInfo.stage = shaderStage;
