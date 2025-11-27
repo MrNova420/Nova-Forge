@@ -42,6 +42,7 @@ set(NOVA_TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_input.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_render.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_lighting.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_material.cpp
 )
 
 # Editor tests
