@@ -108,6 +108,7 @@ set(NOVA_CORE_VULKAN_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_buffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_shader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_texture.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_resource_registry.cpp
 )
 
 set(NOVA_CORE_VULKAN_HEADERS
@@ -121,6 +122,7 @@ set(NOVA_CORE_VULKAN_HEADERS
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_buffer.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_shader.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_texture.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_resource_registry.hpp
 )
 
 # NovaCore Physics System - Week 7

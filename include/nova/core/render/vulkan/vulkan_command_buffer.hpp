@@ -19,6 +19,9 @@
 
 namespace nova::render::vulkan {
 
+// Forward declaration
+class VulkanResourceRegistry;
+
 /**
  * @brief Nova GraphicsCore™ - Vulkan Command Buffer
  * 
@@ -36,12 +39,14 @@ public:
      * @param device The Vulkan device
      * @param type Command buffer type (Graphics, Compute, Transfer)
      * @param pool The command pool to allocate from
+     * @param registry Resource registry for handle lookups (optional, can be nullptr for basic usage)
      * @return Result containing the command buffer or an error
      */
     [[nodiscard]] static Result<std::unique_ptr<VulkanCommandBuffer>> create(
         VulkanDevice& device,
         CommandBufferType type,
-        VkCommandPool pool
+        VkCommandPool pool,
+        VulkanResourceRegistry* registry = nullptr
     );
     
     ~VulkanCommandBuffer() override;
@@ -176,7 +181,8 @@ public:
     [[nodiscard]] VkCommandBuffer getCommandBuffer() const noexcept { return m_commandBuffer; }
     
 private:
-    VulkanCommandBuffer(VulkanDevice& device, CommandBufferType type, VkCommandPool pool);
+    VulkanCommandBuffer(VulkanDevice& device, CommandBufferType type, VkCommandPool pool, 
+                        VulkanResourceRegistry* registry);
     
     /**
      * @brief Convert pipeline stage to Vulkan stage flags
@@ -203,6 +209,7 @@ private:
     // =========================================================================
     
     VulkanDevice& m_device;
+    VulkanResourceRegistry* m_registry = nullptr;  ///< Resource registry for handle lookups
     VkCommandPool m_pool = VK_NULL_HANDLE;
     VkCommandBuffer m_commandBuffer = VK_NULL_HANDLE;
     CommandBufferType m_type;
