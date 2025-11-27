@@ -238,7 +238,7 @@ bool VulkanTexture::allocateMemory() {
     
     // Find suitable memory type
     VkPhysicalDeviceMemoryProperties memProps;
-    m_device.getInstanceFunctions().vkGetPhysicalDeviceMemoryProperties(
+    m_device.getInstanceFuncs().vkGetPhysicalDeviceMemoryProperties(
         m_device.getPhysicalDevice(), &memProps);
     
     u32 memoryTypeIndex = UINT32_MAX;
@@ -539,7 +539,7 @@ bool VulkanTexture::upload(const TextureUpdateDesc& desc) {
     
     funcs.vkCmdCopyBufferToImage(
         cmdBuffer,
-        stagingBuffer->getBuffer(),
+        stagingBuffer->getHandle(),
         m_image,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
         1, &region);

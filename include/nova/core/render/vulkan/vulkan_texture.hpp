@@ -472,10 +472,8 @@ inline void getMipLevelDimensions(
  */
 [[nodiscard]] inline bool isCompressedFormat(TextureFormat format) {
     switch (format) {
-        case TextureFormat::BC1_RGB_UNORM:
-        case TextureFormat::BC1_RGB_SRGB:
-        case TextureFormat::BC1_RGBA_UNORM:
-        case TextureFormat::BC1_RGBA_SRGB:
+        case TextureFormat::BC1_UNORM:
+        case TextureFormat::BC1_SRGB:
         case TextureFormat::BC2_UNORM:
         case TextureFormat::BC2_SRGB:
         case TextureFormat::BC3_UNORM:
@@ -512,8 +510,8 @@ inline void getMipLevelDimensions(
  * @return Image aspect flags
  */
 [[nodiscard]] inline VkImageAspectFlags getImageAspect(TextureFormat format) {
-    if (isDepthFormat(format)) {
-        if (hasStencil(format)) {
+    if (TextureUtils::isDepthFormat(format)) {
+        if (TextureUtils::hasStencil(format)) {
             return VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT;
         }
         return VK_IMAGE_ASPECT_DEPTH_BIT;

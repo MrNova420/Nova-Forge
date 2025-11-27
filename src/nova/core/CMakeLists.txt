@@ -107,8 +107,7 @@ set(NOVA_CORE_VULKAN_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_descriptor.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_buffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_shader.cpp
-    # vulkan_texture.cpp temporarily excluded - API mismatches to fix
-    # ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_texture.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_texture.cpp
 )
 
 set(NOVA_CORE_VULKAN_HEADERS

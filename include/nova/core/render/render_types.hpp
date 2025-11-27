@@ -102,29 +102,42 @@ enum class TextureFormat : u16 {
     
     // 16-bit formats
     R16_FLOAT,
+    R16_UNORM,
+    R16_SNORM,
     R16_UINT,
     R16_SINT,
     RG8_UNORM,
     RG8_SNORM,
+    RG8_UINT,
+    RG8_SINT,
     
     // 32-bit formats
     R32_FLOAT,
     R32_UINT,
     R32_SINT,
     RG16_FLOAT,
+    RG16_UNORM,
+    RG16_SNORM,
     RG16_UINT,
+    RG16_SINT,
     RGBA8_UNORM,
     RGBA8_SRGB,
     RGBA8_SNORM,
+    RGBA8_UINT,
+    RGBA8_SINT,
     BGRA8_UNORM,
     BGRA8_SRGB,
     RGB10A2_UNORM,
+    RGB10A2_UINT,
     RG11B10_FLOAT,
     
     // 64-bit formats
     RG32_FLOAT,
+    RG32_UINT,
+    RG32_SINT,
     RGBA16_FLOAT,
     RGBA16_UNORM,
+    RGBA16_SNORM,
     RGBA16_UINT,
     RGBA16_SINT,
     
