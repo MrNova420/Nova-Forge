@@ -287,7 +287,7 @@ private:
     u64 m_nextResourceId = 1;
     
     // ==========================================================================
-    // Resource Storage
+    // Resource Storage (using opaque storage to avoid type dependencies)
     // ==========================================================================
     
     // Buffer resources
@@ -295,8 +295,6 @@ private:
         VkBuffer buffer = VK_NULL_HANDLE;
         VkDeviceMemory memory = VK_NULL_HANDLE;
         VkDeviceSize size = 0;
-        BufferUsage usage = BufferUsage::None;
-        MemoryUsage memoryUsage = MemoryUsage::GPUOnly;
         void* mappedPtr = nullptr;
         bool persistentlyMapped = false;
     };
@@ -313,7 +311,6 @@ private:
         u32 depth = 1;
         u32 mipLevels = 1;
         u32 arrayLayers = 1;
-        TextureType texType = TextureType::Texture2D;
     };
     std::unordered_map<u64, TextureResource> m_textures;
     
@@ -326,7 +323,7 @@ private:
     // Shader resources
     struct ShaderResource {
         VkShaderModule module = VK_NULL_HANDLE;
-        ShaderStage stage = ShaderStage::Vertex;
+        VkShaderStageFlagBits stage = VK_SHADER_STAGE_VERTEX_BIT;
         std::string entryPoint = "main";
     };
     std::unordered_map<u64, ShaderResource> m_shaders;
@@ -352,15 +349,9 @@ private:
         VkFramebuffer framebuffer = VK_NULL_HANDLE;
         u32 width = 0;
         u32 height = 0;
-        RenderPassHandle renderPass;
+        u64 renderPassId = 0;
     };
     std::unordered_map<u64, FramebufferResource> m_framebuffers;
-    
-    // Descriptor set layout cache
-    struct DescriptorSetLayoutResource {
-        VkDescriptorSetLayout layout = VK_NULL_HANDLE;
-    };
-    std::unordered_map<u64, DescriptorSetLayoutResource> m_descriptorSetLayouts;
     
     // Memory allocation helper
     u32 findMemoryType(u32 typeFilter, VkMemoryPropertyFlags properties) const;
