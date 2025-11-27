@@ -35,6 +35,7 @@ set(NOVA_TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_network.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_ui.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_particle.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_physics.cpp
 )
 
 # API tests
