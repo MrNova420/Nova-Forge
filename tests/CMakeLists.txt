@@ -30,6 +30,7 @@ set(NOVA_TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_memory.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_logging.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_ecs.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_math.cpp
 )
 
 # All test sources
