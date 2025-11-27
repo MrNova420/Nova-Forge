@@ -162,6 +162,17 @@ set(NOVA_CORE_PARTICLE_HEADERS
     ${NOVA_INCLUDE_DIR}/nova/core/particle/particle_system.hpp
 )
 
+# NovaCore Network System
+set(NOVA_CORE_NETWORK_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/network/network_system.cpp
+)
+
+set(NOVA_CORE_NETWORK_HEADERS
+    ${NOVA_INCLUDE_DIR}/nova/core/network/network.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/network/network_types.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/network/network_system.hpp
+)
+
 # Platform module
 set(NOVA_CORE_PLATFORM_SOURCES
     # ${CMAKE_CURRENT_SOURCE_DIR}/platform/platform.cpp
@@ -194,6 +205,7 @@ set(NOVA_CORE_SOURCES
     ${NOVA_CORE_PHYSICS_SOURCES}
     ${NOVA_CORE_ANIMATION_SOURCES}
     ${NOVA_CORE_PARTICLE_SOURCES}
+    ${NOVA_CORE_NETWORK_SOURCES}
     ${NOVA_CORE_PLATFORM_SOURCES}
     ${NOVA_CORE_CONTAINERS_SOURCES}
 )
@@ -209,6 +221,7 @@ set(NOVA_CORE_HEADERS
     ${NOVA_CORE_PHYSICS_HEADERS}
     ${NOVA_CORE_ANIMATION_HEADERS}
     ${NOVA_CORE_PARTICLE_HEADERS}
+    ${NOVA_CORE_NETWORK_HEADERS}
     ${NOVA_CORE_PLATFORM_HEADERS}
     ${NOVA_CORE_CONTAINERS_HEADERS}
 )
