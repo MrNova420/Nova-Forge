@@ -748,18 +748,49 @@ std::vector<u8> Crypto::deriveKey(
     u32 iterations,
     usize keyLength) {
     
-    // Simplified PBKDF2 - REPLACE WITH PROPER IMPLEMENTATION
-    std::vector<u8> key = hashPassword(password, salt);
+    // PBKDF2-HMAC-SHA256 implementation
+    // DK = T1 || T2 || ... || Tdklen/hlen
+    // Each Ti = F(Password, Salt, c, i)
     
-    for (u32 i = 0; i < iterations / 10000; ++i) {
-        key = hashPassword(std::string_view(reinterpret_cast<const char*>(key.data()), key.size()), salt);
+    constexpr usize hashLen = 32; // SHA-256 output size
+    usize numBlocks = (keyLength + hashLen - 1) / hashLen;
+    
+    std::vector<u8> derivedKey;
+    derivedKey.reserve(numBlocks * hashLen);
+    
+    std::vector<u8> passwordBytes(password.begin(), password.end());
+    
+    for (usize blockNum = 1; blockNum <= numBlocks; ++blockNum) {
+        // Salt || INT(blockNum) in big-endian
+        std::vector<u8> saltWithIndex = salt;
+        saltWithIndex.push_back(static_cast<u8>((blockNum >> 24) & 0xFF));
+        saltWithIndex.push_back(static_cast<u8>((blockNum >> 16) & 0xFF));
+        saltWithIndex.push_back(static_cast<u8>((blockNum >> 8) & 0xFF));
+        saltWithIndex.push_back(static_cast<u8>(blockNum & 0xFF));
+        
+        // U1 = HMAC(password, salt || INT(i))
+        HashResult U = hmacSha256(passwordBytes, saltWithIndex);
+        std::array<u8, 32> T;
+        std::copy(U.begin(), U.end(), T.begin());
+        
+        // Iterate: U_j = HMAC(password, U_{j-1}), T ^= U_j
+        for (u32 j = 2; j <= iterations; ++j) {
+            std::vector<u8> Uvec(U.begin(), U.end());
+            U = hmacSha256(passwordBytes, Uvec);
+            for (usize k = 0; k < 32; ++k) {
+                T[k] ^= U[k];
+            }
+        }
+        
+        derivedKey.insert(derivedKey.end(), T.begin(), T.end());
     }
     
-    if (key.size() > keyLength) {
-        key.resize(keyLength);
+    // Truncate to requested length
+    if (derivedKey.size() > keyLength) {
+        derivedKey.resize(keyLength);
     }
     
-    return key;
+    return derivedKey;
 }
 
 // =============================================================================

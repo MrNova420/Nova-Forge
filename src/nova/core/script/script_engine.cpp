@@ -859,11 +859,12 @@ ScriptValue ScriptEngine::evaluate(const std::string& expression) {
     // Check if it's a number
     bool isNumber = true;
     bool hasDecimal = false;
-    for (char c : expression) {
+    for (usize i = 0; i < expression.size(); ++i) {
+        char c = expression[i];
         if (c == '.') {
             if (hasDecimal) { isNumber = false; break; }
             hasDecimal = true;
-        } else if (c == '-' && &c == &expression[0]) {
+        } else if (c == '-' && i == 0) {
             continue; // Leading minus is OK
         } else if (!std::isdigit(c)) {
             isNumber = false;

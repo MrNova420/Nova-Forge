@@ -204,12 +204,18 @@ std::shared_ptr<AudioClip> AudioSystem::loadClip(const std::string& path, LoadMo
                     
                     // Find fmt chunk (usually at offset 12)
                     usize offset = 12;
-                    while (offset + 8 < clip->data.size()) {
+                    while (offset + 8 <= clip->data.size()) {
+                        // Bounds check for chunk header read
+                        if (offset + 8 > clip->data.size()) break;
+                        
                         u32 chunkId = *reinterpret_cast<const u32*>(data + offset);
                         u32 chunkSize = *reinterpret_cast<const u32*>(data + offset + 4);
                         
                         // "fmt " chunk (0x20746d66 in little-endian)
                         if (chunkId == 0x20746d66) {
+                            // Bounds check for fmt chunk data (need at least 16 bytes)
+                            if (offset + 24 > clip->data.size()) break;
+                            
                             u16 audioFormat = *reinterpret_cast<const u16*>(data + offset + 8);
                             u16 numChannels = *reinterpret_cast<const u16*>(data + offset + 10);
                             u32 sampleRate = *reinterpret_cast<const u32*>(data + offset + 12);
