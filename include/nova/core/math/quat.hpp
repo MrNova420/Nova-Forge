@@ -83,14 +83,14 @@ struct alignas(16) Quat {
         
         f32 d = f.dot(t);
         
-        if (d >= 1.0f - F32_EPSILON) {
+        if (d >= 1.0f - limits::F32_EPSILON) {
             return Quat::identity();
         }
         
-        if (d <= -1.0f + F32_EPSILON) {
+        if (d <= -1.0f + limits::F32_EPSILON) {
             // 180 degree rotation - find perpendicular axis
             Vec3 axis = Vec3::unitX().cross(f);
-            if (axis.lengthSquared() < F32_EPSILON) {
+            if (axis.lengthSquared() < limits::F32_EPSILON) {
                 axis = Vec3::unitY().cross(f);
             }
             return fromAxisAngle(axis.normalized(), PI_F32);
@@ -259,7 +259,7 @@ struct alignas(16) Quat {
     /// Normalized quaternion (unit quaternion)
     [[nodiscard]] Quat normalized() const noexcept {
         f32 len = length();
-        if (len > F32_EPSILON) {
+        if (len > limits::F32_EPSILON) {
             f32 invLen = 1.0f / len;
             return Quat(x * invLen, y * invLen, z * invLen, w * invLen);
         }
@@ -280,7 +280,7 @@ struct alignas(16) Quat {
     /// Inverse
     [[nodiscard]] Quat inverse() const noexcept {
         f32 lenSq = lengthSquared();
-        if (lenSq > F32_EPSILON) {
+        if (lenSq > limits::F32_EPSILON) {
             f32 invLenSq = 1.0f / lenSq;
             return Quat(-x * invLenSq, -y * invLenSq, -z * invLenSq, w * invLenSq);
         }
@@ -337,7 +337,7 @@ struct alignas(16) Quat {
     /// Get axis of rotation
     [[nodiscard]] Vec3 axis() const noexcept {
         f32 sinHalfAngle = std::sqrt(1.0f - w * w);
-        if (sinHalfAngle < F32_EPSILON) {
+        if (sinHalfAngle < limits::F32_EPSILON) {
             return Vec3::unitX();
         }
         return Vec3(x, y, z) / sinHalfAngle;
@@ -433,7 +433,7 @@ struct alignas(16) Quat {
     }
     
     /// Check if approximately equal (accounts for quaternion double-cover)
-    [[nodiscard]] bool isNearEqual(const Quat& other, f32 epsilon = F32_EPSILON * 100.0f) const noexcept {
+    [[nodiscard]] bool isNearEqual(const Quat& other, f32 epsilon = limits::F32_EPSILON * 100.0f) const noexcept {
         // Quaternions q and -q represent the same rotation
         f32 d = std::abs(dot(other));
         return d > 1.0f - epsilon;

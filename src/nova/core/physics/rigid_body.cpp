@@ -75,14 +75,14 @@ void RigidBody::setOrientation(const Quat& orientation) {
 }
 
 Mat4 RigidBody::getTransformMatrix() const {
-    Mat4 translation = Mat4::translation(m_position);
+    Mat4 translation = Mat4::translate(m_position);
     Mat4 rotation = m_orientation.toMat4();
     return translation * rotation;
 }
 
 Mat4 RigidBody::getInverseTransformMatrix() const {
     Mat4 invRotation = m_orientation.inverse().toMat4();
-    Mat4 invTranslation = Mat4::translation(-m_position);
+    Mat4 invTranslation = Mat4::translate(-m_position);
     return invRotation * invTranslation;
 }
 
@@ -367,8 +367,8 @@ void RigidBody::storeState() {
 
 BodyState RigidBody::getInterpolatedState(f32 alpha) const {
     BodyState state;
-    state.position = Vec3::lerp(m_previousPosition, m_position, alpha);
-    state.orientation = Quat::slerp(m_previousOrientation, m_orientation, alpha);
+    state.position = m_previousPosition.lerp(m_position, alpha);
+    state.orientation = m_previousOrientation.slerp(m_orientation, alpha);
     state.linearVelocity = m_linearVelocity;
     state.angularVelocity = m_angularVelocity;
     return state;

@@ -27,6 +27,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <algorithm>
+#include <queue>
 
 namespace nova::ecs {
 
@@ -363,25 +364,89 @@ private:
         m_executionOrder.clear();
         m_executionOrder.reserve(m_systems.size());
         
-        // Collect all systems
+        // Group systems by phase
+        std::unordered_map<SystemPhase, std::vector<System*>> phaseGroups;
         for (auto& system : m_systems) {
-            m_executionOrder.push_back(system.get());
+            phaseGroups[system->phase()].push_back(system.get());
         }
         
-        // Sort by phase first, then by order, then by name for determinism
-        std::sort(m_executionOrder.begin(), m_executionOrder.end(),
-                  [](const System* a, const System* b) {
-                      if (a->phase() != b->phase()) {
-                          return static_cast<u8>(a->phase()) < static_cast<u8>(b->phase());
-                      }
-                      if (a->order() != b->order()) {
-                          return a->order() < b->order();
-                      }
-                      return a->name() < b->name();
-                  });
-        
-        // TODO: Topological sort for dependencies
-        // For now, we rely on order() for explicit ordering
+        // Process each phase in order
+        for (SystemPhase phase : {SystemPhase::PreUpdate, SystemPhase::Update, 
+                                   SystemPhase::PostUpdate, SystemPhase::PreRender,
+                                   SystemPhase::Render, SystemPhase::PostRender}) {
+            auto& systems = phaseGroups[phase];
+            if (systems.empty()) continue;
+            
+            // Topological sort within each phase using Kahn's algorithm
+            // Build adjacency list and in-degree count
+            std::unordered_map<System*, std::vector<System*>> adjacency;
+            std::unordered_map<System*, i32> inDegree;
+            
+            for (System* sys : systems) {
+                adjacency[sys] = {};
+                inDegree[sys] = 0;
+            }
+            
+            // Build edges: if A depends on B, then B -> A (B must run before A)
+            for (System* sys : systems) {
+                for (const auto& depName : sys->dependencies()) {
+                    auto depIt = m_systemsByName.find(depName);
+                    if (depIt != m_systemsByName.end() && depIt->second->phase() == phase) {
+                        System* dep = depIt->second;
+                        adjacency[dep].push_back(sys);
+                        inDegree[sys]++;
+                    }
+                }
+            }
+            
+            // Kahn's algorithm with priority queue for deterministic ordering
+            // Use a min-heap based on (order, name) for stable sorting
+            auto compare = [](System* a, System* b) {
+                if (a->order() != b->order()) {
+                    return a->order() > b->order();  // min-heap, so greater means lower priority
+                }
+                return a->name() > b->name();
+            };
+            std::priority_queue<System*, std::vector<System*>, decltype(compare)> ready(compare);
+            
+            // Start with systems that have no dependencies
+            for (System* sys : systems) {
+                if (inDegree[sys] == 0) {
+                    ready.push(sys);
+                }
+            }
+            
+            std::vector<System*> sorted;
+            sorted.reserve(systems.size());
+            
+            while (!ready.empty()) {
+                System* current = ready.top();
+                ready.pop();
+                sorted.push_back(current);
+                
+                for (System* dependent : adjacency[current]) {
+                    inDegree[dependent]--;
+                    if (inDegree[dependent] == 0) {
+                        ready.push(dependent);
+                    }
+                }
+            }
+            
+            // Check for cycles (not all systems processed)
+            if (sorted.size() != systems.size()) {
+                // Cycle detected - fall back to order-based sort for remaining systems
+                for (System* sys : systems) {
+                    if (std::find(sorted.begin(), sorted.end(), sys) == sorted.end()) {
+                        sorted.push_back(sys);
+                    }
+                }
+            }
+            
+            // Add sorted systems to execution order
+            for (System* sys : sorted) {
+                m_executionOrder.push_back(sys);
+            }
+        }
         
         m_dirty = false;
     }

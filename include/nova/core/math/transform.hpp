@@ -92,13 +92,13 @@ struct Transform {
         
         // Extract rotation (remove scale from matrix)
         Mat3 rotMat;
-        if (t.scale.x > F32_EPSILON) {
+        if (t.scale.x > limits::F32_EPSILON) {
             rotMat.columns[0] = Vec3(m.columns[0].x, m.columns[0].y, m.columns[0].z) / t.scale.x;
         }
-        if (t.scale.y > F32_EPSILON) {
+        if (t.scale.y > limits::F32_EPSILON) {
             rotMat.columns[1] = Vec3(m.columns[1].x, m.columns[1].y, m.columns[1].z) / t.scale.y;
         }
-        if (t.scale.z > F32_EPSILON) {
+        if (t.scale.z > limits::F32_EPSILON) {
             rotMat.columns[2] = Vec3(m.columns[2].x, m.columns[2].y, m.columns[2].z) / t.scale.z;
         }
         t.rotation = Quat::fromMatrix(rotMat);
@@ -153,9 +153,9 @@ struct Transform {
     [[nodiscard]] Transform inverse() const noexcept {
         Quat invRot = rotation.conjugate();
         Vec3 invScale = Vec3(
-            scale.x > F32_EPSILON ? 1.0f / scale.x : 0.0f,
-            scale.y > F32_EPSILON ? 1.0f / scale.y : 0.0f,
-            scale.z > F32_EPSILON ? 1.0f / scale.z : 0.0f
+            scale.x > limits::F32_EPSILON ? 1.0f / scale.x : 0.0f,
+            scale.y > limits::F32_EPSILON ? 1.0f / scale.y : 0.0f,
+            scale.z > limits::F32_EPSILON ? 1.0f / scale.z : 0.0f
         );
         Vec3 invPos = invRot * (-position * invScale);
         return Transform(invPos, invRot, invScale);
@@ -180,9 +180,9 @@ struct Transform {
     [[nodiscard]] Vec3 inverseTransformPoint(const Vec3& point) const noexcept {
         Vec3 localPoint = rotation.conjugate() * (point - position);
         return Vec3(
-            scale.x > F32_EPSILON ? localPoint.x / scale.x : 0.0f,
-            scale.y > F32_EPSILON ? localPoint.y / scale.y : 0.0f,
-            scale.z > F32_EPSILON ? localPoint.z / scale.z : 0.0f
+            scale.x > limits::F32_EPSILON ? localPoint.x / scale.x : 0.0f,
+            scale.y > limits::F32_EPSILON ? localPoint.y / scale.y : 0.0f,
+            scale.z > limits::F32_EPSILON ? localPoint.z / scale.z : 0.0f
         );
     }
     
@@ -260,7 +260,7 @@ struct Transform {
     /// Look at a target
     void lookAt(const Vec3& target, const Vec3& worldUp = Vec3::up()) noexcept {
         Vec3 direction = (target - position).normalized();
-        if (direction.lengthSquared() > F32_EPSILON) {
+        if (direction.lengthSquared() > limits::F32_EPSILON) {
             rotation = Quat::lookRotation(direction, worldUp);
         }
     }
@@ -278,7 +278,7 @@ struct Transform {
     }
     
     /// Check approximate equality
-    [[nodiscard]] bool isNearEqual(const Transform& other, f32 epsilon = F32_EPSILON * 100.0f) const noexcept {
+    [[nodiscard]] bool isNearEqual(const Transform& other, f32 epsilon = limits::F32_EPSILON * 100.0f) const noexcept {
         return position.isNearEqual(other.position, epsilon) &&
                rotation.isNearEqual(other.rotation, epsilon) &&
                scale.isNearEqual(other.scale, epsilon);

@@ -201,12 +201,12 @@ struct Vec2 {
     }
     
     /// Check if vector is approximately zero
-    [[nodiscard]] bool isNearZero(f32 epsilon = F32_EPSILON * 100.0f) const noexcept {
+    [[nodiscard]] bool isNearZero(f32 epsilon = limits::F32_EPSILON * 100.0f) const noexcept {
         return lengthSquared() <= epsilon * epsilon;
     }
     
     /// Check if approximately equal to another vector
-    [[nodiscard]] bool isNearEqual(const Vec2& other, f32 epsilon = F32_EPSILON * 100.0f) const noexcept {
+    [[nodiscard]] bool isNearEqual(const Vec2& other, f32 epsilon = limits::F32_EPSILON * 100.0f) const noexcept {
         return nearEqual(x, other.x, epsilon) && nearEqual(y, other.y, epsilon);
     }
     

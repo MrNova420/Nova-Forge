@@ -15,6 +15,7 @@
 #include <nova/core/types/types.hpp>
 #include <nova/core/math/math.hpp>
 #include <nova/core/ecs/entity.hpp>
+#include <nova/core/physics/physics_types.hpp>
 
 #include <string>
 #include <vector>
@@ -26,8 +27,11 @@
 
 namespace nova::editor {
 
-using namespace nova::core;
-using namespace nova::core::math;
+// Bring in types from nova namespaces
+using namespace nova;
+using namespace nova::math;
+using nova::physics::AABB;
+using nova::physics::Ray;
 
 // ============================================================================
 // Forward Declarations
@@ -651,8 +655,8 @@ inline void Selection::updateBounds() {
     Vec3 maxPoint(std::numeric_limits<f32>::lowest());
     
     for (const auto& info : entities) {
-        minPoint = Vec3::min(minPoint, info.worldCenter - info.localBounds * 0.5f);
-        maxPoint = Vec3::max(maxPoint, info.worldCenter + info.localBounds * 0.5f);
+        minPoint = minPoint.min(info.worldCenter - info.localBounds * 0.5f);
+        maxPoint = maxPoint.max(info.worldCenter + info.localBounds * 0.5f);
     }
     
     selectionBounds.min = minPoint;

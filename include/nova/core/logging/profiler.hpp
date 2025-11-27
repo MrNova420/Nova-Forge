@@ -25,11 +25,14 @@ namespace nova::profiling {
 // Profiling Configuration
 // =============================================================================
 
-// Enable profiling in debug/profile builds
-#if defined(NOVA_DEBUG) || defined(NOVA_PROFILE)
-    #define NOVA_PROFILING_ENABLED 1
-#else
-    #define NOVA_PROFILING_ENABLED 0
+// NOVA_PROFILING_ENABLED can be set by CMake or build system
+// If not set, enable in debug/profile builds
+#if !defined(NOVA_PROFILING_ENABLED)
+    #if defined(NOVA_DEBUG) || defined(NOVA_PROFILE)
+        #define NOVA_PROFILING_ENABLED 1
+    #else
+        #define NOVA_PROFILING_ENABLED 0
+    #endif
 #endif
 
 // Tracy integration (optional)

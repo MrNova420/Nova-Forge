@@ -218,7 +218,7 @@ struct Mat3 {
     /// Inverse
     [[nodiscard]] Mat3 inverse() const noexcept {
         f32 det = determinant();
-        if (std::abs(det) < F32_EPSILON) {
+        if (std::abs(det) < limits::F32_EPSILON) {
             return Mat3::identity();
         }
         

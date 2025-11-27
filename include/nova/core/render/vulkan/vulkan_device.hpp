@@ -17,6 +17,7 @@
 #include "nova/core/render/render_device.hpp"
 #include <vector>
 #include <array>
+#include <unordered_map>
 
 namespace nova::render::vulkan {
 
@@ -158,6 +159,21 @@ public:
     [[nodiscard]] bool isValidationEnabled() const noexcept { return m_validationEnabled; }
     
     /**
+     * @brief Get the graphics command pool for a specific frame
+     * @param frameIndex Frame index (0 to MAX_FRAMES_IN_FLIGHT-1)
+     * @return Graphics command pool for the frame
+     */
+    [[nodiscard]] VkCommandPool getGraphicsCommandPool(u32 frameIndex = 0) const noexcept { 
+        return m_graphicsCommandPools[frameIndex % MAX_FRAMES_IN_FLIGHT]; 
+    }
+    
+    /**
+     * @brief Get the transfer command pool (shared across frames)
+     * @return Transfer command pool
+     */
+    [[nodiscard]] VkCommandPool getTransferCommandPool() const noexcept { return m_transferCommandPool; }
+    
+    /**
      * @brief Set a debug name for a Vulkan object
      * @param objectType Vulkan object type
      * @param object Object handle
@@ -269,6 +285,76 @@ private:
     
     // Resource ID tracking
     u64 m_nextResourceId = 1;
+    
+    // ==========================================================================
+    // Resource Storage (using opaque storage to avoid type dependencies)
+    // ==========================================================================
+    
+    // Buffer resources
+    struct BufferResource {
+        VkBuffer buffer = VK_NULL_HANDLE;
+        VkDeviceMemory memory = VK_NULL_HANDLE;
+        VkDeviceSize size = 0;
+        void* mappedPtr = nullptr;
+        bool persistentlyMapped = false;
+    };
+    std::unordered_map<u64, BufferResource> m_buffers;
+    
+    // Texture resources
+    struct TextureResource {
+        VkImage image = VK_NULL_HANDLE;
+        VkDeviceMemory memory = VK_NULL_HANDLE;
+        VkImageView view = VK_NULL_HANDLE;
+        VkFormat format = VK_FORMAT_UNDEFINED;
+        u32 width = 0;
+        u32 height = 0;
+        u32 depth = 1;
+        u32 mipLevels = 1;
+        u32 arrayLayers = 1;
+    };
+    std::unordered_map<u64, TextureResource> m_textures;
+    
+    // Sampler resources
+    struct SamplerResource {
+        VkSampler sampler = VK_NULL_HANDLE;
+    };
+    std::unordered_map<u64, SamplerResource> m_samplers;
+    
+    // Shader resources
+    struct ShaderResource {
+        VkShaderModule module = VK_NULL_HANDLE;
+        VkShaderStageFlagBits stage = VK_SHADER_STAGE_VERTEX_BIT;
+        std::string entryPoint = "main";
+    };
+    std::unordered_map<u64, ShaderResource> m_shaders;
+    
+    // Pipeline resources
+    struct PipelineResource {
+        VkPipeline pipeline = VK_NULL_HANDLE;
+        VkPipelineLayout layout = VK_NULL_HANDLE;
+        VkPipelineBindPoint bindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
+    };
+    std::unordered_map<u64, PipelineResource> m_pipelines;
+    
+    // Render pass resources
+    struct RenderPassResource {
+        VkRenderPass renderPass = VK_NULL_HANDLE;
+        u32 colorAttachmentCount = 0;
+        bool hasDepthStencil = false;
+    };
+    std::unordered_map<u64, RenderPassResource> m_renderPasses;
+    
+    // Framebuffer resources
+    struct FramebufferResource {
+        VkFramebuffer framebuffer = VK_NULL_HANDLE;
+        u32 width = 0;
+        u32 height = 0;
+        u64 renderPassId = 0;
+    };
+    std::unordered_map<u64, FramebufferResource> m_framebuffers;
+    
+    // Memory allocation helper
+    u32 findMemoryType(u32 typeFilter, VkMemoryPropertyFlags properties) const;
 };
 
 /**

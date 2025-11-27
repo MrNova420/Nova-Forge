@@ -8,11 +8,14 @@
 
 #include <nova/editor/editor_gizmo.hpp>
 #include <nova/editor/editor_context.hpp>
+#include <nova/core/physics/physics_types.hpp>
 
 #include <cmath>
 #include <algorithm>
 
 namespace nova::editor {
+
+using nova::physics::Ray;
 
 // ============================================================================
 // Translation Gizmo Implementation

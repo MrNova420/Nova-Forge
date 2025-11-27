@@ -498,12 +498,12 @@ public:
     /**
      * @brief Check if body is sleeping
      */
-    [[nodiscard]] bool isSleeping() const { return hasFlag(m_flags, BodyFlags::Sleeping); }
+    [[nodiscard]] bool isSleeping() const { return hasFlag(BodyFlags::Sleeping); }
     
     /**
      * @brief Check if body is active (not sleeping)
      */
-    [[nodiscard]] bool isActive() const { return hasFlag(m_flags, BodyFlags::Active) && !isSleeping(); }
+    [[nodiscard]] bool isActive() const { return hasFlag(BodyFlags::Active) && !isSleeping(); }
     
     /**
      * @brief Wake up the body
@@ -518,7 +518,7 @@ public:
     /**
      * @brief Check if body can sleep
      */
-    [[nodiscard]] bool canSleep() const { return hasFlag(m_flags, BodyFlags::CanSleep); }
+    [[nodiscard]] bool canSleep() const { return hasFlag(BodyFlags::CanSleep); }
     
     /**
      * @brief Set whether body can sleep

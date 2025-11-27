@@ -136,7 +136,7 @@ std::unique_ptr<VulkanTexture> VulkanTexture::createFromImage(
 }
 
 bool VulkanTexture::createImage() {
-    auto& funcs = m_device.getDeviceFunctions();
+    auto& funcs = m_device.getDeviceFuncs();
     VkDevice device = m_device.getDevice();
     
     // Determine image type
@@ -229,7 +229,7 @@ bool VulkanTexture::createImage() {
 }
 
 bool VulkanTexture::allocateMemory() {
-    auto& funcs = m_device.getDeviceFunctions();
+    auto& funcs = m_device.getDeviceFuncs();
     VkDevice device = m_device.getDevice();
     
     // Get memory requirements
@@ -238,7 +238,7 @@ bool VulkanTexture::allocateMemory() {
     
     // Find suitable memory type
     VkPhysicalDeviceMemoryProperties memProps;
-    m_device.getInstanceFunctions().vkGetPhysicalDeviceMemoryProperties(
+    m_device.getInstanceFuncs().vkGetPhysicalDeviceMemoryProperties(
         m_device.getPhysicalDevice(), &memProps);
     
     u32 memoryTypeIndex = UINT32_MAX;
@@ -280,7 +280,7 @@ bool VulkanTexture::allocateMemory() {
 }
 
 bool VulkanTexture::createImageView() {
-    auto& funcs = m_device.getDeviceFunctions();
+    auto& funcs = m_device.getDeviceFuncs();
     VkDevice device = m_device.getDevice();
     
     // Determine view type
@@ -331,7 +331,7 @@ bool VulkanTexture::createImageView() {
 }
 
 void VulkanTexture::cleanup() {
-    auto& funcs = m_device.getDeviceFunctions();
+    auto& funcs = m_device.getDeviceFuncs();
     VkDevice device = m_device.getDevice();
     
     if (m_imageView != VK_NULL_HANDLE) {
@@ -442,7 +442,7 @@ bool VulkanTexture::upload(const TextureUpdateDesc& desc) {
         return false;
     }
     
-    auto& funcs = m_device.getDeviceFunctions();
+    auto& funcs = m_device.getDeviceFuncs();
     VkDevice device = m_device.getDevice();
     
     // Calculate data size
@@ -451,10 +451,11 @@ bool VulkanTexture::upload(const TextureUpdateDesc& desc) {
     usize dataSize = static_cast<usize>(rowPitch) * desc.height * desc.depth;
     
     // Create staging buffer
-    auto stagingBuffer = VulkanBuffer::staging(m_device, dataSize);
-    if (!stagingBuffer) {
+    auto stagingBufferResult = VulkanBuffer::create(m_device, VulkanBufferDesc::staging(dataSize));
+    if (!stagingBufferResult) {
         return false;
     }
+    auto& stagingBuffer = *stagingBufferResult;
     
     // Copy data to staging buffer
     void* mapped = stagingBuffer->map();
@@ -479,7 +480,7 @@ bool VulkanTexture::upload(const TextureUpdateDesc& desc) {
     stagingBuffer->unmap();
     
     // Create temporary command buffer for the copy
-    VkCommandPool commandPool = m_device.getCommandPool();
+    VkCommandPool commandPool = m_device.getTransferCommandPool();
     
     VkCommandBufferAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
@@ -538,7 +539,7 @@ bool VulkanTexture::upload(const TextureUpdateDesc& desc) {
     
     funcs.vkCmdCopyBufferToImage(
         cmdBuffer,
-        stagingBuffer->getBuffer(),
+        stagingBuffer->getHandle(),
         m_image,
         VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
         1, &region);
@@ -582,7 +583,7 @@ bool VulkanTexture::generateMipmaps(VulkanCommandBuffer& cmdBuffer) {
         return true; // No mipmaps to generate
     }
     
-    auto& funcs = m_device.getDeviceFunctions();
+    auto& funcs = m_device.getDeviceFuncs();
     VkCommandBuffer vkCmdBuffer = cmdBuffer.getCommandBuffer();
     
     VkImageMemoryBarrier barrier{};
@@ -688,7 +689,7 @@ void VulkanTexture::transitionLayout(
         return;
     }
     
-    auto& funcs = m_device.getDeviceFunctions();
+    auto& funcs = m_device.getDeviceFuncs();
     VkCommandBuffer vkCmdBuffer = cmdBuffer.getCommandBuffer();
     
     VkImageMemoryBarrier barrier{};
@@ -820,7 +821,7 @@ VulkanSampler::VulkanSampler(VulkanDevice& device)
 
 VulkanSampler::~VulkanSampler() {
     if (m_sampler != VK_NULL_HANDLE) {
-        m_device.getDeviceFunctions().vkDestroySampler(
+        m_device.getDeviceFuncs().vkDestroySampler(
             m_device.getDevice(), m_sampler, nullptr);
     }
 }
@@ -836,7 +837,7 @@ VulkanSampler::VulkanSampler(VulkanSampler&& other) noexcept
 VulkanSampler& VulkanSampler::operator=(VulkanSampler&& other) noexcept {
     if (this != &other) {
         if (m_sampler != VK_NULL_HANDLE) {
-            m_device.getDeviceFunctions().vkDestroySampler(
+            m_device.getDeviceFuncs().vkDestroySampler(
                 m_device.getDevice(), m_sampler, nullptr);
         }
         
@@ -855,7 +856,7 @@ std::unique_ptr<VulkanSampler> VulkanSampler::create(
     auto sampler = std::unique_ptr<VulkanSampler>(new VulkanSampler(device));
     sampler->m_name = desc.name;
     
-    auto& funcs = device.getDeviceFunctions();
+    auto& funcs = device.getDeviceFuncs();
     VkDevice vkDevice = device.getDevice();
     
     // Clamp max anisotropy to device limits
@@ -902,7 +903,7 @@ VulkanTextureView::VulkanTextureView(VulkanDevice& device)
 
 VulkanTextureView::~VulkanTextureView() {
     if (m_imageView != VK_NULL_HANDLE) {
-        m_device.getDeviceFunctions().vkDestroyImageView(
+        m_device.getDeviceFuncs().vkDestroyImageView(
             m_device.getDevice(), m_imageView, nullptr);
     }
 }
@@ -917,7 +918,7 @@ VulkanTextureView::VulkanTextureView(VulkanTextureView&& other) noexcept
 VulkanTextureView& VulkanTextureView::operator=(VulkanTextureView&& other) noexcept {
     if (this != &other) {
         if (m_imageView != VK_NULL_HANDLE) {
-            m_device.getDeviceFunctions().vkDestroyImageView(
+            m_device.getDeviceFuncs().vkDestroyImageView(
                 m_device.getDevice(), m_imageView, nullptr);
         }
         
@@ -983,7 +984,7 @@ std::unique_ptr<VulkanTextureView> VulkanTextureView::create(
     viewInfo.subresourceRange.baseArrayLayer = desc.baseArrayLayer;
     viewInfo.subresourceRange.layerCount = desc.arrayLayerCount;
     
-    VkResult result = device.getDeviceFunctions().vkCreateImageView(
+    VkResult result = device.getDeviceFuncs().vkCreateImageView(
         device.getDevice(), &viewInfo, nullptr, &view->m_imageView);
     
     if (result != VK_SUCCESS) {

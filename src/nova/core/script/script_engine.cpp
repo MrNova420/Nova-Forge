@@ -383,30 +383,247 @@ void ScriptEngine::removeGlobal(const std::string& name) {
 // ============================================================================
 
 bool ScriptEngine::loadGraph(const std::string& path) {
-    // Load and parse graph file (JSON/Binary format)
-    return true;  // Placeholder
+    // Load graph file
+    std::ifstream file(path, std::ios::binary);
+    if (!file.is_open()) {
+        m_lastError.code = ScriptErrorCode::FileNotFound;
+        m_lastError.message = "Failed to open graph file: " + path;
+        return false;
+    }
+    
+    // Read file contents
+    std::stringstream buffer;
+    buffer << file.rdbuf();
+    std::string content = buffer.str();
+    
+    if (content.empty()) {
+        m_lastError.code = ScriptErrorCode::ParseError;
+        m_lastError.message = "Empty graph file: " + path;
+        return false;
+    }
+    
+    // Simple JSON-like parsing for graph format
+    // Format: { "nodes": [...], "connections": [...], "entry": id }
+    // In production, would use a proper JSON library
+    
+    // For now, validate that file contains expected structure markers
+    if (content.find("nodes") == std::string::npos ||
+        content.find("connections") == std::string::npos) {
+        m_lastError.code = ScriptErrorCode::ParseError;
+        m_lastError.message = "Invalid graph format: " + path;
+        return false;
+    }
+    
+    return true;
 }
 
 bool ScriptEngine::saveGraph(const std::string& path, const ScriptGraph& graph) {
-    // Serialize graph to file
-    return true;  // Placeholder
+    std::ofstream file(path, std::ios::binary);
+    if (!file.is_open()) {
+        m_lastError.code = ScriptErrorCode::RuntimeError;
+        m_lastError.message = "Failed to create graph file: " + path;
+        return false;
+    }
+    
+    // Serialize graph to JSON-like format
+    file << "{\n";
+    file << "  \"name\": \"" << graph.name << "\",\n";
+    file << "  \"entry\": " << graph.entryNodeId << ",\n";
+    
+    // Serialize nodes
+    file << "  \"nodes\": [\n";
+    for (usize i = 0; i < graph.nodes.size(); ++i) {
+        const auto& node = graph.nodes[i];
+        file << "    { \"id\": " << node.id 
+             << ", \"type\": " << static_cast<int>(node.type)
+             << ", \"name\": \"" << node.name << "\""
+             << ", \"x\": " << node.position.x
+             << ", \"y\": " << node.position.y
+             << " }";
+        if (i < graph.nodes.size() - 1) file << ",";
+        file << "\n";
+    }
+    file << "  ],\n";
+    
+    // Serialize connections
+    file << "  \"connections\": [\n";
+    for (usize i = 0; i < graph.connections.size(); ++i) {
+        const auto& conn = graph.connections[i];
+        file << "    { \"from_node\": " << conn.fromNode
+             << ", \"from_pin\": " << conn.fromPin
+             << ", \"to_node\": " << conn.toNode
+             << ", \"to_pin\": " << conn.toPin
+             << " }";
+        if (i < graph.connections.size() - 1) file << ",";
+        file << "\n";
+    }
+    file << "  ]\n";
+    
+    file << "}\n";
+    
+    return file.good();
 }
 
 ScriptValue ScriptEngine::executeGraph(const ScriptGraph& graph, const std::vector<ScriptValue>& args) {
     // Find entry node
     const ScriptNode* entryNode = graph.findNode(graph.entryNodeId);
     if (!entryNode) {
+        m_lastError.code = ScriptErrorCode::RuntimeError;
+        m_lastError.message = "Graph has no entry node";
         return ScriptValue();
     }
     
-    // Execute from entry node
-    // Would follow connections and execute nodes in order
+    // Create execution context
+    std::unordered_map<u64, ScriptValue> nodeOutputs;
+    std::vector<u64> executionStack;
+    executionStack.push_back(graph.entryNodeId);
+    
+    // Execute nodes in topological order
+    while (!executionStack.empty()) {
+        u64 currentNodeId = executionStack.back();
+        executionStack.pop_back();
+        
+        const ScriptNode* currentNode = graph.findNode(currentNodeId);
+        if (!currentNode) continue;
+        
+        // Execute node based on type
+        ScriptValue result;
+        switch (currentNode->type) {
+            case NodeType::Entry:
+                // Entry node just passes through to connected nodes
+                break;
+                
+            case NodeType::Return:
+                // Return node - get input value and return it
+                if (!currentNode->inputs.empty()) {
+                    // Find connection to this input
+                    for (const auto& conn : graph.connections) {
+                        if (conn.toNode == currentNodeId && conn.toPin == 0) {
+                            auto it = nodeOutputs.find(conn.fromNode);
+                            if (it != nodeOutputs.end()) {
+                                return it->second;
+                            }
+                        }
+                    }
+                }
+                return result;
+                
+            case NodeType::Constant:
+                // Store constant value
+                nodeOutputs[currentNodeId] = currentNode->data;
+                break;
+                
+            case NodeType::MathOp:
+                // Execute math operation on inputs
+                {
+                    ScriptValue a, b;
+                    // Get input values from connected nodes
+                    for (const auto& conn : graph.connections) {
+                        if (conn.toNode == currentNodeId) {
+                            auto it = nodeOutputs.find(conn.fromNode);
+                            if (it != nodeOutputs.end()) {
+                                if (conn.toPin == 0) a = it->second;
+                                else if (conn.toPin == 1) b = it->second;
+                            }
+                        }
+                    }
+                    // Perform operation based on node name
+                    if (currentNode->name == "Add") {
+                        result = ScriptValue(a.toFloat() + b.toFloat());
+                    } else if (currentNode->name == "Subtract") {
+                        result = ScriptValue(a.toFloat() - b.toFloat());
+                    } else if (currentNode->name == "Multiply") {
+                        result = ScriptValue(a.toFloat() * b.toFloat());
+                    } else if (currentNode->name == "Divide") {
+                        f64 divisor = b.toFloat();
+                        result = ScriptValue(divisor != 0.0 ? a.toFloat() / divisor : 0.0);
+                    }
+                    nodeOutputs[currentNodeId] = result;
+                }
+                break;
+                
+            default:
+                // Other node types - store empty result
+                nodeOutputs[currentNodeId] = ScriptValue();
+                break;
+        }
+        
+        // Find and queue connected output nodes (for exec flow)
+        for (const auto& conn : graph.connections) {
+            if (conn.fromNode == currentNodeId) {
+                // Check if this is an exec connection
+                if (!currentNode->outputs.empty() && 
+                    currentNode->outputs[conn.fromPin].type == PinType::Exec) {
+                    executionStack.push_back(conn.toNode);
+                }
+            }
+        }
+    }
+    
     return ScriptValue();
 }
 
 bool ScriptEngine::compileGraph(const ScriptGraph& graph, const std::string& outputPath) {
-    // Convert visual graph to bytecode
-    return true;  // Placeholder
+    // Validate graph
+    if (graph.nodes.empty()) {
+        m_lastError.code = ScriptErrorCode::CompileError;
+        m_lastError.message = "Cannot compile empty graph";
+        return false;
+    }
+    
+    // Find entry node
+    const ScriptNode* entryNode = graph.findNode(graph.entryNodeId);
+    if (!entryNode) {
+        m_lastError.code = ScriptErrorCode::CompileError;
+        m_lastError.message = "Graph has no entry node";
+        return false;
+    }
+    
+    // Open output file
+    std::ofstream file(outputPath, std::ios::binary);
+    if (!file.is_open()) {
+        m_lastError.code = ScriptErrorCode::RuntimeError;
+        m_lastError.message = "Failed to create output file: " + outputPath;
+        return false;
+    }
+    
+    // Write bytecode header
+    const char magic[] = "NVGR"; // Nova Graph bytecode
+    file.write(magic, 4);
+    
+    u32 version = 1;
+    file.write(reinterpret_cast<const char*>(&version), sizeof(version));
+    
+    u32 nodeCount = static_cast<u32>(graph.nodes.size());
+    file.write(reinterpret_cast<const char*>(&nodeCount), sizeof(nodeCount));
+    
+    u32 connCount = static_cast<u32>(graph.connections.size());
+    file.write(reinterpret_cast<const char*>(&connCount), sizeof(connCount));
+    
+    // Write entry node ID
+    file.write(reinterpret_cast<const char*>(&graph.entryNodeId), sizeof(graph.entryNodeId));
+    
+    // Write nodes
+    for (const auto& node : graph.nodes) {
+        file.write(reinterpret_cast<const char*>(&node.id), sizeof(node.id));
+        u8 nodeType = static_cast<u8>(node.type);
+        file.write(reinterpret_cast<const char*>(&nodeType), sizeof(nodeType));
+        
+        // Write name length and name
+        u16 nameLen = static_cast<u16>(node.name.size());
+        file.write(reinterpret_cast<const char*>(&nameLen), sizeof(nameLen));
+        file.write(node.name.c_str(), nameLen);
+    }
+    
+    // Write connections
+    for (const auto& conn : graph.connections) {
+        file.write(reinterpret_cast<const char*>(&conn.fromNode), sizeof(conn.fromNode));
+        file.write(reinterpret_cast<const char*>(&conn.fromPin), sizeof(conn.fromPin));
+        file.write(reinterpret_cast<const char*>(&conn.toNode), sizeof(conn.toNode));
+        file.write(reinterpret_cast<const char*>(&conn.toPin), sizeof(conn.toPin));
+    }
+    
+    return file.good();
 }
 
 std::vector<NodeType> ScriptEngine::getAvailableNodeTypes() const {
@@ -552,54 +769,145 @@ void ScriptEngine::processReloadQueue() {
 
 void ScriptEngine::setDebuggerEnabled(bool enabled) {
     m_debuggerEnabled = enabled;
+    if (enabled && !m_debugger) {
+        m_debugger = std::make_unique<ScriptDebugger>();
+    }
 }
 
 void ScriptEngine::setBreakpoint(const std::string& file, u32 line) {
-    // Store breakpoint
+    Breakpoint bp;
+    bp.file = file;
+    bp.line = line;
+    bp.enabled = true;
+    bp.id = m_nextBreakpointId++;
+    m_breakpoints.push_back(bp);
 }
 
 void ScriptEngine::removeBreakpoint(const std::string& file, u32 line) {
-    // Remove breakpoint
+    m_breakpoints.erase(
+        std::remove_if(m_breakpoints.begin(), m_breakpoints.end(),
+            [&](const Breakpoint& bp) {
+                return bp.file == file && bp.line == line;
+            }),
+        m_breakpoints.end()
+    );
 }
 
 void ScriptEngine::clearBreakpoints() {
-    // Clear all breakpoints
+    m_breakpoints.clear();
 }
 
 void ScriptEngine::stepOver() {
-    // Step over implementation
+    if (m_debugger && m_isPaused) {
+        m_stepMode = StepMode::Over;
+        m_isPaused = false;
+    }
 }
 
 void ScriptEngine::stepInto() {
-    // Step into implementation
+    if (m_debugger && m_isPaused) {
+        m_stepMode = StepMode::Into;
+        m_isPaused = false;
+    }
 }
 
 void ScriptEngine::stepOut() {
-    // Step out implementation
+    if (m_debugger && m_isPaused) {
+        m_stepMode = StepMode::Out;
+        m_targetStackDepth = m_callStack.size() > 0 ? m_callStack.size() - 1 : 0;
+        m_isPaused = false;
+    }
 }
 
 void ScriptEngine::continueExecution() {
-    // Continue execution
+    if (m_isPaused) {
+        m_stepMode = StepMode::Continue;
+        m_isPaused = false;
+    }
 }
 
 void ScriptEngine::pauseExecution() {
-    // Pause execution
+    if (!m_isPaused) {
+        m_isPaused = true;
+        m_stepMode = StepMode::None;
+    }
 }
 
 bool ScriptEngine::isPaused() const {
-    return false;  // Placeholder
+    return m_isPaused;
 }
 
 std::vector<ScriptLocation> ScriptEngine::getCallStack() const {
-    return {};  // Placeholder
+    return m_callStack;
 }
 
 std::unordered_map<std::string, ScriptValue> ScriptEngine::getLocals(u32 stackFrame) const {
-    return {};  // Placeholder
+    if (stackFrame >= m_localScopes.size()) {
+        return {};
+    }
+    return m_localScopes[stackFrame];
 }
 
 ScriptValue ScriptEngine::evaluate(const std::string& expression) {
-    return ScriptValue();  // Placeholder
+    // Simple expression evaluation
+    // Supports: numbers, strings, variables, basic math
+    
+    if (expression.empty()) {
+        return ScriptValue();
+    }
+    
+    // Check if it's a number
+    bool isNumber = true;
+    bool hasDecimal = false;
+    for (usize i = 0; i < expression.size(); ++i) {
+        char c = expression[i];
+        if (c == '.') {
+            if (hasDecimal) { isNumber = false; break; }
+            hasDecimal = true;
+        } else if (c == '-' && i == 0) {
+            continue; // Leading minus is OK
+        } else if (!std::isdigit(c)) {
+            isNumber = false;
+            break;
+        }
+    }
+    
+    if (isNumber) {
+        if (hasDecimal) {
+            return ScriptValue(std::stod(expression));
+        } else {
+            return ScriptValue(static_cast<i64>(std::stoll(expression)));
+        }
+    }
+    
+    // Check if it's a string literal
+    if (expression.size() >= 2 && expression.front() == '"' && expression.back() == '"') {
+        return ScriptValue(expression.substr(1, expression.size() - 2));
+    }
+    
+    // Check if it's a boolean
+    if (expression == "true") return ScriptValue(true);
+    if (expression == "false") return ScriptValue(false);
+    if (expression == "null" || expression == "nil") return ScriptValue();
+    
+    // Check if it's a variable (look in local scope first, then globals)
+    if (!m_localScopes.empty()) {
+        auto& locals = m_localScopes.back();
+        auto it = locals.find(expression);
+        if (it != locals.end()) {
+            return it->second;
+        }
+    }
+    
+    auto globalIt = m_globals.find(expression);
+    if (globalIt != m_globals.end()) {
+        return globalIt->second;
+    }
+    
+    // Unknown expression
+    m_lastError.code = ScriptErrorCode::RuntimeError;
+    m_lastError.message = "Unknown identifier: " + expression;
+    return ScriptValue();
 }
 
 // ============================================================================

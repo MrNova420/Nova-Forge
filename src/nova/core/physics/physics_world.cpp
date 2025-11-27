@@ -1160,10 +1160,28 @@ void SequentialImpulseSolver::solveVelocityConstraint(RigidBody* bodyA, RigidBod
     // Normal impulse
     f32 vn = relVel.dot(normal);
     
+    // Calculate effective mass with inertia terms
     f32 invMassSum = bodyA->getInverseMass() + bodyB->getInverseMass();
     
-    // TODO: Add inertia terms
-    f32 effectiveMass = (invMassSum > 0.0f) ? (1.0f / invMassSum) : 0.0f;
+    // Angular contribution to effective mass using diagonal inertia
+    // For body A: (rA x n)^2 / I
+    // For body B: (rB x n)^2 / I
+    Vec3 rAxN = rA.cross(normal);
+    Vec3 rBxN = rB.cross(normal);
+    
+    // Get inverse inertia (diagonal)
+    Vec3 invInertiaA = bodyA->getInverseInertia();
+    Vec3 invInertiaB = bodyB->getInverseInertia();
+    
+    // Angular contribution (simplified diagonal form)
+    Vec3 angularA(rAxN.x * invInertiaA.x, rAxN.y * invInertiaA.y, rAxN.z * invInertiaA.z);
+    Vec3 angularB(rBxN.x * invInertiaB.x, rBxN.y * invInertiaB.y, rBxN.z * invInertiaB.z);
+    
+    f32 angularTerm = angularA.cross(rA).dot(normal) + angularB.cross(rB).dot(normal);
+    
+    f32 effectiveMass = (invMassSum + angularTerm > PHYSICS_EPSILON) 
+                         ? (1.0f / (invMassSum + angularTerm)) 
+                         : 0.0f;
     
     f32 lambda = -vn * effectiveMass;
     f32 oldNormalImpulse = contact.normalImpulse;
@@ -1174,12 +1192,14 @@ void SequentialImpulseSolver::solveVelocityConstraint(RigidBody* bodyA, RigidBod
     
     if (bodyA->isDynamic()) {
         bodyA->applyImpulse(-impulse);
+        bodyA->applyAngularImpulse(-rA.cross(impulse));
     }
     if (bodyB->isDynamic()) {
         bodyB->applyImpulse(impulse);
+        bodyB->applyAngularImpulse(rB.cross(impulse));
     }
     
-    // Friction impulse (simplified)
+    // Friction impulse
     relVel = bodyB->getVelocityAtPoint(contact.position) -
              bodyA->getVelocityAtPoint(contact.position);
     
@@ -1189,8 +1209,18 @@ void SequentialImpulseSolver::solveVelocityConstraint(RigidBody* bodyA, RigidBod
     if (tangentLen > PHYSICS_EPSILON) {
         tangent /= tangentLen;
         
+        // Recalculate effective mass for tangent direction
+        Vec3 rAxT = rA.cross(tangent);
+        Vec3 rBxT = rB.cross(tangent);
+        Vec3 angularAT(rAxT.x * invInertiaA.x, rAxT.y * invInertiaA.y, rAxT.z * invInertiaA.z);
+        Vec3 angularBT(rBxT.x * invInertiaB.x, rBxT.y * invInertiaB.y, rBxT.z * invInertiaB.z);
+        f32 angularTermT = angularAT.cross(rA).dot(tangent) + angularBT.cross(rB).dot(tangent);
+        f32 effectiveMassT = (invMassSum + angularTermT > PHYSICS_EPSILON) 
+                              ? (1.0f / (invMassSum + angularTermT)) 
+                              : 0.0f;
+        
         f32 vt = relVel.dot(tangent);
-        f32 lambdaT = -vt * effectiveMass;
+        f32 lambdaT = -vt * effectiveMassT;
         
         f32 maxFriction = friction * contact.normalImpulse;
         lambdaT = std::clamp(lambdaT, -maxFriction, maxFriction);
@@ -1199,9 +1229,11 @@ void SequentialImpulseSolver::solveVelocityConstraint(RigidBody* bodyA, RigidBod
         
         if (bodyA->isDynamic()) {
             bodyA->applyImpulse(-frictionImpulse);
+            bodyA->applyAngularImpulse(-rA.cross(frictionImpulse));
         }
         if (bodyB->isDynamic()) {
             bodyB->applyImpulse(frictionImpulse);
+            bodyB->applyAngularImpulse(rB.cross(frictionImpulse));
         }
         
         contact.tangentImpulse = tangent * lambdaT;
@@ -1211,8 +1243,7 @@ void SequentialImpulseSolver::solveVelocityConstraint(RigidBody* bodyA, RigidBod
 void SequentialImpulseSolver::solvePositions(std::vector<RigidBody*>& bodies,
                                               std::vector<ContactManifold>& contacts,
                                               f32 deltaTime) {
-    constexpr f32 SLOP = 0.01f;
-    constexpr f32 BAUMGARTE = 0.2f;
+    (void)deltaTime; // Unused but part of interface
     
     for (u32 iter = 0; iter < m_positionIterations; iter++) {
         for (auto& contact : contacts) {

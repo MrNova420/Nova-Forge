@@ -108,6 +108,7 @@ set(NOVA_CORE_VULKAN_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_buffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_shader.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_texture.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/render/vulkan/vulkan_resource_registry.cpp
 )
 
 set(NOVA_CORE_VULKAN_HEADERS
@@ -121,6 +122,7 @@ set(NOVA_CORE_VULKAN_HEADERS
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_buffer.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_shader.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_texture.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/render/vulkan/vulkan_resource_registry.hpp
 )
 
 # NovaCore Physics System - Week 7
@@ -136,6 +138,51 @@ set(NOVA_CORE_PHYSICS_HEADERS
     ${NOVA_INCLUDE_DIR}/nova/core/physics/collision_shape.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/physics/rigid_body.hpp
     ${NOVA_INCLUDE_DIR}/nova/core/physics/physics_world.hpp
+)
+
+# NovaCore Animation System
+set(NOVA_CORE_ANIMATION_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/animation/animation_system.cpp
+)
+
+set(NOVA_CORE_ANIMATION_HEADERS
+    ${NOVA_INCLUDE_DIR}/nova/core/animation/animation.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/animation/animation_types.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/animation/animation_system.hpp
+)
+
+# NovaCore Particle System
+set(NOVA_CORE_PARTICLE_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/particle/particle_system.cpp
+)
+
+set(NOVA_CORE_PARTICLE_HEADERS
+    ${NOVA_INCLUDE_DIR}/nova/core/particle/particle.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/particle/particle_types.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/particle/particle_system.hpp
+)
+
+# NovaCore Network System
+set(NOVA_CORE_NETWORK_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/network/network_system.cpp
+)
+
+set(NOVA_CORE_NETWORK_HEADERS
+    ${NOVA_INCLUDE_DIR}/nova/core/network/network.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/network/network_types.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/network/network_system.hpp
+)
+
+# NovaCore UI System
+set(NOVA_CORE_UI_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/ui/ui_system.cpp
+)
+
+set(NOVA_CORE_UI_HEADERS
+    ${NOVA_INCLUDE_DIR}/nova/core/ui/ui.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/ui/ui_types.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/ui/widget.hpp
+    ${NOVA_INCLUDE_DIR}/nova/core/ui/ui_system.hpp
 )
 
 # Platform module
@@ -168,6 +215,10 @@ set(NOVA_CORE_SOURCES
     ${NOVA_CORE_RENDER_SOURCES}
     ${NOVA_CORE_VULKAN_SOURCES}
     ${NOVA_CORE_PHYSICS_SOURCES}
+    ${NOVA_CORE_ANIMATION_SOURCES}
+    ${NOVA_CORE_PARTICLE_SOURCES}
+    ${NOVA_CORE_NETWORK_SOURCES}
+    ${NOVA_CORE_UI_SOURCES}
     ${NOVA_CORE_PLATFORM_SOURCES}
     ${NOVA_CORE_CONTAINERS_SOURCES}
 )
@@ -181,6 +232,10 @@ set(NOVA_CORE_HEADERS
     ${NOVA_CORE_RENDER_HEADERS}
     ${NOVA_CORE_VULKAN_HEADERS}
     ${NOVA_CORE_PHYSICS_HEADERS}
+    ${NOVA_CORE_ANIMATION_HEADERS}
+    ${NOVA_CORE_PARTICLE_HEADERS}
+    ${NOVA_CORE_NETWORK_HEADERS}
+    ${NOVA_CORE_UI_HEADERS}
     ${NOVA_CORE_PLATFORM_HEADERS}
     ${NOVA_CORE_CONTAINERS_HEADERS}
 )
