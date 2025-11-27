@@ -40,6 +40,12 @@ set(NOVA_TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_script.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_resource.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_input.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_render.cpp
+)
+
+# Editor tests
+set(NOVA_TEST_EDITOR_SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/editor/test_editor.cpp
 )
 
 # API tests
@@ -50,6 +56,7 @@ set(NOVA_TEST_API_SOURCES
 # All test sources
 set(NOVA_TEST_SOURCES
     ${NOVA_TEST_CORE_SOURCES}
+    ${NOVA_TEST_EDITOR_SOURCES}
     ${NOVA_TEST_API_SOURCES}
 )
 
@@ -64,6 +71,7 @@ target_link_libraries(nova_tests
     PRIVATE
         nova_core
         nova_api
+        nova_editor
         Catch2::Catch2WithMain
 )
 
