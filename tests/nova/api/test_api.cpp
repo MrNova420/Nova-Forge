@@ -616,3 +616,298 @@ TEST_CASE("ApiConfig - Presets", "[api][config]") {
         REQUIRE(config.logLevel == ApiLogLevel::Warning);
     }
 }
+
+// =============================================================================
+// API Platform Info Tests
+// =============================================================================
+
+TEST_CASE("API Types - ApiPlatformInfo", "[api][types]") {
+    SECTION("Default values") {
+        ApiPlatformInfo info;
+        REQUIRE(info.osName.empty());
+        REQUIRE(info.osVersion.empty());
+        REQUIRE(info.architecture.empty());
+        REQUIRE(info.is64Bit == true);
+        REQUIRE(info.cpuCores == 1);
+        REQUIRE(info.cpuThreads == 1);
+        REQUIRE(info.totalMemoryMB == 0);
+        REQUIRE(info.hasGpu == false);
+        REQUIRE(info.supportsMultithreading == true);
+    }
+    
+    SECTION("Populated platform info") {
+        ApiPlatformInfo info;
+        info.osName = "Linux";
+        info.osVersion = "6.5.0";
+        info.architecture = "x86_64";
+        info.cpuName = "AMD Ryzen 9 5900X";
+        info.cpuVendor = "AMD";
+        info.cpuCores = 12;
+        info.cpuThreads = 24;
+        info.cpuHasAVX2 = true;
+        info.totalMemoryMB = 32768;
+        info.hasGpu = true;
+        info.gpuName = "NVIDIA RTX 4090";
+        info.gpuSupportsVulkan = true;
+        
+        REQUIRE(info.osName == "Linux");
+        REQUIRE(info.cpuCores == 12);
+        REQUIRE(info.cpuThreads == 24);
+        REQUIRE(info.cpuHasAVX2 == true);
+        REQUIRE(info.hasGpu == true);
+        REQUIRE(info.gpuSupportsVulkan == true);
+    }
+}
+
+// =============================================================================
+// API Progress Tests
+// =============================================================================
+
+TEST_CASE("API Types - ApiProgress", "[api][types]") {
+    SECTION("Progress not complete") {
+        ApiProgress progress;
+        progress.percentage = 50.0f;
+        progress.bytesCompleted = 500;
+        progress.bytesTotal = 1000;
+        progress.status = "Downloading...";
+        
+        REQUIRE_FALSE(progress.isComplete());
+        REQUIRE(progress.percentage == 50.0f);
+        REQUIRE(progress.bytesCompleted == 500);
+        REQUIRE(progress.bytesTotal == 1000);
+    }
+    
+    SECTION("Progress complete") {
+        ApiProgress progress;
+        progress.percentage = 100.0f;
+        progress.bytesCompleted = 1000;
+        progress.bytesTotal = 1000;
+        progress.status = "Complete";
+        
+        REQUIRE(progress.isComplete());
+    }
+    
+    SECTION("Progress over 100% still complete") {
+        ApiProgress progress;
+        progress.percentage = 105.0f;
+        
+        REQUIRE(progress.isComplete());
+    }
+}
+
+// =============================================================================
+// API Error Code Tests
+// =============================================================================
+
+TEST_CASE("API Types - ApiErrorCode", "[api][types]") {
+    SECTION("Success code") {
+        REQUIRE(static_cast<u32>(ApiErrorCode::Success) == 0);
+    }
+    
+    SECTION("Initialization errors range") {
+        REQUIRE(static_cast<u32>(ApiErrorCode::NotInitialized) == 1);
+        REQUIRE(static_cast<u32>(ApiErrorCode::AlreadyInitialized) == 2);
+        REQUIRE(static_cast<u32>(ApiErrorCode::InitializationFailed) == 3);
+    }
+    
+    SECTION("Authentication errors range") {
+        REQUIRE(static_cast<u32>(ApiErrorCode::AuthenticationRequired) == 100);
+        REQUIRE(static_cast<u32>(ApiErrorCode::AuthenticationFailed) == 101);
+        REQUIRE(static_cast<u32>(ApiErrorCode::SessionExpired) == 102);
+        REQUIRE(static_cast<u32>(ApiErrorCode::InvalidCredentials) == 103);
+        REQUIRE(static_cast<u32>(ApiErrorCode::AccountLocked) == 104);
+        REQUIRE(static_cast<u32>(ApiErrorCode::AccountSuspended) == 105);
+        REQUIRE(static_cast<u32>(ApiErrorCode::TokenExpired) == 106);
+    }
+    
+    SECTION("Network errors range") {
+        REQUIRE(static_cast<u32>(ApiErrorCode::NetworkUnavailable) == 200);
+        REQUIRE(static_cast<u32>(ApiErrorCode::ConnectionFailed) == 201);
+        REQUIRE(static_cast<u32>(ApiErrorCode::ConnectionTimeout) == 202);
+        REQUIRE(static_cast<u32>(ApiErrorCode::ServerUnavailable) == 203);
+    }
+    
+    SECTION("Resource errors range") {
+        REQUIRE(static_cast<u32>(ApiErrorCode::ResourceNotFound) == 300);
+        REQUIRE(static_cast<u32>(ApiErrorCode::ResourceLoadFailed) == 301);
+        REQUIRE(static_cast<u32>(ApiErrorCode::ResourceInvalid) == 302);
+        REQUIRE(static_cast<u32>(ApiErrorCode::ResourceAccessDenied) == 303);
+    }
+    
+    SECTION("Operation errors range") {
+        REQUIRE(static_cast<u32>(ApiErrorCode::OperationFailed) == 400);
+        REQUIRE(static_cast<u32>(ApiErrorCode::OperationCancelled) == 401);
+        REQUIRE(static_cast<u32>(ApiErrorCode::OperationTimeout) == 402);
+        REQUIRE(static_cast<u32>(ApiErrorCode::InvalidParameter) == 403);
+    }
+    
+    SECTION("Platform errors range") {
+        REQUIRE(static_cast<u32>(ApiErrorCode::PlatformError) == 500);
+        REQUIRE(static_cast<u32>(ApiErrorCode::FeatureNotSupported) == 501);
+        REQUIRE(static_cast<u32>(ApiErrorCode::PermissionDenied) == 502);
+        REQUIRE(static_cast<u32>(ApiErrorCode::StorageQuotaExceeded) == 503);
+    }
+    
+    SECTION("Internal errors range") {
+        REQUIRE(static_cast<u32>(ApiErrorCode::InternalError) == 900);
+        REQUIRE(static_cast<u32>(ApiErrorCode::OutOfMemory) == 901);
+        REQUIRE(static_cast<u32>(ApiErrorCode::UnknownError) == 999);
+    }
+}
+
+// =============================================================================
+// API Resource State Tests
+// =============================================================================
+
+TEST_CASE("API Types - ResourceState", "[api][types]") {
+    SECTION("All states are defined") {
+        REQUIRE(static_cast<u8>(ResourceState::Unloaded) == 0);
+        REQUIRE(static_cast<u8>(ResourceState::Loading) == 1);
+        REQUIRE(static_cast<u8>(ResourceState::Loaded) == 2);
+        REQUIRE(static_cast<u8>(ResourceState::Failed) == 3);
+    }
+}
+
+// =============================================================================
+// API Log Level Tests
+// =============================================================================
+
+TEST_CASE("API Types - ApiLogLevel", "[api][types]") {
+    SECTION("All log levels are defined") {
+        REQUIRE(static_cast<u8>(ApiLogLevel::Trace) == 0);
+        REQUIRE(static_cast<u8>(ApiLogLevel::Debug) == 1);
+        REQUIRE(static_cast<u8>(ApiLogLevel::Info) == 2);
+        REQUIRE(static_cast<u8>(ApiLogLevel::Warning) == 3);
+        REQUIRE(static_cast<u8>(ApiLogLevel::Error) == 4);
+        REQUIRE(static_cast<u8>(ApiLogLevel::Fatal) == 5);
+        REQUIRE(static_cast<u8>(ApiLogLevel::Off) == 6);
+    }
+}
+
+// =============================================================================
+// API Event Type Tests
+// =============================================================================
+
+TEST_CASE("API Types - ApiEventType", "[api][types]") {
+    SECTION("Lifecycle events") {
+        REQUIRE(static_cast<u32>(ApiEventType::Initialized) == 0);
+        REQUIRE(static_cast<u32>(ApiEventType::ShuttingDown) == 1);
+    }
+    
+    SECTION("Engine events") {
+        REQUIRE(static_cast<u32>(ApiEventType::EngineStarted) == 100);
+        REQUIRE(static_cast<u32>(ApiEventType::EngineStopped) == 101);
+        REQUIRE(static_cast<u32>(ApiEventType::FrameBegin) == 102);
+        REQUIRE(static_cast<u32>(ApiEventType::FrameEnd) == 103);
+    }
+    
+    SECTION("Platform events") {
+        REQUIRE(static_cast<u32>(ApiEventType::UserLoggedIn) == 200);
+        REQUIRE(static_cast<u32>(ApiEventType::UserLoggedOut) == 201);
+        REQUIRE(static_cast<u32>(ApiEventType::ConnectionChanged) == 202);
+    }
+    
+    SECTION("Service events") {
+        REQUIRE(static_cast<u32>(ApiEventType::CloudSyncStarted) == 300);
+        REQUIRE(static_cast<u32>(ApiEventType::CloudSyncCompleted) == 301);
+        REQUIRE(static_cast<u32>(ApiEventType::CloudSyncFailed) == 302);
+    }
+    
+    SECTION("Error events") {
+        REQUIRE(static_cast<u32>(ApiEventType::ErrorOccurred) == 900);
+        REQUIRE(static_cast<u32>(ApiEventType::WarningOccurred) == 901);
+    }
+    
+    SECTION("Custom events start value") {
+        REQUIRE(static_cast<u32>(ApiEventType::Custom) == 10000);
+    }
+}
+
+// =============================================================================
+// API User Profile Tests
+// =============================================================================
+
+TEST_CASE("API Types - UserProfile", "[api][types]") {
+    SECTION("Default values") {
+        UserProfile profile;
+        REQUIRE_FALSE(profile.userId.isValid());
+        REQUIRE(profile.username.empty());
+        REQUIRE(profile.displayName.empty());
+        REQUIRE(profile.isVerified == false);
+        REQUIRE(profile.isPremium == false);
+    }
+    
+    SECTION("Populated profile") {
+        UserProfile profile;
+        profile.userId.id = "user_12345";
+        profile.username = "johndoe";
+        profile.displayName = "John Doe";
+        profile.email = "john@example.com";
+        profile.avatarUrl = "https://example.com/avatar.png";
+        profile.bio = "Game developer";
+        profile.isVerified = true;
+        profile.isPremium = true;
+        
+        REQUIRE(profile.userId.isValid());
+        REQUIRE(profile.username == "johndoe");
+        REQUIRE(profile.displayName == "John Doe");
+        REQUIRE(profile.isVerified == true);
+        REQUIRE(profile.isPremium == true);
+    }
+}
+
+// =============================================================================
+// API Config Comprehensive Tests
+// =============================================================================
+
+TEST_CASE("API Types - ApiConfig Comprehensive", "[api][types]") {
+    SECTION("Default configuration values") {
+        ApiConfig config;
+        REQUIRE(config.appName == "NovaForge Application");
+        REQUIRE(config.appVersion == "1.0.0");
+        REQUIRE(config.debugMode == false);
+        REQUIRE(config.logLevel == ApiLogLevel::Info);
+        REQUIRE(config.enableAnalytics == true);
+        REQUIRE(config.enableCrashReporting == true);
+        REQUIRE(config.dataDirectory.empty());
+        REQUIRE(config.cacheDirectory.empty());
+        REQUIRE(config.maxMemoryMB == 0);
+        REQUIRE(config.enableThreading == true);
+        REQUIRE(config.workerThreads == 0);
+    }
+    
+    SECTION("Custom configuration") {
+        ApiConfig config;
+        config.appName = "My Game";
+        config.appVersion = "2.5.0";
+        config.debugMode = true;
+        config.logLevel = ApiLogLevel::Trace;
+        config.maxMemoryMB = 4096;
+        config.workerThreads = 8;
+        
+        REQUIRE(config.appName == "My Game");
+        REQUIRE(config.appVersion == "2.5.0");
+        REQUIRE(config.debugMode == true);
+        REQUIRE(config.logLevel == ApiLogLevel::Trace);
+        REQUIRE(config.maxMemoryMB == 4096);
+        REQUIRE(config.workerThreads == 8);
+    }
+}
+
+// =============================================================================
+// Make API Error Tests
+// =============================================================================
+
+TEST_CASE("API Types - makeApiError", "[api][types]") {
+    SECTION("Create API error with code and message") {
+        auto error = makeApiError(ApiErrorCode::NetworkUnavailable, "No internet connection");
+        REQUIRE(error.code() == static_cast<i32>(ApiErrorCode::NetworkUnavailable));
+        REQUIRE(error.message() == "No internet connection");
+    }
+    
+    SECTION("Create API error for authentication failure") {
+        auto error = makeApiError(ApiErrorCode::AuthenticationFailed, "Invalid credentials");
+        REQUIRE(error.code() == static_cast<i32>(ApiErrorCode::AuthenticationFailed));
+        REQUIRE(error.message() == "Invalid credentials");
+    }
+}
