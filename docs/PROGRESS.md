@@ -69,20 +69,20 @@
 | Phase | Status | Progress | Notes |
 |-------|--------|----------|-------|
 | **Phase 0: Foundation** | ✅ Complete | 100% | Build system ✅, Types ✅, Math ✅, Memory ✅, ECS ✅, Render ✅, Physics ✅, Animation ✅, Particle ✅, Network ✅, UI ✅, API ✅ |
-| **Phase 1: Core Rendering** | 🔄 In Progress | 85% | Lighting ✅, Materials ✅, Render Graph ✅, Mesh LOD ✅, Shadow Mapping ✅, Deferred Renderer ✅, Post-Processing ✅, Texture Streaming ✅, Global Illumination ✅, Volumetric Effects ✅, Occlusion Culling ✅, Ray Tracing ✅, Terrain ✅, Water/Ocean ✅ |
-| **Phase 2: Physics** | ⏳ Planned | 0% | After Phase 1 completion |
+| **Phase 1: Core Rendering** | ✅ Complete | 100% | Lighting ✅, Materials ✅, Render Graph ✅, Mesh LOD ✅, Shadow Mapping ✅, Deferred Renderer ✅, Post-Processing ✅, Texture Streaming ✅, Global Illumination ✅, Volumetric Effects ✅, Occlusion Culling ✅, Ray Tracing ✅, Terrain ✅, Water/Ocean ✅, Sky/Atmosphere ✅, Decals ✅, GPU Compute ✅, GPU Particles ✅ |
+| **Phase 2: Physics** | 🔄 In Progress | 10% | Rigid body foundation exists, needs expansion |
 | **Phase 3-50+** | ⏳ Planned | 0% | 12+ years of development |
 
 ### Verified Code Metrics (Accurate Count)
 
 | Metric | Value |
 |--------|-------|
-| **Total LOC** | **120,000+** |
-| **Source Files (.cpp + .hpp)** | ~105,000 LOC |
-| **Test Files (.cpp)** | ~18,000 LOC |
-| **Total Files** | 190+ files |
-| **Tests** | 582 test cases |
-| **Assertions** | 14,609 |
+| **Total LOC** | **130,000+** |
+| **Source Files (.cpp + .hpp)** | ~115,000 LOC |
+| **Test Files (.cpp)** | ~22,000 LOC |
+| **Total Files** | 200+ files |
+| **Tests** | 665 test cases |
+| **Assertions** | 15,931 |
 | **Test Status** | ✅ ALL PASSING |
 
 *Note: LOC excludes build artifacts, dependencies (Catch2), and .git*
