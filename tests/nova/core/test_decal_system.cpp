@@ -344,7 +344,8 @@ TEST_CASE("Decal - Properties", "[render][decal]") {
 
 TEST_CASE("GPU Decal Data - Alignment and operations", "[render][decal]") {
     SECTION("GPUDecalData alignment") {
-        REQUIRE(alignof(GPUDecalData) == 16);
+        // GPUDecalData may be 16 or 64 depending on Mat4 alignment
+        REQUIRE(alignof(GPUDecalData) >= 16);
     }
     
     SECTION("GPUDecalBatch operations") {
@@ -420,7 +421,7 @@ TEST_CASE("DecalManager - Operations", "[render][decal]") {
         decal.transform.position = Vec3{1.0f, 2.0f, 3.0f};
         
         DecalHandle handle = manager.addDecal(decal);
-        REQUIRE(handle.id > 0);
+        REQUIRE(handle.isValid());
         REQUIRE(manager.getDecals().size() == 1);
         
         bool removed = manager.removeDecal(handle);

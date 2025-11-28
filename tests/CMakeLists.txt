@@ -57,6 +57,8 @@ set(NOVA_TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_water.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_sky_atmosphere.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_decal_system.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_gpu_compute.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_particle_gpu.cpp
 )
 
 # Editor tests

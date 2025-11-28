@@ -325,32 +325,33 @@ struct DecalTransform {
     /// Get world matrix
     Mat4 getWorldMatrix() const {
         Mat4 result = rotation.toMat4();
-        // Scale
-        result.m[0][0] *= size.x; result.m[0][1] *= size.x; result.m[0][2] *= size.x;
-        result.m[1][0] *= size.y; result.m[1][1] *= size.y; result.m[1][2] *= size.y;
-        result.m[2][0] *= size.z; result.m[2][1] *= size.z; result.m[2][2] *= size.z;
-        // Translation
-        result.m[3][0] = position.x;
-        result.m[3][1] = position.y;
-        result.m[3][2] = position.z;
+        // Scale (column-major: columns[col].row)
+        result.columns[0].x *= size.x; result.columns[0].y *= size.x; result.columns[0].z *= size.x;
+        result.columns[1].x *= size.y; result.columns[1].y *= size.y; result.columns[1].z *= size.y;
+        result.columns[2].x *= size.z; result.columns[2].y *= size.z; result.columns[2].z *= size.z;
+        // Translation (column 3)
+        result.columns[3].x = position.x;
+        result.columns[3].y = position.y;
+        result.columns[3].z = position.z;
         return result;
     }
     
     /// Get inverse world matrix (for projection)
     Mat4 getInverseWorldMatrix() const {
-        Mat4 invRot = rotation.conjugate().toMat4();
+        Quat invRot = rotation.conjugate();
         Vec3 invScale{1.0f / size.x, 1.0f / size.y, 1.0f / size.z};
-        Vec3 invPos = -(invRot * position);
+        Vec3 rotatedPos = invRot * position;  // Quat * Vec3 works
+        Vec3 invPos = Vec3{-rotatedPos.x, -rotatedPos.y, -rotatedPos.z};
         
-        Mat4 result = invRot;
-        // Apply inverse scale
-        result.m[0][0] *= invScale.x; result.m[1][0] *= invScale.x; result.m[2][0] *= invScale.x;
-        result.m[0][1] *= invScale.y; result.m[1][1] *= invScale.y; result.m[2][1] *= invScale.y;
-        result.m[0][2] *= invScale.z; result.m[1][2] *= invScale.z; result.m[2][2] *= invScale.z;
-        // Translation (apply after scale)
-        result.m[3][0] = invPos.x * invScale.x;
-        result.m[3][1] = invPos.y * invScale.y;
-        result.m[3][2] = invPos.z * invScale.z;
+        Mat4 result = invRot.toMat4();
+        // Apply inverse scale (columns are col-major)
+        result.columns[0].x *= invScale.x; result.columns[1].x *= invScale.x; result.columns[2].x *= invScale.x;
+        result.columns[0].y *= invScale.y; result.columns[1].y *= invScale.y; result.columns[2].y *= invScale.y;
+        result.columns[0].z *= invScale.z; result.columns[1].z *= invScale.z; result.columns[2].z *= invScale.z;
+        // Translation (apply after scale) - in column 3
+        result.columns[3].x = invPos.x * invScale.x;
+        result.columns[3].y = invPos.y * invScale.y;
+        result.columns[3].z = invPos.z * invScale.z;
         return result;
     }
     
@@ -745,13 +746,13 @@ public:
     /// Register material
     DecalMaterialHandle registerMaterial(const DecalMaterial& material) {
         DecalMaterialHandle handle{m_nextMaterialId++};
-        m_materials[handle.id] = material;
+        m_materials[handle.value] = material;
         return handle;
     }
     
     /// Get material
     const DecalMaterial* getMaterial(DecalMaterialHandle handle) const {
-        auto it = m_materials.find(handle.id);
+        auto it = m_materials.find(handle.value);
         return it != m_materials.end() ? &it->second : nullptr;
     }
     
@@ -801,7 +802,7 @@ public:
                 break;
             case DecalSortMode::Material:
                 std::sort(visibleDecals.begin(), visibleDecals.end(),
-                    [](const Decal* a, const Decal* b) { return a->material.id < b->material.id; });
+                    [](const Decal* a, const Decal* b) { return a->material.value < b->material.value; });
                 break;
             default:
                 break;
@@ -813,13 +814,13 @@ public:
         
         for (const Decal* decal : visibleDecals) {
             // Start new batch if material changed or batch full
-            if (decal->material.id != currentMaterial.id || !currentBatch.canAdd()) {
+            if (decal->material.value != currentMaterial.value || !currentBatch.canAdd()) {
                 if (!currentBatch.decals.empty()) {
                     batches.push_back(std::move(currentBatch));
                     currentBatch = GPUDecalBatch{};
                 }
                 currentMaterial = decal->material;
-                currentBatch.materialIndex = currentMaterial.id;
+                currentBatch.materialIndex = currentMaterial.value;
                 currentBatch.queue = queue;
                 
                 // Get blend mode from material
