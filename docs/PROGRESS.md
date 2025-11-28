@@ -69,7 +69,7 @@
 | Phase | Status | Progress | Notes |
 |-------|--------|----------|-------|
 | **Phase 0: Foundation** | ✅ Complete | 100% | Build system ✅, Types ✅, Math ✅, Memory ✅, ECS ✅, Render ✅, Physics ✅, Animation ✅, Particle ✅, Network ✅, UI ✅, API ✅ |
-| **Phase 1: Core Rendering** | 🔄 In Progress | 50% | Lighting ✅, Materials ✅, Render Graph ✅, Mesh LOD ✅, Shadow Mapping ✅, Deferred Renderer ✅, Post-Processing ✅, Texture Streaming ✅, Global Illumination ✅ |
+| **Phase 1: Core Rendering** | 🔄 In Progress | 60% | Lighting ✅, Materials ✅, Render Graph ✅, Mesh LOD ✅, Shadow Mapping ✅, Deferred Renderer ✅, Post-Processing ✅, Texture Streaming ✅, Global Illumination ✅, Volumetric Effects ✅ |
 | **Phase 2: Physics** | ⏳ Planned | 0% | After Phase 1 completion |
 | **Phase 3-50+** | ⏳ Planned | 0% | 12+ years of development |
 
@@ -77,12 +77,12 @@
 
 | Metric | Value |
 |--------|-------|
-| **Total LOC** | **95,000+** |
-| **Source Files (.cpp + .hpp)** | ~82,000 LOC |
-| **Test Files (.cpp)** | ~13,000 LOC |
-| **Total Files** | 170+ files |
-| **Tests** | 472 test cases |
-| **Assertions** | 13,944 |
+| **Total LOC** | **102,000+** |
+| **Source Files (.cpp + .hpp)** | ~88,000 LOC |
+| **Test Files (.cpp)** | ~14,000 LOC |
+| **Total Files** | 175+ files |
+| **Tests** | 495 test cases |
+| **Assertions** | 14,113 |
 | **Test Status** | ✅ ALL PASSING |
 
 *Note: LOC excludes build artifacts, dependencies (Catch2), and .git*
