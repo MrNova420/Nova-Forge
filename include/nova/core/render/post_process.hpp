@@ -748,7 +748,12 @@ struct AntiAliasingSettings {
             return Vec2{0.0f, 0.0f};
         }
         
-        // Halton sequence for jitter
+        // Halton sequence for sub-pixel jitter in TAA
+        // This is a low-discrepancy quasi-random sequence using bases 2 and 3.
+        // Halton(n, base) generates well-distributed samples for temporal accumulation.
+        // Base 2 (x): 1/2, 1/4, 3/4, 1/8, 5/8, 3/8, 7/8, ...
+        // Base 3 (y): 1/3, 2/3, 1/9, 4/9, 7/9, 2/9, 5/9, ...
+        // Pre-computed 16 samples for efficiency.
         static constexpr std::array<Vec2, 16> haltonSequence = {{
             {0.5f, 0.333f}, {0.25f, 0.666f}, {0.75f, 0.111f}, {0.125f, 0.444f},
             {0.625f, 0.777f}, {0.375f, 0.222f}, {0.875f, 0.555f}, {0.0625f, 0.888f},
