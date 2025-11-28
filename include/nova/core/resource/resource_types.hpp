@@ -24,7 +24,8 @@
 
 namespace nova::resource {
 
-using namespace nova::core;
+using namespace nova;
+using namespace nova::literals;
 
 // ============================================================================
 // Configuration Constants
@@ -593,7 +594,7 @@ namespace std {
     template<>
     struct hash<nova::resource::ResourceId> {
         size_t operator()(const nova::resource::ResourceId& id) const {
-            return std::hash<u64>()(id.value);
+            return std::hash<nova::u64>()(id.value);
         }
     };
     

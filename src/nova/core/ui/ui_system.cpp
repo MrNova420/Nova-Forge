@@ -13,6 +13,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <fstream>
 
 namespace nova::ui {
 
@@ -903,8 +904,109 @@ Image::Image() {
 
 void Image::setSource(const std::string& source) {
     m_source = source;
-    // In production, would load image and get natural size
-    m_naturalSize = Vec2(100, 100);  // Placeholder
+    
+    // Parse image dimensions from source path or attempt to read image header
+    // This implementation handles common image formats by reading their headers
+    m_naturalSize = Vec2(0, 0);
+    
+    if (source.empty()) {
+        markLayoutDirty();
+        return;
+    }
+    
+    // Try to read image dimensions from file header
+    // Read 26 bytes to cover BMP header which needs bytes 18-25 for dimensions
+    std::ifstream file(source, std::ios::binary);
+    if (file.is_open()) {
+        u8 header[26];
+        file.read(reinterpret_cast<char*>(header), 26);
+        std::streamsize bytesRead = file.gcount();
+        file.close();
+        
+        if (bytesRead >= 8) {
+            // PNG: Check for PNG signature and read IHDR chunk
+            if (header[0] == 0x89 && header[1] == 'P' && header[2] == 'N' && header[3] == 'G' &&
+                header[4] == 0x0D && header[5] == 0x0A && header[6] == 0x1A && header[7] == 0x0A) {
+                if (bytesRead >= 24) {
+                    // Width at offset 16-19, Height at offset 20-23 (big endian)
+                    u32 width = (static_cast<u32>(header[16]) << 24) | 
+                                (static_cast<u32>(header[17]) << 16) |
+                                (static_cast<u32>(header[18]) << 8) | 
+                                 static_cast<u32>(header[19]);
+                    u32 height = (static_cast<u32>(header[20]) << 24) | 
+                                 (static_cast<u32>(header[21]) << 16) |
+                                 (static_cast<u32>(header[22]) << 8) | 
+                                  static_cast<u32>(header[23]);
+                    m_naturalSize = Vec2(static_cast<f32>(width), static_cast<f32>(height));
+                }
+            }
+            // JPEG: Check for JPEG signature (FFD8FF)
+            else if (header[0] == 0xFF && header[1] == 0xD8 && header[2] == 0xFF) {
+                // JPEG dimensions require parsing multiple segments
+                // Read through segments to find SOF0/SOF2 marker
+                std::ifstream jpegFile(source, std::ios::binary);
+                if (jpegFile.is_open()) {
+                    jpegFile.seekg(2); // Skip SOI marker
+                    while (jpegFile.good()) {
+                        u8 marker[2];
+                        jpegFile.read(reinterpret_cast<char*>(marker), 2);
+                        if (marker[0] != 0xFF) break;
+                        
+                        // SOF0, SOF1, SOF2 contain dimensions
+                        if ((marker[1] >= 0xC0 && marker[1] <= 0xC2)) {
+                            u8 sof[7];
+                            jpegFile.read(reinterpret_cast<char*>(sof), 7);
+                            // Height at offset 3-4, Width at offset 5-6 (big endian)
+                            u32 height = (static_cast<u32>(sof[3]) << 8) | static_cast<u32>(sof[4]);
+                            u32 width = (static_cast<u32>(sof[5]) << 8) | static_cast<u32>(sof[6]);
+                            m_naturalSize = Vec2(static_cast<f32>(width), static_cast<f32>(height));
+                            break;
+                        }
+                        // Skip segment
+                        if (marker[1] != 0xD8 && marker[1] != 0xD9 && !(marker[1] >= 0xD0 && marker[1] <= 0xD7)) {
+                            u8 len[2];
+                            jpegFile.read(reinterpret_cast<char*>(len), 2);
+                            u16 segLen = (static_cast<u16>(len[0]) << 8) | static_cast<u16>(len[1]);
+                            jpegFile.seekg(segLen - 2, std::ios::cur);
+                        }
+                    }
+                    jpegFile.close();
+                }
+            }
+            // BMP: Check for BMP signature
+            else if (header[0] == 'B' && header[1] == 'M' && bytesRead >= 26) {
+                // Width at offset 18-21, Height at offset 22-25 (little endian)
+                // All bytes are already in the header buffer
+                i32 width = static_cast<i32>(header[18]) | 
+                           (static_cast<i32>(header[19]) << 8) |
+                           (static_cast<i32>(header[20]) << 16) | 
+                           (static_cast<i32>(header[21]) << 24);
+                i32 height = static_cast<i32>(header[22]) | 
+                            (static_cast<i32>(header[23]) << 8) |
+                            (static_cast<i32>(header[24]) << 16) | 
+                            (static_cast<i32>(header[25]) << 24);
+                // Height can be negative for top-down BMP
+                m_naturalSize = Vec2(static_cast<f32>(width), static_cast<f32>(std::abs(height)));
+            }
+            // GIF: Check for GIF signature
+            else if ((header[0] == 'G' && header[1] == 'I' && header[2] == 'F' && 
+                      header[3] == '8' && (header[4] == '7' || header[4] == '9') && header[5] == 'a') &&
+                     bytesRead >= 10) {
+                // Width at offset 6-7, Height at offset 8-9 (little endian)
+                u16 width = static_cast<u16>(header[6]) | (static_cast<u16>(header[7]) << 8);
+                u16 height = static_cast<u16>(header[8]) | (static_cast<u16>(header[9]) << 8);
+                m_naturalSize = Vec2(static_cast<f32>(width), static_cast<f32>(height));
+            }
+        }
+    }
+    
+    // If we couldn't read dimensions, use a default size
+    // This is a reasonable default for unknown or procedural images
+    if (m_naturalSize.x <= 0 || m_naturalSize.y <= 0) {
+        // Default to 256x256 for unknown images
+        m_naturalSize = Vec2(256.0f, 256.0f);
+    }
+    
     markLayoutDirty();
 }
 

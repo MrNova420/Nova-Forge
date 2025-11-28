@@ -710,9 +710,9 @@ void EditorContext::stop() {
 void EditorContext::step() {
     if (m_state != EditorState::Paused) return;
     
-    // Simulate one frame
+    // Execute a single frame step for debugging purposes
+    // This advances the game simulation by exactly one frame (1/60th second at 60 FPS)
     if (m_world) {
-        // Use beginFrame/endFrame instead of update
         constexpr f32 FIXED_DELTA_TIME = 1.0f / 60.0f;
         m_world->beginFrame(FIXED_DELTA_TIME);
         m_world->endFrame();

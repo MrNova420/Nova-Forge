@@ -84,7 +84,8 @@ public:
         return QualityTier::Minimal; 
     }
     
-    // Resource creation (return dummy handles)
+    // Resource creation - NullRenderDevice generates valid handles for testing
+    // These handles allow API testing without actual GPU resources
     [[nodiscard]] BufferHandle createBuffer(const BufferDesc&) override {
         return BufferHandle(m_nextResourceId++);
     }
