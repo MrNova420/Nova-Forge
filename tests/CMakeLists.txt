@@ -52,6 +52,9 @@ set(NOVA_TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_global_illumination.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_volumetric_effects.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_occlusion_culling.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_ray_tracing.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_terrain.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_water.cpp
 )
 
 # Editor tests
