@@ -48,6 +48,8 @@ set(NOVA_TEST_CORE_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_shadow_system.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_deferred_renderer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_post_process.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_texture_streaming.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/nova/core/test_global_illumination.cpp
 )
 
 # Editor tests
