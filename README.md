@@ -5,6 +5,7 @@
 > ⚠️ **WORK IN PROGRESS** ⚠️
 > 
 > NovaForge is currently **in active development**. All features, pricing, and information in this document are subject to change. Nothing is final or official yet. We're continuously adding new features, improvements, and content. Stay tuned for updates!
+> Just about 75k-200k LOC atm , development has just started 3 months for planned first initial beta release!
 
 # 🎮 MAKE GAMES. PLAY GAMES. GET PAID.
 
